@@ -6,18 +6,80 @@ import { Icon } from '@rneui/base';
 import { navigate } from '@react-navigation/routers/lib/typescript/src/CommonActions';
 import { Image } from '@rneui/base';
 import closed from '../src/screens/assets/closed2.png'
-export default function Calender({ data, onSelect,navigation }) {
-  const [userOption, setUserOption] = useState(data[3].aday);
+
+
+const DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
+const defaultLocalizationOptions = {
+  monthNames : [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ],
+  dayNames : [
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+  ]
+};
+let myLocOpts = { dayNames : [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ] };
+let currDate = new Date().getMonth();
+let currentmonth = defaultLocalizationOptions.monthNames[currDate] 
+//console.log(getCalendar(2023, myLocOpts)); // Get a calendar for the year 2 020
+
+function getCalendar(localizationOptions) {
+  // Merge default and custom localization options.
+  let locOpts = Object.assign({}, defaultLocalizationOptions, localizationOptions);
+  let currDate = new Date(Date.UTC(2023, 0, 0, 0, 0, 0));
+  addDay(currDate); // Add a day
+  let calendar = {};
+  while (currDate.getUTCFullYear() < 2023 + 1) {
+    let month = locOpts['monthNames'][currDate.getUTCMonth()];
+    let daysOfMonth = calendar[month] || [];
+    daysOfMonth.push({
+      aday : currDate.getUTCDate(),
+      day : locOpts['dayNames'][currDate.getUTCDay()],
+    });
+    calendar[month] = daysOfMonth;
+    addDay(currDate);
+  }
+  return calendar['April'];
+}
+
+function addDay(date) {
+  date.setTime(date.getTime() + DAY_IN_MILLIS); // Add a day
+  return date;
+}
+
+
+export default function Calender({ onSelect,navigation }) {
+  const finditem=(day)=>{
+    return dates.findIndex((date)=>date.aday==day)
+   } 
+  let current_day = new Date().getUTCDate()
+
+  let dates= getCalendar(myLocOpts)
+  let caldate= dates.slice(finditem(current_day)-2,finditem(current_day)+3)
+ 
+  
+  const  [data,useData]= useState(caldate)
+  
+  const [userOption, setUserOption] = useState(data[2]);
    const [currentIndex,setcurrentIndex]= useState();
-   const [refFlatList,setrefFlatList]= useState();
+   
    //setUserOption(data[1].day)
+
+  
+
   const selectHandler = (value,index) => {
   ///setTimeout(()=>  refFlatList.scrollToIndex({animated:true,index:currentIndex}),2000)
     setcurrentIndex(index)
     onSelect(value);
     setUserOption(value);
+     useData(dates.slice(finditem(value.aday)-2,finditem(value.aday)+3))
     console.log(userOption)
   };
+
+  const set_dates=(value)=>{
+    value=='Month' && useData(dates)
+    setcurrentIndex('Month')
+  }
  
    getItemLayout=(data,index)=>{
     return {length : 50,offset:50*index,index}
@@ -29,7 +91,7 @@ export default function Calender({ data, onSelect,navigation }) {
       <Pressable
           style={item.aday === userOption.aday ? [styles.selected, { width: 56, height: 55,marginLeft:10 ,borderRadius:15}] : [styles.unselected, {borderRadius:15,marginLeft:10, width: 56, height: 55 }]}
           onPress={() => {
-            selectHandler({day:item.day,aday: item.aday},index)
+            selectHandler({day:item.day, aday: item.aday},index)
             }}>
           <Text style={[styles.option, item.aday == userOption.aday ? colors.w : colors.dg]}> {item.day}</Text>
           <Text style={[styles.option, item.aday == userOption.aday ? colors.w : colors.dg]}> {item.aday}</Text>
@@ -39,9 +101,9 @@ export default function Calender({ data, onSelect,navigation }) {
   }
   return (
     <>
-    <Pressable   onPress={() => selectHandler('Month')} >
+    <Pressable   onPress={() => set_dates('Month')} >
     <Text style={{marginLeft:30,marginBottom:30,fontFamily:FontFamily.sourceSansProBold,fontSize:20,color:colors.dg.color}}>
-     April
+     {currentmonth}
     </Text>
     </Pressable>
 
@@ -51,16 +113,15 @@ export default function Calender({ data, onSelect,navigation }) {
 <FlatList
 
 data={data}
-key={userOption=='Month' ? '_': 'zazaz'}
+key={Date.now()}
 renderItem={renderItem}
-keyExtractor={item => item.id}
+keyExtractor={item => item.aday}
 getItemLayout={getItemLayout}
- numColumns={userOption==='Month' ? 5 : null}
-horizontal={userOption ==='Month' ? false: true} 
- contentContainerStyle={userOption=='Month' && {display:'flex',flexDirection:'column',
-}} 
+ numColumns={currentIndex==='Month' ? 5 : null}
+horizontal={currentIndex==='Month' ? false: true} 
+
 showsHorizontalScrollIndicator={false}
-ref={(ref)=>setrefFlatList(ref)}
+
 />
 </View>
 

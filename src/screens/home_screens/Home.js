@@ -14,7 +14,7 @@ import img from '../../../assets/s.png'
 
 const Home = ({navigation}) => {
   const [option, setOption] = React.useState('Popular');
-const {data,isLoading,isSuccess} =useGetcategoriesQuery(option)
+const {data,isLoading,isSuccess} = useGetcategoriesQuery(option)
 
      console.log(data && data)
   function getUserLocation() {

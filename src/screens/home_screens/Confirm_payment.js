@@ -3,12 +3,15 @@ import { SafeAreaView ,View,Text,Pressable} from "react-native";
 import BHeader from "../../../components/BHeader";
 import { FontFamily } from "../../GlobalStyles";
 import { colors } from "../../Common_styles";
-import { Icon,Button } from "@rneui/base";
+import { Icon,Button,ListItem } from "@rneui/base";
 import { Image } from "react-native-animatable";
 import { ScrollView } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import source from '../../../assets/pay-with-cash.png'
+import source2 from '../../../assets/group-1902.png'
 
 const Confirm_payment=({navigation})=>{
-   
+  const payment_method =useSelector((state)=>state.user.payment_methods.default)
     return(
         <SafeAreaView>
             <ScrollView
@@ -16,17 +19,43 @@ const Confirm_payment=({navigation})=>{
             > 
                 <BHeader title={'Confirm Payment'}/>
                 <Text style={{paddingLeft:20, width: '90%',alignSelf:'center',marginVertical:20,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>Payment Method</Text>
-                <Pressable style={{ display:'flex',flexDirection:'row', height:63, width: '90%',alignSelf:'center',paddingTop:20, paddingHorizontal:20,shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20}}> 
-                <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:20,color:colors.dg.color}}>Select</Text>
-          <Icon 
-           style={{width:30,marginLeft: 240}}
-                      name={'chevron-forward'}
-                      type="ionicon"
-                      onPress={() => setShowPassword(!showPassword)}
-                      color={colors.dg.color}
-                    />
-       </Pressable>
-       <View style={{marginTop:40, marginVertical:10, shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20,width:'90%',alignSelf:'center' }}>
+                {
+                  payment_method ? 
+                  
+                  <ListItem
+                  containerStyle={[{ display:'flex',flexDirection:'row', height:63, width: '90%',alignSelf:'center',paddingTop:20, paddingHorizontal:20,shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,elevation:4,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20}]}
+                  onPress={() => {
+                   navigation.navigate('Select_payment');
+                  }}>
+                    
+                  <Image
+          source={payment_method.img=='cash'? source: 'master'? source2:null}
+          style={{}}
+        />
+                  <ListItem.Content>
+                    <ListItem.Title style={colors.dgb}>
+                     ***{payment_method.Number && payment_method.Number.slice(-5)}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron color={'#00463C'} size={30} />
+                </ListItem>
+                  
+                  :<Pressable onPress={()=>navigation.navigate('Select_payment')} style={{ display:'flex',flexDirection:'row', height:63, width: '90%',alignSelf:'center',paddingTop:20, paddingHorizontal:20,shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,elevation:4,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20}}> 
+                  <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:20,color:colors.dg.color}}>Select</Text>
+            <Icon 
+             style={{width:30,marginLeft: 240}}
+                        name={'chevron-forward'}
+                        type="ionicon"
+                        onPress={() => setShowPassword(!showPassword)}
+                        color={colors.dg.color}
+                      />
+         </Pressable>
+                }
+
+
+
+
+       <View style={{marginTop:40, marginVertical:10, shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4,backgroundColor:'white', borderRadius:20,width:'90%',alignSelf:'center' }}>
         <View style={{padding:20,borderBottomColor:colors.lg.color,borderBottomWidth:1,display:'flex',flexDirection:'row'}}>
             <View>
                 <Text  style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:23,color:colors.dg.color}}>12 July 2022</Text>

@@ -39,24 +39,31 @@ const VendorDetail = ({navigation}) => {
           items:[
             {
               id: 666,
-              name2: "Capsicum",
-              price: 1.2,
+              name2: "Haircut",
+              price: 50,
               check:false,
-              time: 30
+              time: '1h'
             },
             {
               id: 1,
-              name2: "Paneer",
-              price: 2,
+              name2: "Braids",
+              price: 150,
               check:false,
-              time: 30
+              time: '1h 30mins'
             },
             {
               id: 2,
-              name2: "Red Paprika",
-              price: 2.5,
+              name2: "Twist",
+              price: 50,
               check:false,
-              time: 30
+              time: '1h 30mins'
+            },
+            {
+              id: 4,
+              name2: "Knotting",
+              price: 50,
+              check:false,
+              time: '1h 30mins'
             },
           ]
         },
@@ -267,7 +274,7 @@ data1.topping2.map((item)=> {
                 </View>}
                 checked={parentState[index]}
                 onPress={() => handleOnChange2(index)} />
-              {parentState[index] === true && items.map(({ name2, id, price, check }, _index2) => {
+              {parentState[index] === true && items.map(({ name2,time, id, price, check }, _index2) => {
                 return (
                   <View style={{ marginLeft: 30 }}>
                     <CheckBox
@@ -276,7 +283,7 @@ data1.topping2.map((item)=> {
                       </Text>
 
                         <Text style={[{ fontSize: 10, color: '#BBB9BC' }]}>
-                          {' '} {name2}
+                          {' '} {time}
                         </Text>
                         <Text style={[colors.dg, { marginLeft: 'auto' }]}>
                           {'\u20B5'} {price}

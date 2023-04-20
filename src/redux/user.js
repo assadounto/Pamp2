@@ -72,6 +72,17 @@ const userSlice = createSlice({
     createError: null,
     user: null,
     image1: null,
+    payment_methods:{
+      default:null,
+      methods: [
+        {   id:1,
+          name: 'Pay with cash',
+          img: 'cash'  
+      },
+      ]
+    },
+    
+    
   },
   reducers: {
     setMessage(state, action) {
@@ -100,6 +111,13 @@ const userSlice = createSlice({
         (state.first_time = false),
         (state.user = null);
     },
+    setPayment(state,action){
+      state.payment_methods.methods.push(action.payload)
+    },
+    setDefault(state,action){
+      state.payment_methods.default=action.payload
+    }
+
   },
   extraReducers: builder => {
     builder
@@ -155,5 +173,7 @@ export const {
   verified,
   userLogout,
   setuser,
+  setPayment,
+  setDefault
 } = userSlice.actions;
 export default userSlice.reducer;

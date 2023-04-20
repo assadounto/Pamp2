@@ -13,11 +13,13 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { homeApi } from './homeapi';
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   blacklist: ['isLoading', 'errorMessage', 'successMessage'],
+  stateReconciler: autoMergeLevel2
 };
 
 const user = persistReducer(persistConfig, userReducer);

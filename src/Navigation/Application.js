@@ -14,6 +14,8 @@ import Notifications from '../screens/notifications/Notifications';
 import Mapview from '../screens/home_screens/Mapview';
 import Confirm_payment from '../screens/home_screens/Confirm_payment';
 import Success from '../screens/home_screens/Sucess';
+import Select_payment from '../screens/home_screens/Select_payment';
+import Add_payment from '../screens/home_screens/Add_payment';
 const Stack = createStackNavigator();
 
 const ApplicationNavigator = () => {
@@ -39,6 +41,8 @@ const ApplicationNavigator = () => {
         <Stack.Screen name='Mapview' component={Mapview}/> 
         <Stack.Screen name={'Confirm'} component={Confirm_payment}/> 
         <Stack.Screen name={'Success'} component={Success}/> 
+        <Stack.Screen name={'Select_payment'} component={Select_payment}/> 
+        <Stack.Screen name={'Add_payment'} component={Add_payment}/> 
       </Stack.Navigator>
     </NavigationContainer>
   );

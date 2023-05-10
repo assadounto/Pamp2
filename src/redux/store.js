@@ -1,5 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
 import userReducer from './user';
+import bookingReducer from './booking'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi } from './authapi';
 import {
@@ -23,10 +24,11 @@ const persistConfig = {
 };
 
 const user = persistReducer(persistConfig, userReducer);
-
+const booking = bookingReducer
 export const store = configureStore({
   reducer: {
     user,
+    booking,
     [authApi.reducerPath]: authApi.reducer
   },
   middleware: getDefaultMiddleware =>

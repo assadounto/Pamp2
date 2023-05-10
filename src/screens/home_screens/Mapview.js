@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text, View, SafeAreaView, Image, Modal, TextInput,StyleSheet} from 'react-native';
+import {Text, View, SafeAreaView, Image, Modal, TextInput,StyleSheet,Pressable} from 'react-native';
 import MapView,{ PROVIDER_GOOGLE,Marker } from 'react-native-maps';
 import mark from '../assets/m.png'
-
-const Mapview = ({route}) => {
+import { Icon } from '@rneui/base';
+const Mapview = ({route,navigation}) => {
   const {name,dist,rating,image} =route.params
   const styles = StyleSheet.create({
     map: {
@@ -11,23 +11,33 @@ const Mapview = ({route}) => {
     },
   });
   return (
-    <MapView
-    initialRegion={{
-      latitude: 5.614818,
-      longitude: -0.205874,
-      latitudeDelta: 0.00122,
-      longitudeDelta: 0.00121,
-    }}
-    style={styles.map}
-    provider={PROVIDER_GOOGLE}
->
-    <Marker
-  coordinate={{ latitude: 5.614818, longitude: -0.205874}} 
-  
-  image={mark}>
-    {/* <CustomMarker image={image}/> */}
-</Marker>
-  </MapView>
+    <><MapView
+      initialRegion={{
+        latitude: 5.614818,
+        longitude: -0.205874,
+        latitudeDelta: 0.00122,
+        longitudeDelta: 0.00121,
+      }}
+      style={styles.map}
+      provider={PROVIDER_GOOGLE}
+    >
+
+
+      <Marker
+        coordinate={{ latitude: 5.614818, longitude: -0.205874 }}
+
+        image={mark}
+        >
+        {/* <CustomMarker image={image}/> */}
+      </Marker>
+    </MapView>
+      <Pressable onPress={() => navigation.goBack()} style={{ position: 'absolute', top: 60, left: 20 }}>
+        <Icon
+
+          name='chevron-back-outline'
+          type='ionicon'
+          size={30} />
+      </Pressable></>
   );
 };
 

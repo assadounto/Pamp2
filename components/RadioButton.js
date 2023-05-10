@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Pressable,ScrollView} from 'react-native';
 import { styles ,colors} from '../src/Common_styles';
 
-export default function RadioButton({ data, onSelect }) {
+export default function RadioButton({ data, onSelect,horizontal }) {
   const [userOption, setUserOption] = useState(data[0].value);
    
   const selectHandler = (value) => {
@@ -10,7 +10,7 @@ export default function RadioButton({ data, onSelect }) {
     setUserOption(value);
   };
   return (
-    <ScrollView  horizontal={true} contentContainerStyle={{marginLeft:10}} showsHorizontalScrollIndicator={false}>  
+    <ScrollView  horizontal={horizontal||true} contentContainerStyle={{marginLeft:10}} showsHorizontalScrollIndicator={false}>  
       {data.map((item) => {
         return (
            

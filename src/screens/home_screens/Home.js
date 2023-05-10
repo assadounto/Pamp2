@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import {View, Text} from 'react-native-animatable';
-import {Input, Icon} from '@rneui/base';
+import {Input, Icon,TouchableOpacity} from '@rneui/base';
 import {styles, colors} from '../../Common_styles';
 import UHeader from '../../../components/UHeader';
 import {useGetcategoriesQuery} from '../../redux/authapi';
@@ -8,15 +8,27 @@ import {Pressable, FlatList, Image, Platform} from 'react-native';
 import RadioButton from '../../../components/RadioButton';
 import Geolocation from 'react-native-geolocation-service';
 import {useSelector} from 'react-redux';
+
 import { request, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import { FontFamily } from '../../GlobalStyles';
 import img from '../../../assets/s.png'
+import * as Animatable from 'react-native-animatable';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import MyTabBar from '../../../components/Topnav';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Favourites from './favourites';
+import { NavigationContainer } from '@react-navigation/native';
+
+import VendorSearchCon from '../../../components/VendorSearchCont';
+import { TextInput } from 'react-native-gesture-handler';
+const Tab = createMaterialTopTabNavigator();
+
+
 
 const Home = ({navigation}) => {
   const [option, setOption] = React.useState('Popular');
-const {data,isLoading,isSuccess} = useGetcategoriesQuery(option)
 
-     console.log(data && data)
+
   function getUserLocation() {
     Geolocation.getCurrentPosition(
       (position) => {
@@ -80,8 +92,43 @@ const {data,isLoading,isSuccess} = useGetcategoriesQuery(option)
     console.log(value)
 
   }
+  
+  
+  return (
+    <Fragment >
+     <UHeader navigation={navigation} />
+  
+    <Pressable onPress={()=>navigation.navigate("Search")}>
+     <Image
+       
+          source={img}
+          style={{ width: 344, height: 63, paddingTop: 8, alignSelf: 'center', marginBottom: 15 }} 
+          
+          />
+    </Pressable>
+    <Tab.Navigator
+sceneContainerStyle={{ backgroundColor: 'white' }}
+      tabBar={props => <MyTabBar {...props} />}>
+  
+
+
+        <Tab.Screen name="Popular" component={Popular} />
+        <Tab.Screen name="Recent viewed" component={Others} />
+        <Tab.Screen name="Top Rated Hair Salons" component={Favourites } />
+
+        <Tab.Screen name="Settingrgs" component={Favourites} />
+
+        <Tab.Screen name="Settingrhs" component={Favourites} />
+
+        <Tab.Screen name="Settingrrs" component={Favourites} />
+    </Tab.Navigator></Fragment>
+  );
+};
+
+const Popular=({navigation})=>{
+  const {data,isLoading,isSuccess} = useGetcategoriesQuery('Popular')
   const Item = ({title, id, source}) => (
-    <Pressable onPress={()=>navigation.navigate('Searches1')} style={{borderRadius:20,marginTop:20,padding:10,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0}}} >
+    <Pressable onPress={()=>navigation.navigate('Searches1')} style={{borderRadius:20,marginTop:20,padding:10,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
     <View >
       <View style={{backgroundColor: '#ffff',alignItems:'center'}}>
         <Image
@@ -96,31 +143,48 @@ const {data,isLoading,isSuccess} = useGetcategoriesQuery(option)
   );
 
   return (
-    <View style={{backgroundColor: 'white'}}>
-      <UHeader navigation={navigation}/>
-      {/* <Input
-        placeholder="Search for a service"
-        inputContainerStyle={[styles.textInput, styles.tc,{width:344,height:63,paddingTop:8}]}
-        leftIcon={<Icon name="search" type="feather" color={'#BCC4CC'} />}
-        onFocus
-        
-        ={() => navigation.navigate('Search')}
-      /> */}
+    <FlatList style={{}}
+    showsVerticalScrollIndicator={false}
+    data={data}
+    renderItem={({ item }) => (
+      <Item title={item.name} id={item.id} source={{ uri: item.photo_url }} />
+    )}
+    keyExtractor={item => item.id} />
+  )
+}
 
-<Image
-          source={img}
-          style={{width:344,height:63,paddingTop:8,alignSelf:'center',marginBottom:15}}
-        />
-      <RadioButton data={data2} onSelect={(value) => setOption(value) }/>
-      <FlatList style={{marginBottom:300}}
-        data={data}
-        renderItem={({item}) => (
-          <Item title={item.name} id={item.id}   source={ {uri: item.photo_url }}/>
-        )}
-        keyExtractor={item => item.id}
-      />
-    </View>
-  );
-};
 
+const Others=()=>{
+  const data=[
+    {
+      image: '../../../assets/rectangle-9764.png',
+      logo:'../../../assets/group-1820.png',
+      name:'Likke Salon',
+      items:[
+        { value: 'Make up' },
+      { value: 'Hair' },
+      { value: 'Nails' },
+      ],
+      rating: '4.5',
+      location:'Airport Resddf',
+      dist: '2000m from you'
+    },
+    {
+      image: '../../../assets/rectangle-9764.png',
+      logo:'../../../assets/group-1820.png',
+      name:'Likke Salon',
+      items:[
+        { value: 'Make up' },
+      { value: 'Hair' },
+      { value: 'Nails' },
+      ],
+      rating: '4.5',
+      location:'Airport Resddf',
+      dist: '2000m from you'
+    },
+  ]
+ return(
+  <VendorSearchCon data={data}/>
+ )
+}
 export default Home;

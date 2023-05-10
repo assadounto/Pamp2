@@ -8,6 +8,9 @@ import { Image } from "react-native-animatable";
 import { ScrollView } from "react-native-gesture-handler";
 import source from '../../../assets/pay-with-cash.png'
 import source2 from '../../../assets/group-1902.png'
+import momo from '../../../assets/momo.png'
+import airtel from '../../../assets/airtel.png'
+import voda from '../../../assets/Vodafone.png'
 import add from '../../../assets/group-1756.png'
 import { useSelector,useDispatch } from "react-redux";
 import { setPayment } from "../../redux/user";
@@ -46,12 +49,12 @@ const Select_payment=({navigation})=>{
                   containerStyle={[{paddingVertical:30,borderTopColor:colors.lg.color,borderTopWidth:1}]}
                   onPress={() => {
                   dispatch(setDefault(pay))
-                  navigation.replace('Confirm')
+                  navigation.goBack()
                   }}>
                     
                   <Image
-          source={pay.img=='cash'? source: 'master'? source2:null}
-          style={{}}
+          source={pay.img=='cash'? source: pay.name=='MTN' ? momo: pay.name=='VODAFONE'? voda: pay.name=='AIRTELTIGO'? airtel:source2}
+          style={{width:40,height:30,borderRadius:5,resizeMode:'contain'}}
         />
                   <ListItem.Content>
                     <ListItem.Title style={colors.dgb}>

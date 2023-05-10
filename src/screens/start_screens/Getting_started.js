@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
   c1: {width: '100%', height: '100%' },
   c2: {
     width: '80%',
-    height: '40%',
+    //height: '40%',
     backgroundColor: '#FFFFFF',
     position: 'absolute',
     alignSelf: 'center',
-    top: 370,
+    top: 340,
     borderRadius: 40,
   },
   c3: {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     height: 370,
     alignSelf: 'center',
     position: 'absolute',
-    top: 90,
+    top: 50,
   },
   c4: {
     marginTop: 35,
@@ -71,8 +71,9 @@ const styles = StyleSheet.create({
     color: '#D0D8C3',
     padding: 10,
     fontSize:13,
-    marginBottom:25,
+    marginBottom:10,
     marginTop:19.3
+
   },
   c6: {
     alignSelf: 'center',
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#86D694',
     width: 184,
     height: 52,
+    marginBottom:10
   },
   c7: {
     textAlign: 'center',

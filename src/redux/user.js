@@ -61,6 +61,7 @@ export const logout = createAsyncThunk('user/logout', async () => {
 const userSlice = createSlice({
   name: 'user',
   initialState: {
+    cancelled:false,
     loading: false,
     userInfo: null,
     userToken: null,
@@ -116,7 +117,10 @@ const userSlice = createSlice({
     },
     setDefault(state,action){
       state.payment_methods.default=action.payload
-    }
+    },
+    cancel(state, action) {
+      state.cancelled = !state.cancelled
+      },
 
   },
   extraReducers: builder => {
@@ -166,7 +170,7 @@ const userSlice = createSlice({
 });
 
 export const {
-  setMessage,
+  cancel,
   setImage,
   setNotification,
   setVerified_p,

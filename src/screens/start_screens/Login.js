@@ -37,7 +37,7 @@ const Login = ({navigation}) => {
     webClientId:
       '772716520012-ichh7fr2ps938dj0hsa5l2v4hh76iqd7.apps.googleusercontent.com',
     offlineAccess: true,
-    iosClientId:'709917820391-okmb59nki8qu4mh7cj9c98tbp6kp56vq.apps.googleusercontent.com'
+    iosClientId:'772716520012-1rdo1akce15utlpd0md2c9q2p8qq36je.apps.googleusercontent.com'
   });
   React.useEffect(() => {
     (createError === 'exist' || success === true) &&

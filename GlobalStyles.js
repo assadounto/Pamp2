@@ -1,8 +1,8 @@
 /* fonts */
 export const FontFamily = {
-  sourceSansProRegular: "Source Sans Pro_regular",
-  sourceSansProSemibold: "Source Sans Pro_semibold",
-  sourceSansProBold: "Source Sans Pro_bold",
+  sourceSansProRegular: 'SourceSansPro-Regular',
+  sourceSansProSemibold: 'SourceSansPro-Semibold',
+  sourceSansProBold: 'SourceSansPro-Bold',
   bodoniBdBTBoldItalic: "Bodoni Bd BT_bold_italic",
   segoeUIRegular: "Segoe UI_regular",
 };

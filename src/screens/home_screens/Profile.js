@@ -44,8 +44,8 @@ const Profile = ({navigation}) => {
       const source = response.assets[0];
 
       setSelectedImage(source);
-      dispatch(setImage(source));
-      console.log('source', source);
+      dispatch(setImage(source.uri));
+      console.log('source', source.uri);
       onUploadImage(source);
     });
   };

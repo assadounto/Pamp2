@@ -2,124 +2,25 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Calender from "../../../components/Calender";
 import BHeader from "../../../components/BHeader";
-
+import { useDispatch } from "react-redux";
+import { set_date } from "../../redux/booking";
+let monthNames =[
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ]
 const SelectDate=({navigation})=>{
+    let date = new Date()
+    console.log(date.getDay(),date.getFullYear(),monthNames[date.getMonth()])
+    const dispatch=useDispatch()
     const [option,setOption] =useState({
+        day: date.getDay(), month: monthNames[date.getMonth()] , year: date.getFullYear()
     })
-
-    const dates=[
-        {
-            day: 'Tue',
-            aday: 11
-        },
-        {
-            day: 'Wed',
-            aday: 12
-        },
-        {
-            day: 'Thu',
-            aday: 13
-        },
-        {
-            day: 'Fri',
-            aday: 14
-        },
-        {
-            day: 'Sat',
-            aday: 15
-        },
-
-    ]
-    const dates2=[
-        {
-            day: 'Tue',
-            aday: 11
-        },
-        {
-            day: 'Wed',
-            aday: 12
-        },
-        {
-            day: 'Thu',
-            aday: 13
-        },
-        {
-            day: 'Fri',
-            aday: 14
-        },
-        {
-            day: 'Sat',
-            aday: 15
-        },
-        {
-            day: 'Sun',
-            aday: 16
-        },
-        {
-            day: 'Mon',
-            aday: 17
-        },
-        {
-            day: 'Tues',
-            aday: 18
-        },
-        {
-            day: 'Wed',
-            aday: 19
-        },
-        {
-            day: 'Thu',
-            aday: 20
-        },
-        {
-            day: 'Fri',
-            aday: 21
-        },
-        {
-            day: 'Sat',
-            aday: 22
-        },
-        {
-            day: 'Sun',
-            aday: 23
-        },
-        {
-            day: 'Mon',
-            aday: 24
-        },
-        {
-            day: 'Tue',
-            aday: 25
-        },
-        {
-            day: 'Wed',
-            aday: 26
-        },
-        {
-            day: 'Thu',
-            aday: 27
-        },
-        {
-            day: 'Fri',
-            aday: 28
-        },
-        {
-            day: 'Sat',
-            aday: 29
-        },
-        {
-            day: 'Sun',
-            aday: 30
-        },
-        
-        
-        
-
-    ]
+    console.log(option)
+    dispatch(set_date(option))
     return(
         <SafeAreaView>
             <BHeader title={'Select date & time'}/>
-            <Calender data={dates2} onSelect={(value)=> setOption(value)} navigation={navigation} />
+            <Calender  onSelect={(value)=> setOption(value)} navigation={navigation} />
         </SafeAreaView>
     )
 }

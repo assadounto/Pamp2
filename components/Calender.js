@@ -6,8 +6,9 @@ import { Icon } from '@rneui/base';
 import { navigate } from '@react-navigation/routers/lib/typescript/src/CommonActions';
 import { Image } from '@rneui/base';
 import closed from '../src/screens/assets/closed2.png'
-
-
+import { format, addMonths, subMonths } from 'date-fns';
+import { set_time } from '../src/redux/booking';
+import { useDispatch } from 'react-redux';
 const DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 const defaultLocalizationOptions = {
   monthNames : [
@@ -20,10 +21,10 @@ const defaultLocalizationOptions = {
 };
 let myLocOpts = { dayNames : [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ] };
 let currDate = new Date().getMonth();
-let currentmonth = defaultLocalizationOptions.monthNames[currDate] 
+//let currentmonth = defaultLocalizationOptions.monthNames[currDate] 
 //console.log(getCalendar(2023, myLocOpts)); // Get a calendar for the year 2 020
 
-function getCalendar(localizationOptions) {
+function getCalendar(localizationOptions,currentMonth) {
   // Merge default and custom localization options.
   let locOpts = Object.assign({}, defaultLocalizationOptions, localizationOptions);
   let currDate = new Date(Date.UTC(2023, 0, 0, 0, 0, 0));
@@ -39,7 +40,7 @@ function getCalendar(localizationOptions) {
     calendar[month] = daysOfMonth;
     addDay(currDate);
   }
-  return calendar['April'];
+  return calendar[defaultLocalizationOptions.monthNames[currentMonth]];
 }
 
 function addDay(date) {
@@ -49,13 +50,19 @@ function addDay(date) {
 
 
 export default function Calender({ onSelect,navigation }) {
+
+
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  //const [currentmonth,set_current_month]=useState(defaultLocalizationOptions.monthNames[currentMonth])
+
+console.log(currentMonth)
   const finditem=(day)=>{
     return dates.findIndex((date)=>date.aday==day)
    } 
   let current_day = new Date().getUTCDate()
 
-  let dates= getCalendar(myLocOpts)
-  let caldate= dates.slice(finditem(current_day)-2,finditem(current_day)+3)
+  let dates= getCalendar(myLocOpts,currentMonth)
+ let caldate= dates.slice(finditem(current_day)-2,finditem(current_day)+3)
  
   
   const  [data,useData]= useState(caldate)
@@ -65,12 +72,29 @@ export default function Calender({ onSelect,navigation }) {
    
    //setUserOption(data[1].day)
 
-  
+   
+   const nextMonth = () => {
+    setCurrentMonth(currentMonth+1)
+   dates  =  getCalendar(myLocOpts, currentMonth+1)
+   useData(dates)
+   console.log(data)
+   };
+ 
+   const prevMonth = () => {
+    setCurrentMonth(currentMonth-1)
+    dates  =  getCalendar(myLocOpts, currentMonth-1)
+    useData(dates)
+   };
 
   const selectHandler = (value,index) => {
   ///setTimeout(()=>  refFlatList.scrollToIndex({animated:true,index:currentIndex}),2000)
     setcurrentIndex(index)
-    onSelect(value);
+    onSelect({
+      day:value.aday,
+      month: defaultLocalizationOptions.monthNames[currentMonth],
+      year: 2023
+      
+    });
     setUserOption(value);
      useData(dates.slice(finditem(value.aday)-2,finditem(value.aday)+3))
     console.log(userOption)
@@ -87,7 +111,7 @@ export default function Calender({ onSelect,navigation }) {
 
    renderItem=({item,index})=>{
     return (
-
+   
       <Pressable
           style={item.aday === userOption.aday ? [styles.selected, { width: 56, height: 55,marginLeft:10 ,borderRadius:15}] : [styles.unselected, {borderRadius:15,marginLeft:10, width: 56, height: 55 }]}
           onPress={() => {
@@ -96,20 +120,20 @@ export default function Calender({ onSelect,navigation }) {
           <Text style={[styles.option, item.aday == userOption.aday ? colors.w : colors.dg]}> {item.day}</Text>
           <Text style={[styles.option, item.aday == userOption.aday ? colors.w : colors.dg]}> {item.aday}</Text>
       </Pressable>
-
-  );
-  }
+     
+  )}
   return (
     <>
+      
     <Pressable   onPress={() => set_dates('Month')} >
     <Text style={{marginLeft:30,marginBottom:30,fontFamily:FontFamily.sourceSansProBold,fontSize:20,color:colors.dg.color}}>
-     {currentmonth}
+     {defaultLocalizationOptions.monthNames[currentMonth]}
     </Text>
     </Pressable>
 
    
  {/* <ScrollView horizontal={userOption ==='Month' ?null :true} contentContainerStyle={{ marginLeft: 10,display:'flex',flexDirection:'row',flexWrap:'wrap'}} showsHorizontalScrollIndicator={false}> */}
-<View style={{ width: '90%',alignSelf:'center',paddingTop:20, paddingHorizontal:10,shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20}}> 
+<View style={{ width: '90%',alignSelf:'center',paddingTop:20, paddingHorizontal:10,shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,elevation:2,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20}}> 
 <FlatList
 
 data={data}
@@ -125,18 +149,22 @@ showsHorizontalScrollIndicator={false}
 />
 </View>
 
+
 <Time navigation={navigation} userOption={userOption}/>
         </>
   );
 }
 
 const Time=({navigation,userOption})=>{ 
+  const dispatch=useDispatch()
    renderItem=({item,index})=>{
   return (
   
     <Pressable
         style={{}}
         onPress={() => {
+         dispatch( set_time(item))
+         console.log(item)
         navigation.navigate('Confirm')
           }}>
         <View style={{alignSelf:'center', width:'90%',height:85,borderBottomColor:colors.lg.color,borderBottomWidth:0.9,display:'flex',flexDirection:'row'}}>
@@ -158,15 +186,16 @@ const Time=({navigation,userOption})=>{
     <View>
       { userOption.day== 'Sun' ? 
       <Image source={closed} style={{marginTop:40,height:500,width: '100%'}}/> : 
-      <><Text style={{ marginTop: 50, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color, marginLeft: 30 }}>Time</Text><FlatList
+      <><Text style={{ marginTop: 50, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color, marginLeft: 30 }}>Time</Text>
+      <FlatList
 
-          data={['09:00am', '09:30am', '10:00am','10:30am','11:00am']}
+          data={['09:00 am', '09:30 am', '10:00 am','10:30 am','11:00 am']}
           contentContainerStyle={{
-            marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, backgroundColor: 'white', borderRadius: 20, width: '90%',
+            marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, elevation:2, shadowOffset: { width: 5, height: 0 }, backgroundColor: 'white', borderRadius: 20, width: '90%',
             alignSelf: 'center', paddingHorizontal: 10
           }}
           renderItem={renderItem}
-          keyExtractor={item => item.id} /></>
+          keyExtractor={item => item} /></>
       }      
     </View>
   )

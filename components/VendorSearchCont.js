@@ -6,7 +6,7 @@ import { styles,colors } from '../src/Common_styles'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 const Tab = createMaterialTopTabNavigator();
 
-const VendorSearchCon=({data})=>{
+const VendorSearchCon=({data,navigation})=>{
   
 const Item =({image,logo,name,items,rating,location,dist})=>(
     <View style={[styles2.cont,{shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 5,shadowOffset:{width:5,height:0},marginTop:10,marginBottom:10}]}>

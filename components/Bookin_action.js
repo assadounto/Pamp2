@@ -16,7 +16,7 @@ import cancel2 from '../assets/cancel5.png'
 import { useSelector } from 'react-redux';
 const Booking_action = ({setblur}) => {
     const cancelled= useSelector((state)=> state.booking.cancelled)
-    console.log(cancelled)
+    //console.log(cancelled)
     const [cancel_modal,setcancel]=useState(false)
     const [notes,setnotes]=useState(false)
   return (

@@ -13,7 +13,7 @@ import Blur from '../start_screens/Blur';
 import { useSelector } from 'react-redux';
 let booked=true
 const Booking_detail = () => {
-   const cancelled = useSelector((state)=>state.booking.cancelled)
+   const [cancelled,setCancelled]=useState(false)
     const[blur,setblur]=useState(false)
 const open=()=>{
     Linking.openURL('maps://app?saddr=100+101&daddr=100+102')}
@@ -90,7 +90,7 @@ const open=()=>{
                 </ListItem>
 
                     </View>
-           <Booking_action setblur={setblur}/>
+           <Booking_action setblur={setblur} setCancelled={setCancelled}/>
 
                     <View style={{marginTop:20, marginVertical:10, shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4,backgroundColor:'white', borderRadius:20,width:'90%',alignSelf:'center' }}>
         

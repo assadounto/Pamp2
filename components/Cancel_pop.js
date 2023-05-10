@@ -12,14 +12,15 @@ const Cancel_pop = ({setcancel, modal,setblur}) => {
 
     const [notify_cancel,set_notify]=useState(false)
    const handlepressCancel=()=>{
-   
+  
     setblur(false);
     setcancel(false)
     }
 
     const handlePressOK=()=>{
-    setcancel(false)
+   
     dispatch(cancel(true))
+    setcancel(false)
     set_notify(true);
     setTimeout(() => {
         set_notify(false);
@@ -33,10 +34,10 @@ const Cancel_pop = ({setcancel, modal,setblur}) => {
               <Text style={[colors.dgb, pop.h2, styles.tac]}>Due to late cancellation, you'll lose your deposit of 20% from the services value (¢200)</Text>
               <Text style={[colors.dgb, pop.h3, styles.tac]}>See the <Text style={pop.h4}> Cancellation policy</Text></Text>
               <View style={{ display: 'flex', flexDirection: 'row', gap: 10, marginVertical: 20 }}>
-                  <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.lg.color, width: 120, height: 40 }} title='Keep'>
+                  <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: colors.lg.color, width: 120, height: 40 }} title='Keep'>
 
                   </Button>
-                  <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: 'red', width: 120, height: 40 }} title='cancel'>
+                  <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: 'red', width: 120, height: 40 }} title='cancel'>
 
                   </Button>
 

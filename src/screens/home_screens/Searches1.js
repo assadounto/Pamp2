@@ -64,7 +64,7 @@ sceneContainerStyle={{ backgroundColor: 'white' }}
 
   )
 }
-const Item=()=>{
+const Item=({navigation})=>{
   const data1 =[
     {
       image: '../../../assets/rectangle-9764.png',
@@ -82,7 +82,7 @@ const Item=()=>{
   
   ]
   return(
-    <VendorSearchCon data={data1} />
+    <VendorSearchCon data={data1} navigation={navigation}/>
   )
 }
 export default Searches1

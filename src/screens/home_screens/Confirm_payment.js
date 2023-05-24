@@ -17,11 +17,14 @@ import axios from "axios";
 
 import { convertMinutesToHoursAndMinutes,getTotalByKey} from "../../Functions";
 const Confirm_payment=({navigation})=>{
-  const pay_data= useSelector((state)=>state.user.payment_methods.default)
+  
+  const pay_data_=  useSelector((state)=>state.user.payment_methods.default)
+  let pay_data=pay_data_ && pay_data_
   const user = useSelector((state)=>state.user.userInfo)
-  const booking= useSelector((state)=>state.booking)
+  const booking_= useSelector((state)=>state.booking)
+   const booking=booking_&& booking_
   const [ref,setref]=useState()
-    console.log(user.email)
+    console.log(pay_data)
   const HandleSubmit=()=>{
     start_transaction()
     navigation.navigate('Processing',{ref: ref })
@@ -29,17 +32,17 @@ const Confirm_payment=({navigation})=>{
 
   const start_transaction=async ()=>{
    let total=  getTotalByKey(booking.Booking_detail.topping2,'total')
-   let prov =pay_data.name.toLowerCase()
+   let prov =pay_data&& pay_data.name.toLowerCase()
    console.log(prov,pay_data)
 
    try {
-    if (pay_data.Number||pay_data.number){
+    if (pay_data && pay_data.Number|| pay_data && pay_data.number){
     const res = await axios.post('https://api.paystack.co/charge',
     { "amount": total*100,
       "email": user.email,
       "currency": "GHS",
       "mobile_money": {
-        "phone" : pay_data.Number|| pay_data.number,
+        "phone" :pay_data && pay_data.Number|| pay_data && pay_data.number,
         "provider" : prov
       }
     }, 
@@ -52,7 +55,7 @@ const Confirm_payment=({navigation})=>{
   }
 });
 setref(res.data)
-console.log(ref,res.data)
+
     }
 
    } catch (error) {
@@ -68,7 +71,7 @@ console.log(ref,res.data)
             contentContainerStyle={{backgroundColor:'white'}}
             > 
                 <BHeader title={'Confirm Payment'}/>
-                <Text style={{paddingLeft:20, width: '90%',alignSelf:'center',marginVertical:20,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>Payment Method</Text>
+                <Text style={{paddingLeft:20, width: '90%',alignSelf:'center',marginVertical:20,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>Payment Methodh</Text>
                 {
                   payment_method ? 
                   
@@ -101,7 +104,7 @@ console.log(ref,res.data)
                       />
          </Pressable>
                 }
-{payment_method.name=='Pay with cash' &&
+{payment_method.name && payment_method.name=='Pay with cash' &&
 
 <View style={{marginVertical:20, padding:10,borderRadius:10 ,backgroundColor:'#B0EBBD40', width:'90%',alignSelf:'center',display:'flex',flexDirection:'row'}}> 
         <Icon

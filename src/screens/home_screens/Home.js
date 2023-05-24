@@ -97,7 +97,7 @@ const Home = ({navigation}) => {
   return (
     <Fragment >
      <UHeader navigation={navigation} />
-  
+  <Text>dddddduu</Text>
     <Pressable onPress={()=>navigation.navigate("Search")}>
      <Image
        
@@ -107,7 +107,7 @@ const Home = ({navigation}) => {
           />
     </Pressable>
     <Tab.Navigator
-sceneContainerStyle={{ backgroundColor: 'white' }}
+      sceneContainerStyle={{ backgroundColor: 'white' }}
       tabBar={props => <MyTabBar {...props} />}>
   
 

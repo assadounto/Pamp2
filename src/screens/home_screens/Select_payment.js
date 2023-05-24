@@ -58,7 +58,7 @@ const Select_payment=({navigation})=>{
         />
                   <ListItem.Content>
                     <ListItem.Title style={colors.dgb}>
-                     {pay.name}
+                     {pay.name && pay.name}
                     </ListItem.Title>
                   </ListItem.Content>
                   <ListItem.Chevron color={'#00463C'} size={30} />

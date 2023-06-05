@@ -3,12 +3,63 @@ import { SafeAreaView ,View,Text,Pressable} from "react-native";
 import BHeader from "../../../components/BHeader";
 import { FontFamily } from "../../GlobalStyles";
 import { colors } from "../../Common_styles";
-import { Icon,Button } from "@rneui/base";
+import { Icon,Button,ListItem } from "@rneui/base";
 import { Image } from "react-native-animatable";
 import { ScrollView } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import source from '../../../assets/pay-with-cash.png'
+import source2 from '../../../assets/group-1902.png'
+import momo from '../../../assets/momo.png'
+import voda from '../../../assets/Vodafone.png'
+import add from '../../../assets/group-1756.png'
+import airtel from '../../../assets/airtel.png'
+import axios from "axios";
 
+
+import { convertMinutesToHoursAndMinutes,getTotalByKey} from "../../Functions";
 const Confirm_payment=({navigation})=>{
-   
+  
+  const pay_data_=  useSelector((state)=>state.user.payment_methods.default)
+  let pay_data=pay_data_ && pay_data_
+  const user = useSelector((state)=>state.user.userInfo)
+  const booking_= useSelector((state)=>state.booking)
+   const booking=booking_&& booking_
+  const [ref,setref]=useState()
+    console.log(pay_data)
+  const HandleSubmit=()=>{
+    let total=  getTotalByKey(booking.Booking_detail.topping2,'total')
+    let pay_type =pay_data.name
+    //if (pay_type=='Pay with cash')
+   // start_transaction()
+    navigation.navigate('Processing',{
+      total: total,
+      pay_type:pay_type,
+
+    })
+  }
+
+  const start_transaction=async ()=>{
+   let total=  getTotalByKey(booking.Booking_detail.topping2,'total')
+   let prov =pay_data&& pay_data.name.toLowerCase()
+   RNPaystack.chargeCardWithAccessCode({
+    cardNumber: '4123450131001381', 
+    expiryMonth: '10', 
+    expiryYear: '17', 
+    cvc: '883',
+    accessCode: '2p3j42th639duy4'
+  })
+.then(response => {
+  console.log(response); // do stuff with the token
+})
+.catch(error => {
+  console.log(error); // error is a javascript Error object
+  console.log(error.message);
+  console.log(error.code);
+})
+}
+
+  
+  const payment_method =useSelector((state)=>state.user.payment_methods.default)
     return(
         <SafeAreaView>
             <ScrollView
@@ -16,24 +67,61 @@ const Confirm_payment=({navigation})=>{
             > 
                 <BHeader title={'Confirm Payment'}/>
                 <Text style={{paddingLeft:20, width: '90%',alignSelf:'center',marginVertical:20,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>Payment Method</Text>
-                <Pressable style={{ display:'flex',flexDirection:'row', height:63, width: '90%',alignSelf:'center',paddingTop:20, paddingHorizontal:20,shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20}}> 
-                <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:20,color:colors.dg.color}}>Select</Text>
-          <Icon 
-           style={{width:30,marginLeft: 240}}
-                      name={'chevron-forward'}
-                      type="ionicon"
-                      onPress={() => setShowPassword(!showPassword)}
-                      color={colors.dg.color}
-                    />
-       </Pressable>
-       <View style={{marginTop:40, marginVertical:10, shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20,width:'90%',alignSelf:'center' }}>
+                {
+                  payment_method ? 
+                  
+                  <ListItem
+                  containerStyle={[{ display:'flex',flexDirection:'row', height:63, width: '90%',alignSelf:'center',paddingTop:20, paddingHorizontal:20,shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,elevation:4,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20}]}
+                  onPress={() => {
+                   navigation.navigate('Select_payment');
+                  }}>
+                    
+                  <Image
+          source={payment_method.img=='cash'? source: payment_method.name=='MTN' ? momo: payment_method.name=='VODAFONE'? voda: payment_method.name=='AIRTELTIGO'? airtel:source2}
+          style={{resizeMode:'contain',width:40,height:30}}
+        />
+                  <ListItem.Content>
+                    <ListItem.Title style={colors.dgb}>
+                 {payment_method.Number && '***'}{payment_method.Number ? payment_method.Number.slice(-5): payment_method.name}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron color={'#00463C'} size={30} />
+                </ListItem>
+                  
+                  :<Pressable onPress={()=>navigation.navigate('Select_payment')} style={{ display:'flex',flexDirection:'row', height:63, width: '90%',alignSelf:'center',paddingTop:20, paddingHorizontal:20,shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,elevation:4,shadowOffset:{width:5,height:0},backgroundColor:'white', borderRadius:20}}> 
+                  <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:20,color:colors.dg.color}}>Select</Text>
+            <Icon 
+             style={{width:30,marginLeft: 240}}
+                        name={'chevron-forward'}
+                        type="ionicon"
+                        onPress={() => setShowPassword(!showPassword)}
+                        color={colors.dg.color}
+                      />
+         </Pressable>
+                }
+{payment_method && payment_method.name=='Pay with cash' &&
+
+<View style={{marginVertical:20, padding:10,borderRadius:10 ,backgroundColor:'#B0EBBD40', width:'90%',alignSelf:'center',display:'flex',flexDirection:'row'}}> 
+        <Icon
+         style={{marginLeft:10,marginTop:10}}
+                name="alert-circle-outline"
+                type="ionicon"
+                size={25}
+                /> 
+                <Text style={{ width:'80%',marginLeft:20,flexWrap:'wrap',fontFamily:FontFamily.sourceSansProRegular,fontSize:15,color:colors.dg.color}}>You need to add a debit or credit card to use the 'Pay with cash' option, Vendors charge a deposit of 20% ahead, the rest will be collected in-store. you'll lose your deposit in case of a late cancellation or no-show.</Text>
+         </View>
+}
+
+
+
+       <View style={{marginTop:20, marginVertical:10, shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4,backgroundColor:'white', borderRadius:20,width:'90%',alignSelf:'center' }}>
         <View style={{padding:20,borderBottomColor:colors.lg.color,borderBottomWidth:1,display:'flex',flexDirection:'row'}}>
             <View>
-                <Text  style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:23,color:colors.dg.color}}>12 July 2022</Text>
+                <Text  style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:23,color:colors.dg.color}}>{[booking.date.day,' ',booking.date.month,' ',booking.date.year]}</Text>
              <View style={{display:'flex',flexDirection:'row'}}>
              <Image
         source={require('../../../assets/group-1820.png')}/>
-                <Text style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:18,color:colors.dg.color}}>Likkle salon</Text>
+                <Text style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:18,color:colors.dg.color}}>{booking.Booking_detail.name}</Text>
              </View>
              </View>
              <Pressable onPress={() => navigation.navigate('edit_profile')}>
@@ -54,29 +142,36 @@ const Confirm_payment=({navigation})=>{
             </Pressable>
         </View>
         <View style={{padding:20,borderBottomColor:colors.lg.color,borderBottomWidth:1}}>
+       {booking && booking.Booking_detail.topping2.filter(({total})=>total!=0).map(({  name, items_name, total,time,services }, _index2) => {
+        return(
+          
         <View style={{display:'flex',flexDirection:'row'}}>
                 <View>
-                    <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18,color:colors.lg.color}}>Hair-<Text style={{color:'#BBB9BC',fontSize:9,marginTop:-10}}>Braids and twist</Text></Text>
-                    <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:13,color:'#BBB9BC'}}>2 hours 30min- 2services</Text>
-                    <Text style={{color:colors.lg.color}}>9am-11:30am</Text>
+                  
+                    <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18,color:colors.lg.color}}>{name}-<Text style={{color:'#BBB9BC',fontSize:9,marginTop:-10}}>{items_name}</Text></Text>
+                    <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:13,color:'#BBB9BC'}}> {convertMinutesToHoursAndMinutes(time)}-{services} service</Text>
+                    <Text style={{color:colors.lg.color}}>{booking.time}-completion</Text>
                 </View>
-                <Text style={{marginLeft:125,fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.dg.color}}>200</Text>
+                <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.lg.color,position:'absolute', right:10}}>{total}</Text>
             </View>
+         )
+        })}
         <View style={{marginVertical:20, padding:10,borderRadius:10 ,backgroundColor:'#B0EBBD40', width:'100%',alignSelf:'center',display:'flex',flexDirection:'row'}}> 
         <Icon
+         style={{marginLeft:10,marginTop:10}}
                 name="clock"
                 type="feather"
-                size={18}
+                size={25}
                 /> 
-                <Text style={{height:55,marginLeft:20,flexWrap:'wrap',fontFamily:FontFamily.sourceSansProRegular,fontSize:15,color:colors.dg.color}}>Reschedule up to 72 hours before appointment</Text>
+                <Text style={{height:40,marginLeft:20,flexWrap:'wrap',fontFamily:FontFamily.sourceSansProRegular,fontSize:15,color:colors.dg.color}}>Reschedule up to 72 hours before appointment</Text>
          </View>
         </View> 
-      <View style={{padding:20,display:'flex',flexDirection:'row',height:100}}>
-      <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:16,color:colors.dg.color}}>
+      <View style={{padding:20,display:'flex',flexDirection:'row',height:80}}>
+      <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:16,color:colors.lg.color}}>
         Total
       </Text>
-      <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.lg.color,marginLeft:230}}>
-        200
+      <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.dg.color,marginLeft:230}}>
+      {getTotalByKey(booking.Booking_detail.topping2,'total')}
       </Text>
       </View>
        </View>
@@ -88,13 +183,13 @@ const Confirm_payment=({navigation})=>{
             height: 54,
             //margin: 'auto',
             marginBottom: 20,
-            marginTop: 10,
+            marginTop: 20,
             alignSelf: 'center',
             borderRadius: 20,
             backgroundColor: colors.dg2.color,
             shadowColor: colors.lg.color, shadowOpacity: 0.5, shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
           }}
-          onPress={() => navigation.navigate('Success')} />
+          onPress={HandleSubmit} />
        </ScrollView>
         </SafeAreaView>
     )

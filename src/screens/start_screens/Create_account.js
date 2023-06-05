@@ -23,13 +23,13 @@ const Register = ({navigation}) => {
   const onSubmit = async values => {
    dispatch(register({user: {
     email:values.email,
-    phone: '+233'+ values.phone.substr(1),
+    phone: values.phone,
     username: values.username,
     password: values.password
    }}));
     dispatch(setuser({
     email:values.email,
-    phone: '+233'+ values.phone.substr(1),
+    phone: values.phone,
     password: values.password
     }));
 

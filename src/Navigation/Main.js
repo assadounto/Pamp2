@@ -6,8 +6,10 @@ import {Icon} from '@rneui/base';
 import Home from '../screens/home_screens/Home';
 import Profile from '../screens/home_screens/VendorDetail';
 import Settings from '../screens/home_screens/Settings';
-import Favourites from '../screens/start_screens/favourites';
-
+import Favourites from '../screens/home_screens/favourites';
+import AppointmentsContainer from '../../components/AppointmentsContainer';
+import Bookings from '../../screens/Bookings';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 const Tab = createBottomTabNavigator();
 
 function MyTabBar({state, descriptors, navigation}) {
@@ -56,7 +58,7 @@ function MyTabBar({state, descriptors, navigation}) {
             case 0:
               return {name: 'home', type: 'antdesign'};
             case 1:
-              return {name: 'calendar', type: 'antdesign'};
+              return {name: 'calendar', type: 'feather'};
             case 2:
               return {name: 'hearto', type: 'antdesign'};
             case 3:
@@ -128,16 +130,14 @@ function MyTabBar({state, descriptors, navigation}) {
 const MainNavigator = () => {
   return (
     <Tab.Navigator
+    sceneContainerStyle={{ backgroundColor: 'white' }}
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        cardStyle: {
-          backgroundColor: '#ffff',
-        },
       }}
       tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Bookings" component={Profile} />
+      <Tab.Screen name="Bookings" component={Bookings} />
       <Tab.Screen name="Favorites" component={Favourites} />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>

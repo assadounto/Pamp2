@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { useSelector } from 'react-redux';
+import { Animated, Easing } from 'react-native';
 import {
   SafeAreaView,
   Text,
@@ -12,6 +14,7 @@ import {Button} from '@rneui/base';
 import Pop from './pop';
 import Blur from './Blur';
 import { useVerifyPhoneMutation } from '../../redux/authapi';
+import { useGetPhoneConfirmMutation } from '../../redux/authapi';
 import {
   CodeField,
   Cursor,
@@ -22,7 +25,11 @@ import {
 export const styles1 = StyleSheet.create({
   root: {flex: 1, padding: 20,marginHorizontal:41},
   title: {textAlign: 'center', fontSize: 30},
-  codeFieldRoot: {marginTop: 20},
+  codeFieldRoot: {marginTop: 20,transform: [
+        {
+          translateX: 1,
+        },
+      ],},
   cell: {
     width: 65,
     height: 66,
@@ -35,6 +42,18 @@ export const styles1 = StyleSheet.create({
     borderRadius: 15,
     padding: 15,
   },
+  wrong: {
+      width: 65,
+      height: 66,
+      lineHeight: 38,
+      fontSize: 30,
+      color: '#00463C',
+      borderWidth: 2,
+      borderColor:  'red',
+      textAlign: 'center',
+      borderRadius: 15,
+      padding: 15,
+    },
   focusCell: {
     borderColor: '#000',
   },
@@ -46,10 +65,16 @@ export const styles1 = StyleSheet.create({
 const CELL_COUNT = 4;
 
 const VerifyNumber = ({navigation}) => {
+    const [shakeAnimation] = useState(new Animated.Value(0));
+
+    const user= useSelector((state)=>state.user.user)
+   const [timerCount, setTimerCount] = useState(60);
+  const [timerActive, setTimerActive] = useState(false);
+  const [getPhoneConfirm]= useGetPhoneConfirmMutation()
   const [verifyPhone,{isSuccess,isLoading,data,isError}]= useVerifyPhoneMutation()
   const [value, setValue] = useState('');
   const [wrong,setwrong] =useState('')
-  const [count,setcount]=useState(0)
+  const [finish,setfinish]=useState(false)
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -71,21 +96,59 @@ const VerifyNumber = ({navigation}) => {
     }
   }, [isSuccess, navigation,handleSubmit]);
   const incall=()=>{
-    switch(count){
-      case 1:
-      setwrong('The code is wrong please try again')
-      break;
-      case 2:
-      setwrong("The code is still wrong bro")
-      break;
-      case 3:
-      setwrong("Please Check your email well")
-      break;
-      default:
-      setwrong("wrong")
-    }
+    shakeAnimationStart()
 
   }
+
+
+  const shakeAnimationStart = () => {
+    shakeAnimation.setValue(0);
+    Animated.sequence([
+      Animated.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 50,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: -10,
+        duration: 50,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: 0,
+        duration: 50,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+    ]).start();
+  };
+
+
+  const startTimer = () => {
+    getPhoneConfirm({
+        scope: 'user',
+        phone: user.phone
+      })
+   if (!timerActive) {
+    
+
+     setTimerActive(true);
+     setTimerCount(60);
+     // Start the timer countdown
+     const interval = setInterval(() => {
+       setTimerCount((prevCount) => prevCount - 1);
+     }, 1000);
+ 
+     // Stop the timer when it reaches 0
+     setTimeout(() => {
+       clearInterval(interval);
+       setTimerActive(false);
+     }, 60000);
+   }
+ };
+
 
   const handleSubmit = async () => {
     console.log(typeof value, value.length);
@@ -94,7 +157,6 @@ const VerifyNumber = ({navigation}) => {
       alert('Please enter a valid code');
       return;
     }
-    setcount(count+1)
     const phone = await verifyPhone(value).then(()=>{
       isError && incall()
     });
@@ -119,21 +181,28 @@ const VerifyNumber = ({navigation}) => {
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           renderCell={({index, symbol, isFocused}) => (
-            <Text
+            <Animated.Text
               key={index}
-              style={[styles1.cell, isFocused && styles1.focusCell]}
+              style={[styles1.cell, isFocused && styles1.focusCell,{
+                transform: [
+                  {
+                    translateX: shakeAnimation.interpolate({
+                      inputRange: [-1, 1],
+                      outputRange: [-10, 10],
+                    }),
+                  },
+                ], 
+              }]}
               onLayout={getCellOnLayoutHandler(index)}>
               {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
+            </Animated.Text>
           )}
         />
- <Text style={[colors.lg, styles.bold, styles.tc]}>
-         {wrong}
-        </Text>
         <Text
+         disabled={timerActive}
           style={[colors.dg, styles.mt100, styles.tc]}
-          onPress={() => console.log('h')}>
-          Resend Code
+          onPress={startTimer}>
+         {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
         </Text>
 
         <Text> </Text>

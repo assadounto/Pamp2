@@ -1,5 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
 import userReducer from './user';
+import bookingReducer from './booking'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi } from './authapi';
 import {
@@ -13,18 +14,21 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { homeApi } from './homeapi';
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   blacklist: ['isLoading', 'errorMessage', 'successMessage'],
+  stateReconciler: autoMergeLevel2
 };
 
 const user = persistReducer(persistConfig, userReducer);
-
+const booking = bookingReducer
 export const store = configureStore({
   reducer: {
     user,
+    booking,
     [authApi.reducerPath]: authApi.reducer
   },
   middleware: getDefaultMiddleware =>

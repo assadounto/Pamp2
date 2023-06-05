@@ -44,6 +44,13 @@ export const authApi = createApi({
         }
       }),
     }),
+    resendEmail: builder.mutation({
+      query: data => ({
+        url: '/users/confirmation/resend',
+        method: 'POST',
+        body: {email:data},
+      }),
+    }),
     getcategory: builder.query({
       query: data => ({
         url: `/category/${data}`,
@@ -60,6 +67,7 @@ export const authApi = createApi({
 });
 
 export const {
+  useResendEmailMutation,
   useGetEmailConfirmMutation,
   useVerifyPhoneMutation,
   useGetPhoneConfirmMutation,

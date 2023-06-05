@@ -61,6 +61,7 @@ export const logout = createAsyncThunk('user/logout', async () => {
 const userSlice = createSlice({
   name: 'user',
   initialState: {
+    cancelled:false,
     loading: false,
     userInfo: null,
     userToken: null,
@@ -72,6 +73,29 @@ const userSlice = createSlice({
     createError: null,
     user: null,
     image1: null,
+    payment_methods:{
+      default:  {  
+         id:1,
+        name: 'Pay with cash',
+        img: 'cash'  
+    },
+      methods: [
+        {   id:1,
+          name: 'Pay with cash',
+          img: 'cash'  
+      },
+      {   id:2,
+        name: 'Pay with card',
+        img: 'master'  
+    },
+    {   id:3,
+      name: 'Pay with momo',
+      img: 'momo'  
+  },
+      ]
+    },
+    
+    
   },
   reducers: {
     setMessage(state, action) {
@@ -99,7 +123,18 @@ const userSlice = createSlice({
         (state.email_confirmed = null),
         (state.first_time = false),
         (state.user = null);
+        state.image1=null
     },
+    setPayment(state,action){
+      state.payment_methods.methods.push(action.payload)
+    },
+    setDefault(state,action){
+      state.payment_methods.default=action.payload
+    },
+    cancel(state, action) {
+      state.cancelled = !state.cancelled
+      },
+
   },
   extraReducers: builder => {
     builder
@@ -107,6 +142,7 @@ const userSlice = createSlice({
         state.userInfo = action.payload.data.user;
         state.userToken = action.payload.data.token;
         state.loading = false;
+        state.image1= action.payload.data.image
         state.email_confirmed = action.payload.data.email_confirmed;
         console.log(state);
       })
@@ -148,12 +184,14 @@ const userSlice = createSlice({
 });
 
 export const {
-  setMessage,
+  cancel,
   setImage,
   setNotification,
   setVerified_p,
   verified,
   userLogout,
   setuser,
+  setPayment,
+  setDefault
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -74,12 +74,24 @@ const userSlice = createSlice({
     user: null,
     image1: null,
     payment_methods:{
-      default:null,
+      default:  {  
+         id:1,
+        name: 'Pay with cash',
+        img: 'cash'  
+    },
       methods: [
         {   id:1,
           name: 'Pay with cash',
           img: 'cash'  
       },
+      {   id:2,
+        name: 'Pay with card',
+        img: 'master'  
+    },
+    {   id:3,
+      name: 'Pay with momo',
+      img: 'momo'  
+  },
       ]
     },
     
@@ -111,6 +123,7 @@ const userSlice = createSlice({
         (state.email_confirmed = null),
         (state.first_time = false),
         (state.user = null);
+        state.image1=null
     },
     setPayment(state,action){
       state.payment_methods.methods.push(action.payload)
@@ -129,6 +142,7 @@ const userSlice = createSlice({
         state.userInfo = action.payload.data.user;
         state.userToken = action.payload.data.token;
         state.loading = false;
+        state.image1= action.payload.data.image
         state.email_confirmed = action.payload.data.email_confirmed;
         console.log(state);
       })

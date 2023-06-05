@@ -11,6 +11,7 @@ import userimg from '../assets/userimg.png'
 const UHeader = ({navigation}) => {
   const user = useSelector(state => state.user.userInfo);
   const userimg = useSelector(state => state.user.image1);
+   console.log(user)
   console.log(userimg,'a')
   return (
     <View
@@ -31,7 +32,7 @@ const UHeader = ({navigation}) => {
         <Avatar
           rounded
           size={58}
-          source={user.image ? {uri: user.image}: {uri: userimg}}
+          source={user.image ? {uri: userimg}: {uri: userimg}}
        // title={user.username[0]}
         
    containerStyle={{ backgroundColor: "#BDBDBD" }}

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { backendURL } from '../../services/http';
 import {
   View,
   ScrollView,
@@ -24,7 +25,7 @@ import {useDispatch, useSelector} from 'react-redux';
 
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
-  const userImage = useSelector(state => state.user.image1);
+  const current_user = useSelector(state => state.user.userInfo);
   const [modal, setModal] = useState(false);
   const [reason1, setReason1] = useState(false);
   const [reason2, setReason2] = useState(false);
@@ -57,10 +58,11 @@ const Profile = ({navigation}) => {
       uri: source.uri,
       type: source.type,
       name: source.fileName,
-    });
-
+    }
+    );
+    formData.append('id',current_user.id)
     // dispatch(uploadImage(formData))
-    fetch('http://localhost:3000/user/image', {
+    fetch(`${backendURL}/user/image`, {
       method: 'POST',
       body: formData,
     })
@@ -98,7 +100,7 @@ const Profile = ({navigation}) => {
             <Avatar
               rounded
               size="large"
-              source={selectedImage || userImage}
+              source={selectedImage ||{uri: current_user.image}}
               //title={me?.firstName[0]}
             />
             <View

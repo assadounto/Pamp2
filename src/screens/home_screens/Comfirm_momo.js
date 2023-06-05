@@ -7,9 +7,12 @@ import Lottie from 'lottie-react-native';
 import axios from 'axios';
 import Blur from '../start_screens/Blur';
 import Pop from '../start_screens/pop';
-
+import  { Paystack }  from 'react-native-paystack-webview';
+import { useNavigation } from '@react-navigation/core';
 const Processing = ({route}) => {
-    const { ref} = route.params;
+   const navigation=useNavigation()
+   console.log(total)
+    const { total,pay_type} = route.params;
     const [modalVisible, setModal] = React.useState(false);
     const [verificationResult, setVerificationResult] = React.useState(null);
    const [info,setinfo]= useState('Please approve payment and verify')
@@ -35,30 +38,38 @@ const Processing = ({route}) => {
     };
   
     const nextpage=()=>{
-        if (verificationResult.data.status!=='success') {
+      
             setModal(true);
             setTimeout(() => {
               setModal(false);
-              //navigation.navigate('VerifyNumber');
+              navigation.navigate('Success');
             }, 4000);
-          } else {
-            setinfo('Payment is still pending. Please go to approvals and approve pament')
-          } 
+          
+         
     }
     return (
         <>
         <SafeAreaView style={styles2.cont}>
 
-       
-          <Text style={styles2.text}>{info}</Text>
+        <Paystack  
+        paystackKey="pk_test_e4bdcee80587746aabcc7b289634c04024d9dac5"
+        amount={pay_type==='Pay with cash'? (total*0.1):total}
+        currency={'GHS'}
+        channels={["mobile_money","card"]}
+        billingEmail="adukyerer@gmail.com"
+        activityIndicatorColor="green"
+        onCancel={(e) => {
+          // handle response here
+        }}
+        onSuccess={(res) => {
+          console.log(res)
+          // handle response here
+          nextpage()
         
-  
-          <Button
-            title="Verify Payment"
-            onPress={verifyTransaction}
-            //loading={isLoading}
-            buttonStyle={styles.button}
-          />
+         
+        }}
+        autoStart={true}
+      />
           <Pop
           main={'Payment Received. Thank you'}
           modal={modalVisible}

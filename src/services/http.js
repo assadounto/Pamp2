@@ -1,3 +1,3 @@
-export const backendURL = 'https://pamp-api-base-5oxq6.ondigitalocean.app';
+export const backendURL = 'http://localhost:3000';
 //'https://pamp-api-base-5oxq6.ondigitalocean.app'
  

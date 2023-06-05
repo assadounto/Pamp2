@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import { Animated, Easing } from 'react-native';
+import { useResendEmailMutation } from '../../redux/authapi';
 import {
   SafeAreaView,
   Text,
@@ -22,23 +24,27 @@ import {
 } from 'react-native-confirmation-code-field';
 import { FontFamily } from '../../GlobalStyles';
 
-
 const CELL_COUNT = 4;
 let error_color='#B0EBBD';
 const VerifyEmail = ({navigation}) => {
+  const [shakeAnimation] = useState(new Animated.Value(0));
+
   const user= useSelector((state)=>state.user.user)
     const [getEmailConfirm,{isSuccess,isLoading,data,isError}]= useGetEmailConfirmMutation()
+    const [resendEmail,{isSuccess:email_success}]= useResendEmailMutation()
     const [getPhoneConfirm]= useGetPhoneConfirmMutation()
   console.log(isSuccess);
   const [value, setValue] = useState('');
   const [wrong,setwrong] =useState('')
-  const [count,setcount]=useState(0)
+  const [error,seterror]=useState(false)
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
   const [modalVisible, setModal] = useState(false);
+  const [timerCount, setTimerCount] = useState(60);
+  const [timerActive, setTimerActive] = useState(false);
   console.log(user)
   useEffect(() => {
     console.log(data);
@@ -61,10 +67,54 @@ const VerifyEmail = ({navigation}) => {
   }, [isSuccess, navigation,handleSubmit]);
 
   const incall=()=>{
-   error_color='red'
+   seterror(true)
+   shakeAnimationStart();
 
   }
+  const startTimer = () => {
+     resendEmail(user.email)
+    if (!timerActive) {
+     
 
+      setTimerActive(true);
+      setTimerCount(60);
+      // Start the timer countdown
+      const interval = setInterval(() => {
+        setTimerCount((prevCount) => prevCount - 1);
+      }, 1000);
+  
+      // Stop the timer when it reaches 0
+      setTimeout(() => {
+        clearInterval(interval);
+        setTimerActive(false);
+      }, 60000);
+    }
+  };
+  
+  const shakeAnimationStart = () => {
+    shakeAnimation.setValue(0);
+    Animated.sequence([
+      Animated.timing(shakeAnimation, {
+        toValue: 10,
+        duration: 50,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: -10,
+        duration: 50,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+      Animated.timing(shakeAnimation, {
+        toValue: 0,
+        duration: 50,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      }),
+    ]).start();
+  };
+  
   const handleSubmit = async () => {
     console.log(typeof value, value.length);
     
@@ -72,12 +122,53 @@ const VerifyEmail = ({navigation}) => {
       alert('Please enter a valid code');
       return;
     }
-    setcount(count+1)
-    const age= await getEmailConfirm(value).then(()=>{
+
+    const age= await getEmailConfirm(value).then((data,error)=>{
+
       isError && incall()
     });
 
   };
+  const styles1 = StyleSheet.create({
+    root: {flex: 1, padding: 10,marginHorizontal:40},
+    title: {textAlign: 'center', fontSize: 30},
+    codeFieldRoot: {marginTop: 20,
+      transform: [
+        {
+          translateX: 1,
+        },
+      ],
+    },
+    cell: {
+      width: 65,
+      height: 66,
+      lineHeight: 38,
+      fontSize: 30,
+      color: '#00463C',
+      borderWidth: 2,
+      borderColor: '#B0EBBD',
+      textAlign: 'center',
+      borderRadius: 15,
+      padding: 15,
+    },
+    wrong: {
+      width: 65,
+      height: 66,
+      lineHeight: 38,
+      fontSize: 30,
+      color: '#00463C',
+      borderWidth: 2,
+      borderColor:  'red',
+      textAlign: 'center',
+      borderRadius: 15,
+      padding: 15,
+    },
+    focusCell: {
+      borderColor: '#00463C',
+    },
+  });
+
+  
   return (
     <>
       <SafeAreaView style={styles1.root}>
@@ -91,31 +182,44 @@ const VerifyEmail = ({navigation}) => {
           {...props}
           // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
           value={value}
-          onChangeText={setValue}
+          onChangeText={setValue  }
           cellCount={CELL_COUNT}
           rootStyle={styles1.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           renderCell={({index, symbol, isFocused}) => (
+          
+            <Animated.Text
             
-            <Text
               key={index}
-              style={[isError? styles1.wrong :styles1.cell, isFocused && styles1.focusCell]}
-              onLayout={getCellOnLayoutHandler(index)}>
+              style={[
+               styles1.cell,
+                isFocused  && styles1.focusCell,
+                {
+                  transform: [
+                    {
+                      translateX: shakeAnimation.interpolate({
+                        inputRange: [-1, 1],
+                        outputRange: [-10, 10],
+                      }),
+                    },
+                  ],
+                },
+              ]}              onLayout={getCellOnLayoutHandler(index)}>
               {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
+            </Animated.Text>
           )}
         />
-         <Text style={[colors.lg, styles.bold, styles.tc]}>
-         {wrong}
-        </Text>
-        <Text
-          style={[colors.dg, styles.mt100, styles.tc,{fontFamily:FontFamily.sourceSansProSemibold}]}
-          onPress={() => console.log('h')}>
-          Resend Code
-        </Text>
+      
+      <Text
+  disabled={timerActive}
+  style={[colors.dg, styles.mt100, styles.tc, { fontFamily: FontFamily.sourceSansProSemibold }]}
+  onPress={startTimer}
+>
+  {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
+</Text>
 
-        <Text> </Text>
+<Text> </Text>
         <TouchableOpacity>
           <Button
             title="Verify Your Email"
@@ -139,36 +243,4 @@ const VerifyEmail = ({navigation}) => {
   );
 };
 
-const styles1 = StyleSheet.create({
-  root: {flex: 1, padding: 10,marginHorizontal:40},
-  title: {textAlign: 'center', fontSize: 30},
-  codeFieldRoot: {marginTop: 20},
-  cell: {
-    width: 65,
-    height: 66,
-    lineHeight: 38,
-    fontSize: 30,
-    color: '#00463C',
-    borderWidth: 2,
-    borderColor:  error_color,
-    textAlign: 'center',
-    borderRadius: 15,
-    padding: 15,
-  },
-  wrong: {
-    width: 65,
-    height: 66,
-    lineHeight: 38,
-    fontSize: 30,
-    color: '#00463C',
-    borderWidth: 2,
-    borderColor:  'red',
-    textAlign: 'center',
-    borderRadius: 15,
-    padding: 15,
-  },
-  focusCell: {
-    borderColor: 'red',
-  },
-});
 export default VerifyEmail;

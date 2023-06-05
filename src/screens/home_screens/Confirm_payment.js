@@ -15,6 +15,7 @@ import add from '../../../assets/group-1756.png'
 import airtel from '../../../assets/airtel.png'
 import axios from "axios";
 
+
 import { convertMinutesToHoursAndMinutes,getTotalByKey} from "../../Functions";
 const Confirm_payment=({navigation})=>{
   
@@ -26,41 +27,35 @@ const Confirm_payment=({navigation})=>{
   const [ref,setref]=useState()
     console.log(pay_data)
   const HandleSubmit=()=>{
-    start_transaction()
-    navigation.navigate('Processing',{ref: ref })
+    let total=  getTotalByKey(booking.Booking_detail.topping2,'total')
+    let pay_type =pay_data.name
+    //if (pay_type=='Pay with cash')
+   // start_transaction()
+    navigation.navigate('Processing',{
+      total: total,
+      pay_type:pay_type,
+
+    })
   }
 
   const start_transaction=async ()=>{
    let total=  getTotalByKey(booking.Booking_detail.topping2,'total')
    let prov =pay_data&& pay_data.name.toLowerCase()
-   console.log(prov,pay_data)
-
-   try {
-    if (pay_data && pay_data.Number|| pay_data && pay_data.number){
-    const res = await axios.post('https://api.paystack.co/charge',
-    { "amount": total*100,
-      "email": user.email,
-      "currency": "GHS",
-      "mobile_money": {
-        "phone" :pay_data && pay_data.Number|| pay_data && pay_data.number,
-        "provider" : prov
-      }
-    }, 
-
-     {
-  headers: {
- 
-    'Content-Type': 'application/json',
-    "Authorization": 'Bearer sk_test_de0425527eb3ec101488bf4a316b8bd4237f42c6'
-  }
-});
-setref(res.data)
-
-    }
-
-   } catch (error) {
-    console.log(error);
-  }
+   RNPaystack.chargeCardWithAccessCode({
+    cardNumber: '4123450131001381', 
+    expiryMonth: '10', 
+    expiryYear: '17', 
+    cvc: '883',
+    accessCode: '2p3j42th639duy4'
+  })
+.then(response => {
+  console.log(response); // do stuff with the token
+})
+.catch(error => {
+  console.log(error); // error is a javascript Error object
+  console.log(error.message);
+  console.log(error.code);
+})
 }
 
   
@@ -71,7 +66,7 @@ setref(res.data)
             contentContainerStyle={{backgroundColor:'white'}}
             > 
                 <BHeader title={'Confirm Payment'}/>
-                <Text style={{paddingLeft:20, width: '90%',alignSelf:'center',marginVertical:20,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>Payment Methodh</Text>
+                <Text style={{paddingLeft:20, width: '90%',alignSelf:'center',marginVertical:20,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>Payment Method</Text>
                 {
                   payment_method ? 
                   
@@ -104,7 +99,7 @@ setref(res.data)
                       />
          </Pressable>
                 }
-{payment_method.name && payment_method.name=='Pay with cash' &&
+{payment_method && payment_method.name=='Pay with cash' &&
 
 <View style={{marginVertical:20, padding:10,borderRadius:10 ,backgroundColor:'#B0EBBD40', width:'90%',alignSelf:'center',display:'flex',flexDirection:'row'}}> 
         <Icon
@@ -147,7 +142,7 @@ setref(res.data)
             </Pressable>
         </View>
         <View style={{padding:20,borderBottomColor:colors.lg.color,borderBottomWidth:1}}>
-       {booking && booking.Booking_detail.topping2.map(({  name, items_name, total,time,services }, _index2) => {
+       {booking && booking.Booking_detail.topping2.filter(({total})=>total!=0).map(({  name, items_name, total,time,services }, _index2) => {
         return(
           
         <View style={{display:'flex',flexDirection:'row'}}>

@@ -68,10 +68,8 @@
     "toggle-switch-react-native": "^3.3.0"
   },
   "reactNativePermissionsIOS": [
-    "LocationAccuracy",
     "LocationAlways",
-    "LocationWhenInUse",
-    "Notifications"
+    "LocationWhenInUse"
   ],
   "rnpm": {
     "assets": [

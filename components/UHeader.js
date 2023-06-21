@@ -30,9 +30,11 @@ const UHeader = ({navigation}) => {
 
         }}>
         <Avatar
+        onPress={()=>navigation.navigate('Profile')}
           rounded
           size={58}
-          source={user.image ? {uri: userimg}: {uri: userimg}}
+          source={userimg ? {uri: userimg} : user.image?{uri:user.image} :require('../assets/userimg.png')}
+          //source={require('../assets/userimg.png')}
        // title={user.username[0]}
         
    containerStyle={{ backgroundColor: "#BDBDBD" }}

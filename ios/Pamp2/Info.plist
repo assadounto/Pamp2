@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-    <string>We would like to access your location</string>
+	<string>YOUR TEXT</string>
 	<key>CFBundleDisplayName</key>
 	<string>Pamp for clients</string>
 	<key>CFBundleExecutable</key>
@@ -50,8 +50,45 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSCameraUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSContactsUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>YOUR-PURPOSE-KEY</key>
+		<string>YOUR TEXT</string>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>YOUR TEXT</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSMotionUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSSiriUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>YOUR TEXT</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SourceSansPro-Black.otf</string>

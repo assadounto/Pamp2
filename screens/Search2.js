@@ -17,6 +17,7 @@ import {
 import { Icon } from "@rneui/base";
 import { styles } from "../src/Common_styles";
 import GooglePlacesSearchModal from "../components/Gsearch";
+import Gsearch from "../components/Gsearch";
 const data= [
   { value: 'All categories' },
   { value: 'Beauty Salon' },
@@ -35,6 +36,8 @@ const workPlace = {
   geometry: { location: { lat: 48.8496818, lng: 2.2940881 } },
 };
 const Search2 = () => {
+  const [loc,setLoc]= React.useState()
+  const navigation=useNavigation()
   const [modalVisible, setModalVisible] = React.useState(false);
   const [option,setoption]=React.useState('')
  
@@ -63,38 +66,22 @@ const Search2 = () => {
       <View style={[s_style.text_input]}>
         <Icon
         style={s_style.icon}
-         name= 'chevron-left'
+         name= 'search'
          type="feather"
-        size={30}
+        size={25}
         color='#BCC4CC'
         />
       <TextInput  autoFocus={true} placeholder='Search for a service or venue'/>
       </View>
-      <View style={[s_style.text_input,s_style.mb_20]}>
-        <Icon
-        style={s_style.icon}
-         name= 'chevron-left'
-         type="feather"
-        size={30}
-        color='#BCC4CC'
-        />
-      <Text style={s_style.text}>{location.name}</Text>
-      <Icon
-        style={s_style.icon2}
-         name= 'x'
-         type="feather"
-        size={30}
-        color='#BCC4CC'
-        onPress={()=> setModalVisible(true)}
-        />
-      </View>
-
-
-      <View style={{ flex: 1 }}>
+       <Gsearch setLoc={setLoc}/>
+      {/* <View style={{ flex: 1 }}>
       <GooglePlacesSearchModal setLocation={setLocation} location={location} setVisible={setModalVisible} visible={modalVisible}/>
-    </View>
+    </View> */}
 
-<Categories data={data} onSelect={(val)=>setoption(val)}/>
+ <Categories data={data} onSelect={(val) => {
+  setoption(val);
+  navigation.navigate('Searches1', { location: loc, category: val });
+}}/> 
     </SafeAreaView>
   )
 }
@@ -119,6 +106,7 @@ const s_style= StyleSheet.create({
   },
   icon:{
     margin:15,
+    marginTop:18
 
   },
   icon2:{

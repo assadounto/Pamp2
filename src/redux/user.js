@@ -73,6 +73,8 @@ const userSlice = createSlice({
     createError: null,
     user: null,
     image1: null,
+    location:{},
+    
     payment_methods:{
       default:  {  
          id:1,
@@ -134,6 +136,10 @@ const userSlice = createSlice({
     cancel(state, action) {
       state.cancelled = !state.cancelled
       },
+      setLocation(state, action) {
+        state.location = action.payload
+        },
+  
 
   },
   extraReducers: builder => {
@@ -192,6 +198,7 @@ export const {
   userLogout,
   setuser,
   setPayment,
-  setDefault
+  setDefault,
+  setLocation
 } = userSlice.actions;
 export default userSlice.reducer;

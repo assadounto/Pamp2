@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {View, Text} from 'react-native-animatable';
 import {Input, Icon,TouchableOpacity} from '@rneui/base';
 import {styles, colors} from '../../Common_styles';
@@ -7,7 +7,7 @@ import {useGetcategoriesQuery} from '../../redux/authapi';
 import {Pressable, FlatList, Image, Platform} from 'react-native';
 import RadioButton from '../../../components/RadioButton';
 import Geolocation from 'react-native-geolocation-service';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 
 import { request, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import { FontFamily } from '../../GlobalStyles';
@@ -18,21 +18,53 @@ import MyTabBar from '../../../components/Topnav';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Favourites from './favourites';
 import { NavigationContainer } from '@react-navigation/native';
-
+import { setLocation } from '../../redux/user';
 import VendorSearchCon from '../../../components/VendorSearchCont';
 import { TextInput } from 'react-native-gesture-handler';
+import { use } from '../../redux/homeapi';
+
 const Tab = createMaterialTopTabNavigator();
 
 
 
 const Home = ({navigation}) => {
+ 
+ 
+  const dispatch= useDispatch()
+  const [ name,setName]=useState()
   const [option, setOption] = React.useState('Popular');
 
+const  reverseGeocode=async (lat, lng)=> {
+    const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0'; // Replace with your actual Google API key
+    
+    try {
+      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
+      const data = await response.json();
+  
+      if (data.status === 'OK' && data.results.length > 0) {
+        const address = data.results[0].formatted_address;
+        setName(address)
+        
+      } else {
+        throw new Error('Unable to retrieve address');
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error occurred during reverse geocoding');
+    }
+  }
 
   function getUserLocation() {
     Geolocation.getCurrentPosition(
-      (position) => {
-     console.log(position)
+      async (position) => {
+    const get=  await reverseGeocode(position.coords.latitude,position.coords.longitude)
+    console.log(name)
+    dispatch(setLocation(
+      {
+       name:name && name,
+        lat: position.coords.latitude,
+        lon: position.coords.longitude
+    }))
       },
       (error) => {
         console.log(error.message.toString());
@@ -48,6 +80,7 @@ const Home = ({navigation}) => {
    
     
   React.useEffect(()=>{
+    
     request(Platform.OS==='ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
@@ -97,12 +130,12 @@ const Home = ({navigation}) => {
   return (
     <Fragment >
      <UHeader navigation={navigation} />
-  <Text>dddddduu</Text>
+ 
     <Pressable onPress={()=>navigation.navigate("Search")}>
      <Image
        
           source={img}
-          style={{ width: 344, height: 63, paddingTop: 8, alignSelf: 'center', marginBottom: 15 }} 
+          style={{ width: '90%', height: 60, paddingTop: 8, alignSelf: 'center', marginBottom: 15 }} 
           
           />
     </Pressable>
@@ -126,9 +159,10 @@ const Home = ({navigation}) => {
 };
 
 const Popular=({navigation})=>{
+  const location= useSelector(state=>state.user)
   const {data,isLoading,isSuccess} = useGetcategoriesQuery('Popular')
   const Item = ({title, id, source}) => (
-    <Pressable onPress={()=>navigation.navigate('Searches1')} style={{borderRadius:20,marginTop:20,padding:10,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
+    <Pressable onPress={()=>navigation.navigate('Searches1', { location: {name:location.name}, category: title })} style={{borderRadius:20,marginTop:20,padding:10,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
     <View >
       <View style={{backgroundColor: '#ffff',alignItems:'center'}}>
         <Image

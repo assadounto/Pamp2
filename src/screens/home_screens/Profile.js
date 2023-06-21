@@ -25,8 +25,8 @@ import {useDispatch, useSelector} from 'react-redux';
 
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
-  const current_user = useSelector(state => state.user.userInfo);
-  const [modal, setModal] = useState(false);
+  const user = useSelector(state => state.user.userInfo);
+  const userimg = useSelector(state => state.user.image1);  const [modal, setModal] = useState(false);
   const [reason1, setReason1] = useState(false);
   const [reason2, setReason2] = useState(false);
   const [reason3, setReason3] = useState('');
@@ -54,7 +54,7 @@ const Profile = ({navigation}) => {
   // send image to server
   const onUploadImage = source => {
     const formData = new FormData();
-    formData.append('image', {
+    formData.append('blob', {
       uri: source.uri,
       type: source.type,
       name: source.fileName,
@@ -100,8 +100,9 @@ const Profile = ({navigation}) => {
             <Avatar
               rounded
               size="large"
-              source={selectedImage ||{uri: current_user.image}}
               //title={me?.firstName[0]}
+              source={selectedImage || userimg ? {uri: userimg} : user.image?{uri:user.image} :require('../../../assets/userimg.png')}
+
             />
             <View
               style={[
@@ -143,7 +144,7 @@ const Profile = ({navigation}) => {
             </Pressable>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>First name</Text>
-              <Text style={[styles.P2, colors.dg2]}>Rich</Text>
+              <Text style={[styles.P2, colors.dg2]}>{user.username}</Text>
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Last name</Text>
@@ -151,11 +152,18 @@ const Profile = ({navigation}) => {
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Phone number</Text>
-              <Text style={[styles.P2, colors.dg2]}>+2333</Text>
+              {
+                user.phone?  <Text style={[styles.P2, colors.dg2]}>{user.phone}</Text>: <Text
+                style={[styles.P2, colors.dg2]}
+                onPress={() => navigation.navigate('edit_profile')}>
+                +Add
+              </Text>
+              }
+             
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Email address</Text>
-              <Text style={[styles.P2, colors.dg2]}>adukuete</Text>
+              <Text style={[styles.P2, colors.dg2]}>{user.email}</Text>
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Date of birth </Text>

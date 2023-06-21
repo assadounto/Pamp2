@@ -5,8 +5,9 @@ import { styles ,colors} from "../../Common_styles";
 import { FontFamily } from "../../GlobalStyles";
 import LinearGradient from 'react-native-linear-gradient'
 import { Icon } from "@rneui/base";
-
-const data= [
+import Emptyfav from "../../../components/EmptyFav";
+const data=[]
+const data1= [
     {    
         id: 0,
         imgURL:
@@ -100,8 +101,11 @@ const Favourites=()=>{
 
     return(
       <SafeAreaView style={{flex:1}}>
+   
         <Text style={{marginLeft:30,fontFamily:FontFamily.sourceSansProBold,fontSize:26,color:'#86D694'}}>My Fav</Text>
-<MasonryList
+        {
+          data.length==0? <Emptyfav/>:
+          <MasonryList
   data={data}
   keyExtractor={(item)=> item.id}
   numColumns={2}
@@ -112,6 +116,8 @@ const Favourites=()=>{
   onEndReachedThreshold={0.1}
   //onEndReached={() => loadNext(ITEM_CNT)}
 />
+        }
+
 </SafeAreaView>
     )
 }

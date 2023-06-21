@@ -210,16 +210,15 @@ data1.topping2.map((item)=> {
     >
 
       <SliderBox
+      dotStyle={{height:8,width:8,marginHorizontal:-5}}
     sliderBoxHeight={450}
-    autoplay
-  
-    ImageComponentStyle={{borderRadius: 25}}
+    ImageComponentStyle={{borderBottomLeftRadius: 25,borderBottomRightRadius: 25}}
   imageLoadingColor="#FFFFFF"
       images={[   
-        "https://source.unsplash.com/1024x768/?nature",
-        "https://source.unsplash.com/1024x768/?water",
-        "https://source.unsplash.com/1024x768/?girl",
-        "https://source.unsplash.com/1024x768/?tree"]}>
+         require('../../../assets/vend1.png'),
+         require('../../../assets/vend3.png'),
+         require('../../../assets/vendor3.png'),
+          ]}>
       
          </SliderBox> 
          <View  style={{position: 'absolute',top:60,right:20}}>
@@ -247,7 +246,7 @@ data1.topping2.map((item)=> {
 
         style={{ width: 70, height: 69, position: 'relative', top: -30, left: 20 }} />
       <View style={{
-        width: 60, position: 'relative', left: 300, top: -90, backgroundColor: 'white', display: 'flex', flexDirection: 'row', width: 74, height: 44, alignItems: 'center', borderRadius: 40, shadowColor: "#000",
+        width: 60, position: 'absolute', right:30, top: 420, backgroundColor: 'white', display: 'flex', flexDirection: 'row', width: 74, height: 44, alignItems: 'center', borderRadius: 40, shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 2,
@@ -266,10 +265,10 @@ data1.topping2.map((item)=> {
           {data1.rating}
         </Text>
       </View>
-      <View style={{ position: 'relative', top: -80, padding: 20 }}>
+      <View style={{ position: 'relative', marginTop:-40,marginBottom:80,  padding: 20 }}>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color }}>{data1.name}</Text>
-          <Icon name='share-social-outline' type='ionicon' style={{ marginLeft: 180 }} />
+          <Icon name='share-2' type='feather' color={'00463C'} style={{ marginLeft: 200 }} />
         </View>
 
         <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -325,6 +324,11 @@ data1.topping2.map((item)=> {
                       {'\u20B5'} {total}
                     </Text>}
                 </>}
+                  uncheckedIcon={
+                    <View style={[styles.checkc,{backgroundColor:'white',borderColor:colors.lg.color,borderWidth:1}]}>
+                    </View>
+        
+                }
                 checkedIcon={<View style={styles.checkc}>
                   <Image
                     source={require('../../../assets/check3.png')}
@@ -350,7 +354,7 @@ data1.topping2.map((item)=> {
 
                       </View>}
                       uncheckedIcon={<View style={[{ width: 15, height: 15, borderRadius: 5, borderColor: colors.lg.color, borderWidth: 1 }]}>
-
+  
                       </View>}
                       checked={check}
                       onPress={() => handleOnChange(id, name)} />

@@ -220,14 +220,14 @@ const VerifyEmail = ({navigation}) => {
 </Text>
 
 <Text> </Text>
-        <TouchableOpacity>
+       
           <Button
             title="Verify Your Email"
             onPress={handleSubmit}
             loading={isLoading}
-            buttonStyle={styles.button}
+            buttonStyle={[styles.button,{width:300}]}
           />
-        </TouchableOpacity>
+     
           
         <Text style={[colors.lg, styles.bold, styles.tc]}>
           Change Phone Number

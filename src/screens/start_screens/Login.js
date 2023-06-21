@@ -41,7 +41,7 @@ const Login = ({navigation}) => {
   });
   React.useEffect(() => {
     (createError === 'exist' || success === true) &&
-      !userToken &&
+      
       dispatch(login({user: useGoogle}));
     
   }, [createError, dispatch, useGoogle, success, userToken]);
@@ -154,14 +154,14 @@ const Login = ({navigation}) => {
                   Forgot Password
                 </Text>
 
-                <TouchableOpacity>
+               
                   <Button
                     title="Sign in"
                     onPress={handleSubmit}
                     loading={loading}
                     buttonStyle={styles.button}
                   />
-                </TouchableOpacity>
+              
               </View>
             )}
           </Formik>

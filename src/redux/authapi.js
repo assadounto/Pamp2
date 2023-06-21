@@ -57,6 +57,15 @@ export const authApi = createApi({
         method: 'GET',
       }),
     }),
+    getnotifications: builder.query({
+      query: id => ({
+        url: `/user/notifications`,
+        method: 'GET',
+        params:{
+          id: id
+        }
+      }),
+    }),
     logout: builder.mutation({
       query: () => ({
         url: '/logout',
@@ -72,6 +81,6 @@ export const {
   useVerifyPhoneMutation,
   useGetPhoneConfirmMutation,
   useGetcategoriesQuery,
-  useGetcategoryQuery
-
+  useGetcategoryQuery,
+  useGetnotificationsQuery
 } = authApi;

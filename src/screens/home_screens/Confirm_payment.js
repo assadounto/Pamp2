@@ -170,7 +170,7 @@ const Confirm_payment=({navigation})=>{
       <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:16,color:colors.lg.color}}>
         Total
       </Text>
-      <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.dg.color,marginLeft:230}}>
+      <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.dg.color,marginLeft:245}}>
       {getTotalByKey(booking.Booking_detail.topping2,'total')}
       </Text>
       </View>

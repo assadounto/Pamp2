@@ -4,8 +4,10 @@ import SalonContainer from "../components/SalonContainer";
 import AppointmentsContainer from "../components/AppointmentsContainer";
 import MenuContainer from "../components/MenuContainer";
 import { Margin, FontSize, FontFamily, Color, Padding } from "../GlobalStyles";
-
+import EmptyAppoiment from "../components/Empty_appoitment";
+import { useSelector } from "react-redux";
 const Bookings = ({navigation}) => {
+  const booking= useSelector(state=>state.booking)
   return (
     <View style={styles.bookings}>
       <Image
@@ -16,8 +18,12 @@ const Bookings = ({navigation}) => {
       <Text style={[styles.appointments, styles.mt_90, styles.mr211]}>
         Appointments
       </Text>
-      <AppointmentsContainer navigation={navigation} />
-    
+{
+  booking.Booking_detail ? 
+
+      <AppointmentsContainer navigation={navigation} />:
+    <EmptyAppoiment/>
+  }
     </View>
   );
 };

@@ -9,6 +9,7 @@ import Blur from '../start_screens/Blur';
 import Pop from '../start_screens/pop';
 import  { Paystack }  from 'react-native-paystack-webview';
 import { useNavigation } from '@react-navigation/core';
+import Success from './Sucess';
 const Processing = ({route}) => {
    const navigation=useNavigation()
    console.log(total)
@@ -16,6 +17,7 @@ const Processing = ({route}) => {
     const [modalVisible, setModal] = React.useState(false);
     const [verificationResult, setVerificationResult] = React.useState(null);
    const [info,setinfo]= useState('Please approve payment and verify')
+   const [success,setSucess]=useState(false)
     const verifyTransaction = async () => {
         if (ref){
             
@@ -38,27 +40,32 @@ const Processing = ({route}) => {
     };
   
     const nextpage=()=>{
-      
+      setSucess(true)
             setModal(true);
+            
             setTimeout(() => {
               setModal(false);
-              navigation.navigate('Success');
+             // navigation.navigate('Success');
             }, 4000);
           
          
     }
     return (
         <>
-        <SafeAreaView style={styles2.cont}>
+       
+        {
+          success? <Success /> :
+          <SafeAreaView style={styles2.cont}>
 
-        <Paystack  
+          <Paystack  
         paystackKey="pk_test_e4bdcee80587746aabcc7b289634c04024d9dac5"
         amount={pay_type==='Pay with cash'? (total*0.1):total}
         currency={'GHS'}
-        channels={["mobile_money","card"]}
+        channels={pay_type==='Pay with cash'? ["mobile_money","card"]:pay_type=== 'Pay with card'? ["card"]:["mobile_money"]}
         billingEmail="adukyerer@gmail.com"
         activityIndicatorColor="green"
         onCancel={(e) => {
+            navigation.navigate('main')
           // handle response here
         }}
         onSuccess={(res) => {
@@ -68,15 +75,19 @@ const Processing = ({route}) => {
         
          
         }}
+
+      
         autoStart={true}
       />
+       </SafeAreaView>
+        }
           <Pop
           main={'Payment Received. Thank you'}
           modal={modalVisible}
         />
     
 
-      </SafeAreaView>
+     
       {modalVisible && <Blur />}
       </>
   

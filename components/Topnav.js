@@ -6,7 +6,7 @@ import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
 function MyTabBar({state, descriptors, navigation}) {
     return (
-        <View style={{marginBottom:10}}>
+        <View style={{marginBottom:20,marginLeft:20,marginTop:10}}>
       <ScrollView
       showsHorizontalScrollIndicator={false}
 

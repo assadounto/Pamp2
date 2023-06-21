@@ -18,6 +18,7 @@ import Select_payment from '../screens/home_screens/Select_payment';
 import Add_payment from '../screens/home_screens/Add_payment';
 import Booking_detail from '../screens/home_screens/Booking_details';
 import Processing from '../screens/home_screens/Comfirm_momo';
+import Invite from '../screens/home_screens/Invite';
 const Stack = createStackNavigator();
 
 const ApplicationNavigator = () => {
@@ -47,6 +48,7 @@ const ApplicationNavigator = () => {
         <Stack.Screen name={'Add_payment'} component={Add_payment}/> 
         <Stack.Screen name={'Booking_detail'} component={Booking_detail}/>
         <Stack.Screen name={'Processing'} component={Processing}/>
+        <Stack.Screen name={'Invite'} component={Invite}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

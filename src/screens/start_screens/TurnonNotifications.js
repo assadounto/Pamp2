@@ -53,13 +53,13 @@ const Turnon = ({navigation}) => {
           <Pressable style={styles.c6} onPress={notify}>
             <Text style={styles.c7}>Turn on</Text>
           </Pressable>
-          <Pressable>
+          <Pressable onPress={()=>dispatch(login({user: user}))}>
             <Text style={styles.cl}>Maybe later</Text>
           </Pressable>
         </View>
       </ImageBackground>
       {notification && (
-        <Pop2 main={'Notification sucesfully turned on'} modal={modalVisible} />
+        <Pop2 main={'Notification sucessfully turned on'} modal={modalVisible} />
       )}
       {modalVisible && <Blur />}
     </View>

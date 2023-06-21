@@ -17,10 +17,17 @@ function MyTabBar({state, descriptors, navigation}) {
     <View
       style={[
         {flexDirection: 'row'},
+        
         {
-          height: 70,
+          shadowColor: '#707070',
+          shadowOpacity: 0.2,
+          shadowRadius: 10,
+          elevation: 2,
+          shadowOffset: {width: 5, height: 0},
+          backgroundColor: 'white',
+          height: 90,
           justifyContent: 'space-evenly',
-          marginBottom:20
+          //marginBottom:20
         },
       ]}>
       {state.routes.map((route, index) => {
@@ -72,7 +79,7 @@ function MyTabBar({state, descriptors, navigation}) {
         return (
           <Animatable.View
             style={[
-              {flexDirection: 'row'},
+              {flexDirection: 'row',marginBottom:20},
               isFocused
                 ? {
                     backgroundColor: '#86D694',
@@ -86,8 +93,9 @@ function MyTabBar({state, descriptors, navigation}) {
                 : {},
             ]}
             key={index}
-            animation={isFocused ? 'zoomIn' : undefined}
-            duration={250}>
+            // animation={isFocused ? 'slideInRight' : undefined}
+            // duration={250}
+            >
             <TouchableOpacity
               accessibilityRole="button"
               accessibilityState={isFocused ? {selected: true} : {}}
@@ -136,7 +144,10 @@ const MainNavigator = () => {
         tabBarHideOnKeyboard: true,
       }}
       tabBar={props => <MyTabBar {...props} />}>
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen   options={{
+    //  title: "HomePage",
+    //  unmountOnBlur: true,
+  }} name="Home" component={Home} />
       <Tab.Screen name="Bookings" component={Bookings} />
       <Tab.Screen name="Favorites" component={Favourites} />
       <Tab.Screen name="Settings" component={Settings} />

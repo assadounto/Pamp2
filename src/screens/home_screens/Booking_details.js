@@ -13,6 +13,7 @@ import Blur from '../start_screens/Blur';
 import { useSelector } from 'react-redux';
 let booked=true
 const Booking_detail = () => {
+  
    const [cancelled,setCancelled]=useState(false)
     const[blur,setblur]=useState(false)
 const open=()=>{

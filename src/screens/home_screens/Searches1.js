@@ -10,7 +10,12 @@ import MyTabBar from '../../../components/Topnav'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 const Tab = createMaterialTopTabNavigator();
 import VendorSearchCon from '../../../components/VendorSearchCont'
-const Searches1 = ({navigation}) => {
+import { connect } from 'formik'
+import { useRoute } from '@react-navigation/core'
+const Searches1 = ({navigation,route}) => {
+  
+  const { location, category } = route.params;
+  
   const [option, setOption] = React.useState('Recommended');
   const data2 = [
     { value: 'Recommended' },
@@ -39,16 +44,19 @@ const data1 =[
 
     
    <>
-
+ <Pressable onPress={()=>navigation.navigate("Search")}>
       <Input
+   
         placeholder="Search for a service"
-        inputContainerStyle={[styles.textInput, styles.tc, { marginTop: 50, paddingTop: 10 }]}
+        inputContainerStyle={[styles.textInput, styles.tc, { marginTop: 100, width:'90%', paddingTop: 10 }]}
         leftIcon={<Icon name="chevron-back" type="ionicon" color={'#BCC4CC'} size={30} />}
-        //onFocus={() => }
-        value={'East Legon'} />
-        <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' }}>{data1.length} result For Hair Salon </Text><Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' }}>near you </Text>
+        onFocus={() => navigation.navigate("Search")}
+        
+        value={location.name} />
+        </Pressable>
+        <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' ,}}>{data1.length} result For {category}</Text><Text style={{marginBottom:20, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' }}>near you </Text>
          <Tab.Navigator
-sceneContainerStyle={{ backgroundColor: 'white' }}
+sceneContainerStyle={{ backgroundColor: 'white'  }}
       tabBar={props => <MyTabBar {...props} />}>
   
 

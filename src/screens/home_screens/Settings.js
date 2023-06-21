@@ -24,12 +24,12 @@ const menuOne = [
   {
     title: 'Change Password',
     icon: 'lock',
-    route: 'ChangePassword',
+    route: 'change_email',
   },
   {
     title: 'Payment Methods',
     icon: 'credit-card',
-    route: 'PaymentMethods',
+    route: 'Select_payment',
   },
   {
     title: 'Discount Code',
@@ -39,7 +39,7 @@ const menuOne = [
   {
     title: 'Invite Friends',
     icon: 'mail',
-    route: 'PaymentMethods',
+    route: 'Invite',
   },
 ];
 
@@ -79,7 +79,8 @@ const menuThree = [
   },
 ];
 const Settings = ({navigation}) => {
-  const image = useSelector(state => state.user.image1);
+  
+  const notifications = useSelector(state => state.user.notifications);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const dispatch = useDispatch();
@@ -205,7 +206,7 @@ const Settings = ({navigation}) => {
                   {item.icon === 'bell' ? (
                     <Pressable onPress={() => console.log('h')}>
                       <SwitchToggle
-                        switchOn={isEnabled}
+                        switchOn={notifications}
                         onPress={() => toggleSwitch()}
                         circleColorOff={colors.w.color}
                         backgroundColorOn={colors.lg.color}

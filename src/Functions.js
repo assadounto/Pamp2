@@ -70,3 +70,20 @@ export function convertMinutesToHoursAndMinutes(minutes) {
   export function getTotalByKey(arr, key) {
     return arr.reduce((total, obj) => obj[key] ? total + obj[key] : total, 0);
   }
+
+
+ export function formatDate(createdDate) {
+    const date = new Date(createdDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // January is 0
+    const year = date.getFullYear();
+  
+    // Format day and month with leading zeros if necessary
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+  
+    // Create the formatted date string
+    const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+  
+    return formattedDate;
+  }

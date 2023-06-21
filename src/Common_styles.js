@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   textInput: {
     paddingHorizontal:20,
     fontSize:8,
-    width: 300,
+    width: 330,
     height: 63,
     margin:0,
     backgroundColor: '#EFEFEF',
@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
    ustifyContent: 'center',
   },
   button: {
-    width: 300,
+    width: 330,
     height: 71,
     backgroundColor: '#86D694',
     borderWidth: 1,
@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
     borderColor: '#DEDCDC',
     borderWidth: 1,
     borderRadius: 23,
-    width: 300,
+    width: 330,
     height: 71,
     alignSelf: 'center',
   },
@@ -170,7 +170,7 @@ export const styles = StyleSheet.create({
   },
 
   pop2: {
-    marginTop: 320,
+    marginTop: 380,
     backgroundColor: '#fff',
     alignItems: 'center',
     borderRadius: 20,
@@ -251,7 +251,7 @@ export const styles = StyleSheet.create({
     marginBottom:30,
     borderColor:'#B0EBBD',
     borderWidth: 1,
-    marginLeft:10
+    marginHorizontal:7
 
   },
 
@@ -261,8 +261,8 @@ export const styles = StyleSheet.create({
     color: 'white',
     height:34,
     padding:8,
-    marginBottom:30,
-    marginLeft:20
+    marginBottom:20,
+    marginHorizontal:7
   },
 });
 

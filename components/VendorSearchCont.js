@@ -25,7 +25,7 @@ const Item =({image,logo,name,items,rating,location,dist})=>(
    
     style={{ width: 60, height: 69,position:'relative',top:-30,left:15}} 
       />
-    <View style={{width: 60,position:'relative',left:220,top:-90,backgroundColor:'white',display:'flex',flexDirection:'row',width:74,height:44,alignItems:'center',borderRadius:40,hadowColor: "#000",
+    <View style={{width: 60,position:'relative',left:240,top:-90,backgroundColor:'white',display:'flex',flexDirection:'row',width:74,height:44,alignItems:'center',borderRadius:40,hadowColor: "#000",
           shadowOffset: {
             width: 0,
             height: 2,

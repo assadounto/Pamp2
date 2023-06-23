@@ -72,6 +72,15 @@ export const authApi = createApi({
         method: 'POST',
       }),
     }),
+    fetchVendor: builder.query({
+      query: (id) => ({
+        url: '/details',
+        method: 'GET',
+        params: {
+          id
+        }
+      }),
+    }),
   }),
 });
 
@@ -80,7 +89,8 @@ export const {
   useGetEmailConfirmMutation,
   useVerifyPhoneMutation,
   useGetPhoneConfirmMutation,
-  useGetcategoriesQuery,
+  useLazyGetcategoriesQuery,
   useGetcategoryQuery,
-  useGetnotificationsQuery
+  useGetnotificationsQuery,
+  useFetchVendorQuery,
 } = authApi;

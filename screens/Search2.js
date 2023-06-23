@@ -18,6 +18,9 @@ import { Icon } from "@rneui/base";
 import { styles } from "../src/Common_styles";
 import GooglePlacesSearchModal from "../components/Gsearch";
 import Gsearch from "../components/Gsearch";
+import axios from "axios";
+import { backendURL } from "../src/services/http";
+import { da } from "date-fns/locale";
 const data= [
   { value: 'All categories' },
   { value: 'Beauty Salon' },
@@ -27,14 +30,10 @@ const data= [
   { value: 'Barbershop' },
   
 ];
-const homePlace = {
-  description: 'Home',
-  geometry: { location: { lat: 48.8152937, lng: 2.4597668 } },
-};
-const workPlace = {
-  description: 'Work',
-  geometry: { location: { lat: 48.8496818, lng: 2.2940881 } },
-};
+
+
+
+
 const Search2 = () => {
   const [loc,setLoc]= React.useState()
   const navigation=useNavigation()
@@ -45,20 +44,11 @@ const Search2 = () => {
     name: 'amasaman'
   });
   const [query, setQuery] = React.useState('');
-
   const handleSearch = async () => {
-    console.log(location)
-    try {
-      const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0';
-      const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${apiKey}`;
-      const response = await fetch(url);
-      const json = await response.json();
-      const { lat, lng } = json.results[0].geometry.location;
-      console.log(lat,lng)
-   setLocation([lat, lng]);
-    } catch (error) {
-      console.error(error);
-    }
+    const {data}= await axios.get(`${backendURL}/search?query=${query}`)
+    //setData(data)
+     data    &&   navigation.navigate('Searches1', { location: loc, category: query,data});
+
   };
 
   return(
@@ -71,7 +61,12 @@ const Search2 = () => {
         size={25}
         color='#BCC4CC'
         />
-      <TextInput  autoFocus={true} placeholder='Search for a service or venue'/>
+      <TextInput 
+       autoFocus={true}
+        placeholder='Search for a service or venue'
+        onChangeText={setQuery}
+        onSubmitEditing={handleSearch}
+        />
       </View>
        <Gsearch setLoc={setLoc}/>
       {/* <View style={{ flex: 1 }}>

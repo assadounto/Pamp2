@@ -60,7 +60,7 @@ const Profile = ({navigation}) => {
       name: source.fileName,
     }
     );
-    formData.append('id',current_user.id)
+    formData.append('id',user.id)
     // dispatch(uploadImage(formData))
     fetch(`${backendURL}/user/image`, {
       method: 'POST',

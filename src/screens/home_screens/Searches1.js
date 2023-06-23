@@ -12,16 +12,49 @@ const Tab = createMaterialTopTabNavigator();
 import VendorSearchCon from '../../../components/VendorSearchCont'
 import { connect } from 'formik'
 import { useRoute } from '@react-navigation/core'
+import { ScreenProps } from 'react-native-screens'
 const Searches1 = ({navigation,route}) => {
   
-  const { location, category } = route.params;
+  const { location, category,data } = route.params;
   
   const [option, setOption] = React.useState('Recommended');
-  const data2 = [
-    { value: 'Recommended' },
-    { value: 'Nearest' },
-    { value: 'Newest' },
-  ];
+
+  const vendors= data.map((vendor)=>{
+    return{
+      id: vendor.id,
+      image: vendor.cover_url,
+      logo: vendor.avatar_url,
+      name:vendor.username,
+      rating:'4.5',
+      location: vendor.name,
+      dist: '',
+      items: vendor.top_services.split(",").map((item)=>{
+     return {
+        value: item
+      }
+    }
+      )
+    }
+      
+   })
+   const screenOptions = ({ route }) => {
+    // Pass the required props to the screens based on the route name
+    switch (route.name) {
+      case "Popular":
+      case "Recent viewed":
+      case "Top Rated Hair Salons":
+        return {
+          screenProps: {
+            data: data,
+            navigation: navigation,
+          },
+        };
+      default:
+        return null;
+    }
+  };
+  
+
 const data1 =[
   {
     image: '../../../assets/rectangle-9764.png',
@@ -39,11 +72,8 @@ const data1 =[
 
 ]
 
-
   return (
-
-    
-   <>
+     <>
  <Pressable onPress={()=>navigation.navigate("Search")}>
       <Input
    
@@ -56,12 +86,13 @@ const data1 =[
         </Pressable>
         <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' ,}}>{data1.length} result For {category}</Text><Text style={{marginBottom:20, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' }}>near you </Text>
          <Tab.Navigator
+         screenOptions={screenOptions}
 sceneContainerStyle={{ backgroundColor: 'white'  }}
       tabBar={props => <MyTabBar {...props} />}>
   
 
 
-        <Tab.Screen name="Popular" component={Item} />
+        <Tab.Screen name="Popular"  >{(props) => <Item {...props} data={vendors} />}</Tab.Screen>
         <Tab.Screen name="Recent viewed" component={Item} />
         <Tab.Screen name="Top Rated Hair Salons" component={Item} />
 
@@ -72,7 +103,9 @@ sceneContainerStyle={{ backgroundColor: 'white'  }}
 
   )
 }
-const Item=({navigation})=>{
+const Item=({data,navigation})=>{
+  //const { data, navigation } = ScreenProps;
+console.log(data&&data)
   const data1 =[
     {
       image: '../../../assets/rectangle-9764.png',
@@ -90,7 +123,7 @@ const Item=({navigation})=>{
   
   ]
   return(
-    <VendorSearchCon data={data1} navigation={navigation}/>
+    <VendorSearchCon data={data&&data} navigation={navigation}/>
   )
 }
 export default Searches1

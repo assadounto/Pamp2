@@ -1,14 +1,14 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {View, Text} from 'react-native-animatable';
 import {Input, Icon,TouchableOpacity} from '@rneui/base';
 import {styles, colors} from '../../Common_styles';
 import UHeader from '../../../components/UHeader';
-import {useGetcategoriesQuery} from '../../redux/authapi';
+import { useLazyGetcategoriesQuery } from '../../redux/authapi';
 import {Pressable, FlatList, Image, Platform} from 'react-native';
 import RadioButton from '../../../components/RadioButton';
 import Geolocation from 'react-native-geolocation-service';
 import {useSelector,useDispatch} from 'react-redux';
-
+import { backendURL } from '../../services/http';
 import { request, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import { FontFamily } from '../../GlobalStyles';
 import img from '../../../assets/s.png'
@@ -22,7 +22,8 @@ import { setLocation } from '../../redux/user';
 import VendorSearchCon from '../../../components/VendorSearchCont';
 import { TextInput } from 'react-native-gesture-handler';
 import { use } from '../../redux/homeapi';
-
+import axios from 'axios';
+import FastImage from 'react-native-fast-image';
 const Tab = createMaterialTopTabNavigator();
 
 
@@ -159,14 +160,26 @@ const  reverseGeocode=async (lat, lng)=> {
 };
 
 const Popular=({navigation})=>{
+  const [getcategories,{data,isLoadig}]=useLazyGetcategoriesQuery()
+  useEffect(()=>{
+    getcategories('Popular')
+  },[])
+  const handleSearch = async (id,title) => {
+    
+    
+    const {data}= await axios.get(`${backendURL}/search?category=${title}`)
+    //setData(data)
+     data    &&   navigation.navigate('Searches1', { location: location, category: title,data});
+
+  };
   const location= useSelector(state=>state.user)
-  const {data,isLoading,isSuccess} = useGetcategoriesQuery('Popular')
   const Item = ({title, id, source}) => (
-    <Pressable onPress={()=>navigation.navigate('Searches1', { location: {name:location.name}, category: title })} style={{borderRadius:20,marginTop:20,padding:10,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
+    <Pressable key={id} onPress={()=>handleSearch(id,title)} style={{borderRadius:20,marginTop:20,padding:10,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
     <View >
       <View style={{backgroundColor: '#ffff',alignItems:'center'}}>
-        <Image
-          source={source}
+      <FastImage
+          source={{uri :source, headers: { Authorization: 'someAuthToken' },
+          priority: FastImage.priority.normal}}
           style={{width: '95%', height: 300, borderRadius: 20}}
         />
         
@@ -181,7 +194,7 @@ const Popular=({navigation})=>{
     showsVerticalScrollIndicator={false}
     data={data}
     renderItem={({ item }) => (
-      <Item title={item.name} id={item.id} source={{ uri: item.photo_url }} />
+      <Item title={item.name} id={item.id} source={item.photo_url } />
     )}
     keyExtractor={item => item.id} />
   )

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView} from 'react-native'
+import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView, Modal} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
 import { Icon,Input ,Button,CheckBox} from '@rneui/base'
 import { colors } from '../../Common_styles'
@@ -11,132 +11,166 @@ import Staff from '../../../components/Staff'
 import { ImageBackground } from 'react-native'
 import { SliderBox } from "react-native-image-slider-box";
 import { useDispatch } from 'react-redux'
-import { setbooking } from '../../redux/booking'
-import { use } from '../../redux/homeapi'
+import { setbooking,setVendor } from '../../redux/booking'
 import { convertMinutesToHoursAndMinutes ,modifyItemList} from '../../Functions'
-
+import { useFetchVendorQuery } from '../../redux/authapi'
+import { setvendorname } from '../../redux/booking'
+import axios from 'axios'
+import FastImage from 'react-native-fast-image'
+import { backendURL } from '../../services/http'
+import Opening from '../../../components/Openning'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import Blur from '../start_screens/Blur'
+import { checkVendorStatus } from '../../Functions'
 const getFormattedPrice = (price) => `$${price.toFixed(2)}`;
 
-const VendorDetail = ({navigation}) => {
+const VendorDetail = ({navigation,route}) => {
+  const {id}= route.params
+  const [data1,setdata]=useState()
+  const [modal,setModal]=useState(false)
+  const [checkedState, setCheckedState] = useState(
+   
+  );
+  const[itemList,setitem]=useState([])
+  const [parentState, setparentState] = useState(
+   
+  );
+  ///const {data,isLoading}=useFetchVendorQuery(id)
+   useEffect(()=>{
+   async  function get(){
+        const{ data }=await axios.get(`${backendURL}/details?id=${id}`)
+        
+        
+          console.log(data)
+          setdata(
+            {
+              images: [data.cover_url,...data.other_images_urls],
+              id: data.id,
+              image: data.cover_url,
+              logo: data.avatar_url,
+              name:data.username,
+              rating:'',
+              location: data.name,
+              dist: '',
+              items: data.top_services.split(",").map((item)=>{
+             return {
+                value: item
+              }
+            }
+              ),
+              staff:data.staff,
+        
+              tops:data.top_services.split(",").map((item)=>{
+                return {
+                   value: item
+                 }
+               })   ,
+              topping2:data.service_categories.map((cat)=>{
+                return {
+                  id: cat.id,
+                  name:cat.name,
+                  total:0,
+                  time:0,
+                  services:0,
+                  items_name:'',
+                  items: cat.services.map((service)=>{
+                    return {
+                      id: service.id,
+                      name2: service.name,
+                      time: service.time,
+                      appointment_color: service.appointment_color,
+                      price: service.price,
+                    }
+                  })
+                }
+              })
+             
+              ,
+              rating: '4.5',
+              desc: 'We are at you services. We give you the best of services you can think of',
+              hours: data.opening_hours
+            }
+          
+          )
+       setparentState( new Array(data.service_categories.length).fill(false))
+       setCheckedState({
+        images: [data.cover_url],
+        id: data.id,
+        image: data.cover_url,
+        logo: data.avatar_url,
+        name:data.username,
+        rating:'',
+        location: data.name,
+        dist: '',
+        items: data.top_services.split(",").map((item)=>{
+       return {
+          value: item
+        }
+      }
+        ),
+        staff:data.staff,
+  
+        tops:data.top_services.split(",").map((item)=>{
+          return {
+             value: item
+           }
+         })   ,
+        topping2:data.service_categories.map((cat)=>{
+          return {
+            id: cat.id,
+            name:cat.name,
+            total:0,
+            time:0,
+            services:0,
+            items_name:'',
+            items: cat.services.map((service)=>{
+              return {
+                id: service.id,
+                name2: service.name,
+                time: service.time,
+                appointment_color: service.appointment_color,
+                price: service.price,
+              }
+            })
+          }
+        })
+       
+        ,
+        rating: '4.5',
+        desc: 'We are at you services. We give you the best of services you can think of',
+      }
+    )
+          }
+      
+          get()
+   
+    },[])
+  
+  
+   const[maps,setMaps]=useState({
+    
+   })
+ 
+
+  
+   
+  
+  console.log(id)
   const dispatch = useDispatch()
   const [staff,setStaff]= useState('');
-  const data1 =
-    {
-      image: '../../../assets/rectangle-9764.png',
-      logo:'../../../assets/group-1820.png',
-      name:'Likke Salon',
-      staff:[
-        {name:'Giddi',
-        photo:'../../../assets/group-1820.png'
-       }, {name:'Rich',
-       photo:'../../../assets/group-1820.png'
-      }
-
-      ],
-
-      tops:[
-        { value: 'Make up' },
-      { value: 'Hair' },
-      { value: 'Nails' },
-      ],
-      topping2: [
-        {
-          name: "Hair",
-          total:0,
-          time:0,
-          services:0,
-          items_name:'',
-          items:[
-            {
-              id: 666,
-              name2: "Haircut",
-              price: 50,
-              check:false,
-              time: 60
-            },
-            {
-              id: 1,
-              name2: "Braids",
-              price: 150,
-              check:false,
-              time: 90
-            },
-            {
-              id: 2,
-              name2: "Twist",
-              price: 50,
-              check:false,
-              time: 90
-            },
-            {
-              id: 4,
-              name2: "Knotting",
-              price: 50,
-              check:false,
-              time: 90
-            },
-          ]
-        },
-        {
-          
-          name: "Nails",
-          total:0,
-          time:0,
-          services:0,
-          items_name:'',
-          items: [
-            {
-              id: 3,
-              name2: "Capsicum",
-              price: 1.2,
-              check:false,
-              time: 60
-            },
-            {
-              id: 4,
-              name2: "Paneer",
-              price: 2.0,
-              check:false,
-              time: 60
-            },
-            {
-              id: 5,
-              name2: "Red Paprika",
-              price: 2.5,
-              check:false,
-              time: 60
-            },
-          ]
-        }
-      ]
-      ,
-      rating: '4.5',
-      location:'Nestle Road',
-      dist: '2000m from you',
-      desc: 'We are at you services. We give you the best of services you can think of',
-    }
   
 
     const handleBookingSubmit=()=>{
       dispatch(setbooking(checkedState))
       console.log(checkedState)
+      dispatch(setvendorname(data1.name))
+      dispatch(setVendor(data1.hours))
     navigation.navigate('SelectDate')
     }
     const all= [];
 
 
-data1.topping2.map((item)=> { 
- return item.items.map((item2)=>{
- return  all.push(item2)
-  })
-})
-    const [checkedState, setCheckedState] = useState(
-      data1
-    );
-    const[itemList,setitem]=useState([])
-    const [parentState, setparentState] = useState(
-      new Array(data1.topping2.length).fill(false)
-    );
+
     const [total, setTotal] = useState(0);
   //console.log(topping2.length)
     const handleOnChange = (position,name) => {
@@ -193,6 +227,7 @@ data1.topping2.map((item)=> {
     
       
       setparentState(updatedCheckedState);
+  
     }
 
     
@@ -201,52 +236,73 @@ data1.topping2.map((item)=> {
 
   
     
-    <><ScrollView showsHorizontalScrollIndicator={false}
+    <>{checkedState? <><ScrollView showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       containerStyle={{
         backgroundColor: colors.w.color,
-       // flex:1
+        // flex:1
       }}
     >
 
       <SliderBox
-      dotStyle={{height:8,width:8,marginHorizontal:-5}}
-    sliderBoxHeight={450}
-    ImageComponentStyle={{borderBottomLeftRadius: 25,borderBottomRightRadius: 25}}
-  imageLoadingColor="#FFFFFF"
-      images={[   
-         require('../../../assets/vend1.png'),
-         require('../../../assets/vend3.png'),
-         require('../../../assets/vendor3.png'),
-          ]}>
+        dotStyle={{ height: 8, width: 8, marginHorizontal: -5 }}
+        sliderBoxHeight={450}
+        ImageComponentStyle={{ borderBottomLeftRadius: 25, borderBottomRightRadius: 25 }}
+        imageLoadingColor="red"
+        images={data1.images} 
+        >
       
-         </SliderBox> 
-         <View  style={{position: 'absolute',top:60,right:20}}>
+      </SliderBox>
+      <View style={{ position: 'absolute', top: 60, right: 20 }}>
         <Icon
           name='heart-outline'
           type='ionicon'
           size={30}
-         
-          color={'#FFFFFF'}
-           />
-        </View>
-        <View  style={{position: 'absolute',top:60,left:20}}>
+
+          color={'#FFFFFF'} />
+      </View>
+      <View style={{ position: 'absolute', top: 60, left: 20 }}>
         <Icon
           name='chevron-back-outline'
           type='ionicon'
           size={30}
-         
-          color={'#FFFFFF'}
-           />
-        </View>
-        
-      
-      <Image
-        source={require('../../../assets/group-1820.png')}
 
-        style={{ width: 70, height: 69, position: 'relative', top: -30, left: 20 }} />
+          color={'#FFFFFF'} />
+      </View>
+
+
+      <View 
+  style={{
+    padding: 5,
+    borderRadius: 50,
+    backgroundColor: 'white',
+    width: 80,
+    height: 79,
+    position: 'relative',
+    top: -40,
+    left: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 8,
+  }}
+        >
+          <FastImage
+                         style={{borderRadius: 50, width: 70, height: 69, }} 
+  
+            source={{
+              uri: 'https://unsplash.it/400/400?image=1',
+              headers: { Authorization: 'someAuthToken' },
+              priority: FastImage.priority.normal,
+            }}
+            resizeMode={FastImage.resizeMode.contain} />
+            </View>
       <View style={{
-        width: 60, position: 'absolute', right:30, top: 420, backgroundColor: 'white', display: 'flex', flexDirection: 'row', width: 74, height: 44, alignItems: 'center', borderRadius: 40, shadowColor: "#000",
+        width: 60, position: 'absolute', right: 30, top: 420, backgroundColor: 'white', display: 'flex', flexDirection: 'row', width: 74, height: 44, alignItems: 'center', borderRadius: 40, shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 2,
@@ -265,10 +321,15 @@ data1.topping2.map((item)=> {
           {data1.rating}
         </Text>
       </View>
-      <View style={{ position: 'relative', marginTop:-40,marginBottom:80,  padding: 20 }}>
+      <View style={{ position: 'relative', marginTop: -40, marginBottom: 80, padding: 20 }}>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color }}>{data1.name}</Text>
-          <Icon name='share-2' type='feather' color={'00463C'} style={{ marginLeft: 200 }} />
+          <TouchableOpacity onPress={()=>setModal(true)} style={{paddingHorizontal:5,marginLeft:5, marginTop:5, height:20,backgroundColor:colors.lg.color,borderRadius:20}}>{checkVendorStatus(data1.hours) === 'Open' ? (
+                    <Text style={{marginHorizontal:5}} >open</Text>
+                  ) : (
+                    <Text style={{ color: 'red',marginHorizontal:5 }}>closed</Text>
+                  )}</TouchableOpacity>
+          <Icon name='share-2' type='feather' color={'00463C'} style={{ marginLeft: 170 }} />
         </View>
 
         <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -296,39 +357,35 @@ data1.topping2.map((item)=> {
         <Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: '#00463C', marginBottom: 15 }}> {data1.location}</Text>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Icon name='location-outline' type='ionicon' color={colors.lg.color} />
-          <Text style={{ color: colors.lg.color, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {data1.dist} - <Text onPress={() => console.log(navigation.navigate('Mapview',{
+          <Text style={{ color: colors.lg.color, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {data1.dist} - <Text onPress={() => console.log(navigation.navigate('Mapview', {
             rating: data1.rating,
             dist: data1.desc,
             name: data1.name,
             image: data1.image
-
           }))} style={{ color: colors.dg2.color }}>Show on map</Text></Text>
         </View>
         <Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, marginBottom: 20, marginTop: 20 }}> {data1.desc}</Text>
         <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: '#00463C', marginBottom: 15 }}> Services</Text>
-        {checkedState.topping2.map(({ name, items, total,time,services,items_name }, index) => {
+        {checkedState.topping2.map(({ name, items, total, time, services, items_name }, index) => {
           return (
-            <View style={[styles.t6, { borderBottomColor: colors.lg.color, borderBottomWidth: 1,marginBottom:20 }]}>
+            <View style={[styles.t6, { borderBottomColor: colors.lg.color, borderBottomWidth: 1, marginBottom: 20 }]}>
               <CheckBox
                 title={<>
-                <View><Text style={[colors.dg, { marginLeft: 10 }]}>
-                  {name}
-                </Text>
-                { time!=0 &&
-                <Text style={[colors.dg, { marginLeft: 10,fontFamily:FontFamily.sourceSansProRegular,fontSize:12,color:'#BBB9BC'}]}>
-               {convertMinutesToHoursAndMinutes(time)}-{services} service
-                </Text>}
-                </View>
+                  <View><Text style={[colors.dg, { marginLeft: 10 }]}>
+                    {name}
+                  </Text>
+                    {time != 0 &&
+                      <Text style={[colors.dg, { marginLeft: 10, fontFamily: FontFamily.sourceSansProRegular, fontSize: 12, color: '#BBB9BC' }]}>
+                        {convertMinutesToHoursAndMinutes(time)}-{services} service
+                      </Text>}
+                  </View>
                   {total > 0 &&
                     <Text style={[colors.dg, { marginLeft: 'auto' }]}>
                       {'\u20B5'} {total}
                     </Text>}
                 </>}
-                  uncheckedIcon={
-                    <View style={[styles.checkc,{backgroundColor:'white',borderColor:colors.lg.color,borderWidth:1}]}>
-                    </View>
-        
-                }
+                uncheckedIcon={<View style={[styles.checkc, { backgroundColor: 'white', borderColor: colors.lg.color, borderWidth: 1 }]}>
+                </View>}
                 checkedIcon={<View style={styles.checkc}>
                   <Image
                     source={require('../../../assets/check3.png')}
@@ -336,7 +393,7 @@ data1.topping2.map((item)=> {
                 </View>}
                 checked={parentState[index]}
                 onPress={() => handleOnChange2(index)} />
-              {parentState[index] === true && items.map(({ name2,time, id, price, check }, _index2) => {
+              {parentState[index] === true && items.map(({ name2, time, id, price, check }, _index2) => {
                 return (
                   <View style={{ marginLeft: 30 }}>
                     <CheckBox
@@ -354,7 +411,7 @@ data1.topping2.map((item)=> {
 
                       </View>}
                       uncheckedIcon={<View style={[{ width: 15, height: 15, borderRadius: 5, borderColor: colors.lg.color, borderWidth: 1 }]}>
-  
+
                       </View>}
                       checked={check}
                       onPress={() => handleOnChange(id, name)} />
@@ -370,7 +427,9 @@ data1.topping2.map((item)=> {
       </View>
 
 
-    </ScrollView><View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: '#ffff', width: '100%', marginBottom: 0}}>
+    </ScrollView>
+    <Opening data={data1.hours} modal={modal} setModal={setModal}/>
+    <View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: '#ffff', width: '100%', marginBottom: 0 }}>
         <Button
           title={'Book'}
           // containerStyle={}
@@ -385,11 +444,10 @@ data1.topping2.map((item)=> {
             backgroundColor: colors.dg2.color,
             shadowColor: colors.dg2.color, shadowOpacity: 0., shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
           }}
-          onPress={
-           handleBookingSubmit
-        } 
-          />
-      </View></>
+          onPress={handleBookingSubmit} />
+      </View> 
+     {modal && <Blur/>}
+      </>:<Text>ssss</Text>}</>
 
 
   )

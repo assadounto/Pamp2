@@ -70,9 +70,53 @@ export function convertMinutesToHoursAndMinutes(minutes) {
   export function getTotalByKey(arr, key) {
     return arr.reduce((total, obj) => obj[key] ? total + obj[key] : total, 0);
   }
+ export  const checkVendorStatus = (openingHours) => {
+    const currentDate = new Date();
+    const currentDay = currentDate.toLocaleString('en-US', { weekday: 'long' });
+    const currentHour = currentDate.getHours();
+    const currentMinute = currentDate.getMinutes();
+  
+    const vendor = openingHours.find((item) => item.day === currentDay);
+  
+    if (!vendor || !vendor.opening_time || !vendor.closing_time || !vendor.opened) {
+      return 'Closed';
+    }
+  
+    if (!vendor.opened) {
+      return 'Closed';
+    }
+  
+    const openingHour = parseInt(vendor.opening_time.split(':')[0]);
+    const openingMinute = parseInt(vendor.opening_time.split(':')[1]);
+    const closingHour = parseInt(vendor.closing_time.split(':')[0]);
+    const closingMinute = parseInt(vendor.closing_time.split(':')[1]);
+  
+    if (currentDay === 'Saturday' || currentDay === 'Sunday') {
+      return 'Open';
+    }
+  
+    if (
+      currentHour > openingHour &&
+      currentHour < closingHour
+    ) {
+      return 'Open';
+    } else if (
+      currentHour === openingHour &&
+      currentMinute >= openingMinute
+    ) {
+      return 'Open';
+    } else if (
+      currentHour === closingHour &&
+      currentMinute <= closingMinute
+    ) {
+      return 'Open';
+    } else {
+      return 'Closed';
+    }
+  };
+  
 
-
- export function formatDate(createdDate) {
+  export function formatDate(createdDate) {
     const date = new Date(createdDate);
     const day = date.getDate();
     const month = date.getMonth() + 1; // January is 0

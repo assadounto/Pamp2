@@ -1,31 +1,65 @@
 import { Icon,Input } from '@rneui/base'
 import { FontFamily } from '../GlobalStyles'
 import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList} from 'react-native'
-
+import FastImage from 'react-native-fast-image'
 import { styles,colors } from '../src/Common_styles'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
 const Tab = createMaterialTopTabNavigator();
 
 const VendorSearchCon=({data,navigation})=>{
   
-const Item =({image,logo,name,items,rating,location,dist})=>(
+const Item =({image,logo,name,items,rating,location,dist,id})=>(
     <View style={[styles2.cont,{shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 5,shadowOffset:{width:5,height:0},marginTop:10,marginBottom:10}]}>
-      <Pressable  onPress={()=>navigation.navigate('VendorDetail')}>  
-      <Image
-      source={require('../assets/rectangle-9764.png')}
-      style={{ alignSelf:'center',width: '100%',  borderRadius: 20 }
+      <Pressable  onPress={()=>navigation.navigate('VendorDetail',
+      {
+      id: id,
+      }
+      )}>  
+     <FastImage
+      source={{uri: image, headers: { Authorization: 'someAuthToken' },
+      priority: FastImage.priority.normal,}}
+     
+      style={{ alignSelf:'center',width: '100%', height:200, borderRadius: 20 }
       
     }
   
    />
    </Pressable>
-  
-    <Image
-      source={require('../assets/group-1820.png')}
-   
-    style={{ width: 60, height: 69,position:'relative',top:-30,left:15}} 
-      />
-    <View style={{width: 60,position:'relative',left:240,top:-90,backgroundColor:'white',display:'flex',flexDirection:'row',width:74,height:44,alignItems:'center',borderRadius:40,hadowColor: "#000",
+    
+   <View 
+style={{
+  padding: 5,
+  borderRadius: 50,
+  backgroundColor: 'white',
+  width: 60,
+  height: 60,
+  position: 'relative',
+  top: -40,
+  left: 20,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 4,
+  },
+  shadowOpacity: 0.5,
+  shadowRadius: 4,
+  elevation: 8,
+}}
+      >
+        <FastImage
+                       style={{borderRadius: 50, width: 50, height: 50, }} 
+
+          source={{
+            uri: 'https://unsplash.it/400/400?image=1',
+            headers: { Authorization: 'someAuthToken' },
+            priority: FastImage.priority.normal,
+          }}
+          resizeMode={FastImage.resizeMode.contain} />
+          </View>
+
+
+    <View style={{width: 60,position:'relative',left:'55%',top:-85,backgroundColor:'white',display:'flex',flexDirection:'row',width:74,height:44,alignItems:'center',borderRadius:40,hadowColor: "#000",
           shadowOffset: {
             width: 0,
             height: 2,
@@ -39,9 +73,7 @@ const Item =({image,logo,name,items,rating,location,dist})=>(
       <Icon
       name='star'
       type='ionicons'
-      color={colors.lg.color
-      
-      
+      color={colors.lg.color  
       }
       />
       <Text>

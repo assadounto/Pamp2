@@ -9,6 +9,7 @@ import closed from '../src/screens/assets/closed2.png'
 import { format, addMonths, subMonths } from 'date-fns';
 import { set_time } from '../src/redux/booking';
 import { useDispatch } from 'react-redux';
+import Time from './Time';
 const DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 const defaultLocalizationOptions = {
   monthNames: [
@@ -216,50 +217,4 @@ export default function Calender({onSelect, navigation}) {
 <Time navigation={navigation} userOption={userOption}/>
         </>
   );
-}
-
-const Time=({navigation,userOption})=>{ 
-  const dispatch=useDispatch()
-   renderItem=({item,index})=>{
-  return (
-  
-    <Pressable
-        style={{}}
-        onPress={() => {
-         dispatch( set_time(item))
-         console.log(item)
-        navigation.navigate('Confirm')
-          }}>
-        <View style={{alignSelf:'center', width:'90%',height:85,borderBottomColor:colors.lg.color,borderBottomWidth:0.9,display:'flex',flexDirection:'row'}}>
-          <Text style={{marginTop:30,fontFamily:FontFamily.sourceSansProBold,fontSize:20,color:colors.dg.color}}>{item}</Text>
-          <Icon 
-           style={{width:30,marginTop:30,marginLeft:190}}
-                      name={'chevron-forward'}
-                      type="ionicon"
-                      onPress={() => setShowPassword(!showPassword)}
-                      color={colors.dg.color}
-                    />
-        </View>
-    </Pressable>
-
-);
-}
-
-  return(
-    <View>
-      { userOption.day== 'Sun' ? 
-      <Image source={closed} style={{marginTop:40,height:550,width: '100%'}}/> : 
-      <><Text style={{ marginTop: 50, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color, marginLeft: 30 }}>Time</Text>
-      <FlatList
-
-          data={['09:00 am', '09:30 am', '10:00 am','10:30 am','11:00 am']}
-          contentContainerStyle={{
-            marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, elevation:2, shadowOffset: { width: 5, height: 0 }, backgroundColor: 'white', borderRadius: 20, width: '90%',
-            alignSelf: 'center', paddingHorizontal: 10
-          }}
-          renderItem={renderItem}
-          keyExtractor={item => item} /></>
-      }      
-    </View>
-  )
 }

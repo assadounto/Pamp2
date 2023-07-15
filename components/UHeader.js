@@ -1,18 +1,21 @@
 import React, {cloneElement} from 'react';
-//import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';'
+import { Badge } from '@rneui/base';
 import {Text} from 'react-native';
 import {Avatar, color, Header, Icon,Image} from '@rneui/base';
 import {colors, styles} from '../src/Common_styles';
 import {View} from 'react-native-animatable';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import { FontFamily } from '../GlobalStyles';
 import userimg from '../assets/userimg.png'
-
+import { update_new } from '../src/redux/user';
 const UHeader = ({navigation}) => {
+  const dispatch=useDispatch()
   const user = useSelector(state => state.user.userInfo);
   const userimg = useSelector(state => state.user.image1);
-   console.log(user)
-  console.log(userimg,'a')
+  const  newnoti= useSelector(state => state.user.newnoti);
+  console.log(newnoti,'j')
+
   return (
     <View
       style={[
@@ -57,8 +60,22 @@ const UHeader = ({navigation}) => {
         </Text>
 
         <View style={{position: 'absolute', right: 30, top: 15}}>
-          <Icon name="bell" type="feather" color={colors.lg.color} onPress={()=>navigation.navigate('All_notifications')}/>
-        </View>
+        {
+            newnoti  ?
+            <>
+            <Icon size={30} onPress={() =>{ dispatch(update_new(true)); navigation.navigate('All_notifications')}} name="bell" type="feather" color={colors.lg.color} />
+            <Badge
+               
+                status="warning"
+                badgeStyle={{width:15,height:15,borderRadius:50}}
+              
+                containerStyle={{  position: 'absolute', top: -6, right: 1 }} />
+                </>
+              
+                :
+                <Icon onPress={()=> navigation.navigate('All_notifications')} name="bell" type="feather" color={colors.lg.color} />
+          }       
+           </View>
       </View>
     </View>
   );

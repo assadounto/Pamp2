@@ -78,16 +78,16 @@ const data1 =[
       <Input
    
         placeholder="Search for a service"
-        inputContainerStyle={[styles.textInput, styles.tc, { marginTop: 100, width:'90%', paddingTop: 10 }]}
+        inputContainerStyle={[styles.textInput, styles.tc, { marginTop: 80, width:'90%', paddingTop: 10 }]}
         leftIcon={<Icon name="chevron-back" type="ionicon" color={'#BCC4CC'} size={30} />}
         onFocus={() => navigation.navigate("Search")}
         
         value={location.name} />
         </Pressable>
-        <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' ,}}>{data1.length} result For {category}</Text><Text style={{marginBottom:20, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' }}>near you </Text>
+        <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' ,}}>{data.length} result For {category}</Text><Text style={{marginBottom:20, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' }}>near you </Text>
          <Tab.Navigator
          screenOptions={screenOptions}
-sceneContainerStyle={{ backgroundColor: 'white'  }}
+sceneContainerStyle={{ backgroundColor: 'white' ,marginBottom:50 }}
       tabBar={props => <MyTabBar {...props} />}>
   
 

@@ -6,9 +6,11 @@ import { FontFamily } from '../GlobalStyles';
 import Pop from '../src/screens/start_screens/pop';
 import { useDispatch, useSelector } from 'react-redux';
 import { cancel } from '../src/redux/booking';
-const Cancel_pop = ({setcancel, modal,setblur}) => {
+import { backendURL } from '../src/services/http';
+import axios from 'axios';
+const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
     const dispatch =  useDispatch()
-  
+  console.log(data.id)
 
     const [notify_cancel,set_notify]=useState(false)
    const handlepressCancel=()=>{
@@ -17,22 +19,25 @@ const Cancel_pop = ({setcancel, modal,setblur}) => {
     setcancel(false)
     }
 
-    const handlePressOK=()=>{
-   
-    dispatch(cancel(true))
-    setcancel(false)
-    set_notify(true);
+    const handlePressOK=async()=>{
+   const info= await axios.post(`${backendURL}/booking/cancel?id=${data.id}`)
+   console.log(info.data)
+     cancel(true)
+     setcancel(false)
+     set_notify(true);
     setTimeout(() => {
-        set_notify(false);
-        setblur(false);
-      }, 3000);
+         set_notify(false);
+         setblur(false);
+       }, 3000);
     }
   return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={[pop.pop]}>
+            
               <Text style={[colors.dgb, pop.h1, styles.tac]}>Are you sure you want to cancel booking?</Text>
-              <Text style={[colors.dgb, pop.h2, styles.tac]}>Due to late cancellation, you'll lose your deposit of 20% from the services value (¢200)</Text>
-              <Text style={[colors.dgb, pop.h3, styles.tac]}>See the <Text style={pop.h4}> Cancellation policy</Text></Text>
+              {
+              !data.cancelable&&  <><Text style={[colors.dgb, pop.h2, styles.tac]}>{`Due to late cancellation, you'll lose your deposit of 20% from the services value ${data.total}`}</Text><Text style={[colors.dgb, pop.h3, styles.tac]}>See the <Text style={pop.h4}> Cancellation policy</Text></Text></>
+              }
               <View style={{ display: 'flex', flexDirection: 'row', gap: 10, marginVertical: 20 }}>
                   <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: colors.lg.color, width: 120, height: 40 }} title='Keep'>
 

@@ -92,12 +92,9 @@ const Settings = ({navigation}) => {
   // }, [error]);
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: colors.w.color,
-      }}>
+    <SafeAreaView>
       <ScrollView
-        style={{width: '90%', alignSelf: 'center'}}
+        contentContainerStyle={{width: '90%', alignSelf: 'center'}}
         refreshControl={
           <RefreshControl
             //refreshing={isFetching || isLoading}
@@ -298,7 +295,7 @@ const Settings = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
   );
 };
 

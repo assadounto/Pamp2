@@ -12,7 +12,7 @@ import {
 import Header from './header';
 import {styles, colors} from '../../Common_styles';
 import {Button} from '@rneui/base';
-import Pop from './pop';
+import Pop2 from './pop2';
 import Blur from './Blur';
 import {useGetEmailConfirmMutation,useGetPhoneConfirmMutation} from '../../redux/authapi';
 import { useSelector } from 'react-redux';
@@ -33,7 +33,7 @@ const VerifyEmail = ({navigation}) => {
     const [getEmailConfirm,{isSuccess,isLoading,data,isError}]= useGetEmailConfirmMutation()
     const [resendEmail,{isSuccess:email_success}]= useResendEmailMutation()
     const [getPhoneConfirm]= useGetPhoneConfirmMutation()
-  console.log(isSuccess);
+ 
   const [value, setValue] = useState('');
   const [wrong,setwrong] =useState('')
   const [error,seterror]=useState(false)
@@ -45,9 +45,9 @@ const VerifyEmail = ({navigation}) => {
   const [modalVisible, setModal] = useState(false);
   const [timerCount, setTimerCount] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
-  console.log(user)
+ 
   useEffect(() => {
-    console.log(data);
+   
     isError ? error_color ='red': ''
     if (isSuccess) {
       setModal(true);
@@ -61,7 +61,7 @@ const VerifyEmail = ({navigation}) => {
       }, 4000);
     } 
     else  if (!isSuccess){
-      console.log("pin wrong")
+     
       
     }
   }, [isSuccess, navigation,handleSubmit]);
@@ -116,7 +116,7 @@ const VerifyEmail = ({navigation}) => {
   };
   
   const handleSubmit = async () => {
-    console.log(typeof value, value.length);
+   
     
     if (value.length < 4) {
       alert('Please enter a valid code');
@@ -230,11 +230,11 @@ const VerifyEmail = ({navigation}) => {
      
           
         <Text style={[colors.lg, styles.bold, styles.tc]}>
-          Change Phone Number
+          Change Email
         </Text>
 
-        <Pop
-          main={'You have Succesfully verified your Email'}
+        <Pop2
+          main={'You have Successfully verified your Email'}
           modal={modalVisible}
         />
       </SafeAreaView>

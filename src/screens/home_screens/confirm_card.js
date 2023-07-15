@@ -12,12 +12,12 @@ const Confirm_card=()=>{
           accessCode: '2p3j42th639duy4'
         })
         .then(response => {
-          console.log(response); // do stuff with the token
+         
         })
         .catch(error => {
-          console.log(error); // error is a javascript Error object
-          console.log(error.message);
-          console.log(error.code);
+         
+         
+         
         })
         
     }

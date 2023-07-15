@@ -11,6 +11,7 @@ import {styles, colors} from '../../Common_styles';
 import {register, setuser} from '../../redux/user';
 
 import Header from './header';
+import PhoneInput from 'react-native-phone-number-input';
 const Register = ({navigation}) => {
   const {errorMessage, loading} = useSelector(state => state.user);
   const dispatch = useDispatch();
@@ -21,19 +22,23 @@ const Register = ({navigation}) => {
 
 
   const onSubmit = async values => {
-   dispatch(register({user: {
+   dispatch(register(
+   {user: {
     email:values.email,
+    name: values.name,
     phone: values.phone,
     username: values.username,
     password: values.password
-   }}));
+   }}
+  
+   ));
     dispatch(setuser({
     email:values.email,
     phone: values.phone,
     password: values.password
     }));
 
-    console.log(values);
+   
     navigation.navigate('VerifyEmail');
   };
 
@@ -75,11 +80,7 @@ const Register = ({navigation}) => {
               errors.name = 'Last name is required';
             }
 
-            if (!values.phone) {
-              errors.phone = 'Phone number is required';
-            } else if (!/^[0-9]{10}$/i.test(values.phone)) {
-              errors.phone = 'Invalid phone number';
-            }
+            
 
             return errors;
           }}>
@@ -108,14 +109,27 @@ const Register = ({navigation}) => {
 
                 <Input
                   placeholder="Last Name"
-                  inputContainerStyle={[[styles.textInput]]}
+                  inputContainerStyle={[styles.textInput]}
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
                   value={values.name}
                   errorMessage={touched.name && errors.name}
                 />
-
-                <Input
+                 <PhoneInput
+                 
+                 textContainerStyle={{ backgroundColor: '#EFEFEF',}}
+            //ref={phoneInput}
+            //defaultValue={value}
+            containerStyle={[[styles.textInput,{alignSelf:'center',marginBottom:22}]]}
+            defaultCode="GH"
+           codeTextStyle={{color:colors.lg.color}}
+            layout="second"
+            //onChangeText={}
+            onChangeFormattedText={handleChange('phone')}
+            placeholder="Phone Number"
+            autoFocus
+          />
+                {/* <Input
                   placeholder="Phone Number"
                   inputContainerStyle={[[styles.textInput]]}
                   onChangeText={handleChange('phone')}
@@ -123,7 +137,7 @@ const Register = ({navigation}) => {
                   value={values.phone}
                   errorMessage={touched.phone && errors.phone}
                   keyboardType="phone-pad"
-                />
+                /> */}
 
                 <Input
                   placeholder="Email"

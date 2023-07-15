@@ -5,14 +5,19 @@ import { Button } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
 import Pop from '../src/screens/start_screens/pop';
 import { Icon } from '@rneui/base';
-const Notes_pop = ({setcancel, modal,setblur}) => {
+import axios from 'axios';
+import { backendURL } from '../src/services/http';
+import Pop2 from '../src/screens/start_screens/pop2';
+const Notes_pop = ({setcancel, modal,setblur,id}) => {
     const [notify_cancel,set_notify]=useState(false)
+    const [text,setText]=useState('')
    const handlepressCancel=()=>{
     setblur(false);
     setcancel(false)
     }
 
-    const handlePressOK=()=>{
+    const handlePressOK=async()=>{
+    const {data}= axios.post(`${backendURL}/booking/notes`,{id: id,notes: text })
     setcancel(false)
     set_notify(true);
     setTimeout(() => {
@@ -34,12 +39,12 @@ const Notes_pop = ({setcancel, modal,setblur}) => {
 
          </View>
          
-        <TextInput  placeholder='leave note..'     multiline={true} style={pop.input}/>
+        <TextInput  placeholder='leave note..' onChangeText={setText}    multiline={true} style={pop.input}/>
           <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.lg.color, width: 120, height: 40 }} title='Send'>
 
                   </Button>
           </View>
-      </Modal><Pop main={'Note successfully sent to Likkle salon'} modal={notify_cancel}/></>
+      </Modal><Pop2 main={'Note successfully sent to Likkle salon'} modal={notify_cancel}/></>
   );
 };
 const pop=StyleSheet.create({

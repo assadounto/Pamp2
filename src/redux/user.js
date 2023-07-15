@@ -74,7 +74,15 @@ const userSlice = createSlice({
     user: null,
     image1: null,
     location:{},
-    
+    notification_count:0,
+    newnoti: true,
+    currentServiceIndex: 0,
+    serviceStatus:{
+      color:'',
+      status:''
+     },
+
+
     payment_methods:{
       default:  {  
          id:1,
@@ -96,9 +104,8 @@ const userSlice = createSlice({
   },
       ]
     },
-    
-    
   },
+
   reducers: {
     setMessage(state, action) {
       state.user = action.payload;
@@ -139,7 +146,30 @@ const userSlice = createSlice({
       setLocation(state, action) {
         state.location = action.payload
         },
-  
+        setCurrentServiceIndex(state, action) {
+          state.currentServiceIndex = action.payload
+          },
+          setServiceStatus(state, action) {
+            state.serviceStatus = action.payload
+            },
+            setnotifications_count(state, action) {
+              if (action.payload > state.notification_count) {
+                return {
+                  ...state,
+                  notification_count: action.payload,
+                  newnoti: true
+                };
+              } else {
+                return {
+                  ...state,
+                  notification_count: action.payload,
+                  newnoti: false
+                };
+              }
+            },
+            update_new(state, action) {
+              state.newnoti=action.payload   
+          },     
 
   },
   extraReducers: builder => {
@@ -150,7 +180,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.image1= action.payload.data.image
         state.email_confirmed = action.payload.data.email_confirmed;
-        console.log(state);
+       
       })
       .addCase(login.rejected, (state, {payload}) => {
         state.loading = false;
@@ -170,7 +200,7 @@ const userSlice = createSlice({
       .addCase(register.rejected, (state, {payload}) => {
         state.loading = false;
         state.createError = payload;
-        console.log(state);
+       
       })
       .addCase(register.pending, (state, action) => {
         state.loading = true;
@@ -190,6 +220,8 @@ const userSlice = createSlice({
 });
 
 export const {
+  update_new,
+  setnotifications_count,
   cancel,
   setImage,
   setNotification,
@@ -199,6 +231,8 @@ export const {
   setuser,
   setPayment,
   setDefault,
-  setLocation
+  setLocation,
+  setCurrentServiceIndex,
+  setServiceStatus
 } = userSlice.actions;
 export default userSlice.reducer;

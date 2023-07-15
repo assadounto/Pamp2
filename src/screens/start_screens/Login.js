@@ -50,7 +50,7 @@ const Login = ({navigation}) => {
     try {
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signIn().then(result => {
-        console.log(result);
+       console.log(result)
         setUseGoogle({
           email: result.user.email,
           password: result.user.id,
@@ -79,7 +79,7 @@ const Login = ({navigation}) => {
         alert('Google play services not available or outdated !');
         // play services not available or outdated
       } else {
-        console.log(error);
+       console.log(error)
       }
     }
   };
@@ -181,7 +181,7 @@ const Login = ({navigation}) => {
               <Text
                 style={[styles.t3,{marginTop:20}]}
                 onPress={() => navigation.navigate('Register')}>
-                Don't have and account?
+                Don't have an account?
                 <Text style={styles.t4}> Sign Up</Text>
               </Text>
             </Pressable>

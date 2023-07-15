@@ -4,10 +4,19 @@ import { styles ,colors} from '../src/Common_styles';
 import FastImage from 'react-native-fast-image';
 export default function Staff({ data, onSelect }) {
   const [userOption, setUserOption] = useState('');
-   
-  const selectHandler = (value) => {
-    onSelect(value);
-    setUserOption(value);
+  const [prev, setPrev] = useState('');
+
+  const selectHandler = value => {
+    if (prev === value) {
+      setUserOption('');
+      onSelect('');
+      setPrev('');
+      return;
+    } else {
+      setUserOption(value);
+      onSelect(value);
+      setPrev(value);
+    }
   };
   return (
     <ScrollView horizontal={true} contentContainerStyle={{ marginLeft: 10 }} showsHorizontalScrollIndicator={false}>

@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/core';
 import { useGetnotificationsQuery } from '../../redux/authapi';
 import { useSelector } from 'react-redux';
 
+
 const Notifications= () => {
   const user = useSelector(state => state.user.userInfo);
 
@@ -36,7 +37,7 @@ const Notifications= () => {
     }
   };
   
-  console.log(data)
+ 
   const navigation=useNavigation()
   return (
     
@@ -73,12 +74,12 @@ const styles = StyleSheet.create({
     color: colors.lg.color,
     fontWeight: 'bold',
     marginLeft: 20,
-    marginTop: 50,
+    marginTop: 90,
     marginBottom: 40,
   },
   x: {
     position: 'absolute',
-    top: 50,
+    top: 90,
     right: 20,
   },
   icon: {

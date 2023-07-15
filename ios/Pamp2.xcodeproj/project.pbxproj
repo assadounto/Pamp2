@@ -562,7 +562,7 @@
 				DEVELOPMENT_TEAM = 5J44AW2GMN;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Pamp2/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Pamp  for  Clients";
+				INFOPLIST_KEY_CFBundleDisplayName = Pamp;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -596,7 +596,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5J44AW2GMN;
 				INFOPLIST_FILE = Pamp2/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Pamp  for  Clients";
+				INFOPLIST_KEY_CFBundleDisplayName = Pamp;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

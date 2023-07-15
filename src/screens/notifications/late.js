@@ -13,6 +13,7 @@ const Late = () => {
   <><Pressable onPress={() => usecolor('red')} style={{ backgroundColor: 'white', borderRadius: 20, paddingTop: 20, marginHorizontal: 20 }}>
             <View
                 style={{
+                    marginTop:20,
                     display: 'flex',
                     flexDirection: 'row',
                     marginLeft: 20,

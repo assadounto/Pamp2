@@ -10,6 +10,7 @@ import Favourites from '../screens/home_screens/favourites';
 import AppointmentsContainer from '../../components/AppointmentsContainer';
 import Bookings from '../../screens/Bookings';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Success from '../screens/home_screens/Sucess';
 const Tab = createBottomTabNavigator();
 
 function MyTabBar({state, descriptors, navigation}) {
@@ -142,6 +143,7 @@ const MainNavigator = () => {
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
+        unmountOnBlur: true,
       }}
       tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen   options={{

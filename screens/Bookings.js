@@ -1,36 +1,60 @@
 import * as React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet,FlatList, Text, View } from "react-native";
 import SalonContainer from "../components/SalonContainer";
 import AppointmentsContainer from "../components/AppointmentsContainer";
 import MenuContainer from "../components/MenuContainer";
 import { Margin, FontSize, FontFamily, Color, Padding } from "../GlobalStyles";
 import EmptyAppoiment from "../components/Empty_appoitment";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { backendURL } from "../src/services/http";
+import { da } from "date-fns/locale";
+import { useIsFocused } from "@react-navigation/core";
+import { ScrollView } from "react-native-gesture-handler";
 const Bookings = ({navigation}) => {
-  const booking= useSelector(state=>state.booking)
-  return (
-    <View style={styles.bookings}>
-      <Image
-        style={[styles.bellIcon, styles.mt_84, styles.mr47]}
-        resizeMode="cover"
-        source={require("../assets/bell.png")}
-      />
-      <Text style={[styles.appointments, styles.mt_90, styles.mr211]}>
-        Appointments
-      </Text>
-{
-  booking.Booking_detail ? 
+  const user = useSelector((state)=>state.user.userInfo)
+  const isFocused = useIsFocused();
+  const [bookings,setBookings]=React.useState([])
+  React.useEffect(()=>{
+    if (isFocused) {
+  
+  get()
+    }
+  },[isFocused])
 
-      <AppointmentsContainer navigation={navigation} />:
-    <EmptyAppoiment/>
+  async   function get(){
+    const {data}= await axios.get(`${backendURL}/booking?id=${user.id}`)
+    data && setBookings(data)
+    console.log(data[0])
   }
-    </View>
+  return (
+    <><Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: 90,marginBottom:30 }}>Appointments</Text>
+  
+     
+
+      {bookings.length!== 0 ?
+    
+        <><FlatList 
+          showsVerticalScrollIndicator={false}
+          data={bookings}
+          renderItem={({ item }) => (
+
+
+            <AppointmentsContainer data={item} navigation={navigation} />
+
+          )}
+          keyExtractor={item => item.id} /></>
+
+:
+        <EmptyAppoiment />}
+       
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   mt_90:{
-   marginTop:80,
+   marginTop:130,
    marginLeft:10
   },
   mt_84: {
@@ -70,14 +94,7 @@ const styles = StyleSheet.create({
     color: Color.lightgreen,
     textAlign: "left",
   },
-  bookings: {
-
-    backgroundColor: '#ffffff',
-   
-    width: "100%",
-    paddingTop: Padding.p_lg,
-    alignItems: "flex-end",
-  },
+  
 });
 
 export default Bookings;

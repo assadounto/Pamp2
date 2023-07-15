@@ -17,7 +17,7 @@ const Momo=({navigation,select})=>{
            name: option,
            Number:phone_number,
         }
-     console.log(item)  
+    
      dispatch(setPayment(item))
     }
 

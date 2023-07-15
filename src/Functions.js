@@ -82,9 +82,6 @@ export function convertMinutesToHoursAndMinutes(minutes) {
       return 'Closed';
     }
   
-    if (!vendor.opened) {
-      return 'Closed';
-    }
   
     const openingHour = parseInt(vendor.opening_time.split(':')[0]);
     const openingMinute = parseInt(vendor.opening_time.split(':')[1]);
@@ -131,3 +128,20 @@ export function convertMinutesToHoursAndMinutes(minutes) {
   
     return formattedDate;
   }
+  export const generateTimeRange = (openingTime, closingTime) => {
+    // Function to format hour and minute values
+    const formatHourMinute = (hours, minutes) => {
+      const period = hours >= 12 ? "pm" : "am";
+      const formattedHours = hours > 12 ? hours - 12 : hours;
+      return `${formattedHours}:${minutes.toString().padStart(2, "0")}${period}`;
+    };
+  
+    // Extract hours and minutes from opening and closing times
+    const [openingHours, openingMinutes] = openingTime.split(":").map(Number);
+    const [closingHours, closingMinutes] = closingTime.split(":").map(Number);
+  
+    // Format the time range string
+    const timeRange = `${formatHourMinute(openingHours, openingMinutes)} - ${formatHourMinute(closingHours, closingMinutes)}`;
+  
+    return timeRange;
+  };

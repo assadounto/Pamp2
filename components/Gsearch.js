@@ -22,7 +22,7 @@ const Gsearch = ({setLoc}) => {
  
   React.useEffect(() => {
     setLoc(selectedLocation)
-    console.log(selectedLocation,'here')
+   
     if (start) {
       const delaySearch = setTimeout(() => {
         handleSearch();
@@ -31,11 +31,11 @@ const Gsearch = ({setLoc}) => {
       return () => clearTimeout(delaySearch);
     }
   }, [searchQuery, start]);
-  console.log(searchResults)
+ 
   const handleSelectLocation = (location) => {
     setSelectedLocation(location);
     setLoc(location)
-    console.log(selectedLocation)
+   
     // Do something with the selected location, such as updating state or triggering an action
   };
 
@@ -67,10 +67,10 @@ const Gsearch = ({setLoc}) => {
         reverseGeocode(latitude,longitude)
         handleSearch();
   
-     console.log(searchQuery)
+    
       },
       (error) => {
-        console.log(error.message.toString());
+       
       },
       {
         showLocationDialog: true,
@@ -89,7 +89,7 @@ const Gsearch = ({setLoc}) => {
         `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchQuery}&key=${apiKey}`
       );
       const data = await response.json();
-      console.log(data)
+     
       // Extract the search results from the API response
       const results = data.results || [];
       setSearchResults(results);

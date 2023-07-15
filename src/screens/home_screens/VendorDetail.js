@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView, Modal} from 'react-native'
+import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView,Dimensions, Modal} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
 import { Icon,Input ,Button,CheckBox} from '@rneui/base'
 import { colors } from '../../Common_styles'
@@ -10,27 +10,90 @@ import { FontSize } from '../../../GlobalStyles'
 import Staff from '../../../components/Staff'
 import { ImageBackground } from 'react-native'
 import { SliderBox } from "react-native-image-slider-box";
-import { useDispatch } from 'react-redux'
-import { setbooking,setVendor } from '../../redux/booking'
+import { useDispatch,useSelector } from 'react-redux'
+import { setbooking,setVendor,set_staff,setvendorimg } from '../../redux/booking'
 import { convertMinutesToHoursAndMinutes ,modifyItemList} from '../../Functions'
 import { useFetchVendorQuery } from '../../redux/authapi'
-import { setvendorname } from '../../redux/booking'
+import { setvendorname,setvendorid } from '../../redux/booking'
 import axios from 'axios'
 import FastImage from 'react-native-fast-image'
 import { backendURL } from '../../services/http'
 import Opening from '../../../components/Openning'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Blur from '../start_screens/Blur'
+import Loading from '../../../components/loading'
 import { checkVendorStatus } from '../../Functions'
+import { use } from '../../redux/homeapi'
+import CustomImageSlider from '../../../components/CustomSlider'
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry'
 const getFormattedPrice = (price) => `$${price.toFixed(2)}`;
+const windowHeight = Dimensions.get('window').height;
+const swiperHeight = windowHeight * 0.5; // Set the swiper height to 50% of the window height
 
 const VendorDetail = ({navigation,route}) => {
+  const user = useSelector((state)=>state.user.userInfo)
+  const [fav,setFav]=useState(false)
   const {id}= route.params
   const [data1,setdata]=useState()
   const [modal,setModal]=useState(false)
   const [checkedState, setCheckedState] = useState(
-   
+  
   );
+
+   const checkVendorStatus = (openingHours) => {
+    const currentDate = new Date();
+    const currentDay = currentDate.toLocaleString('en-US', { weekday: 'long' });
+    const currentHour = currentDate.getHours();
+    const currentMinute = currentDate.getMinutes();
+  
+    const vendor = openingHours.find((item) => item.day === currentDay.split(',')[0]);
+  console.log(vendor,currentDay)
+    if (!vendor || !vendor.opening_time || !vendor.closing_time || !vendor.opened) {
+      return 'Closed';
+    }
+  
+  
+    const openingHour = parseInt(vendor.opening_time.split(':')[0]);
+    const openingMinute = parseInt(vendor.opening_time.split(':')[1]);
+    const closingHour = parseInt(vendor.closing_time.split(':')[0]);
+    const closingMinute = parseInt(vendor.closing_time.split(':')[1]);
+  
+    if (currentDay === 'Saturday' || currentDay === 'Sunday') {
+      return 'Open';
+    }
+  
+    if (
+      currentHour > openingHour &&
+      currentHour < closingHour
+    ) {
+      return 'Open';
+    } else if (
+      currentHour === openingHour &&
+      currentMinute >= openingMinute
+    ) {
+      return 'Open';
+    } else if (
+      currentHour === closingHour &&
+      currentMinute <= closingMinute
+    ) {
+      return 'Open';
+    } else {
+      return 'Closed';
+    }
+  };
+  
+
+
+  const createFav=async()=>{
+    try {
+     const {data}= await axios.post(`${backendURL}/favorites`,{vendor_id: id,user_id:user.id})
+     data.message=='added'? setFav(true): setFav(false)
+    }
+    catch(e){
+      console.log(e)
+    }
+  }
+
   const[itemList,setitem]=useState([])
   const [parentState, setparentState] = useState(
    
@@ -38,10 +101,11 @@ const VendorDetail = ({navigation,route}) => {
   ///const {data,isLoading}=useFetchVendorQuery(id)
    useEffect(()=>{
    async  function get(){
-        const{ data }=await axios.get(`${backendURL}/details?id=${id}`)
+        const{ data }=await axios.get(`${backendURL}/details?id=${id}&user_id=${user.id}`)
         
         
-          console.log(data)
+         data && console.log(data,'k')
+          setFav(data.favorited)
           setdata(
             {
               images: [data.cover_url,...data.other_images_urls],
@@ -49,9 +113,10 @@ const VendorDetail = ({navigation,route}) => {
               image: data.cover_url,
               logo: data.avatar_url,
               name:data.username,
-              rating:'',
+              lon: data.lon,
+              lat: data.lat,
               location: data.name,
-              dist: '',
+              dist: '4km',
               items: data.top_services.split(",").map((item)=>{
              return {
                 value: item
@@ -87,7 +152,7 @@ const VendorDetail = ({navigation,route}) => {
              
               ,
               rating: '4.5',
-              desc: 'We are at you services. We give you the best of services you can think of',
+              desc: data.description,
               hours: data.opening_hours
             }
           
@@ -119,6 +184,7 @@ const VendorDetail = ({navigation,route}) => {
           return {
             id: cat.id,
             name:cat.name,
+            appointment_color:cat.appointment_color,
             total:0,
             time:0,
             services:0,
@@ -164,8 +230,11 @@ const VendorDetail = ({navigation,route}) => {
       dispatch(setbooking(checkedState))
       console.log(checkedState)
       dispatch(setvendorname(data1.name))
+      dispatch(setvendorid(data1.id))
+      dispatch(setvendorimg(data1.logo))
       dispatch(setVendor(data1.hours))
-    navigation.navigate('SelectDate')
+      dispatch(set_staff(staff))
+    navigation.navigate('SelectDate',{id: id,rebooked: false})
     }
     const all= [];
 
@@ -173,52 +242,37 @@ const VendorDetail = ({navigation,route}) => {
 
     const [total, setTotal] = useState(0);
   //console.log(topping2.length)
-    const handleOnChange = (position,name) => {
-      const found = checkedState.topping2.findIndex(element=> element.name == name);
-      console.log('name',found)
-      console.log('pos',position)
-      const new_obj={...checkedState}
-   
-      // const updatedCheckedState = checkedState.topping2[found].items.map((item, index) =>
-      //   index === position ? {...item, check: !item.check} : item.check
+  const handleOnChange = (position, categoryName) => {
+    const updatedCheckedState = { ...checkedState };
+    const categoryIndex = updatedCheckedState.topping2.findIndex((category) => category.name === categoryName);
+    
+    if (categoryIndex !== -1) {
+      const itemIndex = updatedCheckedState.topping2[categoryIndex].items.findIndex((item) => item.id === position);
       
-      // );
-
-      const object = checkedState.topping2[found].items.findIndex(element=>element.id === position)
-      
-      new_obj.topping2[found].items[object]= {...new_obj.topping2[found].items[object],check: !new_obj.topping2[found].items[object].check}
-      if (new_obj.topping2[found].items[object].check){
-      new_obj.topping2[found].total+=new_obj.topping2[found].items[object].price
-      new_obj.topping2[found].time+=new_obj.topping2[found].items[object].time
-      new_obj.topping2[found].items_name= modifyItemList(itemList, new_obj.topping2[found].items[object].name2, true)    
-      new_obj.topping2[found].services+=1
+      if (itemIndex !== -1) {
+        const isChecked = updatedCheckedState.topping2[categoryIndex].items[itemIndex].check;
+        
+        updatedCheckedState.topping2[categoryIndex].items[itemIndex].check = !isChecked;
+        
+        if (isChecked) {
+          // Item is unchecked, update the total, time, and services
+          updatedCheckedState.topping2[categoryIndex].total -= updatedCheckedState.topping2[categoryIndex].items[itemIndex].price;
+          updatedCheckedState.topping2[categoryIndex].time -= updatedCheckedState.topping2[categoryIndex].items[itemIndex].time;
+          updatedCheckedState.topping2[categoryIndex].services -= 1;
+          updatedCheckedState.topping2[categoryIndex].items_name = modifyItemList(itemList, updatedCheckedState.topping2[categoryIndex].items[itemIndex].name2, false);
+        } else {
+          // Item is checked, update the total, time, and services
+          updatedCheckedState.topping2[categoryIndex].total += updatedCheckedState.topping2[categoryIndex].items[itemIndex].price;
+          updatedCheckedState.topping2[categoryIndex].time += updatedCheckedState.topping2[categoryIndex].items[itemIndex].time;
+          updatedCheckedState.topping2[categoryIndex].services += 1;
+          updatedCheckedState.topping2[categoryIndex].items_name = modifyItemList(itemList, updatedCheckedState.topping2[categoryIndex].items[itemIndex].name2, true);
+        }
+        
+        setCheckedState(updatedCheckedState);
       }
-      else if(!new_obj.topping2[found].items[object].check){
-        new_obj.topping2[found].total-=new_obj.topping2[found].items[object].price
-        new_obj.topping2[found].time-=new_obj.topping2[found].items[object].time
-        new_obj.topping2[found].items_name= modifyItemList(itemList, new_obj.topping2[found].items[object].name2, false)    
-        new_obj.topping2[found].services-=1
-      }
-      else {
-        new_obj.topping2[found].total=0
-        new_obj.topping2[found].time=0
-        new_obj.topping2[found].items_name=0
-        new_obj.topping2[found].services=0
-      }
-      setCheckedState(new_obj);
-        console.log(new_obj.topping2)
-      // const totalPrice = updatedCheckedState.reduce(
-      //   (sum, currentState, index) => {
-      //     if (currentState === true) {
-      //       return sum + all[index].price;
-      //     }
-      //     return sum;
-      //   },
-      //   0
-      // );
+    }
+  };
   
-      // setTotal(totalPrice);
-    };
   
     const handleOnChange2 = (position) => {
       const updatedCheckedState = parentState.map((item, index) =>
@@ -229,9 +283,6 @@ const VendorDetail = ({navigation,route}) => {
       setparentState(updatedCheckedState);
   
     }
-
-    
-
   return (
 
   
@@ -243,30 +294,23 @@ const VendorDetail = ({navigation,route}) => {
         // flex:1
       }}
     >
-
-      <SliderBox
-        dotStyle={{ height: 8, width: 8, marginHorizontal: -5 }}
-        sliderBoxHeight={450}
-        ImageComponentStyle={{ borderBottomLeftRadius: 25, borderBottomRightRadius: 25 }}
-        imageLoadingColor="red"
-        images={data1.images} 
-        >
-      
-      </SliderBox>
-      <View style={{ position: 'absolute', top: 60, right: 20 }}>
+<CustomImageSlider images={data1.images} border={true}/>
+    
+      <View style={{ position: 'absolute', top: 60, right: 30 }}>
         <Icon
-          name='heart-outline'
+        onPress={createFav}
+          name='heart'
           type='ionicon'
           size={30}
-
-          color={'#FFFFFF'} />
+          
+          color={fav ?colors.lg.color: '#FFFFFF'} />
       </View>
       <View style={{ position: 'absolute', top: 60, left: 20 }}>
         <Icon
           name='chevron-back-outline'
           type='ionicon'
           size={30}
-
+          onPress={()=>navigation.goBack()}
           color={'#FFFFFF'} />
       </View>
 
@@ -295,41 +339,59 @@ const VendorDetail = ({navigation,route}) => {
                          style={{borderRadius: 50, width: 70, height: 69, }} 
   
             source={{
-              uri: 'https://unsplash.it/400/400?image=1',
+              uri: data1.logo,
               headers: { Authorization: 'someAuthToken' },
-              priority: FastImage.priority.normal,
+              priority: FastImage.priority.high,
             }}
-            resizeMode={FastImage.resizeMode.contain} />
+            resizeMode={FastImage.resizeMode.cover} />
             </View>
-      <View style={{
-        width: 60, position: 'absolute', right: 30, top: 420, backgroundColor: 'white', display: 'flex', flexDirection: 'row', width: 74, height: 44, alignItems: 'center', borderRadius: 40, shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.30,
-        shadowRadius: 3.84,
+            <View style={{
+  width: 60, 
+  position: 'absolute', 
+  right: 30, 
+  top: swiperHeight-20, /* Changed from top: 400 to top: '50%' */
+  backgroundColor: 'white', 
+  display: 'flex', 
+  flexDirection: 'row', 
+  width: 74, 
+  height: 44, 
+  alignItems: 'center', 
+  borderRadius: 40, 
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.30,
+  shadowRadius: 3.84,
+  elevation: 8,
+  justifyContent: 'center'
+}}>
+  <Icon
+    name='star'
+    type='ionicons'
+    color={colors.lg.color} />
+  <Text>
+    {data1.rating}
+  </Text>
+</View>
 
-        elevation: 8,
-        justifyContent: 'center'
-      }}>
-        <Icon
-          name='star'
-          type='ionicons'
-          color={colors.lg.color} />
-        <Text>
-          {data1.rating}
-        </Text>
-      </View>
       <View style={{ position: 'relative', marginTop: -40, marginBottom: 80, padding: 20 }}>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color }}>{data1.name}</Text>
-          <TouchableOpacity onPress={()=>setModal(true)} style={{paddingHorizontal:5,marginLeft:5, marginTop:5, height:20,backgroundColor:colors.lg.color,borderRadius:20}}>{checkVendorStatus(data1.hours) === 'Open' ? (
+          <TouchableOpacity onPress={()=>setModal(true)} style={{paddingHorizontal:5,marginLeft:5, marginTop:5, height:20,backgroundColor:checkVendorStatus(data1.hours) == 'Open'? colors.lg.color : 'red',borderRadius:20}}>{checkVendorStatus(data1.hours) === 'Open' ? (
                     <Text style={{marginHorizontal:5}} >open</Text>
                   ) : (
-                    <Text style={{ color: 'red',marginHorizontal:5 }}>closed</Text>
+                    <Text style={{color: 'white',marginHorizontal:5,fontFamily:FontFamily.sourceSansProSemibold }}>closed</Text>
                   )}</TouchableOpacity>
-          <Icon name='share-2' type='feather' color={'00463C'} style={{ marginLeft: 170 }} />
+         <View style={{position:'absolute', top:0,right:30} }>
+
+         <Icon 
+         name='share-2' 
+         type='feather' 
+         color={'00463C'} 
+          />
+         </View>
         </View>
 
         <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -340,8 +402,9 @@ const VendorDetail = ({navigation,route}) => {
                 style={{
                   backgroundColor: 'white',
                   borderRadius: 20,
-                  height: 34,
-                  padding: 8,
+                  height: 30,
+                  padding: 5,
+                  paddingHorizontal:17,
                   marginBottom: 15,
                   borderColor: '#B0EBBD',
                   borderWidth: 1,
@@ -358,10 +421,7 @@ const VendorDetail = ({navigation,route}) => {
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Icon name='location-outline' type='ionicon' color={colors.lg.color} />
           <Text style={{ color: colors.lg.color, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {data1.dist} - <Text onPress={() => console.log(navigation.navigate('Mapview', {
-            rating: data1.rating,
-            dist: data1.desc,
-            name: data1.name,
-            image: data1.image
+           data: data1
           }))} style={{ color: colors.dg2.color }}>Show on map</Text></Text>
         </View>
         <Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, marginBottom: 20, marginTop: 20 }}> {data1.desc}</Text>
@@ -371,7 +431,7 @@ const VendorDetail = ({navigation,route}) => {
             <View style={[styles.t6, { borderBottomColor: colors.lg.color, borderBottomWidth: 1, marginBottom: 20 }]}>
               <CheckBox
                 title={<>
-                  <View><Text style={[colors.dg, { marginLeft: 10 }]}>
+                  <View><Text style={[colors.dg, {marginTop:0,fontFamily: FontFamily.sourceSansProBold, fontSize:18, marginLeft: 10 }]}>
                     {name}
                   </Text>
                     {time != 0 &&
@@ -380,31 +440,41 @@ const VendorDetail = ({navigation,route}) => {
                       </Text>}
                   </View>
                   {total > 0 &&
-                    <Text style={[colors.dg, { marginLeft: 'auto' }]}>
+                    <Text style={[colors.dg, {fontFamily: FontFamily.sourceSansProBold, fontSize:19,top:-9, marginLeft: 'auto' }]}>
                       {'\u20B5'} {total}
                     </Text>}
                 </>}
-                uncheckedIcon={<View style={[styles.checkc, { backgroundColor: 'white', borderColor: colors.lg.color, borderWidth: 1 }]}>
-                </View>}
-                checkedIcon={<View style={styles.checkc}>
+                uncheckedIcon={<Image
+                  resizeMode='contain'
+                  style={{width:33,height:33}}
+                    source={require('../../../assets/rectangle1063.png')}
+                     />}
+                checkedIcon={
                   <Image
-                    source={require('../../../assets/check3.png')}
-                    style={styles.check} />
-                </View>}
+                  style={{width:33,height:33}}
+                  resizeMode='contain'
+                    source={require('../../../assets/group2210.png')}
+                     />
+                }
                 checked={parentState[index]}
                 onPress={() => handleOnChange2(index)} />
               {parentState[index] === true && items.map(({ name2, time, id, price, check }, _index2) => {
                 return (
                   <View style={{ marginLeft: 30 }}>
                     <CheckBox
-                      title={<><Text style={[colors.dg, { marginLeft: 10 }]}>
+                      title={<>
+
+
+                      <Text  numberOfLines={2} ellipsizeMode="tail" style={[colors.dg, {  marginLeft: 10 }]}>
                         {name2}
                       </Text>
+
+
 
                         <Text style={[{ fontSize: 10, color: '#BBB9BC' }]}>
                           {' '} {convertMinutesToHoursAndMinutes(time)}
                         </Text>
-                        <Text style={[colors.dg, { marginLeft: 'auto' }]}>
+                        <Text style={[colors.dg, {fontFamily: FontFamily.sourceSansProBold,  marginLeft: 'auto' }]}>
                           {'\u20B5'} {price}
                         </Text></>}
                       checkedIcon={<View style={[{ backgroundColor: colors.lg.color, width: 15, height: 15, borderRadius: 5 }]}>
@@ -429,7 +499,7 @@ const VendorDetail = ({navigation,route}) => {
 
     </ScrollView>
     <Opening data={data1.hours} modal={modal} setModal={setModal}/>
-    <View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: '#ffff', width: '100%', marginBottom: 0 }}>
+    <View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: '#ffff',height:200, width: '100%', marginBottom: 0 }}>
         <Button
           title={'Book'}
           // containerStyle={}
@@ -447,7 +517,7 @@ const VendorDetail = ({navigation,route}) => {
           onPress={handleBookingSubmit} />
       </View> 
      {modal && <Blur/>}
-      </>:<Text>ssss</Text>}</>
+      </>:<Loading/>}</>
 
 
   )

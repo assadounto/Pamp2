@@ -65,6 +65,7 @@ const Search2 = () => {
        autoFocus={true}
         placeholder='Search for a service or venue'
         onChangeText={setQuery}
+        keyboardType="web-search"
         onSubmitEditing={handleSearch}
         />
       </View>

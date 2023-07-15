@@ -19,10 +19,11 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {colors, styles} from '../../Common_styles';
 import {Text} from 'react-native-animatable';
 import DelPop from './pop';
-import user from '../../redux/user';
+import user, { userLogout } from '../../redux/user';
 import {setImage} from '../../redux/user';
 import {useDispatch, useSelector} from 'react-redux';
-
+import Blur from '../start_screens/Blur';
+import axios from 'axios';
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.userInfo);
@@ -31,7 +32,13 @@ const Profile = ({navigation}) => {
   const [reason2, setReason2] = useState(false);
   const [reason3, setReason3] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
-  
+    
+
+  const handledelete=async()=>{
+    dispatch(userLogout());
+await axios.post(`${backendURL}/delete`,{id:user.id})
+
+  }
   const onPickImage = () => {
     launchImageLibrary({mediaType: 'photo', crop: true}, response => {
       if (response.didCancel) {
@@ -54,7 +61,7 @@ const Profile = ({navigation}) => {
   // send image to server
   const onUploadImage = source => {
     const formData = new FormData();
-    formData.append('blob', {
+    formData.append('image', {
       uri: source.uri,
       type: source.type,
       name: source.fileName,
@@ -148,7 +155,7 @@ const Profile = ({navigation}) => {
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Last name</Text>
-              <Text style={[styles.P2, colors.dg2]}>Adu</Text>
+              <Text style={[styles.P2, colors.dg2]}>{user.name}</Text>
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Phone number</Text>
@@ -199,7 +206,7 @@ const Profile = ({navigation}) => {
             />
             <Text
               style={[
-                {textAlignVertical: 'center', marginLeft: 18},
+                {textAlignVertical: 'center', marginTop:5, marginLeft: 18},
                 styles.P1,
               ]}>
               Delete account
@@ -315,6 +322,7 @@ const Profile = ({navigation}) => {
             }}
           />
           <Button
+          onPress={handledelete}
             title="Confirm"
             buttonStyle={{
               backgroundColor: '#CD3D49',
@@ -326,7 +334,9 @@ const Profile = ({navigation}) => {
           />
         </View>
       </Modal>
+      {modal && <Blur/>}
     </SafeAreaView>
+    
   );
 };
 

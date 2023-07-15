@@ -5,12 +5,13 @@ import {CheckBox, Button} from '@rneui/base';
 import {Border} from '../../GlobalStyles';
 import img from '../assets/success.png'
 import { useNavigation } from '@react-navigation/core';
+import SucessPop from '../../../components/SuccessPop';
 const Success = () => {
   const navigation=useNavigation()
   return (
-    <Pressable   onPress={()=>navigation.navigate('main')} >
-        <ImageBackground style={{width: '100%', height: '100%' }} source={require('../assets/success.png')}/>
-    </Pressable>
+    
+        <><ImageBackground style={{ width: '100%', height: '100%' }} source={require('../../../assets/success.png')} /><SucessPop /></>
+ 
     
   );
 };

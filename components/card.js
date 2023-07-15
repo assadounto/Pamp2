@@ -30,7 +30,7 @@ const Card =()=>{
     
 
     handleSubmit=()=>{
-      console.log(cardDateValue)
+     
         
         dispatch(setPayment({
             name: name,

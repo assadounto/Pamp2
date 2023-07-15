@@ -2,19 +2,19 @@ import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
 
-const Emptyfav = () => {
+const Emptyfav = ({title,body,top}) => {
   return (
-    <View style={styles.component45}>
+    <View style={[styles.component45,{top:top}]}>
       <Image
         style={styles.component45Child}
         resizeMode="cover"
         source={require("../assets/group-2143.png")}
       />
       <Text style={[styles.noFavourites, styles.youDontHaveTypo]}>
-        No Favourites
+       {title}
       </Text>
       <Text style={[styles.youDontHave, styles.youDontHaveTypo]}>
-        You don't have any favourites yet.
+        {body}
       </Text>
     </View>
   );

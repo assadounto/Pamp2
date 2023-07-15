@@ -43,7 +43,7 @@ return(
             <Image
                 resizeMode="contain"
                 style={{ alignSelf: 'center', width: 200, height: 200 }}
-                source={require('../assets/group-1884.png')} />
+                source={require('../assets/Closed.png')} />
             <Text
 
                 style={{

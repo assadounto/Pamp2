@@ -3,8 +3,9 @@ import {Text, View, SafeAreaView, Image, Modal, TextInput,StyleSheet,Pressable} 
 import MapView,{ PROVIDER_GOOGLE,Marker } from 'react-native-maps';
 import mark from '../assets/m.png'
 import { Icon } from '@rneui/base';
+import VendorMapPin from '../../../components/VendorMapin';
 const Mapview = ({route,navigation}) => {
-  const {name,dist,rating,image} =route.params
+  const {data} =route.params
   const styles = StyleSheet.create({
     map: {
       ...StyleSheet.absoluteFillObject,
@@ -13,8 +14,8 @@ const Mapview = ({route,navigation}) => {
   return (
     <><MapView
       initialRegion={{
-        latitude: 5.614818,
-        longitude: -0.205874,
+        latitude: data.lat?data.lat:5.614818,
+        longitude: data.lon? data.lon: -0.205874,
         latitudeDelta: 0.00122,
         longitudeDelta: 0.00121,
       }}
@@ -26,9 +27,9 @@ const Mapview = ({route,navigation}) => {
       <Marker
         coordinate={{ latitude: 5.614818, longitude: -0.205874 }}
 
-        image={mark}
+        
         >
-        {/* <CustomMarker image={image}/> */}
+       
       </Marker>
     </MapView>
       <Pressable onPress={() => navigation.goBack()} style={{ position: 'absolute', top: 60, left: 20 }}>
@@ -37,7 +38,9 @@ const Mapview = ({route,navigation}) => {
           name='chevron-back-outline'
           type='ionicon'
           size={30} />
-      </Pressable></>
+      </Pressable>
+      <VendorMapPin data={data} />
+      </>
   );
 };
 

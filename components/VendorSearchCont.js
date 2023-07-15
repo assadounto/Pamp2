@@ -4,13 +4,17 @@ import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList} from 'reac
 import FastImage from 'react-native-fast-image'
 import { styles,colors } from '../src/Common_styles'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
+import Emptyfav from './EmptyFav'
 const Tab = createMaterialTopTabNavigator();
 
 const VendorSearchCon=({data,navigation})=>{
   
 const Item =({image,logo,name,items,rating,location,dist,id})=>(
-    <View style={[styles2.cont,{shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 5,shadowOffset:{width:5,height:0},marginTop:10,marginBottom:10}]}>
+    <View style={[styles2.cont,{shadowColor: '#707070',
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 2,
+    shadowOffset: {width: 5, height: 0},marginTop:10,marginBottom:10}]}>
       <Pressable  onPress={()=>navigation.navigate('VendorDetail',
       {
       id: id,
@@ -35,31 +39,31 @@ style={{
   width: 60,
   height: 60,
   position: 'relative',
-  top: -40,
-  left: 20,
+  top: -30,
+  left: 15,
   shadowColor: '#000',
   shadowOffset: {
     width: 0,
-    height: 4,
+    height: 2,
   },
-  shadowOpacity: 0.5,
-  shadowRadius: 4,
-  elevation: 8,
+  shadowOpacity: 0.2,
+  shadowRadius: 2,
+  elevation: 4,
 }}
       >
         <FastImage
                        style={{borderRadius: 50, width: 50, height: 50, }} 
 
           source={{
-            uri: 'https://unsplash.it/400/400?image=1',
+            uri: logo,
             headers: { Authorization: 'someAuthToken' },
             priority: FastImage.priority.normal,
           }}
-          resizeMode={FastImage.resizeMode.contain} />
+          resizeMode={FastImage.resizeMode.cover} />
           </View>
 
 
-    <View style={{width: 60,position:'relative',left:'55%',top:-85,backgroundColor:'white',display:'flex',flexDirection:'row',width:74,height:44,alignItems:'center',borderRadius:40,hadowColor: "#000",
+    <View style={{width: 60,position:'absolute',right:30,top:200,backgroundColor:'white',display:'flex',flexDirection:'row',width:74,height:44,alignItems:'center',borderRadius:40,hadowColor: "#000",
           shadowOffset: {
             width: 0,
             height: 2,
@@ -80,7 +84,7 @@ style={{
         {rating}
       </Text>
     </View>
-    <View style={{position:'relative',top:-80}}>
+    <View style={{position:'relative',top:-30}}>
     <Text style={{marginBottom:15, fontFamily:FontFamily.sourceSansProBold,fontSize:24,fontWeight:'bold',color:colors.dg.color}}>{name}</Text>
     <View style={{display:'flex',flexDirection:'row'}}>  
     {items.map((item) => {
@@ -90,10 +94,11 @@ style={{
           style={
             {
               backgroundColor: 'white',
-              borderRadius: 20,
+              borderRadius: 15,
               height:34,
               padding:8,
               marginBottom:15,
+              paddingHorizontal:16,
               borderColor:'#B0EBBD',
               borderWidth: 1,
             marginRight:10
@@ -116,6 +121,8 @@ style={{
   </View>
   );
    return (
+    <>
+    {data && data.length!==0 ?
     <FlatList 
     data={data}
     renderItem={({item}) => (
@@ -123,7 +130,12 @@ style={{
        name={item.name} id={item.id}   logo={item.logo}   items={item.items} rating={item.rating} location={item.location} dist={item.dist} image={item.image}/>
     )}
     keyExtractor={item => item.id}
-  />
+  />: <Emptyfav 
+  title={"No match"}
+  body={"Please try different keywords"}
+  top={50}
+  />}
+  </>
    )
 }
 

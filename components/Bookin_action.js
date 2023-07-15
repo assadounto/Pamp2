@@ -11,12 +11,15 @@ import rebook from '../assets/rebook.png'
 import rebook2 from '../assets/rebook5.png'
 import note from '../assets/note.png'
 import note2 from '../assets/note5.png'
-import cancel from '../assets/cancel.png'
+import cancel1 from '../assets/cancel.png'
 import cancel2 from '../assets/cancel5.png'
 import { useSelector } from 'react-redux';
-const Booking_action = ({setblur}) => {
-    const cancelled= useSelector((state)=> state.booking.cancelled)
+const Booking_action = ({setblur,rebk,data}) => {
     //console.log(cancelled)
+    const canc = data.status=='cancelled'? true:false
+
+    const [cancelled,cancel]= useState(canc)
+
     const [cancel_modal,setcancel]=useState(false)
     const [notes,setnotes]=useState(false)
   return (
@@ -27,7 +30,7 @@ const Booking_action = ({setblur}) => {
           disabled={cancelled}
           style={[md_style.action,cancelled&& md_style.cancel]}
           // key={index}
-          onPress={() => console.log('pressed')}>
+          onPress={() => rebk()}>
           <Image
           source={cancelled ? rebook2:rebook}
           style={{width:22,height:22,alignSelf:'center'}}
@@ -62,7 +65,7 @@ const Booking_action = ({setblur}) => {
    // key={index}
    onPress={() =>{setblur(true); setcancel(true)}}>
       <Image
-          source={cancelled ? cancel2:cancel}
+          source={cancelled ? cancel2: cancel1}
           style={{width:22,height:22,alignSelf:'center'}}
           />
          
@@ -70,8 +73,8 @@ const Booking_action = ({setblur}) => {
   </TouchableOpacity>
   <Text style={md_style.text}>Cancel</Text>
   </View>
-  <Cancel_pop setblur={setblur} modal={cancel_modal} setcancel={setcancel}/>
-<Notes_pop setblur={setblur} modal={notes} setcancel={setnotes} />
+  <Cancel_pop data={data} setblur={setblur} modal={cancel_modal} cancel={cancel} setcancel={setcancel}/>
+<Notes_pop id={data.id} setblur={setblur} modal={notes} setcancel={setnotes} />
           </View>
   );
 };

@@ -10,6 +10,7 @@ const Completed = () => {
 <Pressable onPress={()=> usecolor('red')}>
     <View
       style={{
+        marginTop:20,
         display:'flex',
         flexDirection:'row',
        marginLeft:40,

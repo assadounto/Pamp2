@@ -14,7 +14,11 @@ const bookingSlice = createSlice({
      date:null,
      vendors:[],
      vendor:[],
-     vendor_name:''
+     vendor_name:'',
+     actual_booking:{},
+     vendor_id: null,
+     staff:'',
+     vendorimg:''
   },
   reducers: {
     cancel(state, action) {
@@ -22,6 +26,9 @@ const bookingSlice = createSlice({
     },
     setbooking(state, action) {
     state.Booking_detail = action.payload;
+    },
+     set_actual_booking(state, action) {
+    state.actual_booking = action.payload;
     },
     set_date(state, action) {
         state.date = action.payload;
@@ -32,9 +39,18 @@ const bookingSlice = createSlice({
             setvendorname(state, action) {
               state.vendor_name = action.payload;
               },
+              setvendorid(state, action) {
+                state.vendor_id = action.payload;
+                },
             setVendor(state, action) {
               state.vendor = action.payload;
               },
+              set_staff(state, action) {
+                state.staff = action.payload;
+                },
+                setvendorimg(state, action) {
+                  state.vendorimg = action.payload;
+                  },
               findVendor(state, action) {
                 let vendor= state.vendors.filter((vendor)=>
                 vendor.id==action.payload    
@@ -53,6 +69,10 @@ export const {
   set_date,
   set_time,
   setVendor,
-  setvendorname
+  setvendorname,
+  setvendorid,
+  set_actual_booking,
+  set_staff,
+  setvendorimg
 } = bookingSlice.actions;
 export default bookingSlice.reducer;

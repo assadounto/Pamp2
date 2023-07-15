@@ -19,10 +19,10 @@ const Turnon = ({navigation}) => {
     setModal(true);
     setTimeout(() => {
       setModal(false);
-      console.log('user', user);
+     
       dispatch(login({user: user}));
     }, 4000);
-    console.log(notification);
+   
   };
   return (
     <View style={styles.container}>

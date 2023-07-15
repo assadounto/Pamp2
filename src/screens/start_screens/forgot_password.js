@@ -7,7 +7,7 @@ import {styles} from '../../Common_styles';
 
 const ForgotPassword = ({navigation}) => {
   const onSubmit = async values => {
-    console.log(values);
+   
     navigation.navigate('ResetPassword')
   };
   return (
@@ -39,7 +39,7 @@ const ForgotPassword = ({navigation}) => {
         }) => (
           <View style={styles.input2}>
             <Input
-              placeholder="try@pamp.com"
+              placeholder="Email"
               inputContainerStyle={[styles.textInput,styles.tc]}
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}

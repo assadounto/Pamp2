@@ -69,13 +69,13 @@ function addDay(date) {
   return date;
 }
 
-export default function Calender({onSelect, navigation}) {
+export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) {
     const windowWidth= Dimensions.get('window').width
     const desiredWidth= Math.min(52,windowWidth)
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   //const [currentmonth,set_current_month]=useState(defaultLocalizationOptions.monthNames[currentMonth])
 
-  console.log(currentMonth);
+ 
   const finditem = day => {
     return dates.findIndex(date => date.aday == day);
   };
@@ -100,7 +100,7 @@ export default function Calender({onSelect, navigation}) {
     setCurrentMonth(currentMonth + 1);
     dates = getCalendar(myLocOpts, currentMonth + 1);
     useData(dates);
-    console.log(data);
+   
   };
 
   const PrevMonth = () => {
@@ -116,10 +116,10 @@ export default function Calender({onSelect, navigation}) {
       day: value.aday,
       month: defaultLocalizationOptions.monthNames[currentMonth],
       year: 2023,
-    });
+    });90
     setUserOption(value);
     useData(dates.slice(finditem(value.aday) - 2, finditem(value.aday) + 3));
-    console.log(userOption);
+   
   };
 
   const set_dates = value => {
@@ -214,7 +214,7 @@ export default function Calender({onSelect, navigation}) {
       </View>
 
 
-<Time navigation={navigation} userOption={userOption}/>
+<Time rebook={rebook} _vendor={vendor} rebooked={rebooked} navigation={navigation} userOption={userOption}/>
         </>
   );
 }

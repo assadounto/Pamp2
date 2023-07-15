@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   t6: {
-    width: 330,
+    width: '100%',
    
   marginBottom:-20,
 
@@ -159,18 +159,18 @@ export const styles = StyleSheet.create({
     width: '80%',
   },
   pop: {
-    marginTop: 500,
+    marginTop: 300,
     width: '95%',
     backgroundColor: '#fff',
     alignItems: 'center',
     borderRadius: 20,
     alignSelf: 'center',
     padding: 10,
-    height: 257,
+    
   },
 
   pop2: {
-    marginTop: 380,
+    marginTop: 480,
     backgroundColor: '#fff',
     alignItems: 'center',
     borderRadius: 20,
@@ -205,7 +205,7 @@ export const styles = StyleSheet.create({
   P1: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: 18,
-    fontWeight: 'bold',
+    color: '#00463C'
   },
   P2: {
     fontFamily: FontFamily.sourceSansProRegular,

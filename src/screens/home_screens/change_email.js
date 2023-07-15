@@ -7,7 +7,7 @@ import {styles} from '../../Common_styles';
 
 const Change_email = ({navigation}) => {
   const onSubmit = async values => {
-    console.log(values);
+   
     navigation.navigate('ResetPassword')
   };
   return (

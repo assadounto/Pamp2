@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "772772796235",
+    "project_id": "pamp-b53bc",
+    "storage_bucket": "pamp-b53bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772772796235:android:69faad4a63d603762ebace",
+        "android_client_info": {
+          "package_name": "com.pamp2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772772796235-if95s392sfalr9k203fvpgrmqqvt24h7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6uqmUKHzbUDmdoxR17Y3BI6jBgx2Gp5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772772796235-if95s392sfalr9k203fvpgrmqqvt24h7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "772772796235-9vv3qbtrajadds53apoerft0bclfm9if.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trypamp.pampforclients"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

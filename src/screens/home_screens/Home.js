@@ -18,19 +18,23 @@ import MyTabBar from '../../../components/Topnav';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Favourites from './favourites';
 import { NavigationContainer } from '@react-navigation/native';
-import { setLocation } from '../../redux/user';
+import user, { setLocation } from '../../redux/user';
 import VendorSearchCon from '../../../components/VendorSearchCont';
 import { TextInput } from 'react-native-gesture-handler';
 import { use } from '../../redux/homeapi';
 import axios from 'axios';
+import { setnotifications_count } from '../../redux/user';
+import messaging from '@react-native-firebase/messaging';
+
 import FastImage from 'react-native-fast-image';
 const Tab = createMaterialTopTabNavigator();
 
 
 
 const Home = ({navigation}) => {
- 
- 
+const user =useSelector((state)=>state.user.userInfo)
+const userstate =useSelector((state)=>state.user)
+
   const dispatch= useDispatch()
   const [ name,setName]=useState()
   const [option, setOption] = React.useState('Popular');
@@ -79,9 +83,17 @@ const  reverseGeocode=async (lat, lng)=> {
     );
   }
    
-    
+  const onMessageReceived = async message => {
+    console.log(message)
+    };
+
+    const getUdates=async()=>{
+const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
+      dispatch(setnotifications_count(data.length))
+      console.log(data.length,userstate)
+    }
   React.useEffect(()=>{
-    
+    getUdates()
     request(Platform.OS==='ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
@@ -107,7 +119,7 @@ const  reverseGeocode=async (lat, lng)=> {
           break;
       }
     });
-  })
+  },[])
 
  
   // const data = useGetCategoriesQuery();
@@ -165,7 +177,7 @@ const Popular=({navigation})=>{
     getcategories('Popular')
   },[])
   const handleSearch = async (id,title) => {
-    
+     
     
     const {data}= await axios.get(`${backendURL}/search?category=${title}`)
     //setData(data)
@@ -179,7 +191,7 @@ const Popular=({navigation})=>{
       <View style={{backgroundColor: '#ffff',alignItems:'center'}}>
       <FastImage
           source={{uri :source, headers: { Authorization: 'someAuthToken' },
-          priority: FastImage.priority.normal}}
+          priority: FastImage.priority.high}}
           style={{width: '95%', height: 300, borderRadius: 20}}
         />
         

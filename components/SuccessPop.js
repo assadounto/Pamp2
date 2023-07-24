@@ -9,7 +9,7 @@ const SucessPop = () => {
   return (
     <View style={styles.component48}>
       <View style={styles.component48Child} />
-      <Pressable onPress={()=>navigation.navigate('main')}  style={styles.backToHomeWrapper}>
+      <Pressable onPress={()=>navigation.push('main')}  style={styles.backToHomeWrapper}>
         <Text style={styles.backToHome}>Back to Home</Text>
       </Pressable>
       <Image

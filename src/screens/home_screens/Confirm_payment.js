@@ -148,7 +148,7 @@ const Confirm_payment=({navigation})=>{
               <Text style={{ width: '80%', marginLeft: 20, flexWrap: 'wrap', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: colors.dg.color }}>You need to add a debit or credit card to use the 'Pay with cash' option, Vendors charge a deposit of 20% ahead, the rest will be collected in-store. you'll lose your deposit in case of a late cancellation or no-show.</Text>
             </View>}
           <View style={{marginBottom:70, marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: 'white', borderRadius: 20, width: '90%', alignSelf: 'center' }}>
-            <View style={{ padding: 20, borderBottomColor: colors.lg.color, borderBottomWidth: 1, display: 'flex', flexDirection: 'row', marginLeft: 15 }}>
+            <View style={{ padding: 20,  display: 'flex', flexDirection: 'row', marginLeft: 15 }}>
               <View>
                 <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 23, color: colors.dg.color }}>{[booking.date.day, ' ', booking.date.month, ' ', booking.date.year]}</Text>
                 <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -182,17 +182,17 @@ const Confirm_payment=({navigation})=>{
                   }} />
               </Pressable>
             </View>
-            <View style={{ padding: 20, borderBottomColor: colors.lg.color, borderBottomWidth: 1 }}>
+            <View style={{padding: 20,borderTopColor:colors.lg.color,borderTopWidth:0.5, borderBottomColor: colors.lg.color, borderBottomWidth: 0.5}}>
               {booking && booking.Booking_detail.topping2.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
                 return (
-                  <View style={{ marginBottom: 15, display: 'flex', flexDirection: 'row' }}>
+                  <View style={{ marginBottom: 25, display: 'flex', flexDirection: 'row' }}>
                     <View style={{ width: 10, top: 5, marginRight: 10, height: 10, borderRadius: 10, backgroundColor: appointment_color }}></View>
                     {a.length != 1 && _index2 + 1 !== booking.Booking_detail.topping2.length ?
-                      <View style={{ position: 'absolute', left: 5, top: 15, height: 45, width: 0.6, backgroundColor: '#BBB9BC' }}></View> : null}
-                    <View>
+                      <View style={{ position: 'absolute', left: 5, top: 15, height: 70, width: 0.6, backgroundColor: '#BBB9BC' }}></View> : null}
+                    <View style={{width:'80%'}}>
 
-                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.lg.color }}>{name} - <Text style={{ color: '#BBB9BC', fontSize: 13, marginTop: -17 }}>{items_name}</Text></Text>
-                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: '#BBB9BC' }}> {convertMinutesToHoursAndMinutes(time)}</Text>
+                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.lg.color,width:'70%'}}>{name} - <Text style={{ color: '#BBB9BC', fontSize: 13,  }}>{items_name}</Text></Text>
+                      <Text style={{marginTop:10, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: '#BBB9BC' }}> {convertMinutesToHoursAndMinutes(time)}</Text>
 
                     </View>
                     <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.dg.color, position: 'absolute', right: 9 }}>¢{total}</Text>

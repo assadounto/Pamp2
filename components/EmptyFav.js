@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: Color.darkslategray_200,
     fontFamily: FontFamily.sourceSansProRegular,
-    position: "absolute",
+    
   },
   component45Child: {
     height: "53.78%",
@@ -41,12 +41,12 @@ const styles = StyleSheet.create({
   },
   noFavourites: {
     top: "82.98%",
-    left: "27.38%",
+   
     fontSize: FontSize.size_xl,
   },
   youDontHave: {
     top: "92.17%",
-    left: "0%",
+   
     fontSize: FontSize.size_lg,
   },
   component45: {

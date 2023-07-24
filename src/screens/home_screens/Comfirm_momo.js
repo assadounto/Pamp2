@@ -82,7 +82,8 @@ const Processing = ({route}) => {
         payment_method: booking.actual_booking.payment_method,
         total: pay_type==='Pay with cash'? (total*0.2):total,
         ref: ref,
-        others: booking.actual_booking.items
+        others: booking.actual_booking.items,
+        staff:  booking.actual_booking.staff
       }
       )
     }

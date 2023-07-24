@@ -27,7 +27,7 @@ const Searches1 = ({navigation,route}) => {
       name:vendor.username,
       rating:'4.5',
       location: vendor.name,
-      dist: '',
+      dist: vendor.distance,
       items: vendor.top_services.split(",").map((item)=>{
      return {
         value: item

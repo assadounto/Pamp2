@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Text, Pressable, Image,TextInput, SafeAreaView,Modal } from "react-native";
+import { StyleSheet, View, Text, Pressable, Image,TextInput, SafeAreaView,Modal,TouchableOpacity } from "react-native";
 import { Styles } from "react-native-google-places-autocomplete";
 import { useNavigation } from "@react-navigation/native";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -36,6 +36,8 @@ const data= [
 
 const Search2 = () => {
   const [loc,setLoc]= React.useState()
+  const inputRef =  React.useRef(null);
+
   const navigation=useNavigation()
   const [modalVisible, setModalVisible] = React.useState(false);
   const [option,setoption]=React.useState('')
@@ -45,15 +47,21 @@ const Search2 = () => {
   });
   const [query, setQuery] = React.useState('');
   const handleSearch = async () => {
-    const {data}= await axios.get(`${backendURL}/search?query=${query}`)
+    const {data}= await axios.get(`${backendURL}/search?query=${query}&lat=${loc.coordinates.lat}&lon=${loc.coordinates.lng}]`)
     //setData(data)
      data    &&   navigation.navigate('Searches1', { location: loc, category: query,data});
-
+     data && console.log(data[0].distance)
   };
-
+  const handleContainerPress = () => {
+    inputRef.current.focus();
+  };
   return(
     <SafeAreaView>
-      <View style={[s_style.text_input]}>
+      <TouchableOpacity
+       
+        onPress={handleContainerPress}
+        activeOpacity={1} // To prevent highlighting when pressed
+       style={[s_style.text_input]}>
         <Icon
         style={s_style.icon}
          name= 'search'
@@ -61,14 +69,17 @@ const Search2 = () => {
         size={25}
         color='#BCC4CC'
         />
+
       <TextInput 
+       ref={inputRef}
+      style={{ flex: 1 }}
        autoFocus={true}
         placeholder='Search for a service or venue'
         onChangeText={setQuery}
         keyboardType="web-search"
         onSubmitEditing={handleSearch}
         />
-      </View>
+      </TouchableOpacity>
        <Gsearch setLoc={setLoc}/>
       {/* <View style={{ flex: 1 }}>
       <GooglePlacesSearchModal setLocation={setLocation} location={location} setVisible={setModalVisible} visible={modalVisible}/>

@@ -9,6 +9,7 @@ import {useSelector,useDispatch} from 'react-redux';
 import { FontFamily } from '../GlobalStyles';
 import userimg from '../assets/userimg.png'
 import { update_new } from '../src/redux/user';
+import FastImage from 'react-native-fast-image';
 const UHeader = ({navigation}) => {
   const dispatch=useDispatch()
   const user = useSelector(state => state.user.userInfo);
@@ -32,16 +33,16 @@ const UHeader = ({navigation}) => {
           marginLeft: 30,
 
         }}>
-        <Avatar
-        onPress={()=>navigation.navigate('Profile')}
-          rounded
-          size={58}
-          source={userimg ? {uri: userimg} : user.image?{uri:user.image} :require('../assets/userimg.png')}
-          //source={require('../assets/userimg.png')}
-       // title={user.username[0]}
-        
-   containerStyle={{ backgroundColor: "#BDBDBD" }}
-        />
+            <FastImage
+     source={userimg ? {uri: userimg,headers: { Authorization: 'someAuthToken' },
+     priority: FastImage.priority.high,} : user.image?{uri:user.image} :require('../assets/userimg.png')}
+      style={{borderRadius: 50,width:60,height:60 }
+      
+    }
+  
+   />
+           
+
 
         <Text
           style={[
@@ -63,7 +64,7 @@ const UHeader = ({navigation}) => {
         {
             newnoti  ?
             <>
-            <Icon size={30} onPress={() =>{ dispatch(update_new(true)); navigation.navigate('All_notifications')}} name="bell" type="feather" color={colors.lg.color} />
+            <Icon size={30} onPress={() =>{ dispatch(update_new(false)); navigation.navigate('All_notifications')}} name="bell" type="feather" color={colors.lg.color} />
             <Badge
                
                 status="warning"

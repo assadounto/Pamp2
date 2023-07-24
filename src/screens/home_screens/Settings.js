@@ -5,7 +5,10 @@ import {
   RefreshControl,
   Switch,
   Pressable,
+  Alert,
+  StyleSheet,
 } from 'react-native';
+import { Image } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import THeader from '../../../components/THeader';
@@ -14,6 +17,10 @@ import SwitchToggle from 'react-native-switch-toggle';
 import {Text} from 'react-native-animatable';
 import {colors, styles} from '../../Common_styles';
 import {userLogout} from '../../redux/user';
+import messaging from '@react-native-firebase/messaging';
+import {checkNotifications} from 'react-native-permissions';
+import { FontFamily } from '../../GlobalStyles';
+
 
 const menuOne = [
   {
@@ -56,7 +63,7 @@ const menuTwo = [
   },
   {
     title: 'About Pamp',
-    icon: 'lock',
+    icon: require('../../../assets/pamp-logo.png'),
     route: 'ChangePassword',
   },
 ];
@@ -79,20 +86,29 @@ const menuThree = [
   },
 ];
 const Settings = ({navigation}) => {
-  
-  const notifications = useSelector(state => state.user.notifications);
-  const [isEnabled, setIsEnabled] = useState(false);
+
+
+   
+  const [isEnabled, setIsEnabled] = useState();
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (error) {
-  //     displayError(error);
-  //   }
-  // }, [error]);
+  async function checkApplicationPermission() {
+    const authorizationStatus = await messaging().requestPermission({ providesAppNotificationSettings: true });
+  
+    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+      setIsEnabled(true)
+    } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
+      console.log('User has provisional notification permissions.');
+    } else {
+      console.log('User has notification permissions disabled');
+    }
+  }
+  useEffect(() => {
+    checkApplicationPermission()
+  }, []);
 
   return (
-    <SafeAreaView>
+    
       <ScrollView
         contentContainerStyle={{width: '90%', alignSelf: 'center'}}
         refreshControl={
@@ -104,16 +120,8 @@ const Settings = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <Text style={styles.St1}>Settings</Text>
-        <View
-          style={{
-            alignSelf: 'center',
-          }}>
-        </View>
-        <View
-        // style={
-        //   //[Gutters.smallTMargin, Gutters.largeBMargin]
-        // }
-        >
+       
+       
           <View
             style={[
               {
@@ -131,7 +139,7 @@ const Settings = ({navigation}) => {
               }}>
               <Icon name="user" type="feather" color={colors.lg.color} />
               <ListItem.Content>
-                <ListItem.Title style={colors.dgb}>Profile </ListItem.Title>
+                <ListItem.Title style={[colors.dgb,styles2.title]}>Profile </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron style={colors.dgb} size={25} />
             </ListItem>
@@ -160,7 +168,7 @@ const Settings = ({navigation}) => {
                     color={colors.lg.color}
                   />
                   <ListItem.Content>
-                    <ListItem.Title style={colors.dgb}>
+                    <ListItem.Title style={[colors.dgb,styles2.title]}>
                       {item.title}{' '}
                     </ListItem.Title>
                   </ListItem.Content>
@@ -190,21 +198,28 @@ const Settings = ({navigation}) => {
                       ? toggleSwitch()
                       : navigation.navigate(item.route);
                   }}>
-                  <Icon
+                  {
+                    item.title!=='About Pamp' ?
+                    <Icon
                     name={item.icon}
                     type="feather"
                     color={colors.lg.color}
+                  />:
+                  <Image
+                  style={{marginLeft:5}}
+                  source={item.icon}
                   />
+                  }
                   <ListItem.Content>
-                    <ListItem.Title style={colors.dgb}>
+                    <ListItem.Title style={[colors.dgb,styles2.title]}>
                       {item.title}{' '}
                     </ListItem.Title>
                   </ListItem.Content>
                   {item.icon === 'bell' ? (
                     <Pressable onPress={() => console.log('h')}>
                       <SwitchToggle
-                        switchOn={notifications}
-                        onPress={() => toggleSwitch()}
+                        switchOn={isEnabled}
+                        onPress={checkApplicationPermission}
                         circleColorOff={colors.w.color}
                         backgroundColorOn={colors.lg.color}
                         backgroundColorOff="#fff"
@@ -256,7 +271,7 @@ const Settings = ({navigation}) => {
                     color={colors.lg.color}
                   />
                   <ListItem.Content>
-                    <ListItem.Title style={colors.dgb}>
+                    <ListItem.Title style={[colors.dgb,styles2.title]}>
                       {item.title}{' '}
                     </ListItem.Title>
                   </ListItem.Content>
@@ -293,10 +308,36 @@ const Settings = ({navigation}) => {
               <ListItem.Chevron style={colors.dgb} size={25} />
             </ListItem>
           </View>
-        </View>
+      
       </ScrollView>
-      </SafeAreaView>
+
   );
 };
 
 export default Settings;
+
+const styles2= StyleSheet.create({
+  title:{
+    fontFamily: FontFamily.sourceSansProBold
+  }
+})
+
+
+// <View style={{padding:20,display:'flex',flexDirection:'row',height:80}}>
+// <Text style={{left: 30,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>
+
+// </Text>
+// <View style={{position:'absolute',right:30, top:20}}>
+// <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.lg.color}}>
+// ¢{data.payment_method== 'Pay with cash'? parseInt(data.total)/ 0.2: parseInt(data.total)}
+// </Text>
+// </View>
+
+// </View>
+// {
+// data.payment_method== 'Pay with cash'  &&
+//  <><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20 }}>
+//       Initial deposit
+//     </Text>
+//     <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18, color: colors.dg.color,position: 'relative',marginRight:-200,top:-40}}>¢{parseInt(data.total)}</Text></>
+// }

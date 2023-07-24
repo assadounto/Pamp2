@@ -1,7 +1,9 @@
 import React from 'react';
 import {View, ImageBackground, Text, StyleSheet, Pressable} from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 
 const Getting_started = ({navigation}) => {
+ 
   return (
     <View style={styles.container}>
       <ImageBackground

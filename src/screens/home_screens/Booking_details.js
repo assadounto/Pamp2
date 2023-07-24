@@ -144,7 +144,7 @@ const c={
         <Text style={{color:colors.dg.color, fontFamily:FontFamily.sourceSansProBold,fontSize:27,marginHorizontal:15}}> at {formatTime(data.time)}{'  '}
         
       </Text>
-      <View style={[{width:62,height:21,borderRadius:10,padding:2,position:'absolute',top:516,left:155,
+      <View style={[{width:62,height:21,borderRadius:10,padding:2,position:'relative',top:-27,left:165,
         }, info ? {backgroundColor: info.color}: {backgroundColor: bgc[data.status]}]}>
           <Text style={[{fontSize:11, textAlign:'center',fontFamily:FontFamily.sourceSansProSemibold},info  ? {color: 'white'} : {color:c[data.status]}]}>{info? info.status : data.status}</Text></View>
        <AppJob setInfo={setInfo} services={data.services} time={data.time}/>
@@ -194,7 +194,7 @@ const c={
             {data.items.length!=1 &&_index2+1 !== data.items.length ?  
                <View style={{position:'absolute',left:5,top:15, height:45,width:0.6,backgroundColor:'#BBB9BC'}}></View>: null
             } 
-                <View>
+                <View style={{width:'70%'}}>
                   
                     <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18,color:colors.lg.color}}>{name} - <Text style={{color:'#BBB9BC',fontSize:13,marginTop:-17}}>{items_name}</Text></Text>
                     <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:13,color:'#BBB9BC'}}> {convertMinutesToHoursAndMinutes(time)}</Text>
@@ -207,18 +207,22 @@ const c={
        
         </View> 
       <View style={{padding:20,display:'flex',flexDirection:'row',height:80}}>
-      <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:16,color:colors.lg.color}}>
+      <Text style={{left: 30,position:'absolute',top:20,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>
         Total
       </Text>
-      <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.lg.color,position:'absolute',right:30,top:15}}>
-      ¢{parseInt(data.total)/ 0.2}
+      <View style={{position:'absolute',right:30, top:20}}>
+      <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.lg.color}}>
+      ¢{data.payment_method== 'Pay with cash'? parseInt(data.total)/ 0.2: parseInt(data.total)}
       </Text>
+      </View>
+      
       </View>
      {
       data.payment_method== 'Pay with cash'  &&
-       <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:16,color:colors.lg.color,left:20,marginBottom:20}}>
-      Initial deposit is <Text style={{color:colors.dg.color}}>¢{data.total}</Text> 
-    </Text>
+       <><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20 }}>
+            Initial deposit
+          </Text>
+          <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18, color: colors.dg.color,position: 'absolute',right:30,top:245 }}>¢{parseInt(data.total)}</Text></>
      }
        </View>
        <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:20,color:colors.dg.color,marginTop:55,marginHorizontal:30,marginBottom:14}}>Location</Text>

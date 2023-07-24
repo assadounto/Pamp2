@@ -8,7 +8,7 @@ import Emptyfav from './EmptyFav'
 const Tab = createMaterialTopTabNavigator();
 
 const VendorSearchCon=({data,navigation})=>{
-  
+  console.log(data)
 const Item =({image,logo,name,items,rating,location,dist,id})=>(
     <View style={[styles2.cont,{shadowColor: '#707070',
     shadowOpacity: 0.2,
@@ -114,7 +114,7 @@ style={{
     <Text style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:18,color:'#00463C',marginBottom:15}}> {location}</Text>
     <View style={{display:'flex',flexDirection:'row'}}>
       <Icon name='location-outline' type='ionicon' color={colors.lg.color} />
-      <Text style={{color:colors.lg.color,fontFamily:FontFamily.sourceSansProSemibold,fontSize:16}}> {dist}</Text>
+      <Text style={{color:colors.lg.color,fontFamily:FontFamily.sourceSansProSemibold,fontSize:16}}> {parseInt(dist)}m from you</Text>
     </View>
   
   </View>

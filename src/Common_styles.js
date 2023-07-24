@@ -232,10 +232,10 @@ export const styles = StyleSheet.create({
     height:40
   },
   St1: {
-    fontFamily: FontFamily.sourceSansProSemibold,
+    fontFamily: FontFamily.sourceSansProBold,
     fontSize: 26,
     color: '#86D694',
-    marginTop: 30,
+    marginTop: 90,
     marginLeft: 20,
   },
   option: {

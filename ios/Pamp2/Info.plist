@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YOUR TEXT</string>
 	<key>CFBundleDisplayName</key>
 	<string>Pamp</string>
 	<key>CFBundleExecutable</key>
@@ -66,6 +64,8 @@
 	<string>YOUR TEXT</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>YOUR TEXT</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>YOUR TEXT</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>YOUR-PURPOSE-KEY</key>
@@ -77,15 +77,15 @@
 	<string>YOUR TEXT</string>
 	<key>NSMotionUsageDescription</key>
 	<string>YOUR TEXT</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>YOUR TEXT</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>YOUR TEXT</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>YOUR TEXT</string>
 	<key>NSSiriUsageDescription</key>
+	<string>YOUR TEXT</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>YOUR TEXT</string>
@@ -119,6 +119,12 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>

@@ -7,6 +7,8 @@ import {login} from '../../redux/user';
 import pop2 from './pop';
 import Blur from './Blur';
 import Pop2 from './pop2';
+import messaging from '@react-native-firebase/messaging';
+
 import {useGetCategoriesQuery} from '../../redux/authapi';
 const Turnon = ({navigation}) => {
   const dispatch = useDispatch();
@@ -23,6 +25,17 @@ const Turnon = ({navigation}) => {
       dispatch(login({user: user}));
     }, 4000);
    
+  };
+  const requestPermission = () => {
+    messaging()
+      .requestPermission()
+      .then(() => {
+       
+        notify()
+      })
+      .catch((error) => {
+        console.log('permission rejected ' + error);
+      });
   };
   return (
     <View style={styles.container}>
@@ -50,7 +63,7 @@ const Turnon = ({navigation}) => {
             Don't miss appointments, promos and exclusive offers.{' '}
           </Text>
 
-          <Pressable style={styles.c6} onPress={notify}>
+          <Pressable style={styles.c6} onPress={requestPermission}>
             <Text style={styles.c7}>Turn on</Text>
           </Pressable>
           <Pressable onPress={()=>dispatch(login({user: user}))}>

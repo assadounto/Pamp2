@@ -225,11 +225,14 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   EI: {
+    width: '90%',
+    alignSelf:'center',
     borderColor: '#86D694',
+    paddingHorizontal:10,
     borderWidth: 1,
     borderRadius: 10,
     marginBottom: 20,
-    height:40
+    height:42
   },
   St1: {
     fontFamily: FontFamily.sourceSansProBold,

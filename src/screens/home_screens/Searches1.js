@@ -20,7 +20,7 @@ const Searches1 = ({navigation,route}) => {
   const [option, setOption] = React.useState('Recommended');
 
   const vendors= data.map((vendor)=>{
-    return{
+    return {
       id: vendor.id,
       image: vendor.cover_url,
       logo: vendor.avatar_url,

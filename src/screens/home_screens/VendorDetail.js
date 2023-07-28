@@ -299,11 +299,11 @@ const VendorDetail = ({navigation,route}) => {
       <View style={{ position: 'absolute', top: 60, right: 30 }}>
         <Icon
         onPress={createFav}
-          name='heart'
+          name={fav?'heart': 'heart-outline'}
           type='ionicon'
           size={30}
           
-          color={fav ?colors.lg.color: '#FFFFFF'} />
+          color={'#FFFFFF'} />
       </View>
       <View style={{ position: 'absolute', top: 60, left: 20 }}>
         <Icon
@@ -368,6 +368,7 @@ const VendorDetail = ({navigation,route}) => {
   justifyContent: 'center'
 }}>
   <Icon
+  onPressIn={()=>navigation.navigate('Reviews')}
     name='star'
     type='ionicons'
     color={colors.lg.color} />
@@ -379,8 +380,8 @@ const VendorDetail = ({navigation,route}) => {
       <View style={{ position: 'relative', marginTop: -40, marginBottom: 80, padding: 20 }}>
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color }}>{data1.name}</Text>
-          <TouchableOpacity onPress={()=>setModal(true)} style={{paddingHorizontal:5,marginLeft:5, marginTop:5, height:20,backgroundColor:checkVendorStatus(data1.hours) == 'Open'? colors.lg.color : 'red',borderRadius:20}}>{checkVendorStatus(data1.hours) === 'Open' ? (
-                    <Text style={{marginHorizontal:5}} >open</Text>
+          <TouchableOpacity onPress={()=>setModal(true)} style={{paddingHorizontal:5,marginLeft:5, marginTop:5, height:20,backgroundColor:checkVendorStatus(data1.hours) == 'Open'? '#86D694': '#CD3D49',borderRadius:20}}>{checkVendorStatus(data1.hours) === 'Open' ? (
+                    <Text style={{marginHorizontal:5,color:'white'}} >open</Text>
                   ) : (
                     <Text style={{color: 'white',marginHorizontal:5,fontFamily:FontFamily.sourceSansProSemibold }}>closed</Text>
                   )}</TouchableOpacity>
@@ -389,7 +390,7 @@ const VendorDetail = ({navigation,route}) => {
          <Icon 
          name='share-2' 
          type='feather' 
-         color={'00463C'} 
+         color={'#00463C'} 
           />
          </View>
         </View>

@@ -58,10 +58,10 @@ const Search2 = () => {
   return(
     <SafeAreaView>
       <TouchableOpacity
-       
         onPress={handleContainerPress}
         activeOpacity={1} // To prevent highlighting when pressed
        style={[s_style.text_input]}>
+        
         <Icon
         style={s_style.icon}
          name= 'search'

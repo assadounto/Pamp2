@@ -19,6 +19,10 @@ import Add_payment from '../screens/home_screens/Add_payment';
 import Booking_detail from '../screens/home_screens/Booking_details';
 import Processing from '../screens/home_screens/Comfirm_momo';
 import Invite from '../screens/home_screens/Invite';
+import Help from '../screens/home_screens/Help';
+import VerifyEmail from '../screens/start_screens/VerifyYourEmail';
+import Change_pass from '../screens/home_screens/Change_pass';
+import Ratings from '../screens/home_screens/Ratings';
 const Stack = createStackNavigator();
 
 const ApplicationNavigator = () => {
@@ -36,6 +40,7 @@ const ApplicationNavigator = () => {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="edit_profile" component={Edit_profile} />
         <Stack.Screen name="change_email" component={Change_email} /> 
+        <Stack.Screen name="change_pass" component={Change_pass} /> 
         <Stack.Screen name="Search" component={Search2} /> 
         <Stack.Screen name="Searches1" component={Searches1} /> 
         <Stack.Screen name="VendorDetail" component={VendorDetail} /> 
@@ -49,6 +54,10 @@ const ApplicationNavigator = () => {
         <Stack.Screen name={'Booking_detail'} component={Booking_detail}/>
         <Stack.Screen name={'Processing'} component={Processing}/>
         <Stack.Screen name={'Invite'} component={Invite}/>
+        <Stack.Screen name={'Help'} component={Help}/>
+        <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
+        <Stack.Screen name="Reviews" component={Ratings} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

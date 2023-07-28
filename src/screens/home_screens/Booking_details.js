@@ -219,10 +219,12 @@ const c={
       </View>
      {
       data.payment_method== 'Pay with cash'  &&
-       <><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20 }}>
+       <View style={{display:'flex',flexDirection: 'row'}}>
+        
+       <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20,flex: 1 }}>
             Initial deposit
           </Text>
-          <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18, color: colors.dg.color,position: 'absolute',right:30,top:245 }}>¢{parseInt(data.total)}</Text></>
+          <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18, color: colors.dg.color,flex:1,textAlign:'right',marginRight:30 }}>¢{parseInt(data.total)}</Text></View>
      }
        </View>
        <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:20,color:colors.dg.color,marginTop:55,marginHorizontal:30,marginBottom:14}}>Location</Text>

@@ -16,8 +16,8 @@
 		8E8E81A229DFB6040027345A /* SourceSansPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0EBEDAACB36B4C05BD38A3E7 /* SourceSansPro-Regular.otf */; };
 		8E8E81A329DFB6040027345A /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3537E945801D40B59EB1C153 /* SourceSansPro-Semibold.otf */; };
 		8E965A222A63100500BC3F39 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E965A212A63100500BC3F39 /* GoogleService-Info.plist */; };
-		B9E2F6A5361B8353844A49D6 /* Pods_Pamp2_Pamp2Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4DAC06C3768C93647A9FF05 /* Pods_Pamp2_Pamp2Tests.framework */; };
-		EF7F819714E81B51A10B4186 /* Pods_Pamp2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E94795CC3856424C256EB6B /* Pods_Pamp2.framework */; };
+		BE9ACBC9967E57393753F58F /* libPods-Pamp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E0D1FD41210466E18A9531F /* libPods-Pamp2.a */; };
+		E80474574D125C7076B3B1F9 /* libPods-Pamp2-Pamp2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE641EA126D681278E6E5CA /* libPods-Pamp2-Pamp2Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +50,7 @@
 		38902C73D03B423583EC23DE /* SourceSansPro-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Black.otf"; path = "../assets/fonts/SourceSansPro-Black.otf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Pamp2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pamp2.debug.xcconfig"; path = "Target Support Files/Pods-Pamp2/Pods-Pamp2.debug.xcconfig"; sourceTree = "<group>"; };
 		444814343014434D8DEACA90 /* SourceSansPro-SemiboldIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiboldIt.otf"; path = "../assets/fonts/SourceSansPro-SemiboldIt.otf"; sourceTree = "<group>"; };
+		4E0D1FD41210466E18A9531F /* libPods-Pamp2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pamp2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FE11730CABD47F09F2E5D0B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = ../assets/fonts/Feather.ttf; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-Pamp2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pamp2.release.xcconfig"; path = "Target Support Files/Pods-Pamp2/Pods-Pamp2.release.xcconfig"; sourceTree = "<group>"; };
 		5B274464EB604B86B60A7141 /* SourceSansPro-It.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-It.otf"; path = "../assets/fonts/SourceSansPro-It.otf"; sourceTree = "<group>"; };
@@ -58,7 +59,6 @@
 		6B23CE761DCC4364B88F6367 /* SourceSansPro-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Light.otf"; path = "../assets/fonts/SourceSansPro-Light.otf"; sourceTree = "<group>"; };
 		7543EFD87C7C40DAA0C22DD1 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = ../assets/fonts/Zocial.ttf; sourceTree = "<group>"; };
 		7B24E9A0D7AF4AFE86A1B373 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = ../assets/fonts/Fontisto.ttf; sourceTree = "<group>"; };
-		7E94795CC3856424C256EB6B /* Pods_Pamp2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pamp2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Pamp2/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Pamp2-Pamp2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pamp2-Pamp2Tests.release.xcconfig"; path = "Target Support Files/Pods-Pamp2-Pamp2Tests/Pods-Pamp2-Pamp2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8E965A212A63100500BC3F39 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -73,11 +73,11 @@
 		C951D4911F3A4BE59BD4AC2F /* SourceSansPro-ExtraLightIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLightIt.otf"; path = "../assets/fonts/SourceSansPro-ExtraLightIt.otf"; sourceTree = "<group>"; };
 		D17BAD80C92A4293A66CCAFD /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = ../assets/fonts/FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		DAEF8622DBB84EFB8C0395C0 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = ../assets/fonts/FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
+		EBE641EA126D681278E6E5CA /* libPods-Pamp2-Pamp2Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pamp2-Pamp2Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECE9FEEF6A10496988F8A78C /* SourceSansPro-ExtraLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.otf"; path = "../assets/fonts/SourceSansPro-ExtraLight.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EEB3A9C46E4A476C9F38A88F /* SourceSansPro-BlackIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackIt.otf"; path = "../assets/fonts/SourceSansPro-BlackIt.otf"; sourceTree = "<group>"; };
 		F3253386AFEF43D990EFC9A7 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = ../assets/fonts/Ionicons.ttf; sourceTree = "<group>"; };
-		F4DAC06C3768C93647A9FF05 /* Pods_Pamp2_Pamp2Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pamp2_Pamp2Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9E2F6A5361B8353844A49D6 /* Pods_Pamp2_Pamp2Tests.framework in Frameworks */,
+				E80474574D125C7076B3B1F9 /* libPods-Pamp2-Pamp2Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF7F819714E81B51A10B4186 /* Pods_Pamp2.framework in Frameworks */,
+				BE9ACBC9967E57393753F58F /* libPods-Pamp2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,8 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				7E94795CC3856424C256EB6B /* Pods_Pamp2.framework */,
-				F4DAC06C3768C93647A9FF05 /* Pods_Pamp2_Pamp2Tests.framework */,
+				4E0D1FD41210466E18A9531F /* libPods-Pamp2.a */,
+				EBE641EA126D681278E6E5CA /* libPods-Pamp2-Pamp2Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

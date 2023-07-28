@@ -11,6 +11,7 @@ import AppointmentsContainer from '../../components/AppointmentsContainer';
 import Bookings from '../../screens/Bookings';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Success from '../screens/home_screens/Sucess';
+import Ratings from '../screens/home_screens/Ratings';
 const Tab = createBottomTabNavigator();
 
 function MyTabBar({state, descriptors, navigation}) {
@@ -64,7 +65,7 @@ function MyTabBar({state, descriptors, navigation}) {
         const iconName = () => {
           switch (index) {
             case 0:
-              return {name: 'home', type: 'antdesign'};
+              return {name: 'home', type: 'feather'};
             case 1:
               return {name: 'calendar', type: 'feather'};
             case 2:
@@ -150,7 +151,8 @@ const MainNavigator = () => {
     //  title: "HomePage",
     //  unmountOnBlur: true,
   }} name="Home" component={Home} />
-      <Tab.Screen name="Bookings" component={Bookings} />
+  {/* Bookings */}
+      <Tab.Screen name="Bookings" component={Bookings } /> 
       <Tab.Screen name="Favorites" component={Favourites} />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>

@@ -24,9 +24,9 @@ import { TextInput } from 'react-native-gesture-handler';
 import { use } from '../../redux/homeapi';
 import axios from 'axios';
 import { setnotifications_count } from '../../redux/user';
-import messaging from '@react-native-firebase/messaging';
-
 import FastImage from 'react-native-fast-image';
+import Rating_pop from '../../../components/Rating_pop';
+import Blur from '../start_screens/Blur';
 const Tab = createMaterialTopTabNavigator();
 
 
@@ -35,9 +35,12 @@ const Home = ({navigation}) => {
 const user =useSelector((state)=>state.user.userInfo)
 const userstate =useSelector((state)=>state.user)
 
+
   const dispatch= useDispatch()
   const [ name,setName]=useState()
   const [option, setOption] = React.useState('Popular');
+   const [modal,setmodal]= React.useState(false)
+   const [vendor,setVendor]= React.useState({})
 
 const  reverseGeocode=async (lat, lng)=> {
     const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0'; // Replace with your actual Google API key
@@ -92,7 +95,16 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
       dispatch(setnotifications_count(data.length))
       console.log(data.length,userstate)
     }
+    const checkAnyRating=()=>{
+      const ratings= userstate.rating
+      if (ratings.length!==0){
+        setVendor(ratings[0])
+        console.log(ratings[0])
+        setmodal(true)
+      }
+    }
   React.useEffect(()=>{
+    checkAnyRating()
     getUdates()
     request(Platform.OS==='ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
       switch (result) {
@@ -148,26 +160,18 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
      <Image
        
           source={img}
-          style={{ width: '90%', height: 60, paddingTop: 8, alignSelf: 'center', marginBottom: 15 }} 
+          style={{ width: '90%', borderRadius:20, height: 60, paddingTop: 8, alignSelf: 'center', marginBottom: 15 }} 
           
           />
     </Pressable>
     <Tab.Navigator
       sceneContainerStyle={{ backgroundColor: 'white' }}
       tabBar={props => <MyTabBar {...props} />}>
-  
-
-
         <Tab.Screen name="Popular" component={Popular} />
         <Tab.Screen name="Recent viewed" component={Others} />
-        <Tab.Screen name="Top Rated Hair Salons" component={Favourites } />
-
-        <Tab.Screen name="Settingrgs" component={Favourites} />
-
-        <Tab.Screen name="Settingrhs" component={Favourites} />
-
-        <Tab.Screen name="Settingrrs" component={Favourites} />
-    </Tab.Navigator></Fragment>
+        <Tab.Screen name="Top Rated Vendors" component={Others} />
+    </Tab.Navigator>
+    </Fragment>
   );
 };
 
@@ -202,48 +206,83 @@ const Popular=({navigation})=>{
   );
 
   return (
-    <FlatList style={{}}
-    showsVerticalScrollIndicator={false}
-    data={data}
-    renderItem={({ item }) => (
-      <Item title={item.name} id={item.id} source={item.photo_url } />
-    )}
-    keyExtractor={item => item.id} />
+    <><FlatList style={{}}
+      showsVerticalScrollIndicator={false}
+      data={data}
+      renderItem={({ item }) => (
+        <Item title={item.name} id={item.id} source={item.photo_url} />
+      )}
+      keyExtractor={item => item.id} />
+      
+      
+      
+      </>
   )
 }
 
 
 const Others=()=>{
-  const data=[
-    {
-      image: '../../../assets/rectangle-9764.png',
-      logo:'../../../assets/group-1820.png',
-      name:'Likke Salon',
-      items:[
-        { value: 'Make up' },
-      { value: 'Hair' },
-      { value: 'Nails' },
-      ],
-      rating: '4.5',
-      location:'Airport Resddf',
-      dist: '2000m from you'
-    },
-    {
-      image: '../../../assets/rectangle-9764.png',
-      logo:'../../../assets/group-1820.png',
-      name:'Likke Salon',
-      items:[
-        { value: 'Make up' },
-      { value: 'Hair' },
-      { value: 'Nails' },
-      ],
-      rating: '4.5',
-      location:'Airport Resddf',
-      dist: '2000m from you'
-    },
-  ]
+  const user =useSelector((state)=>state.user)
+  
+  const[datas,setData]= useState([])
+  const get=async()=>{ 
+    const {data}= await axios.get(`${backendURL}/search?query=${'hair'}&lat=${user.location.lat}&lon=${user.location.lon}]`)
+    const vendors= data.map((vendor)=>{
+      return {
+        id: vendor.id,
+        image: vendor.cover_url,
+        logo: vendor.avatar_url,
+        name:vendor.username,
+        rating:'4.5',
+        location: vendor.name,
+        dist: vendor.distance,
+        items: vendor.top_services.split(",").map((item)=>{
+       return {
+          value: item
+        }
+      }
+        )
+      }
+        
+     })
+    setData( vendors)
+    console.log( vendors)
+  }
+  useEffect(()=>{
+
+     get()
+  },[])
+  
+  // const data=[
+  //   {
+  //     image: '../../../assets/rectangle-9764.png',
+  //     logo:'../../../assets/group-1820.png',
+  //     name:'Likke Salon',
+  //     items:[
+  //       { value: 'Make up' },
+  //     { value: 'Hair' },
+  //     { value: 'Nails' },
+  //     ],
+  //     rating: '4.5',
+  //     location:'Airport Resddf',
+  //     dist: '2000m from you'
+  //   },
+  //   {
+  //     image: '../../../assets/rectangle-9764.png',
+  //     logo:'../../../assets/group-1820.png',
+  //     name:'Likke Salon',
+  //     items:[
+  //       { value: 'Make up' },
+  //     { value: 'Hair' },
+  //     { value: 'Nails' },
+  //     ],
+  //     rating: '4.5',
+  //     location:'Airport Resddf',
+  //     dist: '2000m from you'
+  //   },
+  //]
  return(
-  <VendorSearchCon data={data}/>
+  <VendorSearchCon data={datas}/>
  )
 }
 export default Home;

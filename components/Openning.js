@@ -35,7 +35,7 @@ const Opening = ({ data, modal, setModal }) => {
                      {generateTimeRange(item.opening_time,item.closing_time)}
                     </Text>
                   ) : (
-                   <View style={{paddingTop:2, backgroundColor:'red',borderRadius:22, width:90,height:24,alignItems:'center'}}><Text style={[md_style.closed]}>Closed</Text></View>
+                   <View style={{paddingTop:2, backgroundColor:'#CD3D49',borderRadius:22, width:90,height:24,alignItems:'center'}}><Text style={[md_style.closed]}>Closed</Text></View>
                   )}
               </ListItem>
             )}

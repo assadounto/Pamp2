@@ -20,6 +20,8 @@ import {userLogout} from '../../redux/user';
 import messaging from '@react-native-firebase/messaging';
 import {checkNotifications} from 'react-native-permissions';
 import { FontFamily } from '../../GlobalStyles';
+import Discount_pop from '../../../components/Discount_pop';
+import Blur from '../start_screens/Blur';
 
 
 const menuOne = [
@@ -31,7 +33,7 @@ const menuOne = [
   {
     title: 'Change Password',
     icon: 'lock',
-    route: 'change_email',
+    route: 'change_pass',
   },
   {
     title: 'Payment Methods',
@@ -41,7 +43,7 @@ const menuOne = [
   {
     title: 'Discount Code',
     icon: 'gift',
-    route: 'PaymentMethods',
+    route: 'discount',
   },
   {
     title: 'Invite Friends',
@@ -59,7 +61,7 @@ const menuTwo = [
   {
     title: 'Help & Support',
     icon: 'headphones',
-    route: 'PaymentMethods',
+    route: 'Help',
   },
   {
     title: 'About Pamp',
@@ -106,210 +108,208 @@ const Settings = ({navigation}) => {
   useEffect(() => {
     checkApplicationPermission()
   }, []);
-
+const [modal,setmodal]=useState(false)
   return (
     
-      <ScrollView
-        contentContainerStyle={{width: '90%', alignSelf: 'center'}}
-        refreshControl={
-          <RefreshControl
-            //refreshing={isFetching || isLoading}
-            onRefresh={() => {}}
-          />
-        }
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
-        <Text style={styles.St1}>Settings</Text>
-       
-       
-          <View
-            style={[
-              {
-                borderRadius: 15,
-                padding: 6,
-                backgroundColor: '#F9F9F9',
+      <><ScrollView
+      contentContainerStyle={{ width: '90%', alignSelf: 'center' }}
+      refreshControl={<RefreshControl
+        //refreshing={isFetching || isLoading}
+        onRefresh={() => { } } />}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
+      <Text style={styles.St1}>Settings</Text>
 
-                marginTop: 50,
-              },
-            ]}>
+
+      <View
+        style={[
+          {
+            borderRadius: 15,
+            padding: 6,
+            backgroundColor: '#F9F9F9',
+
+            marginTop: 50,
+          },
+        ]}>
+        <ListItem
+          containerStyle={[{ borderRadius: 15, backgroundColor: '#F9F9F9' }]}
+          onPress={() => {
+            navigation.navigate('Profile');
+          } }>
+          <Icon name="user" type="feather" color={colors.lg.color} />
+          <ListItem.Content>
+            <ListItem.Title style={[colors.dgb, styles2.title]}>Profile </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron style={colors.dgb} size={25} />
+        </ListItem>
+      </View>
+
+      <View
+        style={[
+          {
+            borderRadius: 15,
+            padding: 6,
+            backgroundColor: '#F9F9F9',
+
+            marginTop: 50,
+          },
+        ]}>
+        {menuOne.map((item, index) => {
+          return (
             <ListItem
-              containerStyle={[{borderRadius: 15, backgroundColor: '#F9F9F9'}]}
+              containerStyle={[{ backgroundColor: '#F9F9F9' }]}
               onPress={() => {
-                navigation.navigate('Profile');
-              }}>
-              <Icon name="user" type="feather" color={colors.lg.color} />
+                if (item.route == 'discount') {
+                  setmodal(true);
+                } else {
+                  navigation.navigate(item.route);
+                }
+
+              } }>
+              <Icon
+                name={item.icon}
+                type="feather"
+                color={colors.lg.color} />
               <ListItem.Content>
-                <ListItem.Title style={[colors.dgb,styles2.title]}>Profile </ListItem.Title>
+                <ListItem.Title style={[colors.dgb, styles2.title]}>
+                  {item.title}{' '}
+                </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron style={colors.dgb} size={25} />
             </ListItem>
-          </View>
+          );
+        })}
+      </View>
 
-          <View
-            style={[
-              {
-                borderRadius: 15,
-                padding: 6,
-                backgroundColor: '#F9F9F9',
-
-                marginTop: 50,
-              },
-            ]}>
-            {menuOne.map((item, index) => {
-              return (
-                <ListItem
-                  containerStyle={[{backgroundColor: '#F9F9F9'}]}
-                  onPress={() => {
-                    navigation.navigate(item.route);
-                  }}>
-                  <Icon
-                    name={item.icon}
-                    type="feather"
-                    color={colors.lg.color}
-                  />
-                  <ListItem.Content>
-                    <ListItem.Title style={[colors.dgb,styles2.title]}>
-                      {item.title}{' '}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron style={colors.dgb} size={25} />
-                </ListItem>
-              );
-            })}
-          </View>
-
-          <View
-            style={[
-              {
-                borderRadius: 15,
-                padding: 6,
-                backgroundColor: 'red',
-                backgroundColor: '#F9F9F9',
-                marginTop: 50,
-              },
-            ]}>
-            {menuTwo.map((item, index) => {
-              return (
-                <ListItem
-                  containerStyle={[{backgroundColor: '#F9F9F9'}]}
-                  key={index}
-                  onPress={() => {
-                    item.icon === 'bell'
-                      ? toggleSwitch()
-                      : navigation.navigate(item.route);
-                  }}>
-                  {
-                    item.title!=='About Pamp' ?
-                    <Icon
-                    name={item.icon}
-                    type="feather"
-                    color={colors.lg.color}
-                  />:
-                  <Image
-                  style={{marginLeft:5}}
-                  source={item.icon}
-                  />
-                  }
-                  <ListItem.Content>
-                    <ListItem.Title style={[colors.dgb,styles2.title]}>
-                      {item.title}{' '}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  {item.icon === 'bell' ? (
-                    <Pressable onPress={() => console.log('h')}>
-                      <SwitchToggle
-                        switchOn={isEnabled}
-                        onPress={checkApplicationPermission}
-                        circleColorOff={colors.w.color}
-                        backgroundColorOn={colors.lg.color}
-                        backgroundColorOff="#fff"
-                        containerStyle={{
-                          width: 55,
-                          height: 30,
-                          borderWidth: 1.5,
-                          borderColor: colors.lg.color,
-                          borderRadius: 25,
-                          padding: 5,
-                          backgroundColor: 'white',
-                        }}
-                        circleStyle={{
-                          borderWidth: 1.5,
-                          borderColor: colors.lg.color,
-                          width: 20,
-                          height: 20,
-                          borderRadius: 20,
-                        }}
-                      />
-                    </Pressable>
-                  ) : (
-                    <ListItem.Chevron style={colors.dgb} size={25} />
-                  )}
-                </ListItem>
-              );
-            })}
-          </View>
-
-          <View
-            style={[
-              {
-                borderRadius: 15,
-                padding: 6,
-                backgroundColor: '#F9F9F9',
-                marginTop: 50,
-              },
-            ]}>
-            {menuThree.map((item, index) => {
-              return (
-                <ListItem
-                  containerStyle={[{backgroundColor: '#F9F9F9'}]}
-                  onPress={() => {
-                    navigation.navigate(item.route);
-                  }}>
-                  <Icon
-                    name={item.icon}
-                    type="feather"
-                    color={colors.lg.color}
-                  />
-                  <ListItem.Content>
-                    <ListItem.Title style={[colors.dgb,styles2.title]}>
-                      {item.title}{' '}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron style={colors.dgb} size={25} />
-                </ListItem>
-              );
-            })}
-          </View>
-
-          <View
-            style={[
-              {
-                borderRadius: 15,
-                backgroundColor: '#F9F9F9',
-                marginVertical: 50,
-              },
-            ]}>
+      <View
+        style={[
+          {
+            borderRadius: 15,
+            padding: 6,
+            backgroundColor: 'red',
+            backgroundColor: '#F9F9F9',
+            marginTop: 50,
+          },
+        ]}>
+        {menuTwo.map((item, index) => {
+          return (
             <ListItem
-              containerStyle={[
-                {
-                  borderRadius: 15,
-
-                  borderRadius: 15,
-                  backgroundColor: '#F9F9F9',
-                },
-              ]}
+              containerStyle={[{ backgroundColor: '#F9F9F9' }]}
+              key={index}
               onPress={() => {
-                dispatch(userLogout());
-              }}>
-              <Icon name="log-out" type="feather" color={'#CD3D49'} />
+                item.icon === 'bell'
+                  ? toggleSwitch()
+                  : navigation.navigate(item.route);
+              } }>
+              {item.title !== 'About Pamp' ?
+                <Icon
+                  name={item.icon}
+                  type="feather"
+                  color={colors.lg.color} /> :
+                <Image
+                  style={{ marginLeft: 5 }}
+                  source={item.icon} />}
               <ListItem.Content>
-                <ListItem.Title style={colors.dgb}>Logout </ListItem.Title>
+                <ListItem.Title style={[colors.dgb, styles2.title]}>
+                  {item.title}{' '}
+                </ListItem.Title>
+              </ListItem.Content>
+              {item.icon === 'bell' ? (
+                <Pressable onPress={() => console.log('h')}>
+                  <SwitchToggle
+                    switchOn={isEnabled}
+                    onPress={checkApplicationPermission}
+                    circleColorOff={colors.w.color}
+                    backgroundColorOn={colors.lg.color}
+                    backgroundColorOff="#fff"
+                    containerStyle={{
+                      width: 55,
+                      height: 30,
+                      borderWidth: 1.5,
+                      borderColor: colors.lg.color,
+                      borderRadius: 25,
+                      padding: 5,
+                      backgroundColor: 'white',
+                    }}
+                    circleStyle={{
+                      borderWidth: 1.5,
+                      borderColor: colors.lg.color,
+                      width: 20,
+                      height: 20,
+                      borderRadius: 20,
+                    }} />
+                </Pressable>
+              ) : (
+                <ListItem.Chevron style={colors.dgb} size={25} />
+              )}
+            </ListItem>
+          );
+        })}
+      </View>
+
+      <View
+        style={[
+          {
+            borderRadius: 15,
+            padding: 6,
+            backgroundColor: '#F9F9F9',
+            marginTop: 50,
+          },
+        ]}>
+        {menuThree.map((item, index) => {
+          return (
+            <ListItem
+              containerStyle={[{ backgroundColor: '#F9F9F9' }]}
+              onPress={() => {
+                navigation.navigate(item.route);
+              } }>
+              <Icon
+                name={item.icon}
+                type="feather"
+                color={colors.lg.color} />
+              <ListItem.Content>
+                <ListItem.Title style={[colors.dgb, styles2.title]}>
+                  {item.title}{' '}
+                </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron style={colors.dgb} size={25} />
             </ListItem>
-          </View>
-      
-      </ScrollView>
+          );
+        })}
+      </View>
+
+      <View
+        style={[
+          {
+            borderRadius: 15,
+            backgroundColor: '#F9F9F9',
+            marginVertical: 50,
+          },
+        ]}>
+        <ListItem
+          containerStyle={[
+            {
+              borderRadius: 15,
+
+              borderRadius: 15,
+              backgroundColor: '#F9F9F9',
+            },
+          ]}
+          onPress={() => {
+            dispatch(userLogout());
+          } }>
+          <Icon name="log-out" type="feather" color={'#CD3D49'} />
+          <ListItem.Content>
+            <ListItem.Title style={colors.dgb}>Logout </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron style={colors.dgb} size={25} />
+        </ListItem>
+      </View>
+
+    </ScrollView>
+    <Discount_pop setmodal={setmodal} modal={modal}/>
+    {modal&& <Blur/>}
+    </>
 
   );
 };
@@ -318,7 +318,7 @@ export default Settings;
 
 const styles2= StyleSheet.create({
   title:{
-    fontFamily: FontFamily.sourceSansProBold
+    fontFamily: FontFamily.sourceSansProSemibold
   }
 })
 

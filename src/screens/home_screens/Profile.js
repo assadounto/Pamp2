@@ -33,7 +33,6 @@ const Profile = ({navigation}) => {
   const [reason3, setReason3] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
     
-
   const handledelete=async()=>{
     dispatch(userLogout());
 await axios.post(`${backendURL}/delete`,{id:user.id})
@@ -85,32 +84,27 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
   };
 
   return (
-    <SafeAreaView style={[colors.Pc]}>
-      <BHeader title="Profile" color={colors.Pc} />
+    <><SafeAreaView style={[colors.Pc]}>
+      <BHeader title="Profile" color={colors.lg.color} />
 
       <ScrollView
         style={[]}
         contentContainerStyle={[]}
-        refreshControl={
-          <RefreshControl
-            //refreshing={isFetching || isLoading}
-            onRefresh={() => {}}
-          />
-        }
+        refreshControl={<RefreshControl
+          //refreshing={isFetching || isLoading}
+          onRefresh={() => { } } />}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        <View style={{alignSelf: 'center', marginTop: 20}}>
+        <View style={{ alignSelf: 'center', marginTop: 20 }}>
           <TouchableOpacity
             onPress={() => {
               onPickImage();
-            }}>
+            } }>
             <Avatar
               rounded
               size="large"
               //title={me?.firstName[0]}
-              source={selectedImage || userimg ? {uri: userimg} : user.image?{uri:user.image} :require('../../../assets/userimg.png')}
-
-            />
+              source={selectedImage || userimg ? { uri: userimg } : user.image ? { uri: user.image } : require('../../../assets/userimg.png')} />
             <View
               style={[
                 {
@@ -126,8 +120,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
                 name="camera"
                 color={colors.w.color}
                 type="feather"
-                size={14}
-              />
+                size={14} />
             </View>
           </TouchableOpacity>
         </View>
@@ -146,8 +139,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
                   borderColor: colors.lg.color,
                   padding: 5,
                   color: colors.dg2.color,
-                }}
-              />
+                }} />
             </Pressable>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>First name</Text>
@@ -159,14 +151,12 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Phone number</Text>
-              {
-                user.phone?  <Text style={[styles.P2, colors.dg2]}>{user.phone}</Text>: <Text
+              {user.phone ? <Text style={[styles.P2, colors.dg2]}>{user.phone}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
-              </Text>
-              }
-             
+              </Text>}
+
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Email address</Text>
@@ -174,27 +164,27 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Date of birth </Text>
-              <Text
+              {user.date_of_birth ? <Text style={[styles.P2, colors.dg2]}>{user.date_of_birth}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
-              </Text>
+              </Text>}
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Gender </Text>
-              <Text
+              {user.gender ? <Text style={[styles.P2, colors.dg2]}>{user.gender}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
-              </Text>
+              </Text>}
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Addresss </Text>
-              <Text
+              {user.address ? <Text style={[styles.P2, colors.dg2]}>{user.address}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
-              </Text>
+              </Text>}
             </View>
           </View>
         </View>
@@ -202,11 +192,10 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
           <View style={[styles.Pmain, styles.flex, styles.Da]}>
             <Image
               source={require('../../../assets/account.png')}
-              style={{width: 30, height: 25, marginTop: 6}}
-            />
+              style={{ width: 30, height: 25, marginTop: 6 }} />
             <Text
               style={[
-                {textAlignVertical: 'center', marginTop:5, marginLeft: 18},
+                { textAlignVertical: 'center', marginTop: 5, marginLeft: 18 },
                 styles.P1,
               ]}>
               Delete account
@@ -214,23 +203,23 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
           </View>
         </Pressable>
       </ScrollView>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modal}
-        onRequestClose={() => {
-          setModal(!modal);
-        }}>
-        <View style={[styles.pop, {backgroundColor: '#ffff'}]}>
+
+    </SafeAreaView><Modal
+      animationType="slide"
+      transparent={true}
+      visible={modal}
+      onRequestClose={() => {
+        setModal(!modal);
+      } }>
+        <View style={[styles.pop, { backgroundColor: '#ffff' }]}>
           <Pressable
             onPress={() => setModal(!modal)}
-            style={{alignSelf: 'flex-end', marginRight: 20, marginTop: 20}}>
+            style={{ alignSelf: 'flex-end', marginRight: 20, marginTop: 20 }}>
             <Icon
               name="x"
               type="feather"
               size={30}
-              onPress={() => setModal(!modal)}
-            />
+              onPress={() => setModal(!modal)} />
           </Pressable>
           <View>
             <Text
@@ -249,60 +238,49 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
                 styles.fs18,
                 styles.tac,
                 ,
+
                 styles.mb20,
                 styles.bold,
               ]}>
               Tell us why
             </Text>
           </View>
-          <View style={{width: 260}}>
+          <View style={{ width: 260 }}>
             <CheckBox
-              style={{borderColor: 'red', borderWidth: 1}}
-              title={
-                <Text
-                  style={[
-                    colors.dg,
-                    {
-                      marginLeft: 8,
-                      fontFamily: FontFamily.sourceSansProSemibold,
-                    },
-                    styles.bold,
-                  ]}>
-                  I don't like the app
-                </Text>
-              }
-              checkedIcon={
-                <View style={styles.checkc}>
-                  <Image
-                    source={require('../../../assets/check3.png')}
-                    style={styles.check}
-                  />
-                </View>
-              }
+              style={{ borderColor: 'red', borderWidth: 1 }}
+              title={<Text
+                style={[
+                  colors.dg,
+                  {
+                    marginLeft: 8,
+                    fontFamily: FontFamily.sourceSansProSemibold,
+                  },
+                  styles.bold,
+                ]}>
+                I don't like the app
+              </Text>}
+              checkedIcon={<View style={styles.checkc}>
+                <Image
+                  source={require('../../../assets/check3.png')}
+                  style={styles.check} />
+              </View>}
               checked={reason1}
               onPress={() => {
                 setReason1(!reason1);
-              }}
-            />
+              } } />
             <CheckBox
-              title={
-                <Text style={[colors.dg, {marginLeft: 8}, styles.bold]}>
-                  Couldn't find vendors near me
-                </Text>
-              }
-              checkedIcon={
-                <View style={styles.checkc}>
-                  <Image
-                    source={require('../../../assets/check3.png')}
-                    style={styles.check}
-                  />
-                </View>
-              }
+              title={<Text style={[colors.dg, { marginLeft: 8 }, styles.bold]}>
+                Couldn't find vendors near me
+              </Text>}
+              checkedIcon={<View style={styles.checkc}>
+                <Image
+                  source={require('../../../assets/check3.png')}
+                  style={styles.check} />
+              </View>}
               checked={reason2}
               onPress={() => {
                 setReason2(!reason2);
-              }}
-            />
+              } } />
           </View>
 
           <TextInput
@@ -319,10 +297,9 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             onChangeText={text => {
               console.log(reason3);
               setReason3(text);
-            }}
-          />
+            } } />
           <Button
-          onPress={handledelete}
+            onPress={handledelete}
             title="Confirm"
             buttonStyle={{
               backgroundColor: '#CD3D49',
@@ -330,12 +307,12 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
               borderRadius: 40,
               height: 60,
               marginBottom: 20,
-            }}
-          />
+            }} />
         </View>
       </Modal>
       {modal && <Blur/>}
-    </SafeAreaView>
+      </>
+
     
   );
 };

@@ -21,7 +21,7 @@ const Invite = ({navigation}) => {
     try {
       const result = await Share.share({
         message:
-          'React Native | A framework for building native apps using React',
+          'This is my share code yugvujg',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -43,7 +43,7 @@ const Invite = ({navigation}) => {
         source={require('../assets/Group2.png')}
         style={styles.c1}>
           <View style={styles.head}>
-           <BHeader/>
+           <BHeader title='pamp' color={'#86D694'}/>
            {
             noti && 
             <View style={styles.copy_info}>
@@ -58,7 +58,8 @@ const Invite = ({navigation}) => {
         />
         <View style={styles.c2}>
           <ImageBackground
-           source={require('../../../assets/group-1979.png')}
+          resizeMode='contain'
+           source={require('../../../assets/savehere.png')}
             style={styles.c4}
           />
           <Text style={styles.c5}>
@@ -71,7 +72,7 @@ const Invite = ({navigation}) => {
           <Pressable
             style={styles.c6}
             onPress={onShare}>
-            <Text style={styles.c7}>Invite Frieds</Text>
+            <Text style={styles.c7}>Invite Friends</Text>
           </Pressable>
         </View>
       </ImageBackground>

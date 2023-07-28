@@ -81,6 +81,11 @@ const userSlice = createSlice({
       color:'',
       status:''
      },
+     rating:[{
+      id:1222,
+      vendor_id:1,
+      name:'rich'
+    }],
 
 
     payment_methods:{
@@ -122,6 +127,9 @@ const userSlice = createSlice({
     },
     setuser(state, action) {
       state.user = action.payload;
+    },
+    setUser(state, action) {
+      state.userInfo = action.payload;
     },
     setImage(state, action) {
       state.image1 = action.payload;
@@ -233,6 +241,7 @@ export const {
   setDefault,
   setLocation,
   setCurrentServiceIndex,
-  setServiceStatus
+  setServiceStatus,
+  setUser
 } = userSlice.actions;
 export default userSlice.reducer;

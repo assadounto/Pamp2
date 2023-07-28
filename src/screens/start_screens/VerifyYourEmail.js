@@ -26,7 +26,8 @@ import { FontFamily } from '../../GlobalStyles';
 
 const CELL_COUNT = 4;
 let error_color='#B0EBBD';
-const VerifyEmail = ({navigation}) => {
+const VerifyEmail = ({navigation,route}) => {
+   const {scope}= route.params
   const [shakeAnimation] = useState(new Animated.Value(0));
 
   const user= useSelector((state)=>state.user.user)
@@ -51,13 +52,13 @@ const VerifyEmail = ({navigation}) => {
     isError ? error_color ='red': ''
     if (isSuccess) {
       setModal(true);
-      getPhoneConfirm({
+      scope!=='ce'&&  getPhoneConfirm({
         scope: 'user',
         phone: user.phone
       })
       setTimeout(() => {
         setModal(false);
-        navigation.navigate('VerifyNumber');
+        scope=='ce'? navigation.navigate('main'): navigation.navigate('VerifyNumber');
       }, 4000);
     } 
     else  if (!isSuccess){

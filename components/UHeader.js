@@ -10,6 +10,7 @@ import { FontFamily } from '../GlobalStyles';
 import userimg from '../assets/userimg.png'
 import { update_new } from '../src/redux/user';
 import FastImage from 'react-native-fast-image';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const UHeader = ({navigation}) => {
   const dispatch=useDispatch()
   const user = useSelector(state => state.user.userInfo);
@@ -32,8 +33,10 @@ const UHeader = ({navigation}) => {
           marginTop: 40,
           marginLeft: 30,
 
-        }}>
+        }}>  
+          <TouchableOpacity onPress={()=>navigation.navigate('Profile')}>
             <FastImage
+            
      source={userimg ? {uri: userimg,headers: { Authorization: 'someAuthToken' },
      priority: FastImage.priority.high,} : user.image?{uri:user.image} :require('../assets/userimg.png')}
       style={{borderRadius: 50,width:60,height:60 }
@@ -42,7 +45,7 @@ const UHeader = ({navigation}) => {
   
    />
            
-
+           </TouchableOpacity>
 
         <Text
           style={[

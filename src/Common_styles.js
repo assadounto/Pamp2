@@ -20,15 +20,18 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   textInput: {
+    marginBottom:20,
     paddingHorizontal:20,
-    fontSize:8,
+    fontSize:14,
     width: 330,
     height: 63,
     margin:0,
+    alignSelf:'center',
     backgroundColor: '#EFEFEF',
     borderRadius: 23,
     borderWidth: 1,
     borderColor: '#EFEFEF',
+    fontFamily: FontFamily.sourceSansProRegular
   },
   t1: {
     fontSize: 26,
@@ -43,8 +46,8 @@ export const styles = StyleSheet.create({
   t3: {
     fontSize: 15,
     color: '#00463C',
-    fontFamily: FontFamily.sourceSansProSemibold,
-  marginTop:-20,
+    fontFamily: FontFamily.sourceSansProRegular,
+   marginTop:-20,
     alignSelf: 'center',
   },
   t4: {
@@ -62,9 +65,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   t6: {
-    width: '100%',
    
-  marginBottom:-20,
+   
+width:'85%'
 
    
   },
@@ -72,7 +75,7 @@ export const styles = StyleSheet.create({
     margin: 10,
   },
   terms: {
-    marginLeft: 10,
+    marginHorizontal: 10,
     marginTop:10,
     fontFamily:FontFamily.sourceSansProRegular
   },
@@ -112,14 +115,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   image: {
-    marginLeft: 60,
+  
     alignSelf: 'center',
   },
   press: {
     display: 'flex',
     flexDirection: 'row',
     borderColor: '#DEDCDC',
-    borderWidth: 1,
+    backgroundColor:'white',
     borderRadius: 23,
     width: 330,
     height: 71,
@@ -137,8 +140,8 @@ export const styles = StyleSheet.create({
   },
   head: {
     alignItems: 'center',
-    marginBottom: 30,
-    marginTop: 30,
+    marginBottom: 15,
+    marginTop: 20,
     backgroundColor: 'white',
     marginBottomColor: 'white',
   },
@@ -170,7 +173,8 @@ export const styles = StyleSheet.create({
   },
 
   pop2: {
-    marginTop: 480,
+    position:'absolute',
+    bottom:40,
     backgroundColor: '#fff',
     alignItems: 'center',
     borderRadius: 20,
@@ -238,7 +242,7 @@ export const styles = StyleSheet.create({
     fontFamily: FontFamily.sourceSansProBold,
     fontSize: 26,
     color: '#86D694',
-    marginTop: 90,
+    marginTop: 60,
     marginLeft: 20,
   },
   option: {
@@ -259,7 +263,7 @@ export const styles = StyleSheet.create({
   },
 
   selected: {
-    backgroundColor: '#B0EBBD',
+    backgroundColor: '#86D694',
     borderRadius: 20,
     color: 'white',
     height:34,

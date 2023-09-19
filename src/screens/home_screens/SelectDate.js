@@ -80,7 +80,7 @@ const SelectDate=({navigation,route})=>{
    }
     return(
         <><SafeAreaView>
-            <BHeader title={'Select date & time'} />
+            <BHeader title={'Select date & time'} color="#86D694"/>
             <Calender rebook={rebook} rebooked={rebooked} onSelect={(value) => setOption(value)} navigation={navigation} />
         </SafeAreaView>
         <Pop2 main={'Sucessfully rebooked appointment'} modal={modal}/>

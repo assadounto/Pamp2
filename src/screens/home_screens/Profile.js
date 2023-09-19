@@ -19,6 +19,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {colors, styles} from '../../Common_styles';
 import {Text} from 'react-native-animatable';
 import DelPop from './pop';
+import FastImage from 'react-native-fast-image';
 import user, { userLogout } from '../../redux/user';
 import {setImage} from '../../redux/user';
 import {useDispatch, useSelector} from 'react-redux';
@@ -100,11 +101,16 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             onPress={() => {
               onPickImage();
             } }>
-            <Avatar
-              rounded
-              size="large"
-              //title={me?.firstName[0]}
-              source={selectedImage || userimg ? { uri: userimg } : user.image ? { uri: user.image } : require('../../../assets/userimg.png')} />
+            <FastImage
+            
+            source={selectedImage || userimg ? { uri: userimg,headers: { Authorization: 'someAuthToken' } } : user.image ? { uri: user.image } : require('../../../assets/userimg.png')} 
+
+             style={{borderRadius: 50,width:60,height:60 }
+             
+           }
+         
+          />
+
             <View
               style={[
                 {
@@ -147,7 +153,11 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Last name</Text>
-              <Text style={[styles.P2, colors.dg2]}>{user.name}</Text>
+              {user.name ? <Text style={[styles.P2, colors.dg2]}>{user.name}</Text> : <Text
+                style={[styles.P2, colors.dg2]}
+                onPress={() => navigation.navigate('edit_profile')}>
+                +Add
+              </Text>}
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Phone number</Text>

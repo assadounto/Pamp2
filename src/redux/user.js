@@ -77,17 +77,18 @@ const userSlice = createSlice({
     notification_count:0,
     newnoti: true,
     currentServiceIndex: 0,
+    bottom_nav:true,
+    categories:[],
+    recent_view:{
+      cat:'',
+      search:''
+    },
     serviceStatus:{
       color:'',
       status:''
      },
-     rating:[{
-      id:1222,
-      vendor_id:1,
-      name:'rich'
-    }],
-
-
+     rating:[],
+    existing_rating:[],
     payment_methods:{
       default:  {  
          id:1,
@@ -119,8 +120,17 @@ const userSlice = createSlice({
     setNotification(state, action) {
       state.notifications = action.payload;
     },
+    addRecent(state, action) {
+      state.recent_view= action.payload;
+    },
+    setCat(state, action) {
+      state.categories = action.payload;
+    },
     setVerified_p(state, action) {
       state.unverified_p = action.payload;
+    },
+    showBottom(state, action) {
+      state.bottom_nav= action.payload;
     },
     verified(state, action) {
       state.verified = action.payload;
@@ -175,9 +185,23 @@ const userSlice = createSlice({
                 };
               }
             },
+
             update_new(state, action) {
               state.newnoti=action.payload   
-          },     
+          }, 
+          add_new_rating(state, action) {
+            if ( !state.rating.includes(action.payload)){
+              state.rating.push(action.payload)
+            }
+        }, 
+          delete_rating(state, action) {
+            state.rating= state.rating.filter((item)=>{item?.id!==action.payload})  
+           
+        }, 
+            
+        setExistingRating(state, action) {
+          state.existing_rating = action.payload
+      }, 
 
   },
   extraReducers: builder => {
@@ -242,6 +266,12 @@ export const {
   setLocation,
   setCurrentServiceIndex,
   setServiceStatus,
-  setUser
+  setUser,
+  showBottom,
+  setCat,
+  addRecent,
+  delete_rating,
+  add_new_rating,
+  setExistingRating
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -28,7 +28,7 @@ const Bookings = ({navigation}) => {
     console.log(data[0])
   }
   return (
-    <><Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: 90,marginBottom:30 }}>Appointments</Text>
+    <><Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: 60,marginBottom:30 }}>Appointments</Text>
   
      
 

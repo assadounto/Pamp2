@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable,ScrollView,FlatList,Dimensions} from 'react-native';
+import { View, Text, Pressable,ScrollView,FlatList,Dimensions,TouchableOpacity} from 'react-native';
 import { styles ,colors} from '../src/Common_styles';
 import { FontFamily } from '../src/GlobalStyles';
 import { Icon } from '@rneui/base';
@@ -211,6 +211,13 @@ export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) 
           horizontal={currentIndex === 'Month' ? false : true}
           showsHorizontalScrollIndicator={false}
         />
+        {
+        data.length>6 &&
+        <View style={{display:'flex', flexDirection:'row',marginBottom:10}}>
+        <TouchableOpacity style={{marginHorizontal:20,}} onPress={ PrevMonth}><Image resizeMode='contain' style={{width:20,height:20}} source={require('../assets/chevronright63.png')}/></TouchableOpacity>
+       <TouchableOpacity onPress={NextMonth}><Image resizeMode='contain' style={{width:20,height:20}} source={require('../assets/chevronright64.png')}/></TouchableOpacity>
+        </View>
+      }
       </View>
 
 

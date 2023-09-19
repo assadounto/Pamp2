@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, TextInput} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 import {Button, Input, Icon, CheckBox} from '@rneui/base';
@@ -92,24 +92,24 @@ const Register = ({navigation}) => {
             touched,
             errors,
           }) => (
-            <View style={[styles.container,{marginTop:20,marginBottom:20}]}>
+            <View style={[styles.container,{marginTop:10,marginBottom:20}]}>
               <Header
                 main={'Create New Account'}
                 sub={'Please fill in form to continue'}
               />
               <View>
-                <Input
+                <TextInput
                   placeholder="First Name"
-                  inputContainerStyle={[styles.textInput]}
+                 style={[styles.textInput]}
                   onChangeText={handleChange('username')}
                   onBlur={handleBlur('username')}
                   value={values.username}
                   errorMessage={touched.username && errors.username}
                 />
 
-                <Input
+                <TextInput
                   placeholder="Last Name"
-                  inputContainerStyle={[styles.textInput]}
+                  style={[styles.textInput]}
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
                   value={values.name}
@@ -139,81 +139,96 @@ const Register = ({navigation}) => {
                   keyboardType="phone-pad"
                 /> */}
 
-                <Input
+                <TextInput
                   placeholder="Email"
-                  inputContainerStyle={[styles.textInput]}
+                  style={[styles.textInput]}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
                   errorMessage={touched.email && errors.email}
                   keyboardType="email-address"
                 />
-
-                <Input
+<View>
+                <TextInput
                   placeholder="Password"
-                  inputContainerStyle={[styles.textInput,{marginBottom:-20}]}
+                  style={[styles.textInput]}
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
                   errorMessage={touched.password && errors.password}
                   secureTextEntry={!showPassword}
-                  rightIcon={
-                    <Icon
+               
+                />
+                 <View  style={{position:'absolute',top:20,right:30}}>
+                <Icon
+                    
                       name={showPassword ? 'eye' : 'eye-off'}
                       type="ionicon"
                       onPress={() => setShowPassword(!showPassword)}
-                      color={'#BBB9BC'}
+                      color='#BBB9BC'
                     />
-                  }
-                />
+                </View>
+
+              </View>
               </View>
               <View style={styles.t6}>
                 <CheckBox
+                  uncheckedIcon={<Image
+                    resizeMode='contain'
+                    style={{width:33,height:33}}
+                      source={require('../../../assets/rectangle1063.png')}
+                       />}
                   checkedIcon={
-                    <View style={styles.checkc}>
-                      <Image
-                        source={require('../../../assets/check3.png')}
-                        style={styles.check}
-                      />
-                    </View>
+                    <Image
+                    style={{width:33,height:33}}
+                    resizeMode='contain'
+                      source={require('../../../assets/group2210.png')}
+                       />
                   }
                   title={
                     <Text style={[colors.dg, styles.terms]}>
                       I agree to the{' '}
                       <Text style={[colors.lg, styles.bold]}>
-                        Terms of Service
+                         Privacy Policy
                       </Text>{' '}
                       and{' '}
                       <Text style={[colors.lg, styles.bold]}>
-                        Privacy Policy
+                        Terms of Use
+                      </Text>{' '}
+                      <Text style={[colors.lg, styles.bold]}>
+                       Terms of Service
                       </Text>
                     </Text>
                   }
                   checked={agreedToTerms}
                   onPress={() => setAgreedToTerms(!agreedToTerms)}
                 />
-              </View>
-              <View style={styles.t6}>
-                <CheckBox
+                 <CheckBox
                   title={
                     <Text style={[colors.dg, styles.terms]}>
-                      I agree to receive marketing notifications with offers and
-                      news
+               {" I agree to receive marketing notifications with \n offers and  news"}
                     </Text>
                   }
+                  uncheckedIcon={<Image
+                    resizeMode='contain'
+                    style={{width:33,height:33}}
+                      source={require('../../../assets/rectangle1063.png')}
+                       />}
                   checkedIcon={
-                    <View style={styles.checkc}>
-                      <Image
-                        source={require('../../../assets/check3.png')}
-                        style={styles.check}
-                      />
-                    </View>
+                    <Image
+                    style={{width:33,height:33}}
+                    resizeMode='contain'
+                      source={require('../../../assets/group2210.png')}
+                       />
                   }
                   checked={receivePushNotifications}
                   onPress={() =>
                     setReceivePushNotifications(!receivePushNotifications)
                   }
                 />
+              </View>
+              <View style={styles.t6}>
+               
               </View>
               <Button
                 title="Sign Up"

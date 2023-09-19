@@ -14,12 +14,10 @@ import note2 from '../assets/note5.png'
 import cancel1 from '../assets/cancel.png'
 import cancel2 from '../assets/cancel5.png'
 import { useSelector } from 'react-redux';
-const Booking_action = ({setblur,rebk,data}) => {
-    //console.log(cancelled)
+const Booking_action = ({ info,setblur,rebk,data}) => {
+    console.log(info,'ll')
     const canc = data.status=='cancelled'? true:false
-
     const [cancelled,cancel]= useState(canc)
-
     const [cancel_modal,setcancel]=useState(false)
     const [notes,setnotes]=useState(false)
   return (
@@ -43,13 +41,13 @@ const Booking_action = ({setblur,rebk,data}) => {
       <View>
       <TouchableOpacity
           // delayPressIn={}
-         disabled={cancelled}
-          style={[md_style.action,cancelled && md_style.cancel]}
+         disabled={cancelled||info?.status=='completed'}
+          style={[md_style.action,cancelled||info?.status=='completed' && md_style.cancel]}
           // key={index}
           onPress={() =>{setblur(true);setnotes(true)}}>
              
              <Image
-          source={cancelled ? note2:note}
+          source={cancelled ||info?.status=='completed' ? note2:note}
           style={{width:22,height:22,alignSelf:'center'}}
           />
            
@@ -60,12 +58,12 @@ const Booking_action = ({setblur,rebk,data}) => {
 <View>
           <TouchableOpacity 
     // delayPressIn={}
-    disabled={cancelled}
-  style={[md_style.action,cancelled&& md_style.cancel_red]}
+    disabled={cancelled ||info?.status=='completed'}
+  style={[md_style.action,cancelled ||info?.status=='completed'&& md_style.cancel_red]}
    // key={index}
    onPress={() =>{setblur(true); setcancel(true)}}>
       <Image
-          source={cancelled ? cancel2: cancel1}
+          source={cancelled ||info?.status=='completed' ? cancel2: cancel1}
           style={{width:22,height:22,alignSelf:'center'}}
           />
          

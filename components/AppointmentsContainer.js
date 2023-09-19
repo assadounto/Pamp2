@@ -20,6 +20,13 @@ const AppointmentsContainer = ({navigation,data}) => {
     return formattedString;
   }
   
+  function capitalizeFirstLetter(str) {
+    if (typeof str !== 'string') {
+      throw new Error('Input must be a string');
+    }
+    
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
   // Example usage:
   const services = [
     {
@@ -95,7 +102,7 @@ const c={
     <Pressable onPress={()=>navigation.navigate('Booking_detail',{
       data
     })}  style={[styles.path636Parent]}>
-       <AppJob setInfo={setInfo} services={data.services} time={data.time}/>
+       <AppJob setInfo={setInfo}  vendor={data.vendor} services={data.services} time={data.time}/>
 
           <FastImage
         style={[styles.groupChild, styles.groupChildPosition]}
@@ -127,7 +134,7 @@ const c={
       <View style={[styles.groupInner, styles.lineViewBorder]} />
       <View style={[styles.lineView, styles.lineViewBorder]} />
       <View style={[styles.bookedWrapper, info ? {backgroundColor: info.color}: {backgroundColor: bgc[data.status]}, styles.groupItemPosition]}>
-        <Text style={[styles.booked, info  ? {color: 'white'} : {color:c[data.status]}, styles.sewInTypo]}>{info ? info.status : data.status}</Text>
+        <Text style={[styles.booked, info  ? {color: 'white'} : {color:c[data.status]}, styles.sewInTypo]}>{info ?capitalizeFirstLetter(info.status ): capitalizeFirstLetter(data.status)}</Text>
       </View>
     </Pressable>
   );
@@ -259,7 +266,7 @@ const styles = StyleSheet.create({
   booked: {
 
     borderRadius:20,
-     paddingHorizontal:10,
+     
     fontSize: FontSize.size_2xs,
    // color: colors.dg.color,
     textAlign: "center",
@@ -268,11 +275,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   bookedWrapper: {
-    marginTop: 8.99,
+
     right: 29,
-    borderRadius:20,
+  paddingHorizontal:10,
+    borderRadius:28,
     //backgroundColor: Color.darkslategray_200,
-    width: 80,
+    width: 90,
   
     height: 21,
     top: "50%",

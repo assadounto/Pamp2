@@ -2,9 +2,11 @@ import * as React from "react";
 import { StyleSheet, View, Text, Pressable, Image,TextInput, SafeAreaView,Modal,TouchableOpacity } from "react-native";
 import { Styles } from "react-native-google-places-autocomplete";
 import { useNavigation } from "@react-navigation/native";
+import { useLazyGetcategoriesQuery } from "../src/redux/authapi";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView ,{PROVIDER_GOOGLE,Marker} from "react-native-maps";
 import Categories from "../components/Categories";
+import { addRecent } from "../src/redux/user";
 navigator.geolocation = require('react-native-geolocation-service');
 import {
   Margin,
@@ -14,30 +16,38 @@ import {
   FontFamily,
   Padding,
 } from "../GlobalStyles";
+import {useDispatch, useSelector} from 'react-redux';
 import { Icon } from "@rneui/base";
-import { styles } from "../src/Common_styles";
+import { colors, styles } from "../src/Common_styles";
 import GooglePlacesSearchModal from "../components/Gsearch";
 import Gsearch from "../components/Gsearch";
 import axios from "axios";
 import { backendURL } from "../src/services/http";
 import { da } from "date-fns/locale";
-const data= [
+
+
+const initData= [
   { value: 'All categories' },
-  { value: 'Beauty Salon' },
-  { value: 'Hair Salon' },
-  { value: 'Eyebrows & Lashes' },
-  { value: 'Massage' },
-  { value: 'Barbershop' },
-  
+  // { value: 'Beauty Salon' },
+  // { valxue: 'Hair Salon' },
+  // { value: 'Eyebrows & Lashes' },
+  // { value: 'Massage' },
+  // { value: 'Barbershop' },
+  // { value: 'Massage' },
+  // { value: 'Barbershop' },
+  // { value: 'Massage' },
+  // { value: 'Spa' },
+  // { value: 'Aesthetics' },
+  // { value: 'Waxi' },
 ];
 
 
-
-
 const Search2 = () => {
+  const dispatch= useDispatch()
   const [loc,setLoc]= React.useState()
   const inputRef =  React.useRef(null);
-
+  const userstate =useSelector((state)=>state.user)
+  const [getcategories,{data,isLoadig}]=useLazyGetcategoriesQuery()
   const navigation=useNavigation()
   const [modalVisible, setModalVisible] = React.useState(false);
   const [option,setoption]=React.useState('')
@@ -49,12 +59,32 @@ const Search2 = () => {
   const handleSearch = async () => {
     const {data}= await axios.get(`${backendURL}/search?query=${query}&lat=${loc.coordinates.lat}&lon=${loc.coordinates.lng}]`)
     //setData(data)
+    dispatch(addRecent({cat: 'query',search: query}))
+
      data    &&   navigation.navigate('Searches1', { location: loc, category: query,data});
      data && console.log(data[0].distance)
   };
   const handleContainerPress = () => {
     inputRef.current.focus();
   };
+
+  const data1=  initData.concat( userstate.categories.map((cat)=>{
+    return {
+      value: cat.name
+    }
+  })
+  )
+
+  const searchRecent=async()=>{
+    if (userstate.recent_view.cat=='cat'){
+      const {data}= await axios.get(`${backendURL}/search?category=${userstate.recent_view.search}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`)
+  navigation.navigate('Searches1', { location: loc, category:  userstate.recent_view.search,data});
+    } else {
+      setQuery(userstate.recent_view.search);
+      handleSearch()
+    }
+  }
+  
   return(
     <SafeAreaView>
       <TouchableOpacity
@@ -80,15 +110,32 @@ const Search2 = () => {
         onSubmitEditing={handleSearch}
         />
       </TouchableOpacity>
-       <Gsearch setLoc={setLoc}/>
+       <Gsearch  handleS={ handleSearch} setLoc={setLoc}/>
       {/* <View style={{ flex: 1 }}>
       <GooglePlacesSearchModal setLocation={setLocation} location={location} setVisible={setModalVisible} visible={modalVisible}/>
     </View> */}
 
- <Categories data={data} onSelect={(val) => {
+ <Categories data={data1} onSelect={async(val) => {
   setoption(val);
-  navigation.navigate('Searches1', { location: loc, category: val });
+  dispatch(addRecent({cat: 'cat',search: val}))
+  const {data}= await axios.get(`${backendURL}/search?category=${val}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`)
+  navigation.navigate('Searches1', { location: loc, category: val ,data});
 }}/> 
+{ userstate.recent_view.search&&
+  <View style={{marginHorizontal:30}}>
+  <Text style={s_style.recent_view}>Recent Searches</Text>
+ <View style={{display:'flex',
+flexDirection:'row'}}>
+  <TouchableOpacity onPress={searchRecent} style={s_style.recent_cont}>
+  <Image source={require('../assets/search1.png')} />
+  </TouchableOpacity>
+  <View style={s_style.text_cont}>
+  <Text style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:17}}>{userstate.recent_view.search}</Text>
+  </View>
+  </View>
+  
+</View>
+}
     </SafeAreaView>
   )
 }
@@ -96,6 +143,25 @@ export default Search2;
 
 
 const s_style= StyleSheet.create({
+  text_cont:{
+    justifyContent:'center',
+    alignItems:'center',
+    marginLeft:20,
+    height:56,borderRadius:20, 
+  },
+  recent_cont:{
+    justifyContent:'center',
+    alignItems:'center',
+    width:56,
+    height:56,borderRadius:20,
+    backgroundColor: colors.dg2.color
+  },
+  recent_view:{
+    fontFamily:FontFamily.sourceSansProSemibold,
+    fontSize: 26,
+    color:colors.dg2.color,
+    marginVertical:30
+  },
   text_input: {
     
     backgroundColor: '#EFEFEF',

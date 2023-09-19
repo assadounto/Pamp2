@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Alert, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Alert, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import BHeader from '../../../components/BHeader';
 import { Input, Button } from '@rneui/base';
 import { styles } from '../../Common_styles';
 import axios from 'axios';
 import { backendURL } from '../../services/http';
 import { useSelector } from 'react-redux';
+import { FontFamily } from '../../GlobalStyles';
 
 const Change_email = ({ navigation }) => {
   const user =useSelector((state)=>state.user.userInfo)
@@ -68,23 +69,23 @@ const Change_email = ({ navigation }) => {
       <BHeader title={'Change Email'} />
 
       <View style={{ alignSelf: 'center',marginTop:40}}>
-        <Input
+        <TextInput
           placeholder="Current Email Address"
-          inputContainerStyle={[styles.textInput]}
+          style={[styles.textInput]}
           onChangeText={(value) => handleChange('old_email', value)}
           value={formData.old_email}
         />
 
-        <Input
+        <TextInput
           placeholder="New Email Address"
-          inputContainerStyle={[styles.textInput]}
+          style={[styles.textInput]}
           onChangeText={(value) => handleChange('new_email', value)}
           value={formData.new_email}
         />
 
-        <Input
+        <TextInput
           placeholder="Confirm Email Address"
-          inputContainerStyle={[styles.textInput]}
+          style={[styles.textInput]}
           onChangeText={(value) => handleChange('confirm_email', value)}
           value={formData.confirm_email}
         />
@@ -92,8 +93,9 @@ const Change_email = ({ navigation }) => {
         <TouchableOpacity>
           <Button
             title="Save"
+            titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
             onPress={handleSubmit}
-            buttonStyle={styles.button}
+            buttonStyle={[styles.button,{marginTop:'30%'}]}
             loading={formData.isLoading}
           />
         </TouchableOpacity>

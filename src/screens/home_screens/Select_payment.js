@@ -8,6 +8,7 @@ import { Image } from "react-native-animatable";
 import { ScrollView } from "react-native-gesture-handler";
 import source from '../../../assets/pay-with-cash.png'
 import source2 from '../../../assets/group-1902.png'
+import card from '../../../assets/credit-card.svg'
 import momo from '../../../assets/momo.png'
 import airtel from '../../../assets/airtel.png'
 import voda from '../../../assets/Vodafone.png'
@@ -18,29 +19,19 @@ import { setDefault } from "../../redux/user";
 const Select_payment=({navigation})=>{
     const dispatch=useDispatch()
     const payment_methods=useSelector((state)=>state.user.payment_methods.methods)
-   const payment_method=[
-    {   id:1,
-        name: 'Pay with cash',
-        img: source
-    },
+   const payment_method=
     {
-        id:2,
-        name: 'Pay with Mobile Money',
-        img: source
-    },
-    {
-        id:3,
-        name: 'Master',
-        expiry: '5/27',
-        img:source2
+      'Pay with cash': '',
+       'Pay with momo':'smartphone',
+       'Pay with card': 'credit-card',
     }
-   ]
+
     return(
         <SafeAreaView>
             <ScrollView
             contentContainerStyle={{backgroundColor:'white'}}
             > 
-                <BHeader title={'Payment methods'}/>
+                <BHeader title={'Payment methods'} />
                 <Text style={{width:320,marginBottom:20,marginHorizontal:40, textAlign:'left',fontFamily:FontFamily.sourceSansProRegular,fontSize:15,color:'#00463C'}}>Securely save your card details to seamlessly make payments.</Text>
                  {
                     payment_methods.map((pay)=>
@@ -51,11 +42,15 @@ const Select_payment=({navigation})=>{
                   dispatch(setDefault(pay))
                   navigation.goBack()
                   }}>
-                    
-                  <Image
-          source={pay.img=='cash'? source: pay.name=='MTN' ? momo: pay.name=='VODAFONE'? voda: pay.name=='AIRTELTIGO'? airtel:source2}
-          style={{width:40,height:30,borderRadius:5,resizeMode:'contain'}}
-        />
+                    {payment_method[pay.name]==''?
+                       <Image
+                       source={source}
+                       style={{width:40,height:30,borderRadius:5,resizeMode:'contain'}}
+                     />:
+                       <Icon style={{marginLeft:10}} name={payment_method[pay.name]} color={colors.dg2.color}  type="feather"/> 
+                    }
+                 
+      
                   <ListItem.Content>
                     <ListItem.Title style={colors.dgb}>
                      {pay.name && pay.name}

@@ -11,7 +11,7 @@ const Modal_Pop = ({main, modal,onchange,setOption}) => {
   return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
 
-<View style={[styles.pop2,{marginTop:'140%', padding:0,height:200}]}>
+<View style={[styles.pop2,{ padding:0,height:200,bottom:110}]}>
 <FlatList style={md_style.momo_cont}
         data={data}
         renderItem={({item}) => (
@@ -28,7 +28,7 @@ const Modal_Pop = ({main, modal,onchange,setOption}) => {
 
 
         
-         <Pressable style={{ alignItems:'center',
+         <Pressable style={{ alignItems:'center',position:'absolute',bottom:40,
         justifyContent: 'center',backgroundColor:'white',marginTop:10,height:54,
          borderRadius:18,width:'95%',alignSelf:'center'}} onPress={()=>onchange(false)}><Text style={md_style.text}>BACK</Text></Pressable> 
           </Modal>

@@ -143,7 +143,7 @@ getFav()
     return(
       <SafeAreaView style={{flex:1}}>
    
-        <Text style={{marginLeft:30,fontFamily:FontFamily.sourceSansProBold,fontSize:26,color:'#86D694',marginTop:30}}>My Fav</Text>
+        <Text style={{marginLeft:30,fontFamily:FontFamily.sourceSansProBold,fontSize:26,color:'#86D694'}}>My Fav</Text>
         {
           data.length==0? <Emptyfav 
           title={"No Favourites"}

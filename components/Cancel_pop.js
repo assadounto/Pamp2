@@ -36,16 +36,16 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
             
               <Text style={[colors.dgb, pop.h1, styles.tac]}>Are you sure you want to cancel booking?</Text>
               {
-              !data.cancelable&&  <><Text style={[colors.dgb, pop.h2, styles.tac]}>{`Due to late cancellation, you'll lose your deposit of 20% from the services value ${data.total}`}</Text><Text style={[colors.dgb, pop.h3, styles.tac]}>See the <Text style={pop.h4}> Cancellation policy</Text></Text></>
+              !data.cancelable&&  <><Text style={[colors.dgb, pop.h2, styles.tac]}>{`Due to late cancellation, you'll lose your deposit of 20% from the services value`} <Text style={{fontFamily:FontFamily.sourceSansProSemibold}}>(¢{parseInt(data.total)})</Text></Text><Text style={[colors.dgb, pop.h3, styles.tac]}>See the <Text style={pop.h4}> Cancellation policy</Text></Text></>
               }
               <View style={{ display: 'flex', flexDirection: 'row', gap: 10, marginVertical: 20 }}>
-                  <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: colors.lg.color, width: 120, height: 40 }} title='Keep'>
+          
+                  <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: '#CD3D49', width: 120, height: 40 }} title='cancel'>
 
                   </Button>
-                  <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: 'red', width: 120, height: 40 }} title='cancel'>
+                  <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='Keep'>
 
-                  </Button>
-
+</Button>
               </View>
 
           </View>
@@ -54,14 +54,14 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
 };
 const pop=StyleSheet.create({
     pop:{
-        width: '95%',
+        position:'absolute',
         backgroundColor: '#fff',
         alignItems: 'center',
         borderRadius: 20,
         alignSelf: 'center',
         padding: 10,
-       
-        top:400
+       width:'90%',
+       bottom:70
     },
     h1:{
         fontFamily:FontFamily.sourceSansProSemibold,

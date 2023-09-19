@@ -24,7 +24,7 @@ const UHeader = ({navigation}) => {
         {
           backgroundColor: 'white',
           marginBottom: 20,
-          marginTop:30
+          marginTop:15
         },
       ]}>
       <View

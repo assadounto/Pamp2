@@ -5,11 +5,13 @@ import BHeader from "../../../components/BHeader"
 import ReviewCont from "../../../components/ReviewCont"
 import ReviewContainer from "../../../components/ReviewContainer"
 
-const Ratings=()=>{
+const Ratings=({route})=>{
+    const {data}= route.params
+    console.log(data,'m')
     return( 
         <SafeAreaView>
-               <BHeader title="Rating and reviews"/>
-              <ReviewCont/>
+               <BHeader title="Rating and reviews" color={'#86D694'}/>
+              <ReviewCont data={data}/>
         </SafeAreaView>
        
     )

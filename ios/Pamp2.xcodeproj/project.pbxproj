@@ -16,6 +16,7 @@
 		8E8E81A229DFB6040027345A /* SourceSansPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0EBEDAACB36B4C05BD38A3E7 /* SourceSansPro-Regular.otf */; };
 		8E8E81A329DFB6040027345A /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3537E945801D40B59EB1C153 /* SourceSansPro-Semibold.otf */; };
 		8E965A222A63100500BC3F39 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E965A212A63100500BC3F39 /* GoogleService-Info.plist */; };
+		8EE89F7D2A978700009BE1D1 /* BodonBd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EE89F7C2A978700009BE1D1 /* BodonBd.ttf */; };
 		BE9ACBC9967E57393753F58F /* libPods-Pamp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E0D1FD41210466E18A9531F /* libPods-Pamp2.a */; };
 		E80474574D125C7076B3B1F9 /* libPods-Pamp2-Pamp2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE641EA126D681278E6E5CA /* libPods-Pamp2-Pamp2Tests.a */; };
 /* End PBXBuildFile section */
@@ -63,6 +64,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-Pamp2-Pamp2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pamp2-Pamp2Tests.release.xcconfig"; path = "Target Support Files/Pods-Pamp2-Pamp2Tests/Pods-Pamp2-Pamp2Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8E965A212A63100500BC3F39 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8E965A232A63176100BC3F39 /* Pamp2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Pamp2.entitlements; path = Pamp2/Pamp2.entitlements; sourceTree = "<group>"; };
+		8EE89F7C2A978700009BE1D1 /* BodonBd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BodonBd.ttf; path = "../../Downloads/bodoni-bd-bt/BodonBd.ttf"; sourceTree = "<group>"; };
 		91370CDDD5A8458C8A6C69DC /* SourceSansPro-BoldIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BoldIt.otf"; path = "../assets/fonts/SourceSansPro-BoldIt.otf"; sourceTree = "<group>"; };
 		96E726E68CFE41528FDB6FEA /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = ../assets/fonts/Octicons.ttf; sourceTree = "<group>"; };
 		ACA10F693B2E49BD990F9CD5 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = ../assets/fonts/MaterialIcons.ttf; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		30F73F51556B4160AB0CBEF7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8EE89F7C2A978700009BE1D1 /* BodonBd.ttf */,
 				38902C73D03B423583EC23DE /* SourceSansPro-Black.otf */,
 				EEB3A9C46E4A476C9F38A88F /* SourceSansPro-BlackIt.otf */,
 				B0CFE45FFF154E2AA28C3392 /* SourceSansPro-Bold.otf */,
@@ -321,6 +324,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				8E965A222A63100500BC3F39 /* GoogleService-Info.plist in Resources */,
+				8EE89F7D2A978700009BE1D1 /* BodonBd.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

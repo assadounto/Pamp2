@@ -4,11 +4,12 @@ import {Input, Icon,TouchableOpacity} from '@rneui/base';
 import {styles, colors} from '../../Common_styles';
 import UHeader from '../../../components/UHeader';
 import { useLazyGetcategoriesQuery } from '../../redux/authapi';
-import {Pressable, FlatList, Image, Platform} from 'react-native';
+import {Pressable, FlatList, Image, Platform, Alert} from 'react-native';
 import RadioButton from '../../../components/RadioButton';
 import Geolocation from 'react-native-geolocation-service';
 import {useSelector,useDispatch} from 'react-redux';
 import { backendURL } from '../../services/http';
+import { setExistingRating, showBottom } from '../../redux/user';
 import { request, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import { FontFamily } from '../../GlobalStyles';
 import img from '../../../assets/s.png'
@@ -17,16 +18,19 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import MyTabBar from '../../../components/Topnav';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Favourites from './favourites';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import user, { setLocation } from '../../redux/user';
 import VendorSearchCon from '../../../components/VendorSearchCont';
 import { TextInput } from 'react-native-gesture-handler';
 import { use } from '../../redux/homeapi';
 import axios from 'axios';
-import { setnotifications_count } from '../../redux/user';
+import messaging from '@react-native-firebase/messaging';
+import { setnotifications_count,setCat } from '../../redux/user';
 import FastImage from 'react-native-fast-image';
 import Rating_pop from '../../../components/Rating_pop';
 import Blur from '../start_screens/Blur';
+import { da } from 'date-fns/locale';
+import { Linking } from 'react-native';
 const Tab = createMaterialTopTabNavigator();
 
 
@@ -61,7 +65,23 @@ const  reverseGeocode=async (lat, lng)=> {
       throw new Error('Error occurred during reverse geocoding');
     }
   }
-
+  Linking.addEventListener('url', (event) => {
+  
+    handleDeepLink(event.url);
+  });
+  
+  const handleDeepLink = (url) => {
+    const route = url.replace(/.*?:\/\//g, '');
+    const id = route.match(/\/([^\/]+)\/?$/)[1];
+    const routeName = route.split('/')[0];
+    console.log(id,route)
+    if (routeName === 'vendor') {
+      navigation.navigate('VendorDetail',
+      {
+      id
+      }
+      )    };
+  };
   function getUserLocation() {
     Geolocation.getCurrentPosition(
       async (position) => {
@@ -90,22 +110,28 @@ const  reverseGeocode=async (lat, lng)=> {
     console.log(message)
     };
 
+    const [token, setToken] = React.useState('');
+    async function fetchData() {
+      const generatedToken = await messaging().getToken()
+       setToken(generatedToken);
+       if(generatedToken){
+     await  axios.get(`${backendURL}/token?token=${generatedToken}&id=${user.id}`)
+       }
+     }
+
     const getUdates=async()=>{
 const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
-      dispatch(setnotifications_count(data.length))
-      console.log(data.length,userstate)
+      dispatch(setnotifications_count(data.notifications.length))
+      dispatch(setExistingRating(data.ratings))
     }
-    const checkAnyRating=()=>{
-      const ratings= userstate.rating
-      if (ratings.length!==0){
-        setVendor(ratings[0])
-        console.log(ratings[0])
-        setmodal(true)
-      }
-    }
+
   React.useEffect(()=>{
-    checkAnyRating()
+    console.log(userstate.location,'jee')
+    dispatch(showBottom(true))
+    fetchData()
+ 
     getUdates()
+    userstate.location.name==undefined&&
     request(Platform.OS==='ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
@@ -147,7 +173,7 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
   const selectHandler=(value)=>{
      getlo()
     setOption(value)
-    console.log(value)
+   
 
   }
   
@@ -176,16 +202,24 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
 };
 
 const Popular=({navigation})=>{
+const dispatch=useDispatch()
+  const userstate =useSelector((state)=>state.user)
   const [getcategories,{data,isLoadig}]=useLazyGetcategoriesQuery()
   useEffect(()=>{
-    getcategories('Popular')
+    const a= async()=>{
+      const {data}= await getcategories('Popular')
+      data&& dispatch(setCat(data))
+    }
+   a()
+ 
+
   },[])
   const handleSearch = async (id,title) => {
      
     
-    const {data}= await axios.get(`${backendURL}/search?category=${title}`)
+    const {data}= await axios.get(`${backendURL}/search?category=${title}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`)
     //setData(data)
-     data    &&   navigation.navigate('Searches1', { location: location, category: title,data});
+     data    &&   navigation.navigate('Searches1', { location: userstate.location , category: title,data});
 
   };
   const location= useSelector(state=>state.user)
@@ -223,7 +257,7 @@ const Popular=({navigation})=>{
 
 const Others=()=>{
   const user =useSelector((state)=>state.user)
-  
+  const navigation=useNavigation()
   const[datas,setData]= useState([])
   const get=async()=>{ 
     const {data}= await axios.get(`${backendURL}/search?query=${'hair'}&lat=${user.location.lat}&lon=${user.location.lon}]`)
@@ -246,7 +280,7 @@ const Others=()=>{
         
      })
     setData( vendors)
-    console.log( vendors)
+
   }
   useEffect(()=>{
 
@@ -282,7 +316,7 @@ const Others=()=>{
   //   },
   //]
  return(
-  <VendorSearchCon data={datas}/>
+  <VendorSearchCon notext={true} navigation={navigation} data={datas}/>
  )
 }
 export default Home;

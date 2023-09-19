@@ -1,31 +1,67 @@
 import { Icon,Input } from '@rneui/base'
 import { FontFamily } from '../GlobalStyles'
-import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList} from 'react-native'
+import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList, Alert} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { styles,colors } from '../src/Common_styles'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Emptyfav from './EmptyFav'
 const Tab = createMaterialTopTabNavigator();
 
-const VendorSearchCon=({data,navigation})=>{
-  console.log(data)
-const Item =({image,logo,name,items,rating,location,dist,id})=>(
+const VendorSearchCon=({datas,notext,navigation,category})=>{
+console.log(datas, typeof(datas))
+  function generateRatingsSummary(ratings) {
+  
+    // Initial template
+    let summary = {
+      total_ratings: ratings.length,
+      ratings: {
+        "5": 0,
+        "4": 0,
+        "3": 0,
+        "2": 0,
+        "1": 0,
+      },
+      average_rating: 0.0,
+    };
+
+    // Iterate through ratings to populate the summary
+    let totalScore = 0;
+    for (let i = 0; i < ratings.length; i++) {
+      let ratingValue = ratings[i].rating.toString();
+      if (summary.ratings[ratingValue] !== undefined) {
+        summary.ratings[ratingValue] += 1;
+        totalScore += ratings[i].rating;
+      }
+    }
+
+    // Calculate average rating
+    if (ratings.length !== 0) {
+      summary.average_rating = parseFloat(
+        (totalScore / ratings.length).toFixed(2)
+      );
+    }
+
+    console.log(summary, "xcxcxc");
+
+    // Return the summary
+    return summary;
+  }
+
+const Item =({image,logo,name,items,location,dist,id,ratings})=>(
     <View style={[styles2.cont,{shadowColor: '#707070',
     shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 2,
     shadowOffset: {width: 5, height: 0},marginTop:10,marginBottom:10}]}>
-      <Pressable  onPress={()=>navigation.navigate('VendorDetail',
+       <Pressable  onPress={()=>navigation.navigate('VendorDetail',
       {
       id: id,
       }
-      )}>  
+      )}> 
      <FastImage
       source={{uri: image, headers: { Authorization: 'someAuthToken' },
       priority: FastImage.priority.normal,}}
-     
-      style={{ alignSelf:'center',width: '100%', height:200, borderRadius: 20 }
-      
+      style={{ alignSelf:'center',width: '100%', height:200, borderRadius: 20 } 
     }
   
    />
@@ -81,7 +117,7 @@ style={{
       }
       />
       <Text>
-        {rating}
+        {ratings.average_rating==0?'0.0':ratings.average_rating}
       </Text>
     </View>
     <View style={{position:'relative',top:-30}}>
@@ -104,8 +140,8 @@ style={{
             marginRight:10
             }
           }
-          onPress={() => selectHandler(item.value)}>
-          <Text style={[styles.option, colors.dg]}> {item.value}</Text>
+         >
+          <Text style={[styles.option, colors.dg]}> {item.value}j</Text>
         </Pressable>
      
       );
@@ -122,17 +158,21 @@ style={{
   );
    return (
     <>
-    {data && data.length!==0 ?
-    <FlatList 
-    data={data}
-    renderItem={({item}) => (
-      <Item  
-       name={item.name} id={item.id}   logo={item.logo}   items={item.items} rating={item.rating} location={item.location} dist={item.dist} image={item.image}/>
-    )}
-    keyExtractor={item => item.id}
-  />: <Emptyfav 
+    {datas && datas.length!==0 ?
+            <>
+            {
+              !notext &&<><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 24, color: colors.dg.color, marginLeft: 40, fontWeight: 'bold', }}>{datas.length} {datas.length > 1 ? 'results' : 'result'} For {category}</Text><Text style={{ marginBottom: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' }}>near you </Text></>
+            }
+            <FlatList
+           data={datas}
+           renderItem={({ item }) => (
+             <Item
+              ratings={generateRatingsSummary(item.ratings)}
+               name={item.name} id={item.id} logo={item.logo} items={item.items} rating={item.rating} location={item.location} dist={item.dist} image={item.image} />
+           )}
+           keyExtractor={item => item.id} /></>: <Emptyfav 
   title={"No match"}
-  body={"Please try different keywords"}
+  body={"Nothing here to show"}
   top={50}
   />}
   </>

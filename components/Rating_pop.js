@@ -1,34 +1,59 @@
 import React, { useState } from 'react';
-import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput} from 'react-native';
+import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput,Keyboard} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
 import { Button,Rating } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
 import { Icon } from '@rneui/base';
 import axios from 'axios';
+import { delete_rating } from '../src/redux/user';
 import StarRating from 'react-native-star-rating-widget';
 import { backendURL } from '../src/services/http';
 import Pop2 from '../src/screens/start_screens/pop2';
+import { useDispatch,useSelector } from 'react-redux';
 
-const Rating_pop = ({setmodal,vendor, modal,setblur,id}) => {
+const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
+  const dispatch= useDispatch()
+  const [poph,setpop]=useState(400)
+  const id = useSelector(state=>state.user.userInfo.id)
     const [text,setText]=useState('')
     const [rating, setRating] = useState(0);
+  
    const handlepressCancel=()=>{
 
-    setmodal(false)
+    setmodal(!modal)
     }
-
+    React.useEffect(() => {
+      const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+        setpop(200)
+      });
+  
+      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+          setpop(400)
+      });
+  
+      return () => {
+        keyboardDidShowListener.remove();
+        keyboardDidHideListener.remove();
+      };
+    }, []);
     const handlePressOK=async()=>{
-    const {data}= axios.post(`${backendURL}/booking/notes`,{id: id,notes: text })
-   setmodal(false)
-    set_notify(true);
-    setTimeout(() => {
-        set_notify(false);
-        setblur(false);
-      }, 3000);
+   
+   const {data}= await axios.post(`${backendURL}/rating`,{id,vendor_id: vendor.id, rating, description:text })
+   console.log(data)
+   if (data=='created'){
+    dispatch(delete_rating(vendor.id))
+        setmodal(false)
+        setInfoModal(true);
+        setTimeout(() => {
+             setInfoModal(false);
+           }, 3000);
+
+   }
+   
     }
   return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
-          <View style={[pop.pop]}>
+          <View style={[pop.pop,{top: poph}]}>
          <View style={pop.notes}>
             <Icon 
             onPress={handlepressCancel}
@@ -39,7 +64,7 @@ const Rating_pop = ({setmodal,vendor, modal,setblur,id}) => {
             />
 
          </View>
-         <Text style={pop.rate}>Rate your experience with </Text>
+         <Text style={pop.rate}>Rate your experience with {vendor?.username} </Text>
          <StarRating
           starSize={50}
           starStyle={{marginRight:0}}
@@ -48,11 +73,11 @@ const Rating_pop = ({setmodal,vendor, modal,setblur,id}) => {
         onChange={setRating}
       />
         <TextInput  placeholder='leave note..' onChangeText={setText}    multiline={true} style={pop.input}/>
-          <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.lg.color, width: 120, height: 40 }} title='Send'>
+          <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='Send'>
 
                   </Button>
           </View>
-      </Modal><Pop2 main={'Note successfully sent to Likkle salon'}/></>
+      </Modal></>
   );
 };
 const pop=StyleSheet.create({

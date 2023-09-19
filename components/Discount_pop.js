@@ -4,6 +4,8 @@ import { styles,colors } from '../src/Common_styles';
 import { Button,Rating } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
 import { Icon } from '@rneui/base';
+import { useDispatch } from 'react-redux';
+import { showBottom } from '../src/redux/user';
 import axios from 'axios';
 import StarRating from 'react-native-star-rating-widget';
 import { backendURL } from '../src/services/http';
@@ -14,10 +16,10 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
     const [open,setOpen]=useState(false)
     const [notify,set_notify] =useState(false)
    const handlepressCancel=()=>{
-
+  dispatch(showBottom(true))
     setmodal(false)
     }
-    
+    const dispatch=useDispatch()
     const handlePressOK=async()=>{
     //const {data}= axios.post(`${backendURL}/booking/notes`,{id: id,notes: text })
    setmodal(false)
@@ -60,7 +62,7 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
         <View style={{ position: 'absolute', bottom: 20 }}>
             <Button
               onPress={handlePressOK}
-              buttonStyle={{ borderRadius: 40, backgroundColor: colors.lg.color, width: 120, height: 40 }}
+              buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }}
               title='apply'
             />
           </View>

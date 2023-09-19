@@ -26,7 +26,7 @@ export default function Categories({ data, onSelect}) {
        name= 'star'
        type="feather"
       size={15}
-      color='#BCC4CC'
+    color={item.value === userOption? 'white' : '#BCC4CC'}
       onPress={()=> setModalVisible(true)}
       />}
             <Text style={[styles.option,   item.value === userOption ? colors.w: colors.dg]}>  {item.value}</Text>
@@ -49,13 +49,13 @@ const styles=StyleSheet.create({
     height:34,
     padding:8,
     marginBottom:15,
-    borderColor:'#B0EBBD',
+    borderColor:colors.dg2.color,
     borderWidth: 1,
     marginLeft:10
 
   },
   selected: {
-    backgroundColor: '#B0EBBD',
+    backgroundColor: colors.dg2.color,
     borderRadius: 20,
     color: 'white',
     height:34,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import BHeader from '../../../components/BHeader';
 import { colors, styles } from '../../Common_styles';
-import { View, TextInput, Text, ScrollView, SafeAreaView } from 'react-native';
+import { View, TextInput, Text, ScrollView, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 import { Button } from '@rneui/base';
 import axios from 'axios';
 import { backendURL } from '../../services/http';
@@ -58,9 +58,14 @@ const Edit_profile = ({navigation}) => {
   return (
     <><SafeAreaView style={[styles.EP]}>
       <BHeader title="Edit info" color={colors.lg.color} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"} // Adjust behavior for iOS and Android
+      >
       <ScrollView
+     // contentContainerStyle= {{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
+         <View style={{flex:1,marginBottom:80}}>
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>First name</Text>
         <TextInput
           style={[styles.EI]}
@@ -85,6 +90,7 @@ const Edit_profile = ({navigation}) => {
         />
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Date of birth</Text>
         <TextInput
+         placeholder={'dd/mm/yyyy'}
           style={[styles.EI]}
           value={dateOfBirth}
           onChangeText={setDateOfBirth} />
@@ -97,6 +103,7 @@ const Edit_profile = ({navigation}) => {
         <TextInput
           style={[styles.EI]}
           value={address}
+         
           onChangeText={setAddress} />
         <Button
           title="Save"
@@ -108,7 +115,9 @@ const Edit_profile = ({navigation}) => {
             height: 50,
           }}
           onPress={handleSave} />
+          </View> 
       </ScrollView>
+</KeyboardAvoidingView>
     </SafeAreaView><Pop2  modal={modal} main='Profile updated successfully' />
     {modal&&<Blur/>}
     </>

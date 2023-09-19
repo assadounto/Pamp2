@@ -18,6 +18,7 @@ const Notifications= () => {
   const user = useSelector(state => state.user.userInfo);
 
   const {data,isLoading}=useGetnotificationsQuery(user&&user.id)
+  console.log(data&&data)
   const renderNotificationComponent = ({ item }) => {
     switch (item.notification_type) {
       case 'booked':
@@ -56,7 +57,7 @@ const Notifications= () => {
       {
         data&&data.length==0? <EmptyStateNoti />: 
         <FlatList
-        data={data&&data}
+        data={data?.notifications}
         renderItem={renderNotificationComponent}
         keyExtractor={(item) => item.id.toString()}
       />
@@ -73,13 +74,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: colors.lg.color,
     fontWeight: 'bold',
-    marginLeft: 20,
-    marginTop: 90,
-    marginBottom: 40,
+    marginLeft: 40,
+    marginTop: 70,
+    marginBottom: 30,
   },
   x: {
     position: 'absolute',
-    top: 90,
+    top: 72,
     right: 20,
   },
   icon: {

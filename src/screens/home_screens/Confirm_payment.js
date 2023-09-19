@@ -27,23 +27,30 @@ const co=[
   'yellow',
   
 ]
+const payment_methods=
+{
+  'Pay with cash': '',
+   'Pay with momo':'smartphone',
+   'Pay with card': 'credit-card',
+}
 
-const Confirm_payment=({navigation})=>{
+const Confirm_payment=({navigation,route})=>{
+ // const { completed, items ,time} = route.params || {};
   const dispatch=useDispatch()
   const pay_data_=  useSelector((state)=>state.user.payment_methods.default)
   let pay_data=pay_data_ && pay_data_
-  const user = useSelector((state)=>state.user.userInfo)
+  const user =  useSelector((state)=>state.user.userInfo)
   const booking_= useSelector((state)=>state.booking)
    const booking=booking_&& booking_
-  //  console.log(booking.Booking_detail.topping2[0].items)
+    console.log(booking.vendorimg)
   const [ref,setref]=useState()
    const a=booking.Booking_detail.topping2.filter(({total})=>total!=0)
   const HandleSubmit=()=>{
     gather_actual()
     let total=  getTotalByKey(booking.Booking_detail.topping2,'total')
     let pay_type =pay_data.name
-    //if (pay_type=='Pay with cash')
-   // start_transaction()
+   
+  //  start_transaction()
     navigation.navigate('Processing',{
       total: total,
       pay_type:pay_type,
@@ -51,8 +58,19 @@ const Confirm_payment=({navigation})=>{
     })
   }
 
- console.log( booking.Booking_detail.topping2,'kk')
   const gather_actual=()=>{
+    console.log({
+      user:user.id,
+      vendor: booking.vendor_id,
+      services_id: getIds(),
+      date:booking.date ,
+      time: booking.time ,
+      status: 'booked',
+      staff: booking.staff,
+      payment_method: pay_data.name,
+      total: getTotalByKey(booking.Booking_detail.topping2,'total'),
+      items: booking.Booking_detail.topping2
+     })
    dispatch(set_actual_booking({
     user:user.id,
     vendor: booking.vendor_id,
@@ -107,7 +125,7 @@ const Confirm_payment=({navigation})=>{
         <ScrollView
           contentContainerStyle={{ backgroundColor: 'white' }}
         >
-          <BHeader title={'Confirm Payment'} />
+          <BHeader color={'#86D694'} title={'Confirm Payment'} />
           <Text style={{ paddingLeft: 20, width: '90%', alignSelf: 'center', marginVertical: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>Payment Method</Text>
           {payment_method ?
 
@@ -117,9 +135,13 @@ const Confirm_payment=({navigation})=>{
                 navigation.navigate('Select_payment');
               } }>
 
-              <Image
-                source={payment_method.img == 'cash' ? source : payment_method.name == 'MTN' ? momo : payment_method.name == 'VODAFONE' ? voda : payment_method.name == 'AIRTELTIGO' ? airtel : source2}
-                style={{ resizeMode: 'contain', width: 40, height: 30 }} />
+{payment_methods[payment_method.name]==''?
+                       <Image
+                       source={source}
+                       style={{width:40,height:30,borderRadius:5,resizeMode:'contain'}}
+                     />:
+                       <Icon style={{marginLeft:10}} name={payment_methods[payment_method.name]} color={colors.dg2.color}  type="feather"/> 
+                    }
               <ListItem.Content>
                 <ListItem.Title style={colors.dgb}>
                   {payment_method.Number && '***'}{payment_method.Number ? payment_method.Number.slice(-5) : payment_method.name}
@@ -153,7 +175,7 @@ const Confirm_payment=({navigation})=>{
                 <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 23, color: colors.dg.color }}>{[booking.date.day, ' ', booking.date.month, ' ', booking.date.year]}</Text>
                 <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <FastImage
-                style={{ width: 30, height: 30, borderRadius: 40, marginRight: 10 }}  
+                style={{ width: 30, height: 30, borderRadius: 40,marginTop:4, marginRight: 10 }}  
               source={{
               uri: booking.vendorimg ,
               headers: { Authorization: 'someAuthToken' },
@@ -185,17 +207,17 @@ const Confirm_payment=({navigation})=>{
             <View style={{padding: 20,borderTopColor:colors.lg.color,borderTopWidth:0.5, borderBottomColor: colors.lg.color, borderBottomWidth: 0.5}}>
               {booking && booking.Booking_detail.topping2.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
                 return (
-                  <View style={{ marginBottom: 25, display: 'flex', flexDirection: 'row' }}>
+                  <View style={{ marginBottom: 10, display: 'flex', flexDirection: 'row' }}>
                     <View style={{ width: 10, top: 5, marginRight: 10, height: 10, borderRadius: 10, backgroundColor: appointment_color }}></View>
                     {a.length != 1 && _index2 + 1 !== booking.Booking_detail.topping2.length ?
-                      <View style={{ position: 'absolute', left: 5, top: 15, height: 70, width: 0.6, backgroundColor: '#BBB9BC' }}></View> : null}
+                      <View style={{ position: 'absolute', left: 5, top: 15, height: 60, width: 0.6, backgroundColor: '#BBB9BC' }}></View> : null}
                     <View style={{width:'80%'}}>
 
-                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.lg.color,width:'70%'}}>{name} - <Text style={{ color: '#BBB9BC', fontSize: 13,  }}>{items_name}</Text></Text>
-                      <Text style={{marginTop:10, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: '#BBB9BC' }}> {convertMinutesToHoursAndMinutes(time)}</Text>
+                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color,width:'70%'}}>{name} - <Text style={{ color: '#BBB9BC', fontSize: 13,  }}>{items_name}</Text></Text>
+                      <Text style={{marginTop:10, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: '#BBB9BC' }}>{convertMinutesToHoursAndMinutes(time)}</Text>
 
                     </View>
-                    <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.dg.color, position: 'absolute', right: 9 }}>¢{total}</Text>
+                    <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color, position: 'absolute', right: 9 }}>¢{total}</Text>
                   </View>
                 );
               })}
@@ -211,10 +233,10 @@ const Confirm_payment=({navigation})=>{
               </View>
             </View>
             <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
-              <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.lg.color }}>
+              <Text style={{left:20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color }}>
                 Total
               </Text>
-              <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.lg.color, position: 'absolute', top: 17, right: 30 }}>
+              <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.lg.color, position: 'absolute', top: 17, right: 30 }}>
                 ¢{getTotalByKey(booking.Booking_detail.topping2, 'total')}
               </Text>
             </View>
@@ -225,6 +247,7 @@ const Confirm_payment=({navigation})=>{
 
       </SafeAreaView><View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: '#ffff', height: 200, width: '100%', marginBottom: 0 }}>
           <Button
+           titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
             title={'Confirm'}
             // containerStyle={}
             buttonStyle={{

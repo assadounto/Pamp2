@@ -1,20 +1,36 @@
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { FontFamily, FontSize, Color } from "../GlobalStyles";
+import { AirbnbRating } from "react-native-ratings";
+import { colors } from "../src/Common_styles";
 
-const NotificationReviewCard = () => {
+const NotificationReviewCard = ({item}) => {
   return (
     <View style={styles.ellipseParent}>
+      <View style={{position:'absolute',right:10,transform: [{ scaleX: -1 }]}}>
+      <AirbnbRating
+            size={20}
+            
+            isDisabled
+            type="custom"
+            selectedColor="#86D694"
+            unSelectedColor="white"
+            ratingColor="#86D694"
+            showRating={false}
+            defaultRating={item.rating}
+            direction="reverse"
+          />
+      </View>
       <Image
         style={styles.frameChild}
         resizeMode="cover"
-        source={require('../assets/ellipse-5.png')}
+        source={{uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'}}
       />
-      <Text style={styles.jessi}>Jessi</Text>
+      <Text style={styles.jessi}>{item.username}</Text>
       <Text style={[styles.july2022, styles.july2022Typo]}>July 2022</Text>
       <Text
         style={[styles.likkleSalonIs, styles.july2022Typo]}
-      >Likkle salon is amazing, they treated my what i asked for again.hhhhhsss</Text>
+      >{item.description}</Text>
     </View>
   );
 };
@@ -26,9 +42,11 @@ const styles = StyleSheet.create({
     left: 53,
      flexWrap:'wrap',
     width:300,
+    color: colors.dg.color
     
   },
   frameChild: {
+    borderRadius:50,
     top: 0,
     left: -3,
     width: 48,

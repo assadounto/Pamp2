@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, Text, TouchableOpacity} from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -12,9 +12,15 @@ import Bookings from '../../screens/Bookings';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Success from '../screens/home_screens/Sucess';
 import Ratings from '../screens/home_screens/Ratings';
+import { useSelector } from 'react-redux';
+import { set } from 'date-fns';
+import Blur from '../screens/start_screens/Blur';
+import Rating_pop from '../../components/Rating_pop';
+import Pop2 from '../screens/start_screens/pop2';
 const Tab = createBottomTabNavigator();
 
 function MyTabBar({state, descriptors, navigation}) {
+ 
   return (
     <View
       style={[
@@ -27,7 +33,7 @@ function MyTabBar({state, descriptors, navigation}) {
           elevation: 2,
           shadowOffset: {width: 5, height: 0},
           backgroundColor: 'white',
-          height: 90,
+          height: 80,
           justifyContent: 'space-evenly',
           //marginBottom:20
         },
@@ -81,7 +87,7 @@ function MyTabBar({state, descriptors, navigation}) {
         return (
           <Animatable.View
             style={[
-              {flexDirection: 'row',marginBottom:20},
+              {flexDirection: 'row',marginBottom:0},
               isFocused
                 ? {
                     backgroundColor: '#86D694',
@@ -138,24 +144,55 @@ function MyTabBar({state, descriptors, navigation}) {
 }
 
 const MainNavigator = () => {
+  const userstate =useSelector((state)=>state.user)
+  const bottom= useSelector(state=>state.user.bottom_nav)
+  const [modal,setmodal]=useState(false)
+  const [vendor,setVendor]= React.useState({})
+  const [infoModal,setInfoModal]=useState(false)
+  const checkAnyRating=()=>{
+    const ratings= userstate.rating
+     console.log(ratings.length,'llllllllll')
+    if (ratings.length!==0){
+      setVendor(ratings[0])
+     
+      setmodal(true)
+    }
+  }
+
+  useEffect(()=>{
+checkAnyRating()
+  },[userstate])
   return (
-    <Tab.Navigator
-    sceneContainerStyle={{ backgroundColor: 'white' }}
+    <><Tab.Navigator
+      sceneContainerStyle={{ backgroundColor: 'white' }}
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
         unmountOnBlur: true,
       }}
-      tabBar={props => <MyTabBar {...props} />}>
-      <Tab.Screen   options={{
-    //  title: "HomePage",
-    //  unmountOnBlur: true,
-  }} name="Home" component={Home} />
-  {/* Bookings */}
-      <Tab.Screen name="Bookings" component={Bookings } /> 
+      tabBar={props => bottom ? <MyTabBar {...props} /> : null}>
+      <Tab.Screen options={{
+        //  title: "HomePage",
+        //  unmountOnBlur: true,
+      }} name="Home" component={Home} />
+      {/* Bookings */}
+      <Tab.Screen name="Bookings" component={Bookings} />
       <Tab.Screen name="Favorites" component={Favourites} />
-      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen name="Settings" component={Settings} options={{
+        //  title: "HomePage",
+        unmountOnBlur: true,
+      }} />
     </Tab.Navigator>
+    <Rating_pop  vendor={vendor}  setInfoModal={setInfoModal} setmodal={setmodal} modal={modal}/>
+    {
+      modal && <Blur/>
+     
+    }
+    {
+      infoModal && <Blur/>
+    }
+    <Pop2 modal={infoModal}  main={'Review successfully sent to '+ vendor.username}/>
+    </>
   );
 };
 

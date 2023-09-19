@@ -14,35 +14,50 @@ import { connect } from 'formik'
 import { useRoute } from '@react-navigation/core'
 import { ScreenProps } from 'react-native-screens'
 const Searches1 = ({navigation,route}) => {
-  
+  const thedata=(dat)=>{
+    let info=[]
+    dat.map((vendor)=>{
+         info.push({
+           id: vendor.id,
+           image: vendor.cover_url,
+           logo: vendor.avatar_url,
+           name:vendor.username,
+           location: vendor.name,
+           dist: vendor.distance,
+           ratings: vendor.ratings,
+           items: vendor.top_services.split(",").map((item)=>{
+          return {
+             value: item
+           }
+         }
+           )
+         }
+         )  
+        })
+        return info  
+     }
   const { location, category,data } = route.params;
   
   const [option, setOption] = React.useState('Recommended');
+  const numberOfWeeks = 4; // Adjust the number of weeks as needed
+  const now = new Date(); // Current date and time
+  const cutoffDate = new Date(now.getTime() - (numberOfWeeks * 7 * 24 * 60 * 60 * 1000)); // Calculate the cutoff date
+  
+  const newData = data.filter(item => new Date(item.created_at) >= cutoffDate);
+ 
+  const rec_vendors= thedata(data)
 
-  const vendors= data.map((vendor)=>{
-    return {
-      id: vendor.id,
-      image: vendor.cover_url,
-      logo: vendor.avatar_url,
-      name:vendor.username,
-      rating:'4.5',
-      location: vendor.name,
-      dist: vendor.distance,
-      items: vendor.top_services.split(",").map((item)=>{
-     return {
-        value: item
-      }
-    }
-      )
-    }
-      
-   })
+  const new_vendors= thedata(newData)
+
+  const maxDistance = 500; // Maximum distance in meters
+  const nearData= data.filter(item => item.distance <= maxDistance);
+  const near_vendors = thedata(nearData)
    const screenOptions = ({ route }) => {
     // Pass the required props to the screens based on the route name
     switch (route.name) {
-      case "Popular":
-      case "Recent viewed":
-      case "Top Rated Hair Salons":
+      case "Recommended":
+      case "Nearest":
+      case "Newest":
         return {
           screenProps: {
             data: data,
@@ -84,17 +99,14 @@ const data1 =[
         
         value={location.name} />
         </Pressable>
-        <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' ,}}>{data.length} result For {category}</Text><Text style={{marginBottom:20, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, color: colors.dgb.color, marginLeft: 40, fontWeight: 'bold' }}>near you </Text>
          <Tab.Navigator
+         style={{marginTop:-30}}
          screenOptions={screenOptions}
 sceneContainerStyle={{ backgroundColor: 'white' ,marginBottom:50 }}
       tabBar={props => <MyTabBar {...props} />}>
-  
-
-
-        <Tab.Screen name="Popular"  >{(props) => <Item {...props} data={vendors} />}</Tab.Screen>
-        <Tab.Screen name="Recent viewed" component={Item} />
-        <Tab.Screen name="Top Rated Hair Salons" component={Item} />
+        <Tab.Screen name="Recommended"  >{(props) => <Item {...props} data={rec_vendors} category={category}/>}</Tab.Screen>
+        <Tab.Screen name="Nearest" >{(props) => <Item {...props} data={ near_vendors} />}</Tab.Screen>
+        <Tab.Screen name="Newest"  >{(props) => <Item {...props} data={new_vendors} />}</Tab.Screen>
 
         
     </Tab.Navigator>
@@ -103,9 +115,9 @@ sceneContainerStyle={{ backgroundColor: 'white' ,marginBottom:50 }}
 
   )
 }
-const Item=({data,navigation})=>{
+const Item=({data,category,navigation})=>{
   //const { data, navigation } = ScreenProps;
-console.log(data&&data)
+console.log(data&&data,'kk')
   const data1 =[
     {
       image: '../../../assets/rectangle-9764.png',
@@ -123,7 +135,7 @@ console.log(data&&data)
   
   ]
   return(
-    <VendorSearchCon data={data&&data} navigation={navigation}/>
+    <VendorSearchCon category={category} datas={data&&data} navigation={navigation}/>
   )
 }
 export default Searches1

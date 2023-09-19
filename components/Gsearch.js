@@ -4,7 +4,8 @@ import { Icon } from '@rneui/base';
 import Geolocation from 'react-native-geolocation-service';
 import { useSelector } from 'react-redux';
 import { colors } from '../src/Common_styles';
-const Gsearch = ({setLoc}) => {
+import { FontFamily } from '../GlobalStyles';
+const Gsearch = ({setLoc, handleS}) => {
   const user=useSelector(state=>state.user)
   const refInput = React.useRef(null);
   const [searchQuery, setSearchQuery] = useState(user.location.name);
@@ -21,6 +22,7 @@ const Gsearch = ({setLoc}) => {
   );
  
   React.useEffect(() => {
+    console.log(user.location)
     setLoc(selectedLocation)
    
     if (start) {
@@ -93,6 +95,7 @@ const Gsearch = ({setLoc}) => {
       // Extract the search results from the API response
       const results = data.results || [];
       setSearchResults(results);
+      handleS()
     } catch (error) {
       console.error('Error occurred while searching:', error);
     }
@@ -113,6 +116,8 @@ const Gsearch = ({setLoc}) => {
         value={searchQuery}
         onChangeText={setSearchQuery}
         onSubmitEditing={handleSearch}
+        keyboardType='web-search'
+        onsu
         //editable={edit} 
        //ref={refInput}
       />
@@ -140,14 +145,19 @@ const Gsearch = ({setLoc}) => {
       {/* Render search results */}
       {
         searchResults.length==0?null:
-        <ScrollView style={s_style.box}>
+        <ScrollView showsVerticalScrollIndicator={false} style={s_style.box}>
         
       
         <TouchableOpacity
           style={s_style.button}
           onPress={getUserLocation}
         >
-          <Text>Use Current Location</Text>
+          <View style={{display:'flex',flexDirection:'row'}}>
+
+          <Icon name='locate-outline' type='ionicon'/>
+          <Text style={{fontSize: 14, marginTop:3, color:colors.dg.color, fontFamily: FontFamily.sourceSansProBold}}> Use Current Location</Text>
+
+          </View>
         </TouchableOpacity>
         {searchResults.map((result) => (
           <TouchableOpacity
@@ -163,10 +173,10 @@ const Gsearch = ({setLoc}) => {
             setSearchResults([])
           }}
         >
-          <View>
+          <View style={{marginLeft:20}}>
             {/* Render each search result */}
             {/* Customize the rendering based on your needs */}
-            <Text>{result.name}</Text>
+            <Text style={ {color:colors.dg.color, fontFamily:FontFamily.sourceSansProSemibold}}>{result.name}</Text>
             
           </View>
         </TouchableOpacity>
@@ -180,11 +190,10 @@ const Gsearch = ({setLoc}) => {
 
 const s_style= StyleSheet.create({
   column:{
-  height:40,
+  height:35,
  alignContent:'center',
  justifyContent:'center',
-  borderTopWidth:1,
-  borderColor:colors.lg.color
+
 
   }
   ,
@@ -211,9 +220,12 @@ const s_style= StyleSheet.create({
 
   },
   box:{
+
+    borderColor:'#EFEFEF',
+    borderWidth:2,
 width:'90%',
 height:'30%',
-backgroundColor: '#EFEFEF',
+backgroundColor: colors.w.color,
 padding:10,
 overflow:'scroll',
 borderRadius:10,

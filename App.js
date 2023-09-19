@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {Text} from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
+import {useSelector,useDispatch} from 'react-redux';
 import {Provider} from 'react-redux';
 import {store, persistor} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
@@ -8,33 +9,27 @@ import Navigator_index from './src/Navigation/index';
 import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
 import { backendURL } from './src/services/http';
-
+import { useNavigation } from '@react-navigation/core';
+import { Linking } from 'react-native';
 
 function App() {
-  const [token, setToken] = React.useState('');
+
+
 
     const requestTPermission = () => {
       messaging()
         .requestPermission()
         .then(() => {
          
-          fetchData() 
         })
         .catch((error) => {
           console.log('permission rejected ' + error);
         });
     };
-  
-    async function fetchData() {
-     const generatedToken = await getFirebaseToken();
-      setToken(generatedToken);
-      console.log(generatedToken)
-      alert(generatedToken+'rich')
-      generatedToken && axios.get(`${backendURL}/token?token=${generatedToken}`)
-    }
+   
   useEffect(() => {
    
-    fetchData() 
+    
     const init = async () => {
      
     };

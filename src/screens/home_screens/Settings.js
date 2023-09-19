@@ -7,8 +7,11 @@ import {
   Pressable,
   Alert,
   StyleSheet,
+  Linking
 } from 'react-native';
 import { Image } from 'react-native';
+
+import { showBottom } from '../../redux/user';
 import {useDispatch, useSelector} from 'react-redux';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import THeader from '../../../components/THeader';
@@ -22,12 +25,14 @@ import {checkNotifications} from 'react-native-permissions';
 import { FontFamily } from '../../GlobalStyles';
 import Discount_pop from '../../../components/Discount_pop';
 import Blur from '../start_screens/Blur';
+import Socials from '../../../components/Socials';
+
 
 
 const menuOne = [
   {
     title: 'Change Email',
-    icon: 'user',
+    icon: 'mail',
     route: 'change_email',
   },
   {
@@ -47,7 +52,7 @@ const menuOne = [
   },
   {
     title: 'Invite Friends',
-    icon: 'mail',
+    icon: 'send',
     route: 'Invite',
   },
 ];
@@ -70,20 +75,21 @@ const menuTwo = [
   },
 ];
 
+
 const menuThree = [
   {
     title: 'Privacy policy',
-    icon: 'lock',
+    icon: require('../../../assets/Path660.png'),
     route: 'privacy',
   },
   {
     title: 'Terms of Use',
-    icon: 'headphones',
+    icon: require('../../../assets/group-1892.png'),
     route: 'PaymentMethods',
   },
   {
     title: 'Terms of Service',
-    icon: 'lock',
+    icon: require('../../../assets/group-1892.png'),
     route: 'ChangePassword',
   },
 ];
@@ -105,6 +111,14 @@ const Settings = ({navigation}) => {
       console.log('User has notification permissions disabled');
     }
   }
+  const openNotificationSettings = () => {
+    Linking.openSettings();
+  };
+
+  const [prevScrollY, setPrevScrollY] = useState(0);
+
+ 
+
   useEffect(() => {
     checkApplicationPermission()
   }, []);
@@ -112,6 +126,8 @@ const [modal,setmodal]=useState(false)
   return (
     
       <><ScrollView
+  
+     
       contentContainerStyle={{ width: '90%', alignSelf: 'center' }}
       refreshControl={<RefreshControl
         //refreshing={isFetching || isLoading}
@@ -128,7 +144,7 @@ const [modal,setmodal]=useState(false)
             padding: 6,
             backgroundColor: '#F9F9F9',
 
-            marginTop: 50,
+            marginTop: 20,
           },
         ]}>
         <ListItem
@@ -160,6 +176,7 @@ const [modal,setmodal]=useState(false)
               containerStyle={[{ backgroundColor: '#F9F9F9' }]}
               onPress={() => {
                 if (item.route == 'discount') {
+                  dispatch(showBottom(false))
                   setmodal(true);
                 } else {
                   navigation.navigate(item.route);
@@ -168,6 +185,7 @@ const [modal,setmodal]=useState(false)
               } }>
               <Icon
                 name={item.icon}
+                size={18}
                 type="feather"
                 color={colors.lg.color} />
               <ListItem.Content>
@@ -204,10 +222,11 @@ const [modal,setmodal]=useState(false)
               {item.title !== 'About Pamp' ?
                 <Icon
                   name={item.icon}
+                  size={18}
                   type="feather"
                   color={colors.lg.color} /> :
                 <Image
-                  style={{ marginLeft: 5 }}
+                  style={{ marginLeft: 4 }}
                   source={item.icon} />}
               <ListItem.Content>
                 <ListItem.Title style={[colors.dgb, styles2.title]}>
@@ -216,28 +235,38 @@ const [modal,setmodal]=useState(false)
               </ListItem.Content>
               {item.icon === 'bell' ? (
                 <Pressable onPress={() => console.log('h')}>
-                  <SwitchToggle
-                    switchOn={isEnabled}
-                    onPress={checkApplicationPermission}
-                    circleColorOff={colors.w.color}
-                    backgroundColorOn={colors.lg.color}
-                    backgroundColorOff="#fff"
-                    containerStyle={{
-                      width: 55,
-                      height: 30,
-                      borderWidth: 1.5,
-                      borderColor: colors.lg.color,
-                      borderRadius: 25,
-                      padding: 5,
-                      backgroundColor: 'white',
-                    }}
-                    circleStyle={{
-                      borderWidth: 1.5,
-                      borderColor: colors.lg.color,
-                      width: 20,
-                      height: 20,
-                      borderRadius: 20,
-                    }} />
+                     <SwitchToggle
+                      switchOn={isEnabled}
+                      onPress={() => {
+                        if (!isEnabled) {
+                          // If notifications are not enabled, open settings to enable them
+                          openNotificationSettings();
+                        } else {
+                          openNotificationSettings();
+                          // If notifications are enabled, toggle the switch
+                       
+                        }
+                      }}
+                      circleColorOff={colors.w.color}
+                      backgroundColorOn={colors.lg.color}
+                      backgroundColorOff="#fff"
+                      containerStyle={{
+                        width: 55,
+                        height: 30,
+                        borderWidth: 1.5,
+                        borderColor: colors.lg.color,
+                        borderRadius: 25,
+                        padding: 5,
+                        backgroundColor: 'white',
+                      }}
+                      circleStyle={{
+                        borderWidth: 1.5,
+                        borderColor: colors.lg.color,
+                        width: 20,
+                        height: 20,
+                        borderRadius: 20,
+                      }}
+                    />
                 </Pressable>
               ) : (
                 <ListItem.Chevron style={colors.dgb} size={25} />
@@ -257,25 +286,24 @@ const [modal,setmodal]=useState(false)
           },
         ]}>
         {menuThree.map((item, index) => {
-          return (
-            <ListItem
-              containerStyle={[{ backgroundColor: '#F9F9F9' }]}
-              onPress={() => {
-                navigation.navigate(item.route);
-              } }>
-              <Icon
-                name={item.icon}
-                type="feather"
-                color={colors.lg.color} />
-              <ListItem.Content>
-                <ListItem.Title style={[colors.dgb, styles2.title]}>
-                  {item.title}{' '}
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron style={colors.dgb} size={25} />
-            </ListItem>
-          );
-        })}
+              return (
+                <ListItem
+                  containerStyle={[{backgroundColor: '#F9F9F9'}]}
+                  onPress={() => {
+                    navigation.navigate(item.route);
+                  }}>
+                   <Image
+                    source={item.icon}
+                    />
+                  <ListItem.Content>
+                    <ListItem.Title style={[colors.dgb,styles2.title]}>
+                      {item.title}{' '}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Chevron style={colors.dgb} size={25} />
+                </ListItem>
+              );
+            })}
       </View>
 
       <View
@@ -305,7 +333,7 @@ const [modal,setmodal]=useState(false)
           <ListItem.Chevron style={colors.dgb} size={25} />
         </ListItem>
       </View>
-
+<Socials/>
     </ScrollView>
     <Discount_pop setmodal={setmodal} modal={modal}/>
     {modal&& <Blur/>}
@@ -321,23 +349,3 @@ const styles2= StyleSheet.create({
     fontFamily: FontFamily.sourceSansProSemibold
   }
 })
-
-
-// <View style={{padding:20,display:'flex',flexDirection:'row',height:80}}>
-// <Text style={{left: 30,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>
-
-// </Text>
-// <View style={{position:'absolute',right:30, top:20}}>
-// <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.lg.color}}>
-// ¢{data.payment_method== 'Pay with cash'? parseInt(data.total)/ 0.2: parseInt(data.total)}
-// </Text>
-// </View>
-
-// </View>
-// {
-// data.payment_method== 'Pay with cash'  &&
-//  <><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20 }}>
-//       Initial deposit
-//     </Text>
-//     <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18, color: colors.dg.color,position: 'relative',marginRight:-200,top:-40}}>¢{parseInt(data.total)}</Text></>
-// }

@@ -9,19 +9,20 @@ const SucessPop = () => {
   return (
     <View style={styles.component48}>
       <View style={styles.component48Child} />
-      <Pressable onPress={()=>navigation.push('main')}  style={styles.backToHomeWrapper}>
-        <Text style={styles.backToHome}>Back to Home</Text>
-      </Pressable>
+      
       <Image
         style={styles.path650Icon}
         resizeMode="cover"
         source={require("../assets/path-650.png")}
       />
-      <Text style={[styles.success, styles.successFlexBox]}>Success</Text>
+      <Text style={[styles.success]}>Success</Text>
       <Text
-        style={[styles.youHaveSuccessfully, styles.successFlexBox]}
+        style={[styles.youHaveSuccessfully]}
       >{`You have successfully booked 
 an appointment with ${name}.`}</Text>
+<Pressable onPress={()=>navigation.push('main')}  style={styles.backToHomeWrapper}>
+        <Text style={styles.backToHome}>Back to Home</Text>
+      </Pressable>
     </View>
   );
 };
@@ -55,39 +56,34 @@ const styles = StyleSheet.create({
   backToHomeWrapper: {
     height: "11.98%",
     width: "53.8%",
-    top: "78.34%",
-    right: "25.44%",
-    bottom: "9.68%",
-    left: "20.76%",
+
+   marginTop:40,
+  alignSelf:'center',
+
     borderRadius: Border.br_4xl,
     backgroundColor: Color.lightgreen,
-    position: "absolute",
+  
   },
   path650Icon: {
     height: "7.68%",
     width: "13.4%",
-    top: "8.22%",
-    right: "43.3%",
-    bottom: "84.1%",
-    left: "43.3%",
-    maxWidth: "100%",
-    overflow: "hidden",
-    maxHeight: "100%",
-    position: "absolute",
+    alignSelf:'center',
+
+    marginTop:40
+   
   },
   success: {
-    top: "31.11%",
-    left: "35.43%",
-    
+  textAlign:'center',
     fontSize: 25,
     lineHeight: 38,
+    marginVertical:70,
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
     color: '#00463C',
   },
   youHaveSuccessfully: {
-    top: "55.99%",
-    left: "16.82%",
+   
+    textAlign:'center',
     fontSize: FontSize.size_base,
     fontFamily: FontFamily.sourceSansProRegular,
     color: Color.lightgreen,

@@ -14,7 +14,7 @@ import Blur from '../start_screens/Blur';
 import axios from 'axios';
 import FastImage from 'react-native-fast-image';
 import { backendURL } from '../../services/http';
-import { setVendor,setvendorid,setvendorname } from '../../redux/booking';
+import { setbooking, setVendor,setvendorid,setvendorimg,setvendorname } from '../../redux/booking';
 import { useSelector } from 'react-redux';
 import { convertMinutesToHoursAndMinutes,getTotalByKey } from '../../Functions';
 import CustomImageSlider from '../../../components/CustomSlider';
@@ -26,11 +26,11 @@ const Booking_detail = ({route,navigation}) => {
   const user = useSelector((state)=>state.user.userInfo)
   const [noti, shownoti] = React.useState(false);
   const {data}=route.params
-  console.log(data.services,'k')
+  console.log(data)
     
 const bgc={
   cancelled: 'red',
-  confirmed: colors.lg.color,
+  confirmed: colors.dg2.color,
   booked: colors.dg.color
 }
 
@@ -38,6 +38,13 @@ const c={
   cancelled: 'white',
   confirmed: 'white',
   booked: 'white'
+}
+function capitalizeFirstLetter(str) {
+  if (typeof str !== 'string') {
+    throw new Error('Input must be a string');
+  }
+  
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
    const [cancelled,setCancelled]=useState(false)
     const[blur,setblur]=useState(false)
@@ -57,7 +64,7 @@ const c={
     };
     
     const createFav=async()=>{
-      console.log('d')
+      
       try {
        const info= await axios.post(`${backendURL}/favorites`,{vendor_id: data.vendor.id,user_id:user.id})
        info.data.message=='added'? setFav(true): setFav(false)
@@ -67,11 +74,18 @@ const c={
       }
     }
   const rebook=()=>{
+    console.log(data.vendor.cover)
     dispatch(setvendorname(data.vendor.username))
+    dispatch(setvendorimg(data.vendor.logo))
     dispatch(setvendorid(data.vendor.id))
     dispatch(setVendor(data.hours))
     if (data.cancelable){
       navigation.navigate('SelectDate',{rebooked:true,id:data.id})
+    }
+
+    else if(info.status=='completed'){
+      dispatch(setbooking({topping2: data.items,name: data.vendor.username}))
+      navigation.navigate('SelectDate',{rebooked:false,id:data.id})
     }
     else {
       alert('You cannot rebook since its within 48hours to appointment.However you can send notes to vendor requesting a reschedule. If vendor approves, you can rebook')
@@ -125,13 +139,13 @@ const c={
          <View  style={{position: 'absolute',top:60,right:20}}>
          <Icon
         onPress={createFav}
-          name='heart'
+          name={fav?'heart': 'heart-outline'}
           type='ionicon'
           size={30}
           
-          color={fav ?colors.lg.color: '#FFFFFF'} />
+          color={'#FFFFFF'} />
         </View>
-        <View  style={{position: 'absolute',top:60,left:20}}>
+        <Pressable onPress={()=>navigation.goBack()} style={{position: 'absolute',top:60,left:20}}>
         <Icon
           name='chevron-back-outline'
           type='ionicon'
@@ -139,18 +153,18 @@ const c={
          
           color={'#FFFFFF'}
            />
-        </View>
+        </Pressable>
         <Text style={{marginTop:10,color:colors.dg.color, fontFamily:FontFamily.sourceSansProBold,fontSize:27,marginHorizontal:20}}>{formatDate(data.date)}</Text>
         <Text style={{color:colors.dg.color, fontFamily:FontFamily.sourceSansProBold,fontSize:27,marginHorizontal:15}}> at {formatTime(data.time)}{'  '}
         
       </Text>
-      <View style={[{width:62,height:21,borderRadius:10,padding:2,position:'relative',top:-27,left:165,
+      <View style={[{paddingHorizontal:10, width:80,height:21,borderRadius:10,padding:2,position:'relative',top:-27,left:160,
         }, info ? {backgroundColor: info.color}: {backgroundColor: bgc[data.status]}]}>
-          <Text style={[{fontSize:11, textAlign:'center',fontFamily:FontFamily.sourceSansProSemibold},info  ? {color: 'white'} : {color:c[data.status]}]}>{info? info.status : data.status}</Text></View>
-       <AppJob setInfo={setInfo} services={data.services} time={data.time}/>
+          <Text style={[{fontSize:11, textAlign:'center',fontFamily:FontFamily.sourceSansProSemibold},info  ? {color: 'white'} : {color:c[data.status]}]}>{info? capitalizeFirstLetter(info.status) : capitalizeFirstLetter(data.status)}</Text></View>
+       <AppJob info={info} vendor={data.vendor}  setInfo={setInfo}  services={data.services} time={data.time}/>
        <View style={{marginHorizontal:20,marginVertical:30}}>
                         <ListItem
-                  containerStyle={[{paddingVertical:20,borderBottomColor:colors.lg.color,borderTopColor:colors.lg.color,borderBottomWidth:0.5,borderTopWidth:0.5}]}
+                        containerStyle={[{paddingVertical:20,borderBottomColor:colors.lg.color,borderTopColor:colors.lg.color,borderBottomWidth:0.5,borderTopWidth:0.5}]}
                   onPress={() => {
                   //dispatch(setDefault(pay))
               navigation.navigate('VendorDetail',
@@ -181,7 +195,7 @@ const c={
                 </ListItem>
 
                     </View>
-           <Booking_action rebk={rebook} data={data} setblur={setblur} setCancelled={setCancelled}/>
+           <Booking_action info={info} rebk={rebook} data={data} setblur={setblur} setCancelled={setCancelled}/>
 
                     <View style={{marginTop:20, marginVertical:10, shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4,backgroundColor:'white', borderRadius:20,width:'90%',alignSelf:'center' }}>
         
@@ -196,7 +210,7 @@ const c={
             } 
                 <View style={{width:'70%'}}>
                   
-                    <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18,color:colors.lg.color}}>{name} - <Text style={{color:'#BBB9BC',fontSize:13,marginTop:-17}}>{items_name}</Text></Text>
+                    <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>{name} - <Text style={{color:'#BBB9BC',fontSize:13,marginTop:-17}}>{items_name}</Text></Text>
                     <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:13,color:'#BBB9BC'}}> {convertMinutesToHoursAndMinutes(time)}</Text>
                    
                 </View>
@@ -224,7 +238,7 @@ const c={
        <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20,flex: 1 }}>
             Initial deposit
           </Text>
-          <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18, color: colors.dg.color,flex:1,textAlign:'right',marginRight:30 }}>¢{parseInt(data.total)}</Text></View>
+          <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:16, color: colors.dg.color,flex:1,textAlign:'right',marginRight:30 }}>¢{parseInt(data.total)}</Text></View>
      }
        </View>
        <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:20,color:colors.dg.color,marginTop:55,marginHorizontal:30,marginBottom:14}}>Location</Text>

@@ -10,13 +10,17 @@ const VendorMapPin = ({data}) => {
         style={[styles.component38Item, styles.iconLayout]}
   
             source={{
-              uri: data.logo,
+              uri: data.image,
               headers: { Authorization: 'someAuthToken' },
-              priority: FastImage.priority.normal,
+              priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover} />
       <Text style={[styles.likkleSalon, styles.likkleSalonPosition]}>
-        {data.name}
+        {data.name} <Image
+        //style={[styles.path3468Icon]}
+        resizeMode="cover"
+        source={require("../assets/path-34682.png")}
+      />
       </Text>
       <Text
         style={[styles.airportResidentialRoad, styles.kmTypo]}
@@ -31,13 +35,9 @@ const VendorMapPin = ({data}) => {
         resizeMode="cover"
         source={require("../assets/star2.png")}
       />
-      <Text style={[styles.text, styles.kmPosition]}>{data.rating}</Text>
-      <Text style={[styles.km, styles.kmPosition]}>{data.dist}</Text>
-      <Image
-        style={[styles.path3468Icon, styles.iconLayout]}
-        resizeMode="cover"
-        source={require("../assets/path-34682.png")}
-      />
+      <Text style={[styles.text, styles.kmPosition]}>{data.sum_rating?.average_rating==0?'0.0': data.sum_rating.average_rating}</Text>
+      <Text style={[styles.km, styles.kmPosition]}>{data.dist.toFixed(0)}m</Text>
+     
     </View>
   );
 };
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
   airportResidentialRoad: {
     top: "37.04%",
     textAlign: "left",
+    width:180,
     color: Color.darkslategray_300,
     left: "44.03%",
     position: "absolute",
@@ -129,15 +130,13 @@ const styles = StyleSheet.create({
   path3468Icon: {
     height: "7.51%",
     width: "2.72%",
-    top: "21.74%",
-    right: "25.89%",
-    bottom: "70.76%",
-    left: "71.39%",
+   
   },
   component38: {
     top: '70%',
-    left: 50,
+    left: 30,
     width: 318,
+    right:30,
     height: 135,
     position: "absolute",
   },

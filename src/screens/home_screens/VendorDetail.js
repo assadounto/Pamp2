@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView,Dimensions, Modal} from 'react-native'
+import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView,Dimensions, Modal,Share, Alert} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
 import { Icon,Input ,Button,CheckBox} from '@rneui/base'
 import { colors } from '../../Common_styles'
@@ -26,6 +26,7 @@ import { checkVendorStatus } from '../../Functions'
 import { use } from '../../redux/homeapi'
 import CustomImageSlider from '../../../components/CustomSlider'
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry'
+import { da } from 'date-fns/locale'
 const getFormattedPrice = (price) => `$${price.toFixed(2)}`;
 const windowHeight = Dimensions.get('window').height;
 const swiperHeight = windowHeight * 0.5; // Set the swiper height to 50% of the window height
@@ -40,6 +41,67 @@ const VendorDetail = ({navigation,route}) => {
   
   );
 
+
+  function generateRatingsSummary(ratings) {
+    // Initial template
+    let summary = {
+      total_ratings: ratings.length,
+      ratings: {
+        "5": 0,
+        "4": 0,
+        "3": 0,
+        "2": 0,
+        "1": 0,
+      },
+      average_rating: 0.0,
+    };
+
+    // Iterate through ratings to populate the summary
+    let totalScore = 0;
+    for (let i = 0; i < ratings.length; i++) {
+      let ratingValue = ratings[i].rating.toString();
+      if (summary.ratings[ratingValue] !== undefined) {
+        summary.ratings[ratingValue] += 1;
+        totalScore += ratings[i].rating;
+      }
+    }
+
+    // Calculate average rating
+    if (ratings.length !== 0) {
+      summary.average_rating = parseFloat(
+        (totalScore / ratings.length).toFixed(2)
+      );
+    }
+
+    console.log(summary, "xcxcxc");
+
+    // Return the summary
+    return summary;
+  }
+
+
+
+
+  const handleShare = () => {
+    Share.share({
+      message: `Check this vendor out… 👀: ${backendURL}/home/show/${data1.id}`,
+    })
+      .then((result) => {
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // Shared with activity type of result.activityType
+          } else {
+            // Shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // Dismissed
+        }
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  };
+  
    const checkVendorStatus = (openingHours) => {
     const currentDate = new Date();
     const currentDay = currentDate.toLocaleString('en-US', { weekday: 'long' });
@@ -104,7 +166,7 @@ const VendorDetail = ({navigation,route}) => {
         const{ data }=await axios.get(`${backendURL}/details?id=${id}&user_id=${user.id}`)
         
         
-         data && console.log(data,'k')
+         data && console.log(data.ratings,'klllll')
           setFav(data.favorited)
           setdata(
             {
@@ -116,7 +178,7 @@ const VendorDetail = ({navigation,route}) => {
               lon: data.lon,
               lat: data.lat,
               location: data.name,
-              dist: '4km',
+              dist: data.distance,
               items: data.top_services.split(",").map((item)=>{
              return {
                 value: item
@@ -151,7 +213,8 @@ const VendorDetail = ({navigation,route}) => {
               })
              
               ,
-              rating: '4.5',
+              sum_rating: generateRatingsSummary(data.ratings),
+              ratings:data.ratings,
               desc: data.description,
               hours: data.opening_hours
             }
@@ -211,17 +274,9 @@ const VendorDetail = ({navigation,route}) => {
           get()
    
     },[])
-  
-  
-   const[maps,setMaps]=useState({
-    
-   })
- 
 
   
-   
-  
-  console.log(id)
+
   const dispatch = useDispatch()
   const [staff,setStaff]= useState('');
   
@@ -345,7 +400,7 @@ const VendorDetail = ({navigation,route}) => {
             }}
             resizeMode={FastImage.resizeMode.cover} />
             </View>
-            <View style={{
+            <Pressable onPressIn={()=>navigation.navigate('Reviews',{data: data1.ratings})} style={{
   width: 60, 
   position: 'absolute', 
   right: 30, 
@@ -368,34 +423,35 @@ const VendorDetail = ({navigation,route}) => {
   justifyContent: 'center'
 }}>
   <Icon
-  onPressIn={()=>navigation.navigate('Reviews')}
+  
     name='star'
     type='ionicons'
     color={colors.lg.color} />
   <Text>
-    {data1.rating}
+    {data1.sum_rating?.average_rating==0?'0.0': data1.sum_rating.average_rating}
   </Text>
-</View>
+</Pressable>
 
-      <View style={{ position: 'relative', marginTop: -40, marginBottom: 80, padding: 20 }}>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
+      <View style={{ position: 'relative', marginTop: -10, marginBottom: 80, }}>
+        <View style={{left:20, display: 'flex', flexDirection: 'row' }}>
           <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color }}>{data1.name}</Text>
           <TouchableOpacity onPress={()=>setModal(true)} style={{paddingHorizontal:5,marginLeft:5, marginTop:5, height:20,backgroundColor:checkVendorStatus(data1.hours) == 'Open'? '#86D694': '#CD3D49',borderRadius:20}}>{checkVendorStatus(data1.hours) === 'Open' ? (
                     <Text style={{marginHorizontal:5,color:'white'}} >open</Text>
                   ) : (
                     <Text style={{color: 'white',marginHorizontal:5,fontFamily:FontFamily.sourceSansProSemibold }}>closed</Text>
                   )}</TouchableOpacity>
-         <View style={{position:'absolute', top:0,right:30} }>
+         <View style={{position:'absolute', top:0,right:60} }>
 
          <Icon 
-         name='share-2' 
-         type='feather' 
+         onPress={handleShare}
+         name='paper-plane-outline' 
+         type='ionicon' 
          color={'#00463C'} 
           />
          </View>
         </View>
 
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <View style={{ left:20, display: 'flex', flexDirection: 'row' }}>
           {data1.tops.map((item) => {
             return (
 
@@ -418,19 +474,21 @@ const VendorDetail = ({navigation,route}) => {
             )
           })}
         </View>
-        <Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: '#00463C', marginBottom: 15 }}> {data1.location}</Text>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <Icon name='location-outline' type='ionicon' color={colors.lg.color} />
-          <Text style={{ color: colors.lg.color, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {data1.dist} - <Text onPress={() => console.log(navigation.navigate('Mapview', {
+        <Text style={{left:20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: '#00463C', marginBottom: 15 }}> {data1.location}</Text>
+        <View style={{left:20, display: 'flex', flexDirection: 'row' }}>
+          <Icon name='map-pin' type='feather' color={colors.lg.color} />
+          <Text style={{ color: colors.lg.color, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {parseInt(data1.dist/1000)}km - <Text onPress={() => navigation.navigate('Mapview', {
            data: data1
-          }))} style={{ color: colors.dg2.color }}>Show on map</Text></Text>
+          })} style={{ color: colors.dg2.color }}>Show on map</Text></Text>
         </View>
-        <Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, marginBottom: 20, marginTop: 20 }}> {data1.desc}</Text>
-        <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: '#00463C', marginBottom: 15 }}> Services</Text>
+        <Text style={{left:20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, marginBottom: 20, marginTop: 20 }}> {data1.desc}</Text>
+        <Text style={{left:20, fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: '#00463C', marginBottom: 15 }}> Services</Text>
         {checkedState.topping2.map(({ name, items, total, time, services, items_name }, index) => {
           return (
-            <View style={[styles.t6, { borderBottomColor: colors.lg.color, borderBottomWidth: 1, marginBottom: 20 }]}>
+            <View style={[styles.t6, {width:'100%',borderBottomColor: colors.lg.color, borderBottomWidth: 1, marginBottom: 20 ,left:20 }]}>
+              <View style={{left:-15}}>
               <CheckBox
+              
                 title={<>
                   <View><Text style={[colors.dg, {marginTop:0,fontFamily: FontFamily.sourceSansProBold, fontSize:18, marginLeft: 10 }]}>
                     {name}
@@ -441,41 +499,40 @@ const VendorDetail = ({navigation,route}) => {
                       </Text>}
                   </View>
                   {total > 0 &&
-                    <Text style={[colors.dg, {fontFamily: FontFamily.sourceSansProBold, fontSize:19,top:-9, marginLeft: 'auto' }]}>
+                    <Text style={[colors.dg, {fontFamily: FontFamily.sourceSansProBold, fontSize:19,top:-9, marginLeft: 'auto',right:20 }]}>
                       {'\u20B5'} {total}
                     </Text>}
                 </>}
                 uncheckedIcon={<Image
                   resizeMode='contain'
-                  style={{width:33,height:33}}
+                  style={{width:30,height:30}}
                     source={require('../../../assets/rectangle1063.png')}
                      />}
                 checkedIcon={
                   <Image
-                  style={{width:33,height:33}}
+                  style={{width:30,height:30}}
                   resizeMode='contain'
                     source={require('../../../assets/group2210.png')}
                      />
                 }
                 checked={parentState[index]}
                 onPress={() => handleOnChange2(index)} />
+                </View>
               {parentState[index] === true && items.map(({ name2, time, id, price, check }, _index2) => {
                 return (
                   <View style={{ marginLeft: 30 }}>
                     <CheckBox
                       title={<>
-
-
                       <Text  numberOfLines={2} ellipsizeMode="tail" style={[colors.dg, {  marginLeft: 10 }]}>
                         {name2}
                       </Text>
 
 
 
-                        <Text style={[{ fontSize: 10, color: '#BBB9BC' }]}>
-                          {' '} {convertMinutesToHoursAndMinutes(time)}
+                        <Text style={[{ fontSize: 10, color: '#BBB9BC' ,}]}>
+                          {' '}{convertMinutesToHoursAndMinutes(time)}
                         </Text>
-                        <Text style={[colors.dg, {fontFamily: FontFamily.sourceSansProBold,  marginLeft: 'auto' }]}>
+                        <Text style={[colors.dg, {fontFamily: FontFamily.sourceSansProBold,right:40,  marginLeft: 'auto' }]}>
                           {'\u20B5'} {price}
                         </Text></>}
                       checkedIcon={<View style={[{ backgroundColor: colors.lg.color, width: 15, height: 15, borderRadius: 5 }]}>
@@ -492,9 +549,9 @@ const VendorDetail = ({navigation,route}) => {
             </View>
           )
         })}
-        <Text style={{ marginTop: 30, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 26, color: colors.dg.color }}>Book with staff</Text>
-        <Text style={{ color: '#BBB9BC', marginBottom: 20 }}>optional</Text>
-        <Staff data={data1.staff} onSelect={(value) => setStaff(value)} />
+        <Text style={{left:20, marginTop: 30, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 26, color: colors.dg.color }}>Book with staff</Text>
+        <Text style={{left:20, color: '#BBB9BC', marginBottom: 20 }}>optional</Text>
+        <View style={{marginLeft:'3%',marginBottom:30}}><Staff data={data1.staff} onSelect={(value) => setStaff(value)} /></View>
       </View>
 
 
@@ -502,6 +559,7 @@ const VendorDetail = ({navigation,route}) => {
     <Opening data={data1.hours} modal={modal} setModal={setModal}/>
     <View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: '#ffff',height:200, width: '100%', marginBottom: 0 }}>
         <Button
+         titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
           title={'Book'}
           // containerStyle={}
           buttonStyle={{
@@ -511,7 +569,7 @@ const VendorDetail = ({navigation,route}) => {
             marginBottom: 20,
             marginTop: 10,
             alignSelf: 'center',
-            borderRadius: 20,
+            borderRadius: 25,
             backgroundColor: colors.dg2.color,
             shadowColor: colors.dg2.color, shadowOpacity: 0., shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
           }}

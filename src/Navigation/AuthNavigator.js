@@ -28,7 +28,8 @@ const AuthNavigator = () => {
         {first_time ? (
           <Stack.Screen name="GettingStarted" component={Getting_started} />
         ) : (
-          <Stack.Screen name="login" component={Login} />
+          
+          <Stack.Screen name="GettingStarted" component={Getting_started} />
         )}
         <Stack.Screen name="login2" component={Login} />
         <Stack.Screen name="Register" component={Register} />

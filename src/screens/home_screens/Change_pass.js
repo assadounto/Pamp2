@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Alert, View,TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Input, Button,Icon } from '@rneui/base';
 import { styles } from '../../Common_styles';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import BHeader from '../../../components/BHeader';
 import Blur from '../start_screens/Blur';
 import Pop2 from '../start_screens/pop2';
 import { useSelector } from 'react-redux';
+import { FontFamily } from '../../GlobalStyles';
 const Change_pass = ({ navigation }) => {
   const user =useSelector((state)=>state.user.userInfo)
   const [showPassword, setShowPassword] = useState(false);
@@ -96,9 +97,9 @@ const Change_pass = ({ navigation }) => {
       <BHeader title={'Change Password'} />
 
       <View style={{ alignSelf: 'center', marginTop: 40 }}>
-        <Input
+        <TextInput
           placeholder="Current Password"
-          inputContainerStyle={[styles.textInput]}
+       style={[styles.textInput]}
           secureTextEntry={!showPassword}
           rightIcon={
             <Icon
@@ -111,9 +112,9 @@ const Change_pass = ({ navigation }) => {
           onChangeText={(value) => handleChange('current_password', value)}
         />
 
-        <Input
+        <TextInput
           placeholder="New Password"
-          inputContainerStyle={[styles.textInput]}
+          style={[styles.textInput]}
           secureTextEntry={!showPassword}
           rightIcon={
             <Icon
@@ -126,9 +127,9 @@ const Change_pass = ({ navigation }) => {
           onChangeText={(value) => handleChange('new_password', value)}
         />
 
-        <Input
+        <TextInput
           placeholder="Confirm Password"
-          inputContainerStyle={[styles.textInput]}
+          style={[styles.textInput]}
           secureTextEntry={!showPassword}
           rightIcon={
             <Icon
@@ -143,15 +144,17 @@ const Change_pass = ({ navigation }) => {
 
         <TouchableOpacity>
           <Button
-            title="Save"
+          titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
+            title="Change password"
             onPress={handleSubmit}
-            buttonStyle={styles.button}
+            buttonStyle={[styles.button,{marginTop:'30%'}]}
+
             loading={formData.isLoading}
           />
         </TouchableOpacity>
       </View>
       <Pop2
-          main={'You have Successfully verified your Email'}
+          main={'You have Successfully Changed your Password'}
           modal={modalVisible}
         />
         

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput} from 'react-native';
+import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput,Keyboard} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
 import { Button } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
@@ -10,6 +10,7 @@ import { backendURL } from '../src/services/http';
 import Pop2 from '../src/screens/start_screens/pop2';
 const Notes_pop = ({setcancel, modal,setblur,id}) => {
     const [notify_cancel,set_notify]=useState(false)
+    const [poph,setpop]=useState(400)
     const [text,setText]=useState('')
    const handlepressCancel=()=>{
     setblur(false);
@@ -25,9 +26,32 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
         setblur(false);
       }, 3000);
     }
+
+    React.useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+          setpop(250)
+        });
+    
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setpop(400)
+        });
+    
+        return () => {
+          keyboardDidShowListener.remove();
+          keyboardDidHideListener.remove();
+        };
+      }, []);
   return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
-          <View style={[pop.pop]}>
+          <View style={{
+        width: '95%',
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        borderRadius: 20,
+        alignSelf: 'center',
+        padding: 10,
+        top:poph
+    }}>
          <View style={pop.notes}>
             <Icon 
             onPress={handlepressCancel}
@@ -40,7 +64,7 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
          </View>
          
         <TextInput  placeholder='leave note..' onChangeText={setText}    multiline={true} style={pop.input}/>
-          <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.lg.color, width: 120, height: 40 }} title='Send'>
+          <Button titleStyle={{fontFamily:FontFamily.sourceSansProBold}} onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='Send'>
 
                   </Button>
           </View>
@@ -48,15 +72,7 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
   );
 };
 const pop=StyleSheet.create({
-    pop:{
-        width: '95%',
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        borderRadius: 20,
-        alignSelf: 'center',
-        padding: 10,
-        top:400
-    },
+  
     h1:{
         fontFamily:FontFamily.sourceSansProSemibold,
         fontSize:24,

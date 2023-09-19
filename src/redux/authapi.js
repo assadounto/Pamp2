@@ -57,6 +57,12 @@ export const authApi = createApi({
         method: 'GET',
       }),
     }),
+    getReviews: builder.query({
+      query: data => ({
+        url: `/ratings?id=${data}`,
+        method: 'GET',
+      }),
+    }),
     getnotifications: builder.query({
       query: id => ({
         url: `/user/notifications`,
@@ -81,9 +87,32 @@ export const authApi = createApi({
         }
       }),
     }),
+    searchAccount: builder.query({
+      query: (email) => ({
+        url: `/user/password`,
+        method: 'GET',
+        params:{
+          email:email
+        }
+      }), 
+    }),
+    forgotAccount: builder.query({
+      query: (data) => ({
+        url: `user/password/forgot`,
+        method: 'GET',
+        params:{
+          method: data
+        }
+      }), 
+    }),
+    verifyResetCode: builder.query({
+      query: (data) => ({
+        url: `user/password/reset?token=$${data}`,
+        method: 'GET',
+      }), 
+    }),
   }),
 });
-
 export const {
   useResendEmailMutation,
   useGetEmailConfirmMutation,
@@ -93,4 +122,8 @@ export const {
   useGetcategoryQuery,
   useGetnotificationsQuery,
   useFetchVendorQuery,
+  useGetReviewsQuery,
+  useLazyForgotAccountQuery,
+  useLazySearchAccountQuery,
+  useLazyVerifyResetCodeQuery
 } = authApi;

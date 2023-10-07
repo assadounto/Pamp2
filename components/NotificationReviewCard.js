@@ -24,10 +24,10 @@ const NotificationReviewCard = ({item}) => {
       <Image
         style={styles.frameChild}
         resizeMode="cover"
-        source={{uri: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'}}
+        source={{uri: item.userimg}}
       />
       <Text style={styles.jessi}>{item.username}</Text>
-      <Text style={[styles.july2022, styles.july2022Typo]}>July 2022</Text>
+      <Text style={[styles.july2022, styles.july2022Typo]}>{item.date}</Text>
       <Text
         style={[styles.likkleSalonIs, styles.july2022Typo]}
       >{item.description}</Text>

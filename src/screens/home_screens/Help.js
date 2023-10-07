@@ -10,7 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Help =()=>{
 
     return(
-        <SafeAreaView iew style={{flex:1,backgroundColor:'white'}} >
+        <SafeAreaView  style={{flex:1,backgroundColor:'white'}} >
 
       <BHeader title="Help & Support"/>
         <View
@@ -20,7 +20,6 @@ const Help =()=>{
             padding: 6,
             backgroundColor: '#F9F9F9',
             width:'90%',
-
             alignSelf:'center',
             marginTop: 30,
           },

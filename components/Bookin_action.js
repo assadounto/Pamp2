@@ -59,12 +59,12 @@ const Booking_action = ({ info,setblur,rebk,data}) => {
           <TouchableOpacity 
     // delayPressIn={}
     disabled={cancelled ||info?.status=='completed'}
-  style={[md_style.action,cancelled ||info?.status=='completed'&& md_style.cancel_red]}
+  style={[md_style.action,cancelled && md_style.cancel_red || info?.status=='completed' && md_style.cancel]}
    // key={index}
    onPress={() =>{setblur(true); setcancel(true)}}>
       <Image
           source={cancelled ||info?.status=='completed' ? cancel2: cancel1}
-          style={{width:22,height:22,alignSelf:'center'}}
+          style={{width:22,height:22,alignSelf:'center',tintColor:info?.status=='completed' &&  '#EFEFEF' }}
           />
          
 

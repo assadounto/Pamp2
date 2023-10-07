@@ -99,6 +99,7 @@ const Register = ({navigation}) => {
               />
               <View>
                 <TextInput
+                autoFocus
                   placeholder="First Name"
                  style={[styles.textInput]}
                   onChangeText={handleChange('username')}
@@ -116,8 +117,8 @@ const Register = ({navigation}) => {
                   errorMessage={touched.name && errors.name}
                 />
                  <PhoneInput
-                 
-                 textContainerStyle={{ backgroundColor: '#EFEFEF',}}
+                  
+                 textContainerStyle={{marginHorizontal:10, backgroundColor: '#EFEFEF',}}
             //ref={phoneInput}
             //defaultValue={value}
             containerStyle={[[styles.textInput,{alignSelf:'center',marginBottom:22}]]}
@@ -127,7 +128,7 @@ const Register = ({navigation}) => {
             //onChangeText={}
             onChangeFormattedText={handleChange('phone')}
             placeholder="Phone Number"
-            autoFocus
+           
           />
                 {/* <Input
                   placeholder="Phone Number"

@@ -26,6 +26,7 @@ import { FontFamily } from '../../GlobalStyles';
 import Discount_pop from '../../../components/Discount_pop';
 import Blur from '../start_screens/Blur';
 import Socials from '../../../components/Socials';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 
 
@@ -323,8 +324,13 @@ const [modal,setmodal]=useState(false)
               backgroundColor: '#F9F9F9',
             },
           ]}
-          onPress={() => {
-            dispatch(userLogout());
+          onPress={async() => {
+            await GoogleSignin.signOut().then((result)=>{
+              dispatch(userLogout());
+            }
+            
+            )
+           
           } }>
           <Icon name="log-out" type="feather" color={'#CD3D49'} />
           <ListItem.Content>

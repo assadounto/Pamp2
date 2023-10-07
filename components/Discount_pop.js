@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput} from 'react-native';
+import {Text, View, SafeAreaView, Image, Modal,Keyboard,StyleSheet, TextInput} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
 import { Button,Rating } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
 import { Icon } from '@rneui/base';
 import { useDispatch } from 'react-redux';
 import { showBottom } from '../src/redux/user';
+
 import axios from 'axios';
 import StarRating from 'react-native-star-rating-widget';
 import { backendURL } from '../src/services/http';
@@ -13,6 +14,8 @@ import Pop2 from '../src/screens/start_screens/pop2';
 import { use } from '../src/redux/homeapi';
 const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
     const [text,setText]=useState('')
+    const [poph,setpop]=useState(400)
+
     const [open,setOpen]=useState(false)
     const [notify,set_notify] =useState(false)
    const handlepressCancel=()=>{
@@ -29,9 +32,24 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
         setblur(false);
       }, 3000);
     }
+
+    React.useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+          setpop(200)
+        });
+    
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setpop(400)
+        });
+    
+        return () => {
+          keyboardDidShowListener.remove();
+          keyboardDidHideListener.remove();
+        };
+      }, []);
   return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
-          <View style={[pop.pop]}>
+          <View style={[pop.pop,{top:poph}]}>
          <View style={pop.notes}>
             <Icon 
             onPress={handlepressCancel}
@@ -44,7 +62,7 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
          </View>
          <Text style={pop.rate}>Enter Promo Code</Text>
         
-        <TextInput  placeholder='Promo Code' onChangeText={setText}  style={[pop.input]}/>
+        <TextInput     placeholderTextColor={'#BBB9BC'} placeholder='Promo Code' onChangeText={setText}  style={[pop.input]}/>
         <Text style={pop.text2}>The discount will be applied to your next appointment.</Text>
        {
        text.length>3 &&(

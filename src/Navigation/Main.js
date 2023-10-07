@@ -191,7 +191,7 @@ checkAnyRating()
     {
       infoModal && <Blur/>
     }
-    <Pop2 modal={infoModal}  main={'Review successfully sent to '+ vendor.username}/>
+    <Pop2 modal={infoModal}  main={'Review successfully sent to '+ vendor[1]}/>
     </>
   );
 };

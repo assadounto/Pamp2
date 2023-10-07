@@ -13,11 +13,7 @@ const AppJob = ({ services,time,setInfo,vendor }) => {
   const dispatch = useDispatch();
 
 
-  const check=()=>{
-  if (!ratings.includes(vendor.id)){
-    dispatch(add_new_rating(vendor))
-  } 
-  }
+
   
   // Define the target date and time for appointment start
   const appointmentStartTime = new Date(time); // Replace with your desired appointment start time
@@ -33,7 +29,7 @@ const AppJob = ({ services,time,setInfo,vendor }) => {
         console.log('Appointment not started yet');
       } else if (minutesPassed >= appointmentDuration) {
         setInfo({color: colors.dg2.color,status: 'completed'})
-      check()
+   
       } else {
         let serviceIndex = 0;
         let accumulatedTime = 0;

@@ -5,10 +5,40 @@ import FastImage from 'react-native-fast-image'
 import { styles,colors } from '../src/Common_styles'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Emptyfav from './EmptyFav'
+import { backendURL } from '../src/services/http'
+import { useSelector } from 'react-redux'
+import axios from 'axios'
 const Tab = createMaterialTopTabNavigator();
 
 const VendorSearchCon=({datas,notext,navigation,category})=>{
-console.log(datas, typeof(datas))
+
+  const user= useSelector(state=> state.user.userInfo)
+
+const postVendorUserId = async (vendorId) => {
+  try {
+    const response = await axios.post(
+      `${backendURL}/views`,
+      {
+        vendor_id: vendorId,
+        user_id: user.id,
+      }
+    );
+    navigation.navigate('VendorDetail',
+    {
+    id: vendorId,
+    }
+    )
+    // Handle the response as needed (e.g., show a success message)
+    console.log('Response:', response.data);
+    return response.data;
+  } catch (error) {
+    // Handle errors (e.g., show an error message)
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
   function generateRatingsSummary(ratings) {
   
     // Initial template
@@ -53,11 +83,7 @@ const Item =({image,logo,name,items,location,dist,id,ratings})=>(
     shadowRadius: 10,
     elevation: 2,
     shadowOffset: {width: 5, height: 0},marginTop:10,marginBottom:10}]}>
-       <Pressable  onPress={()=>navigation.navigate('VendorDetail',
-      {
-      id: id,
-      }
-      )}> 
+       <Pressable  onPress={()=> postVendorUserId(id)}> 
      <FastImage
       source={{uri: image, headers: { Authorization: 'someAuthToken' },
       priority: FastImage.priority.normal,}}

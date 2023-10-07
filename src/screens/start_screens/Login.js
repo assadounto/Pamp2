@@ -8,7 +8,6 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import {Formik} from 'formik';
 import {Button, Input, Icon, CheckBox} from '@rneui/base';
@@ -17,7 +16,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {Color, FontFamily} from '../../GlobalStyles';
-import {colors, styles} from '../../Common_styles';
+import {styles} from '../../Common_styles';
 import {login, register} from '../../redux/user';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
@@ -29,30 +28,29 @@ const Login = ({navigation}) => {
     state => state.user,
   );
   const onSubmit = async values => {
- console.log(values,'j')
- dispatch(login({user: values}));
+    dispatch(login({user: values}));
   };
   const [showPassword, setShowPassword] = React.useState(false);
   const [useGoogle, setUseGoogle] = React.useState({});
-  //const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   GoogleSignin.configure({
     webClientId:
       '772716520012-ichh7fr2ps938dj0hsa5l2v4hh76iqd7.apps.googleusercontent.com',
     offlineAccess: true,
-    iosClientId:'772716520012-1rdo1akce15utlpd0md2c9q2p8qq36je.apps.googleusercontent.com'
+    iosClientId:'772716520012-j8firc3puuiindtr9m06femof4gv37tv.apps.googleusercontent.com'
   });
   React.useEffect(() => {
     (createError === 'exist' || success === true) &&
-      
+      !userToken &&
       dispatch(login({user: useGoogle}));
     
   }, [createError, dispatch, useGoogle, success, userToken]);
-console.log(createError,success,errorMessage)
+
   const GoogleSingUp = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signIn().then(result => {
-       console.log(result)
+        console.log(result);
         setUseGoogle({
           email: result.user.email,
           password: result.user.id,
@@ -69,7 +67,7 @@ console.log(createError,success,errorMessage)
             },
           }),
         );
-      });
+    });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -81,15 +79,16 @@ console.log(createError,success,errorMessage)
         alert('Google play services not available or outdated !');
         // play services not available or outdated
       } else {
-       console.log(error)
+        console.log(error);
       }
     }
+    console.log('jjj')
   };
 
   return (
   
-      <View style={[styles.container, styles.mt100]}>
-        <Text style={styles.t1}>Welcome</Text>
+      <View style={[styles.container,{backgroundColor:'white',flex:1}]}>
+        <Text style={[styles.t1,{marginTop:100}]}>Welcome</Text>
         <Text style={styles.t2}>Please sign into your account</Text>
         <ScrollView
           showsHorizontalScrollIndicator={false}
@@ -123,40 +122,32 @@ console.log(createError,success,errorMessage)
               errors,
             }) => (
               <View style={styles.input}>
-                 <Text style={[{textAlign:'center',color: colors.dg2.color, marginBottom:10}]} >{(touched.email && errors.email) || errorMessage || errors.password}</Text>
-                <TextInput
+                <Input
                   placeholder="Email"
-                  style={[styles.textInput]}
+                  inputContainerStyle={[styles.textInput,{marginBottom:10}]}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
                   errorMessage={(touched.email && errors.email) || errorMessage}
                 />
-                <View>
-     
-                 
-             <TextInput
+
+                <Input
                   placeholder="Password"
-                 style={[styles.textInput,{paddingRight:60}]}
+                  inputContainerStyle={[styles.textInput,{marginTop:10, marginBottom:10}]}
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
                   errorMessage={touched.password && errors.password}
                   secureTextEntry={!showPassword}
-                 
-                />
-                <View  style={{position:'absolute',top:20,right:30}}>
-                <Icon
-                    
+                  rightIcon={
+                    <Icon
                       name={showPassword ? 'eye' : 'eye-off'}
                       type="ionicon"
                       onPress={() => setShowPassword(!showPassword)}
                       color='#BBB9BC'
                     />
-                </View>
-                  
-                </View>
-                
+                  }
+                />
 
                 <Text
                   style={styles.forgot}
@@ -164,28 +155,26 @@ console.log(createError,success,errorMessage)
                   Forgot Password
                 </Text>
 
-               
+                <TouchableOpacity>
                   <Button
-                  titleStyle={{fontFamily:FontFamily.sourceSansProRegular,fontSize:14}}
                     title="Sign in"
                     onPress={handleSubmit}
                     loading={loading}
                     buttonStyle={styles.button}
                   />
-
-<TouchableOpacity
+                </TouchableOpacity>
+              </View>
+            )}
+          </Formik>
+          <TouchableOpacity
   style={[
     styles.press,
     {
-      // Add drop shadow styles here
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 3, // Adjust the height to control the shadow's vertical position
-      },
-      shadowOpacity: 0.1,
-      shadowRadius: 2,
-      elevation: 3, // For Android
+      marginTop:20,
+      elevation: 3, // Elevation for shadow (Android only)
+      shadowOpacity: 0.2,
+      shadowRadius: 5,
+      shadowOffset: { width: 0, height: 4 }, // Adjusted shadow offset for bottom shadow
       alignItems: 'center', // Center horizontally
       justifyContent: 'center', // Center vertically
     },
@@ -201,19 +190,15 @@ console.log(createError,success,errorMessage)
 </TouchableOpacity>
 
         
-              </View>
-            )}
-          </Formik>
+          <TouchableOpacity>
 
-          <TouchableOpacity  style={{marginTop:50}} onPress={() => navigation.navigate('Register')}>
-         
               <Text
-                style={[styles.t3,{marginBottom:20}]}
-               >
+                style={[styles.t3,{marginTop:20}]}
+                onPress={() => navigation.navigate('Register')}>
                 Don't have an account?
                 <Text style={styles.t4}> Sign Up</Text>
               </Text>
-            
+
           </TouchableOpacity>
         </ScrollView>
       </View>

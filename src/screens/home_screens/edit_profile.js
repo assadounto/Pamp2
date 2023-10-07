@@ -68,6 +68,7 @@ const Edit_profile = ({navigation}) => {
          <View style={{flex:1,marginBottom:80}}>
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>First name</Text>
         <TextInput
+        
           style={[styles.EI]}
           value={username}
           onChangeText={setUsername} />

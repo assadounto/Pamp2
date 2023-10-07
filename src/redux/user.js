@@ -88,7 +88,7 @@ const userSlice = createSlice({
       status:''
      },
      rating:[],
-    existing_rating:[],
+  
     payment_methods:{
       default:  {  
          id:1,
@@ -189,18 +189,13 @@ const userSlice = createSlice({
             update_new(state, action) {
               state.newnoti=action.payload   
           }, 
-          add_new_rating(state, action) {
-            if ( !state.rating.includes(action.payload)){
-              state.rating.push(action.payload)
-            }
-        }, 
+     
           delete_rating(state, action) {
-            state.rating= state.rating.filter((item)=>{item?.id!==action.payload})  
-           
+            state.rating=[]  
         }, 
             
         setExistingRating(state, action) {
-          state.existing_rating = action.payload
+          state.rating= action.payload
       }, 
 
   },

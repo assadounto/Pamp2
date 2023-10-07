@@ -38,7 +38,7 @@ const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
     }, []);
     const handlePressOK=async()=>{
    
-   const {data}= await axios.post(`${backendURL}/rating`,{id,vendor_id: vendor.id, rating, description:text })
+   const {data}= await axios.post(`${backendURL}/rating`,{id,vendor_id: vendor[0], rating, description:text })
    console.log(data)
    if (data=='created'){
     dispatch(delete_rating(vendor.id))
@@ -64,7 +64,7 @@ const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
             />
 
          </View>
-         <Text style={pop.rate}>Rate your experience with {vendor?.username} </Text>
+         <Text style={pop.rate}>Rate your experience with {vendor[1]} </Text>
          <StarRating
           starSize={50}
           starStyle={{marginRight:0}}

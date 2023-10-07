@@ -70,6 +70,7 @@ const Change_email = ({ navigation }) => {
 
       <View style={{ alignSelf: 'center',marginTop:40}}>
         <TextInput
+           placeholderTextColor={'#BBB9BC'}
           placeholder="Current Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('old_email', value)}
@@ -77,6 +78,7 @@ const Change_email = ({ navigation }) => {
         />
 
         <TextInput
+           placeholderTextColor={'#BBB9BC'}
           placeholder="New Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('new_email', value)}
@@ -84,6 +86,7 @@ const Change_email = ({ navigation }) => {
         />
 
         <TextInput
+           placeholderTextColor={'#BBB9BC'}
           placeholder="Confirm Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('confirm_email', value)}

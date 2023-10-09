@@ -23,6 +23,7 @@ if linkage != nil
 end
 
 target 'Pamp2' do
+  use_frameworks! :linkage => :static
   config = use_native_modules!
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'Firebase', :modular_headers => true

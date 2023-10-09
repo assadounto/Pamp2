@@ -115,7 +115,7 @@ const  reverseGeocode=async (lat, lng)=> {
       const generatedToken = await messaging().getToken()
        setToken(generatedToken);
        if(generatedToken){
-     await  axios.get(`${backendURL}/token?token=${generatedToken}&id=${user.id}`)
+     await  axios.get(`${backendURL}/token?token=${generatedToken}&user_id=${user.id}`)
        }
      }
 

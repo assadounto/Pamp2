@@ -58,6 +58,14 @@ const Confirm_payment=({navigation,route})=>{
     })
   }
 
+const getTotalMin=()=>{
+ let min= 0
+ booking && booking.Booking_detail.topping2.map(({  time  }) =>{
+  min+=time
+ })
+  return min
+}
+
   const gather_actual=()=>{
     console.log({
       user:user.id,
@@ -81,8 +89,9 @@ const Confirm_payment=({navigation,route})=>{
     staff: booking.staff,
     payment_method: pay_data.name,
     total: getTotalByKey(booking.Booking_detail.topping2,'total'),
-    items: booking.Booking_detail.topping2
-   }))
+    items: booking.Booking_detail.topping2,
+    total_mins: getTotalMin()
+}))
   }
   
   const getIds=()=>{
@@ -206,6 +215,7 @@ const Confirm_payment=({navigation,route})=>{
             </View>
             <View style={{padding: 20,borderTopColor:colors.lg.color,borderTopWidth:0.5, borderBottomColor: colors.lg.color, borderBottomWidth: 0.5}}>
               {booking && booking.Booking_detail.topping2.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
+              
                 return (
                   <View style={{ marginBottom: 10, display: 'flex', flexDirection: 'row' }}>
                     <View style={{ width: 10, top: 5, marginRight: 10, height: 10, borderRadius: 10, backgroundColor: appointment_color }}></View>

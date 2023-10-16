@@ -30,7 +30,21 @@ const getLongDayName = (day) => {
       return '';
   }
 };
+function isCurrentTimeGreaterOrEqual(targetTime, targetDate) {
+  const currentTime = new Date();
+  const itemTime = new Date(targetDate.year, getMonthNumber(targetDate.month), targetDate.day);
+  const timeParts = targetTime.split(':');
+  const hours = parseInt(timeParts[0]);
+  const minutes = parseInt(timeParts[1]);
+  itemTime.setHours(hours, minutes, 0, 0);
 
+  return currentTime >= itemTime;
+}
+
+function getMonthNumber(monthName) {
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  return months.indexOf(monthName);
+}
 const Time = ({ navigation, userOption,rebooked,rebook}) => {
   const dispatch = useDispatch();
  const openingHours = useSelector((state) => state.booking.vendor);
@@ -45,13 +59,15 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
       <Pressable
         style={{}}
         onPress={() => {
-          dispatch(set_time(item));
-          rebooked? rebook(item):
-          navigation.navigate('Confirm');
+         let ans= isCurrentTimeGreaterOrEqual(item,date)
+          console.log( ans)
+          
         }}
         
       >
-       
+       {/* // dispatch(set_time(item));
+          // rebooked? rebook(item):
+          // navigation.navigate('Confirm'); */}
        <ListItem style={{ borderBottomColor: isLastItem ? 'transparent' : colors.lg.color,
             borderBottomWidth: isLastItem ? 0 : 1}}>
                       <Text
@@ -67,13 +83,16 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
                   <ListItem.Content>
                   
                   </ListItem.Content>
+                  <View>
                   <Icon
-                  style={{ width: 30, marginTop: 30, marginLeft: 190 }}
+                  style={{ width: 30, marginTop: 30 }}
                   name={'chevron-forward'}
                   type="ionicon"
                   onPress={() => setShowPassword(!showPassword)}
                   color={colors.dg.color}
-                />              
+                />  
+                  </View>
+                              
                 
                 </ListItem> 
       </Pressable>

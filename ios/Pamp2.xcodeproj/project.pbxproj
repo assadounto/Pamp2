@@ -8,17 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* Pamp2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* Pamp2Tests.m */; };
+		0A561ADA148C636FE4EA59D6 /* libPods-Pamp2-Pamp2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EBCEB2186F5569B59C110E /* libPods-Pamp2-Pamp2Tests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		178F9D1A2AD9D4F0008D6C06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 178F9D192AD9D4EF008D6C06 /* GoogleService-Info.plist */; };
+		178F9D1B2AD9D4F0008D6C06 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 178F9D192AD9D4EF008D6C06 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8E8E81A129DFB6040027345A /* SourceSansPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B0CFE45FFF154E2AA28C3392 /* SourceSansPro-Bold.otf */; };
 		8E8E81A229DFB6040027345A /* SourceSansPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0EBEDAACB36B4C05BD38A3E7 /* SourceSansPro-Regular.otf */; };
 		8E8E81A329DFB6040027345A /* SourceSansPro-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3537E945801D40B59EB1C153 /* SourceSansPro-Semibold.otf */; };
-		8E965A222A63100500BC3F39 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E965A212A63100500BC3F39 /* GoogleService-Info.plist */; };
-		8EE89F7D2A978700009BE1D1 /* BodonBd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EE89F7C2A978700009BE1D1 /* BodonBd.ttf */; };
-		BE9ACBC9967E57393753F58F /* libPods-Pamp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E0D1FD41210466E18A9531F /* libPods-Pamp2.a */; };
-		E80474574D125C7076B3B1F9 /* libPods-Pamp2-Pamp2Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE641EA126D681278E6E5CA /* libPods-Pamp2-Pamp2Tests.a */; };
+		FB97024EFAF7D2306A293663 /* libPods-Pamp2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0A715C21AC2F16D3F8C2B06 /* libPods-Pamp2.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +44,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Pamp2/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Pamp2/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Pamp2/main.m; sourceTree = "<group>"; };
+		178F9D192AD9D4EF008D6C06 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1F39587079BB435B847EB169 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = ../assets/fonts/Foundation.ttf; sourceTree = "<group>"; };
 		238E69CFDF1F458D8C552A30 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = ../assets/fonts/FontAwesome5_Solid.ttf; sourceTree = "<group>"; };
 		2535C7CF723D45A49DF4D7D6 /* SourceSansPro-LightIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-LightIt.otf"; path = "../assets/fonts/SourceSansPro-LightIt.otf"; sourceTree = "<group>"; };
@@ -51,8 +52,8 @@
 		38902C73D03B423583EC23DE /* SourceSansPro-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Black.otf"; path = "../assets/fonts/SourceSansPro-Black.otf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Pamp2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pamp2.debug.xcconfig"; path = "Target Support Files/Pods-Pamp2/Pods-Pamp2.debug.xcconfig"; sourceTree = "<group>"; };
 		444814343014434D8DEACA90 /* SourceSansPro-SemiboldIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-SemiboldIt.otf"; path = "../assets/fonts/SourceSansPro-SemiboldIt.otf"; sourceTree = "<group>"; };
-		4E0D1FD41210466E18A9531F /* libPods-Pamp2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pamp2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FE11730CABD47F09F2E5D0B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = ../assets/fonts/Feather.ttf; sourceTree = "<group>"; };
+		52EBCEB2186F5569B59C110E /* libPods-Pamp2-Pamp2Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pamp2-Pamp2Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5709B34CF0A7D63546082F79 /* Pods-Pamp2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pamp2.release.xcconfig"; path = "Target Support Files/Pods-Pamp2/Pods-Pamp2.release.xcconfig"; sourceTree = "<group>"; };
 		5B274464EB604B86B60A7141 /* SourceSansPro-It.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-It.otf"; path = "../assets/fonts/SourceSansPro-It.otf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Pamp2-Pamp2Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pamp2-Pamp2Tests.debug.xcconfig"; path = "Target Support Files/Pods-Pamp2-Pamp2Tests/Pods-Pamp2-Pamp2Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -62,20 +63,18 @@
 		7B24E9A0D7AF4AFE86A1B373 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = ../assets/fonts/Fontisto.ttf; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Pamp2/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Pamp2-Pamp2Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pamp2-Pamp2Tests.release.xcconfig"; path = "Target Support Files/Pods-Pamp2-Pamp2Tests/Pods-Pamp2-Pamp2Tests.release.xcconfig"; sourceTree = "<group>"; };
-		8E965A212A63100500BC3F39 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8E965A232A63176100BC3F39 /* Pamp2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Pamp2.entitlements; path = Pamp2/Pamp2.entitlements; sourceTree = "<group>"; };
-		8EE89F7C2A978700009BE1D1 /* BodonBd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BodonBd.ttf; path = "../../Downloads/bodoni-bd-bt/BodonBd.ttf"; sourceTree = "<group>"; };
 		91370CDDD5A8458C8A6C69DC /* SourceSansPro-BoldIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BoldIt.otf"; path = "../assets/fonts/SourceSansPro-BoldIt.otf"; sourceTree = "<group>"; };
 		96E726E68CFE41528FDB6FEA /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = ../assets/fonts/Octicons.ttf; sourceTree = "<group>"; };
 		ACA10F693B2E49BD990F9CD5 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = ../assets/fonts/MaterialIcons.ttf; sourceTree = "<group>"; };
 		AEF04C4A3D404CBC9655AC4A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = ../assets/fonts/SimpleLineIcons.ttf; sourceTree = "<group>"; };
+		B0A715C21AC2F16D3F8C2B06 /* libPods-Pamp2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pamp2.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0CFE45FFF154E2AA28C3392 /* SourceSansPro-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-Bold.otf"; path = "../assets/fonts/SourceSansPro-Bold.otf"; sourceTree = "<group>"; };
 		BACB320FC8374F78AF1C6E57 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = ../assets/fonts/AntDesign.ttf; sourceTree = "<group>"; };
 		BBFC3F57710E4AFEBD7F0187 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = ../assets/fonts/FontAwesome.ttf; sourceTree = "<group>"; };
 		C951D4911F3A4BE59BD4AC2F /* SourceSansPro-ExtraLightIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLightIt.otf"; path = "../assets/fonts/SourceSansPro-ExtraLightIt.otf"; sourceTree = "<group>"; };
 		D17BAD80C92A4293A66CCAFD /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = ../assets/fonts/FontAwesome5_Brands.ttf; sourceTree = "<group>"; };
 		DAEF8622DBB84EFB8C0395C0 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = ../assets/fonts/FontAwesome5_Regular.ttf; sourceTree = "<group>"; };
-		EBE641EA126D681278E6E5CA /* libPods-Pamp2-Pamp2Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Pamp2-Pamp2Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECE9FEEF6A10496988F8A78C /* SourceSansPro-ExtraLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-ExtraLight.otf"; path = "../assets/fonts/SourceSansPro-ExtraLight.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EEB3A9C46E4A476C9F38A88F /* SourceSansPro-BlackIt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SourceSansPro-BlackIt.otf"; path = "../assets/fonts/SourceSansPro-BlackIt.otf"; sourceTree = "<group>"; };
@@ -87,7 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E80474574D125C7076B3B1F9 /* libPods-Pamp2-Pamp2Tests.a in Frameworks */,
+				0A561ADA148C636FE4EA59D6 /* libPods-Pamp2-Pamp2Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE9ACBC9967E57393753F58F /* libPods-Pamp2.a in Frameworks */,
+				FB97024EFAF7D2306A293663 /* libPods-Pamp2.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,8 +121,8 @@
 		13B07FAE1A68108700A75B9A /* Pamp2 */ = {
 			isa = PBXGroup;
 			children = (
+				178F9D192AD9D4EF008D6C06 /* GoogleService-Info.plist */,
 				8E965A232A63176100BC3F39 /* Pamp2.entitlements */,
-				8E965A212A63100500BC3F39 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -138,8 +137,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				4E0D1FD41210466E18A9531F /* libPods-Pamp2.a */,
-				EBE641EA126D681278E6E5CA /* libPods-Pamp2-Pamp2Tests.a */,
+				B0A715C21AC2F16D3F8C2B06 /* libPods-Pamp2.a */,
+				52EBCEB2186F5569B59C110E /* libPods-Pamp2-Pamp2Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -147,7 +146,6 @@
 		30F73F51556B4160AB0CBEF7 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8EE89F7C2A978700009BE1D1 /* BodonBd.ttf */,
 				38902C73D03B423583EC23DE /* SourceSansPro-Black.otf */,
 				EEB3A9C46E4A476C9F38A88F /* SourceSansPro-BlackIt.otf */,
 				B0CFE45FFF154E2AA28C3392 /* SourceSansPro-Bold.otf */,
@@ -276,7 +274,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -311,6 +310,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				178F9D1B2AD9D4F0008D6C06 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,8 +323,7 @@
 				8E8E81A329DFB6040027345A /* SourceSansPro-Semibold.otf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				8E965A222A63100500BC3F39 /* GoogleService-Info.plist in Resources */,
-				8EE89F7D2A978700009BE1D1 /* BodonBd.ttf in Resources */,
+				178F9D1A2AD9D4F0008D6C06 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,6 +525,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-Pamp2-Pamp2Tests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -553,6 +553,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-Pamp2-Pamp2Tests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = Pamp2Tests/Info.plist;
@@ -586,6 +587,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5J44AW2GMN;
 				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = Pamp2/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Pamp;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
@@ -621,6 +623,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5J44AW2GMN;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = Pamp2/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Pamp;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
@@ -675,6 +678,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -747,6 +751,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;

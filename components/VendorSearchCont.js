@@ -80,7 +80,7 @@ const postVendorUserId = async (vendorId) => {
 const Item =({image,logo,name,items,location,dist,id,ratings})=>(
     <View style={[styles2.cont,{shadowColor: '#707070',
     shadowOpacity: 0.2,
-    shadowRadius: 10,
+    shadowRadius: 6,
     elevation: 2,
     shadowOffset: {width: 5, height: 0},marginTop:10,marginBottom:10}]}>
        <Pressable  onPress={()=> postVendorUserId(id)}> 
@@ -167,7 +167,7 @@ style={{
             }
           }
          >
-          <Text style={[styles.option, colors.dg]}> {item.value}j</Text>
+          <Text style={[styles.option, colors.dg]}> {item.value}</Text>
         </Pressable>
      
       );

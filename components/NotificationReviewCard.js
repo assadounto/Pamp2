@@ -77,8 +77,6 @@ const styles = StyleSheet.create({
   ellipseParent: {
      flex:1,
     width: '85%',
-   
-    height: 140,
     alignSelf: "center",
     marginTop: 20,
   },

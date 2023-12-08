@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView,Dimensions, Modal,Share, Alert} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
 import { Icon,Input ,Button,CheckBox} from '@rneui/base'
@@ -27,12 +27,15 @@ import { use } from '../../redux/homeapi'
 import CustomImageSlider from '../../../components/CustomSlider'
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry'
 import { da } from 'date-fns/locale'
+import { setVPM } from '../../redux/user'
+import SvgUri from 'react-native-svg-uri';
 const getFormattedPrice = (price) => `$${price.toFixed(2)}`;
 const windowHeight = Dimensions.get('window').height;
 const swiperHeight = windowHeight * 0.5; // Set the swiper height to 50% of the window height
 
 const VendorDetail = ({navigation,route}) => {
   const user = useSelector((state)=>state.user.userInfo)
+  const location = useSelector((state)=>state.user.location)
   const [fav,setFav]=useState(false)
   const {id}= route.params
   const [data1,setdata]=useState()
@@ -73,7 +76,7 @@ const VendorDetail = ({navigation,route}) => {
       );
     }
 
-    console.log(summary, "xcxcxc");
+    console.log(location);
 
     // Return the summary
     return summary;
@@ -160,16 +163,18 @@ const VendorDetail = ({navigation,route}) => {
   const [parentState, setparentState] = useState(
    
   );
+  console.log()
   ///const {data,isLoading}=useFetchVendorQuery(id)
    useEffect(()=>{
    async  function get(){
-        const{ data }=await axios.get(`${backendURL}/details?id=${id}&user_id=${user.id}`)
+        const{ data }=await axios.get(`${backendURL}/details?id=${id}&user_id=${user.id}&lat=${location.lat}&lon=${location.lon}`)
         
         
-         data && console.log(data.ratings,'klllll')
+         data && console.log(data.distance,'klllll')
           setFav(data.favorited)
           setdata(
-            {
+            { 
+              payment_method: data.payment_method,
               images: [data.cover_url,...data.other_images_urls],
               id: data.id,
               image: data.cover_url,
@@ -179,6 +184,7 @@ const VendorDetail = ({navigation,route}) => {
               lat: data.lat,
               location: data.name,
               dist: data.distance,
+              badge: data.badge,
               items: data.top_services.split(",").map((item)=>{
              return {
                 value: item
@@ -229,7 +235,7 @@ const VendorDetail = ({navigation,route}) => {
         name:data.username,
         rating:'',
         location: data.name,
-        dist: '',
+        dist:  data.distance,
         items: data.top_services.split(",").map((item)=>{
        return {
           value: item
@@ -282,8 +288,9 @@ const VendorDetail = ({navigation,route}) => {
   
 
     const handleBookingSubmit=()=>{
-      dispatch(setbooking(checkedState))
-      console.log(checkedState)
+     dispatch(setbooking(checkedState))
+    
+      dispatch(setVPM(data1.payment_method))
       dispatch(setvendorname(data1.name))
       dispatch(setvendorid(data1.id))
       dispatch(setvendorimg(data1.logo))
@@ -439,7 +446,14 @@ const VendorDetail = ({navigation,route}) => {
                     <Text style={{marginHorizontal:5,color:'white'}} >open</Text>
                   ) : (
                     <Text style={{color: 'white',marginHorizontal:5,fontFamily:FontFamily.sourceSansProSemibold }}>closed</Text>
-                  )}</TouchableOpacity>
+        )}</TouchableOpacity>
+      {
+        data1.badge?<View style={{marginTop:5,marginLeft:5}}>
+        <SvgUri
+        
+        source={require('../../../assets/svgs/verified.svg')}/>
+        </View>: <Fragment/>
+      }  
          <View style={{position:'absolute', top:0,right:60} }>
 
          <Icon 

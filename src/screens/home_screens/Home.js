@@ -31,6 +31,9 @@ import Rating_pop from '../../../components/Rating_pop';
 import Blur from '../start_screens/Blur';
 import { da } from 'date-fns/locale';
 import { Linking } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+
+import ImageCont from '../../../components/Image';
 const Tab = createMaterialTopTabNavigator();
 
 
@@ -74,19 +77,23 @@ const  reverseGeocode=async (lat, lng)=> {
     const route = url.replace(/.*?:\/\//g, '');
     const id = route.match(/\/([^\/]+)\/?$/)[1];
     const routeName = route.split('/')[0];
-    console.log(id,route)
-    if (routeName === 'vendor') {
-      navigation.navigate('VendorDetail',
-      {
-      id
-      }
-      )    };
+
+    switch(routeName){
+      case 'vendor':
+        navigation.navigate('VendorDetail',{id})    
+        break;
+      case 'booking_detail':
+        navigation.navigate('Booking_detail',{id})    
+        break;     
+    }
   };
+
+
   function getUserLocation() {
     Geolocation.getCurrentPosition(
       async (position) => {
     const get=  await reverseGeocode(position.coords.latitude,position.coords.longitude)
-    console.log(name)
+    
     dispatch(setLocation(
       {
        name:name && name,
@@ -107,7 +114,7 @@ const  reverseGeocode=async (lat, lng)=> {
   }
    
   const onMessageReceived = async message => {
-    console.log(message)
+
     };
 
     const [token, setToken] = React.useState('');
@@ -126,7 +133,7 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
     }
 
   React.useEffect(()=>{
-    console.log(userstate.location,'jee')
+   
     dispatch(showBottom(true))
     fetchData()
  
@@ -194,8 +201,8 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
       sceneContainerStyle={{ backgroundColor: 'white' }}
       tabBar={props => <MyTabBar {...props} />}>
         <Tab.Screen name="Popular" component={Popular} />
-        <Tab.Screen name="Recent viewed" component={Others} />
-        <Tab.Screen name="Top Rated Vendors" component={Others} />
+        <Tab.Screen name="Recent viewed" component={Recent } />
+        <Tab.Screen name="Top Rated Vendors" component={Top} />
     </Tab.Navigator>
     </Fragment>
   );
@@ -209,6 +216,7 @@ const dispatch=useDispatch()
     const a= async()=>{
       const {data}= await getcategories('Popular')
       data&& dispatch(setCat(data))
+
     }
    a()
  
@@ -219,23 +227,18 @@ const dispatch=useDispatch()
     
     const {data}= await axios.get(`${backendURL}/search?category=${title}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`)
     //setData(data)
+    
      data    &&   navigation.navigate('Searches1', { location: userstate.location , category: title,data});
 
   };
   const location= useSelector(state=>state.user)
   const Item = ({title, id, source}) => (
-    <Pressable key={id} onPress={()=>handleSearch(id,title)} style={{borderRadius:20,marginTop:20,padding:10,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
-    <View >
-      <View style={{backgroundColor: '#ffff',alignItems:'center'}}>
-      <FastImage
-          source={{uri :source, headers: { Authorization: 'someAuthToken' },
-          priority: FastImage.priority.high}}
-          style={{width: '95%', height: 300, borderRadius: 20}}
-        />
-        
+    <Pressable key={id} onPress={()=>handleSearch(id,title)} style={{padding:8, borderRadius:20,marginTop:20,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
+      <View style={{borderRadius:20,marginTop:5, backgroundColor: '#ffff',alignItems:'center'}}>
+        <ImageCont uri={source} styles={{width: '95%', height: 300, borderRadius: 20}}/>
       </View>
-    </View>
-    <Text style={[colors.dg,{marginLeft:20,marginTop:10,fontFamily:FontFamily.sourceSansProSemibold,fontSize:24,marginBottom:10}]}>{title}</Text>
+  
+    <Text style={[colors.dg,{marginLeft:20,marginTop:15,fontFamily:FontFamily.sourceSansProSemibold,fontSize:24,marginBottom:20}]}>{title}</Text>
     </Pressable>
   );
 
@@ -255,19 +258,21 @@ const dispatch=useDispatch()
 }
 
 
-const Others=()=>{
+const Recent=({scope})=>{
   const user =useSelector((state)=>state.user)
   const navigation=useNavigation()
   const[datas,setData]= useState([])
+  console.log(user.recent_vendors,'here')
   const get=async()=>{ 
-    const {data}= await axios.get(`${backendURL}/search?query=${'hair'}&lat=${user.location.lat}&lon=${user.location.lon}]`)
+    const {data}= await axios.get(`${backendURL}/categories?scope=recent&lat=${user.location.lat}&lon=${user.location.lon}&vendor_ids=${JSON.stringify(user.recent_vendors)}`)
     const vendors= data.map((vendor)=>{
       return {
         id: vendor.id,
         image: vendor.cover_url,
         logo: vendor.avatar_url,
         name:vendor.username,
-        rating:'4.5',
+        ratings:vendor.ratings,
+        badge: vendor.badge,
         location: vendor.name,
         dist: vendor.distance,
         items: vendor.top_services.split(",").map((item)=>{
@@ -282,41 +287,61 @@ const Others=()=>{
     setData( vendors)
 
   }
-  useEffect(()=>{
-
-     get()
-  },[])
   
-  // const data=[
-  //   {
-  //     image: '../../../assets/rectangle-9764.png',
-  //     logo:'../../../assets/group-1820.png',
-  //     name:'Likke Salon',
-  //     items:[
-  //       { value: 'Make up' },
-  //     { value: 'Hair' },
-  //     { value: 'Nails' },
-  //     ],
-  //     rating: '4.5',
-  //     location:'Airport Resddf',
-  //     dist: '2000m from you'
-  //   },
-  //   {
-  //     image: '../../../assets/rectangle-9764.png',
-  //     logo:'../../../assets/group-1820.png',
-  //     name:'Likke Salon',
-  //     items:[
-  //       { value: 'Make up' },
-  //     { value: 'Hair' },
-  //     { value: 'Nails' },
-  //     ],
-  //     rating: '4.5',
-  //     location:'Airport Resddf',
-  //     dist: '2000m from you'
-  //   },
-  //]
+  useFocusEffect(
+  
+    React.useCallback(() => {
+      get()
+    }, []) // Include user.id in the dependency array
+  );
+  
+
  return(
-  <VendorSearchCon notext={true} navigation={navigation} data={datas}/>
+  <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
+ )
+}
+
+
+
+const Top=({scope})=>{
+  const user =useSelector((state)=>state.user)
+  const navigation=useNavigation()
+  const[datas,setData]= useState([])
+  const get=async()=>{ 
+    const {data}= await axios.get(`${backendURL}/categories?scope=top&lat=${user.location.lat}&lon=${user.location.lon}&vendor_ids=[1,8]`)
+    const vendors= data.map((vendor)=>{
+      return {
+        id: vendor.id,
+        image: vendor.cover_url,
+        logo: vendor.avatar_url,
+        name:vendor.username,
+        ratings:vendor.ratings,
+        badge: vendor.badge,
+        location: vendor.name,
+        dist: vendor.distance,
+        items: vendor.top_services.split(",").map((item)=>{
+       return {
+          value: item
+        }
+      }
+        )
+      }
+        
+     })
+    setData( vendors)
+
+  }
+  
+  useFocusEffect(
+  
+    React.useCallback(() => {
+      get()
+    }, []) // Include user.id in the dependency array
+  );
+  
+
+ return(
+  <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
  )
 }
 export default Home;

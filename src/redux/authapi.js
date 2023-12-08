@@ -120,7 +120,7 @@ export const {
   useGetPhoneConfirmMutation,
   useLazyGetcategoriesQuery,
   useGetcategoryQuery,
-  useGetnotificationsQuery,
+  useLazyGetnotificationsQuery,
   useFetchVendorQuery,
   useGetReviewsQuery,
   useLazyForgotAccountQuery,

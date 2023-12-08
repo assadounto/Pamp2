@@ -1,6 +1,6 @@
 import { Icon,Input } from '@rneui/base'
 import { FontFamily } from '../GlobalStyles'
-import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList, Alert} from 'react-native'
+import { View, Text, ScrollView,StyleSheet,Image  ,Pressable,FlatList, Alert} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { styles,colors } from '../src/Common_styles'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -8,13 +8,18 @@ import Emptyfav from './EmptyFav'
 import { backendURL } from '../src/services/http'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
+import ImageCont from './Image'
+import SvgUri from 'react-native-svg-uri';
+import { useDispatch } from 'react-redux'
+import { setRecentvendors } from '../src/redux/user'
 const Tab = createMaterialTopTabNavigator();
 
 const VendorSearchCon=({datas,notext,navigation,category})=>{
-
+  console.log(datas&&datas,'hereeeee')
   const user= useSelector(state=> state.user.userInfo)
-
+const dispatch=useDispatch()
 const postVendorUserId = async (vendorId) => {
+     dispatch(setRecentvendors(vendorId))
   try {
     const response = await axios.post(
       `${backendURL}/views`,
@@ -77,20 +82,15 @@ const postVendorUserId = async (vendorId) => {
     return summary;
   }
 
-const Item =({image,logo,name,items,location,dist,id,ratings})=>(
+const Item =({image,badge,logo,name,items,location,dist,id,ratings})=>(
     <View style={[styles2.cont,{shadowColor: '#707070',
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 2,
     shadowOffset: {width: 5, height: 0},marginTop:10,marginBottom:10}]}>
        <Pressable  onPress={()=> postVendorUserId(id)}> 
-     <FastImage
-      source={{uri: image, headers: { Authorization: 'someAuthToken' },
-      priority: FastImage.priority.normal,}}
-      style={{ alignSelf:'center',width: '100%', height:200, borderRadius: 20 } 
-    }
-  
-   />
+       <ImageCont uri={ image} styles={{ alignSelf:'center',width: '100%', height:200, borderRadius: 20 }}/>
+   
    </Pressable>
     
    <View 
@@ -113,15 +113,8 @@ style={{
   elevation: 4,
 }}
       >
-        <FastImage
-                       style={{borderRadius: 50, width: 50, height: 50, }} 
-
-          source={{
-            uri: logo,
-            headers: { Authorization: 'someAuthToken' },
-            priority: FastImage.priority.normal,
-          }}
-          resizeMode={FastImage.resizeMode.cover} />
+        <ImageCont uri={logo} smallStyle={{alignSelf:'center',left:2, marginTop:10}} styles={{borderRadius: 50, width: 50, height: 50, }}/>
+       
           </View>
 
 
@@ -147,7 +140,14 @@ style={{
       </Text>
     </View>
     <View style={{position:'relative',top:-30}}>
-    <Text style={{marginBottom:15, fontFamily:FontFamily.sourceSansProBold,fontSize:24,fontWeight:'bold',color:colors.dg.color}}>{name}</Text>
+    <Text style={{marginBottom:15, fontFamily:FontFamily.sourceSansProBold,fontSize:24,fontWeight:'bold',color:colors.dg.color}}>{name} {
+      badge?<View style={{marginTop:4,marginLeft:5}}>
+        <SvgUri
+        
+        source={require('../assets/svgs/verified.svg')}/>
+        </View>: <></>
+      }</Text>
+   
     <View style={{display:'flex',flexDirection:'row'}}>  
     {items.map((item) => {
       return (
@@ -182,6 +182,7 @@ style={{
   </View>
   </View>
   );
+
    return (
     <>
     {datas && datas.length!==0 ?
@@ -194,11 +195,11 @@ style={{
            renderItem={({ item }) => (
              <Item
               ratings={generateRatingsSummary(item.ratings)}
-               name={item.name} id={item.id} logo={item.logo} items={item.items} rating={item.rating} location={item.location} dist={item.dist} image={item.image} />
+               name={item.name} id={item.id} badge={item.badge} dist={item.dist} logo={item.logo} items={item.items}  image={item.image} />
            )}
            keyExtractor={item => item.id} /></>: <Emptyfav 
-  title={"No match"}
-  body={"Nothing here to show"}
+  
+  body={"Nothing here yet"}
   top={50}
   />}
   </>

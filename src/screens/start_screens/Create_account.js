@@ -39,7 +39,7 @@ const Register = ({navigation}) => {
     }));
 
    
-    navigation.navigate('VerifyEmail');
+    navigation.navigate('VerifyEmail',{scope:''});
   };
 
   return (
@@ -100,6 +100,7 @@ const Register = ({navigation}) => {
               <View>
                 <TextInput
                 autoFocus
+                placeholderTextColor={'#BBB9BC'}
                   placeholder="First Name"
                  style={[styles.textInput]}
                   onChangeText={handleChange('username')}
@@ -110,6 +111,7 @@ const Register = ({navigation}) => {
 
                 <TextInput
                   placeholder="Last Name"
+                  placeholderTextColor={'#BBB9BC'}
                   style={[styles.textInput]}
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
@@ -117,6 +119,7 @@ const Register = ({navigation}) => {
                   errorMessage={touched.name && errors.name}
                 />
                  <PhoneInput
+                    placeholderTextColor={'#BBB9BC'}
                   
                  textContainerStyle={{marginHorizontal:10, backgroundColor: '#EFEFEF',}}
             //ref={phoneInput}
@@ -141,6 +144,7 @@ const Register = ({navigation}) => {
                 /> */}
 
                 <TextInput
+                   placeholderTextColor={'#BBB9BC'}
                   placeholder="Email"
                   style={[styles.textInput]}
                   onChangeText={handleChange('email')}
@@ -151,6 +155,7 @@ const Register = ({navigation}) => {
                 />
 <View>
                 <TextInput
+                   placeholderTextColor={'#BBB9BC'}
                   placeholder="Password"
                   style={[styles.textInput]}
                   onChangeText={handleChange('password')}

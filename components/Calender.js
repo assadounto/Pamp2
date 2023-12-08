@@ -10,6 +10,7 @@ import { format, addMonths, subMonths } from 'date-fns';
 import { set_time } from '../src/redux/booking';
 import { useDispatch } from 'react-redux';
 import Time from './Time';
+import { formatDateForRails } from '../src/Functions';
 const DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 const defaultLocalizationOptions = {
   monthNames: [
@@ -90,7 +91,7 @@ export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) 
 
   const [data, useData] = useState(caldate);
 
-  const [userOption, setUserOption] = useState(current_day <= 5? data[0]: data[2]);
+  const [userOption, setUserOption] = useState(current_day <= 5? {...data[0],date: new Date()}: {...data[2],date: new Date()});
   const [currentIndex, setcurrentIndex] = useState();
   const [prev, setPrev] = useState('');
 
@@ -149,7 +150,8 @@ export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) 
               ]
         }
         onPress={() => {
-          SelectHandler({day: item.day, aday: item.aday}, index);
+          SelectHandler({day: item.day, aday: item.aday,date: formatDateForRails({day: item.aday, month: defaultLocalizationOptions.monthNames[currentMonth],
+            year: 2023,})}, index);
         }}>
         <Text
           style={[

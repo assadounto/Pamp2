@@ -50,7 +50,7 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
 
           </View>
       </Modal><Pop main={'You have successfully cancelled your appointment'} modal={notify_cancel}/></>
-  );
+  );r
 };
 const pop=StyleSheet.create({
     pop:{

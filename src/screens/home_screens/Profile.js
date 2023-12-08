@@ -75,6 +75,8 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
     })
       .then(res => res.json())
       .then(res => {
+
+         dispatch(setImage(res.image))
         console.log('upload succes', res);
         //alert('Upload success!');
       })
@@ -86,7 +88,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
 
   return (
     <><SafeAreaView style={[colors.Pc]}>
-      <BHeader title="Profile" color={colors.lg.color} />
+      <BHeader title="Profile" color={colors.dg2.color} />
 
       <ScrollView
         style={[]}
@@ -103,9 +105,9 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             } }>
             <FastImage
             
-            source={selectedImage || userimg ? { uri: userimg,headers: { Authorization: 'someAuthToken' } } : user.image ? { uri: user.image } : require('../../../assets/userimg.png')} 
+            source={selectedImage || user.image ? { uri: user.image,headers: { Authorization: 'someAuthToken' } }  : require('../../../assets/userimg.png')} 
 
-             style={{borderRadius: 50,width:60,height:60 }
+             style={{borderRadius: 50,width:80,height:80 }
              
            }
          

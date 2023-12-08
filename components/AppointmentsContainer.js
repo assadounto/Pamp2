@@ -6,7 +6,9 @@ import { FontFamily, Color, FontSize, Border } from '../src/GlobalStyles'
 import FastImage from "react-native-fast-image";
 import AppJob from "./AppJob";
 import { colors } from "../src/Common_styles";
+import ImageCont from "./Image";
 const AppointmentsContainer = ({navigation,data}) => {
+  
   const [info,setInfo]= React.useState()
   function formatServiceNames(services) {
     const maxLength = 25; // Maximum length of the final formatted string
@@ -56,17 +58,32 @@ const AppointmentsContainer = ({navigation,data}) => {
   const formattedServices = formatServiceNames(services);
   console.log(formattedServices); // Output: "Dread & Rail"
   
-const bgc={
-  cancelled: 'red',
-  confirmed: colors.lg.color,
-  booked: colors.dg.color
-}
 
-const c={
-  cancelled: 'white',
-  confirmed: 'white',
-  booked: 'white'
-}
+
+  const statuses= ["completed","cancelled","confirmed","no show","booked","unconfirmed","pending"]
+
+
+
+  const bgc={
+    cancelled: '#CD3D49',
+    completed: colors.dg2.color,
+    confirmed: colors.dg2.color,
+    booked: colors.dg.color,
+    "no show": '#CD3D49',
+    unconfirmed: colors.dg.color,
+    pending: data.services[0]? data.services[0].color: 'red'
+  }
+  
+  const c={
+    cancelled: 'white',
+    confirmed: 'white',
+    completed: 'white',
+    booked: 'white',
+    "no show": 'white',
+    pending: 'white',
+    unconfirmed: 'white'
+  }
+
 
  function formatTime(timeString) {
     const date = new Date(timeString);
@@ -100,21 +117,13 @@ const c={
   }
   return (
     <Pressable onPress={()=>navigation.navigate('Booking_detail',{
-      data
+      id: data.id
     })}  style={[styles.path636Parent]}>
        <AppJob setInfo={setInfo}  vendor={data.vendor} services={data.services} time={data.time}/>
+<ImageCont styles={[styles.groupChild, styles.groupChildPosition]} uri={data.vendor.cover}/>
+         
 
-          <FastImage
-        style={[styles.groupChild, styles.groupChildPosition]}
-  
-            source={{
-              uri: data.vendor.cover,
-              headers: { Authorization: 'someAuthToken' },
-              priority: FastImage.priority.high,
-            }}
-            resizeMode={FastImage.resizeMode.cover} />
-
-<FastImage
+            <FastImage
         style={[styles.groupItem, styles.groupItemPosition]}
   
             source={{
@@ -122,7 +131,8 @@ const c={
               headers: { Authorization: 'someAuthToken' },
               priority: FastImage.priority.high,
             }}
-            resizeMode={FastImage.resizeMode.cover} />
+            resizeMode={FastImage.resizeMode.cover} 
+            />
       <Text style={[styles.likkleSalon, styles.totalFlexBox]}>
       {data.vendor.username}
       </Text>
@@ -133,8 +143,8 @@ const c={
       <Text style={[styles.july2022, styles.textTypo]}>{formatDate(data.date)}</Text>
       <View style={[styles.groupInner, styles.lineViewBorder]} />
       <View style={[styles.lineView, styles.lineViewBorder]} />
-      <View style={[styles.bookedWrapper, info ? {backgroundColor: info.color}: {backgroundColor: bgc[data.status]}, styles.groupItemPosition]}>
-        <Text style={[styles.booked, info  ? {color: 'white'} : {color:c[data.status]}, styles.sewInTypo]}>{info ?capitalizeFirstLetter(info.status ): capitalizeFirstLetter(data.status)}</Text>
+      <View style={[styles.bookedWrapper, statuses.includes(data.status) ? {backgroundColor:  bgc[data.status]}: {backgroundColor: info?.color}, styles.groupItemPosition]}>
+        <Text style={[styles.booked, info  ? {color: 'white'} : {color:c[data.status]}, styles.sewInTypo]}>{ statuses.includes(data.status)  ?capitalizeFirstLetter(data.status ): info&& capitalizeFirstLetter(info.status)}</Text>
       </View>
     </Pressable>
   );
@@ -280,7 +290,7 @@ const styles = StyleSheet.create({
   paddingHorizontal:10,
     borderRadius:28,
     //backgroundColor: Color.darkslategray_200,
-    width: 90,
+   
   
     height: 21,
     top: "50%",
@@ -299,3 +309,7 @@ const styles = StyleSheet.create({
 });
 
 export default AppointmentsContainer;
+
+
+
+

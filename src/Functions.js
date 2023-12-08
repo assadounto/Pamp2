@@ -145,3 +145,92 @@ export function convertMinutesToHoursAndMinutes(minutes) {
   
     return timeRange;
   };
+
+  export function formatDateToAgo(railsCreatedAt) {
+    const currentTime = new Date();
+    const createdAt = new Date(railsCreatedAt);
+    const elapsed = currentTime - createdAt;
+  
+    const seconds = Math.floor(elapsed / 1000);
+    if (seconds < 60) {
+      return seconds + "s ago";
+    }
+  
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) {
+      return minutes + "m ago";
+    }
+  
+    const hours = Math.floor(minutes / 60);
+    return hours + "h ago";
+  }
+
+
+ export const formatDateForRails = (dateObj) => {
+    const { day, month, year } = dateObj;
+    
+    // Convert month name to a numerical value
+    const monthMap = {
+      January: "01",
+      February: "02",
+      March: "03",
+      April: "04",
+      May: "05",
+      June: "06",
+      July: "07",
+      August: "08",
+      September: "09",
+      October: "10",
+      November: "11",
+      December: "12"
+    };
+    
+    // Format the date string in 'YYYY-MM-DD' format
+    const formattedDate = `${year}-${monthMap[month]}-${day.toString().padStart(2, "0")}`;
+    
+    return formattedDate;
+  };
+
+ export const formatTimeForRails = (timeString) => {
+    const currentDate = new Date();
+    const [hours, minutes, period] = timeString.split(/:|\s/); // Split the time string using a regular expression
+  
+    let hourValue = parseInt(hours, 10);
+  
+    if (period.toLowerCase() === 'pm' && hourValue !== 12) {
+      hourValue += 12; // Convert the hour to 24-hour format for PM times
+    } else if (period.toLowerCase() === 'am' && hourValue === 12) {
+      hourValue = 0; // Convert 12 AM to 0 (midnight) in 24-hour format
+    }
+  
+    currentDate.setHours(hourValue);
+    currentDate.setMinutes(parseInt(minutes, 10));
+  
+    return currentDate.toISOString().slice(11, 19);
+  };
+  
+
+  const areObjectsEqual = (obj1, obj2) => {
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+  
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+  
+    for (const key of keys1) {
+      const val1 = obj1[key];
+      const val2 = obj2[key];
+  
+      // Convert values to lowercase for case-insensitive comparison
+      const normalizedVal1 = typeof val1 === 'string' ? val1.toLowerCase() : val1;
+      const normalizedVal2 = typeof val2 === 'string' ? val2.toLowerCase() : val2;
+  
+      if (normalizedVal1 !== normalizedVal2) {
+        return false;
+      }
+    }
+  
+    return true;
+  };
+  

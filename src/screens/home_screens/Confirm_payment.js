@@ -38,6 +38,7 @@ const Confirm_payment=({navigation,route})=>{
  // const { completed, items ,time} = route.params || {};
   const dispatch=useDispatch()
   const pay_data_=  useSelector((state)=>state.user.payment_methods.default)
+  const payment_pref=useSelector((state)=>state.user.vPM)
   let pay_data=pay_data_ && pay_data_
   const user =  useSelector((state)=>state.user.userInfo)
   const booking_= useSelector((state)=>state.booking)
@@ -141,7 +142,7 @@ const getTotalMin=()=>{
             <ListItem
               containerStyle={[{ display: 'flex', flexDirection: 'row', height: 63, width: '90%', alignSelf: 'center', paddingTop: 20, paddingHorizontal: 20, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, elevation: 4, shadowOffset: { width: 5, height: 0 }, backgroundColor: 'white', borderRadius: 20 }]}
               onPress={() => {
-                navigation.navigate('Select_payment');
+                navigation.navigate('Select_payment',{data: payment_pref});
               } }>
 
 {payment_methods[payment_method.name]==''?

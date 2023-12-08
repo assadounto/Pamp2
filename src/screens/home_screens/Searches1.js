@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList} from 'react-native'
+import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList, Alert} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
 import { Icon,Input } from '@rneui/base'
 import { colors } from '../../Common_styles'
@@ -25,7 +25,8 @@ const Searches1 = ({navigation,route}) => {
            location: vendor.name,
            dist: vendor.distance,
            ratings: vendor.ratings,
-           items: vendor.top_services.split(",").map((item)=>{
+           badge: vendor.badge,
+           items: vendor.top_services && vendor.top_services.split(",").map((item)=>{
           return {
              value: item
            }
@@ -50,7 +51,7 @@ const Searches1 = ({navigation,route}) => {
   const new_vendors= thedata(newData)
 
   const maxDistance = 500; // Maximum distance in meters
-  const nearData= data.filter(item => item.distance <= maxDistance);
+  const nearData= data.filter(item => item.distance >= maxDistance);
   const near_vendors = thedata(nearData)
    const screenOptions = ({ route }) => {
     // Pass the required props to the screens based on the route name
@@ -105,8 +106,8 @@ const data1 =[
 sceneContainerStyle={{ backgroundColor: 'white' ,marginBottom:50 }}
       tabBar={props => <MyTabBar {...props} />}>
         <Tab.Screen name="Recommended"  >{(props) => <Item {...props} data={rec_vendors} category={category}/>}</Tab.Screen>
-        <Tab.Screen name="Nearest" >{(props) => <Item {...props} data={ near_vendors} />}</Tab.Screen>
-        <Tab.Screen name="Newest"  >{(props) => <Item {...props} data={new_vendors} />}</Tab.Screen>
+        <Tab.Screen name="Nearest" >{(props) => <Item {...props} data={ near_vendors} category={category}/> }</Tab.Screen>
+        <Tab.Screen name="Newest"  >{(props) => <Item {...props} data={new_vendors} category={category}/> }</Tab.Screen>
 
         
     </Tab.Navigator>

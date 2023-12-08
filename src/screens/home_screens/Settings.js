@@ -334,7 +334,7 @@ const [modal,setmodal]=useState(false)
           } }>
           <Icon name="log-out" type="feather" color={'#CD3D49'} />
           <ListItem.Content>
-            <ListItem.Title style={colors.dgb}>Logout </ListItem.Title>
+            <ListItem.Title style={[{fontFamily:FontFamily.sourceSansProSemibold},colors.dgb]}>Logout </ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron style={colors.dgb} size={25} />
         </ListItem>

@@ -9,42 +9,48 @@ import Canceled from './canceled';
 import Completed from './completed';
 import Booked from './booked';
 import EmptyStateNoti from '../../../components/EmptyNoti';
-import { useNavigation } from '@react-navigation/core';
-import { useGetnotificationsQuery } from '../../redux/authapi';
+import { useNavigation,useIsFocused } from '@react-navigation/core';
+import { useLazyGetnotificationsQuery } from '../../redux/authapi';
 import { useSelector } from 'react-redux';
 
 
-const Notifications= () => {
+const Notifications = () => {
   const user = useSelector(state => state.user.userInfo);
+  const[refetch, { data, isLoading,  }] = useLazyGetnotificationsQuery();
+  const isFocused = useIsFocused(); // Check if the screen is focused
 
-  const {data,isLoading}=useGetnotificationsQuery(user&&user.id)
-  console.log(data&&data)
+  React.useEffect(() => {
+    if (isFocused) {
+      // Fetch new data when the screen is focused
+      refetch(user.id);
+    }
+  }, [isFocused]);
+
   const renderNotificationComponent = ({ item }) => {
     switch (item.notification_type) {
       case 'booked':
         return <Booked data={item} />;
       case 'cancelled':
-        return <Canceled data={item}/>;
+        return <Canceled data={item} />;
       case 'completed':
-        return <Completed data={item}/>;
+        return <Completed data={item} />;
       case 'discount':
-        return <Discount data={item}/>;
+        return <Discount data={item} />;
       case 'late':
-        return <Late data={item}/>;
+        return <Late data={item} />;
       case 'normal':
-        return <Normal data={item}/>;
+        return <Normal data={item} />;
       default:
         return null;
     }
   };
+
+  const navigation = useNavigation();
   
- 
-  const navigation=useNavigation()
   return (
-    
-         <><Text style={[styles.notifications, styles.myFavTypo]}>
-      Notifications
-    </Text><Pressable style={styles.x} onPress={() => navigation.goBack()}>
+    <>
+      <Text style={[styles.notifications, styles.myFavTypo]}>Notifications</Text>
+      <Pressable style={styles.x} onPress={() => navigation.goBack()}>
         <Icon
           type='ionicon'
           name='close-outline'
@@ -52,27 +58,26 @@ const Notifications= () => {
           size={30}
           style={styles.icon}
           resizeMode="cover"
-          source={require('../../../assets/x5.png')} />
+          source={require('../../../assets/x5.png')}
+        />
       </Pressable>
-      {
-        data&&data.length==0? <EmptyStateNoti />: 
+      {data && data.length === 0 ? <EmptyStateNoti /> : (
         <FlatList
-        data={data?.notifications}
-        renderItem={renderNotificationComponent}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      }
-      
-      </>
-   
+          data={data?.notifications}
+          renderItem={renderNotificationComponent}
+          keyExtractor={item => item.id.toString()}
+        />
+      )}
+    </>
   );
 };
 
 export default Notifications;
+
 const styles = StyleSheet.create({
   notifications: {
     fontSize: 30,
-    color: colors.lg.color,
+    color: colors.dg2.color,
     fontWeight: 'bold',
     marginLeft: 40,
     marginTop: 70,
@@ -84,6 +89,6 @@ const styles = StyleSheet.create({
     right: 20,
   },
   icon: {
-  fontWeight: 'bold',
+    fontWeight: 'bold',
   },
 });

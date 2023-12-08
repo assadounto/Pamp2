@@ -213,7 +213,7 @@ const VerifyNumber = ({navigation}) => {
               handleSubmit()
             }}
             loading={isLoading}
-            buttonStyle={styles.button}
+            buttonStyle={[styles.button,{width:300}]}
           />
         </TouchableOpacity>
 

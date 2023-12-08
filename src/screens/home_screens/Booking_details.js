@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+
+
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import BHeader from '../../../components/BHeader';
 import {colors, styles} from '../../Common_styles';
@@ -19,26 +21,65 @@ import { useSelector } from 'react-redux';
 import { convertMinutesToHoursAndMinutes,getTotalByKey } from '../../Functions';
 import CustomImageSlider from '../../../components/CustomSlider';
 import AppJob from '../../../components/AppJob';
-let booked=true
+import { da } from 'date-fns/locale';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import Loading from '../../../components/loading';
+
 const Booking_detail = ({route,navigation}) => {
+  const {id}=route.params
+
   const dispatch= useDispatch()
   const [info,setInfo]= useState()
   const user = useSelector((state)=>state.user.userInfo)
   const [noti, shownoti] = React.useState(false);
-  const {data}=route.params
-  console.log(data)
-    
-const bgc={
-  cancelled: 'red',
-  confirmed: colors.dg2.color,
-  booked: colors.dg.color
-}
+  const [data,setdata]=useState(null)
+  const [cancelled,setCancelled]=useState(false)
+  const[blur,setblur]=useState(false)
+  const [fav,setFav]=useState(data?.favorite)
 
-const c={
-  cancelled: 'white',
-  confirmed: 'white',
-  booked: 'white'
-}
+  id && console.log(id)
+    
+
+  const statuses= ["completed","cancelled","confirmed","no show","booked","unconfirmed","pending"]
+
+ useEffect(()=>{
+   getData()
+ },[])
+
+
+ const getData = async () => {
+  try {
+    const response = await axios.get(backendURL + `/booking/info?id=${user.id}&booking_id=${id}`);
+    setdata(response.data ); // Use an empty array as a fallback if the response data is undefined
+    setFav(response.data.favorite)
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+  const bgc={
+    cancelled: '#CD3D49',
+    completed: colors.dg2.color,
+    confirmed: colors.dg2.color,
+    booked: colors.dg.color,
+    "no show": '#CD3D49',
+    unconfirmed: colors.dg.color,
+    pending:data?.services[0]? data.services[0].color: 'red'
+
+
+  }
+  
+  const c={
+    cancelled: 'white',
+    confirmed: 'white',
+    completed: 'white',
+    booked: 'white',
+    pending: 'white',
+    "no show": 'white',
+    unconfirmed: 'white'
+  }
+
+
 function capitalizeFirstLetter(str) {
   if (typeof str !== 'string') {
     throw new Error('Input must be a string');
@@ -46,12 +87,10 @@ function capitalizeFirstLetter(str) {
   
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-   const [cancelled,setCancelled]=useState(false)
-    const[blur,setblur]=useState(false)
-    const [fav,setFav]=useState(data.favorite)
+  
     const openGoogleMaps = () => {
       const url = `https://www.google.com/maps/search/?api=1&query=${data.vendor.lat},${data.vendor.lon}`;
-    
+    console.log(fav,'jjjjjjjjjj')
       Linking.canOpenURL(url)
         .then(supported => {
           if (!supported) {
@@ -79,11 +118,14 @@ function capitalizeFirstLetter(str) {
     dispatch(setvendorimg(data.vendor.logo))
     dispatch(setvendorid(data.vendor.id))
     dispatch(setVendor(data.hours))
-    if (data.cancelable){
+    if (data?.status=='confirmed' && data.cancelable){
       navigation.navigate('SelectDate',{rebooked:true,id:data.id})
     }
-
-    else if(info.status=='completed'){
+    else if(data?.status=='booked'|| data?.status=='unconfirmed'){
+      dispatch(setbooking({topping2: data.items,name: data.vendor.username}))
+      navigation.navigate('SelectDate',{rebooked:true,id:data.id})
+    }
+    else if(data?.status=='completed'){
       dispatch(setbooking({topping2: data.items,name: data.vendor.username}))
       navigation.navigate('SelectDate',{rebooked:false,id:data.id})
     }
@@ -133,179 +175,169 @@ function capitalizeFirstLetter(str) {
   return (
    
    <ScrollView style={{backgroundColor:'#FFFFFF'}}>
-   <CustomImageSlider images={[data.vendor.cover, ...data.vendor.otherImages]} />
+   {
+    data  ? <>
+    
+<CustomImageSlider images={[data?.vendor.cover, ...data?.vendor.otherImages]} />
+<View style={{ position: 'absolute', top: 60, right: 20 }}>
+          <Icon
+            onPress={createFav}
+            name={fav ? 'heart' : 'heart-outline'}
+            type='ionicon'
+            size={30}
 
-         
-         <View  style={{position: 'absolute',top:60,right:20}}>
-         <Icon
-        onPress={createFav}
-          name={fav?'heart': 'heart-outline'}
-          type='ionicon'
-          size={30}
-          
-          color={'#FFFFFF'} />
-        </View>
-        <Pressable onPress={()=>navigation.goBack()} style={{position: 'absolute',top:60,left:20}}>
-        <Icon
-          name='chevron-back-outline'
-          type='ionicon'
-          size={30}
-         
-          color={'#FFFFFF'}
-           />
-        </Pressable>
-        <Text style={{marginTop:10,color:colors.dg.color, fontFamily:FontFamily.sourceSansProBold,fontSize:27,marginHorizontal:20}}>{formatDate(data.date)}</Text>
-        <Text style={{color:colors.dg.color, fontFamily:FontFamily.sourceSansProBold,fontSize:27,marginHorizontal:15}}> at {formatTime(data.time)}{'  '}
-        
-      </Text>
-      <View style={[{paddingHorizontal:10, width:80,height:21,borderRadius:10,padding:2,position:'relative',top:-27,left:160,
-        }, info ? {backgroundColor: info.color}: {backgroundColor: bgc[data.status]}]}>
-          <Text style={[{fontSize:11, textAlign:'center',fontFamily:FontFamily.sourceSansProSemibold},info  ? {color: 'white'} : {color:c[data.status]}]}>{info? capitalizeFirstLetter(info.status) : capitalizeFirstLetter(data.status)}</Text></View>
-       <AppJob info={info} vendor={data.vendor}  setInfo={setInfo}  services={data.services} time={data.time}/>
-       <View style={{marginHorizontal:20,marginVertical:30}}>
-                        <ListItem
-                        containerStyle={[{paddingVertical:20,borderBottomColor:colors.lg.color,borderTopColor:colors.lg.color,borderBottomWidth:0.5,borderTopWidth:0.5}]}
-                  onPress={() => {
-                  //dispatch(setDefault(pay))
-              navigation.navigate('VendorDetail',
-              {
-              id: data.vendor.id,
-              })
-                  }}>
-                <FastImage
-          style={{width:40,height:40,borderRadius:50}}
-  
-            source={{
-              uri: data.vendor.logo,
-              headers: { Authorization: 'someAuthToken' },
-              priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.cover} />
-                  
-        
-                  <ListItem.Content>
-                    <ListItem.Title style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:20,color:colors.dg.color}}>
-                    {data.vendor.username}
-                    </ListItem.Title>
-                    <ListItem.Title style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:15,color:colors.dg.color}}>
-                    {data.vendor.name}
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron color={'#00463C'} size={30} />
-                </ListItem>
+            color={'#FFFFFF'} />
+        </View><Pressable onPress={() => navigation.goBack()} style={{ position: 'absolute', top: 60, left: 20 }}>
+            <Icon
+              name='chevron-back-outline'
+              type='ionicon'
+              size={30}
+
+              color={'#FFFFFF'} />
+          </Pressable><View>
+            <Text style={{ marginTop: 10, color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 20 }}>{formatDate(data.date)}</Text>
+            <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 15 }}> at {formatTime(data.time)}{'  '}
+
+            </Text>
+            <View style={[{
+              paddingHorizontal: 10, height: 21, borderRadius: 10, position: 'absolute', top: 50, left: 160,
+              alignContent: 'center', justifyContent: 'center'
+            }, statuses.includes(data.status) ? { backgroundColor: bgc[data.status] } : { backgroundColor: info?.color }]}>
+              <Text style={[{ fontSize: 11, textAlign: 'center', fontFamily: FontFamily.sourceSansProSemibold }, statuses.includes(data.status) ? { color: c[data.status] } : { color: 'white' }, styles.sewInTypo]}>{statuses.includes(data.status) ? capitalizeFirstLetter(data.status) : info && capitalizeFirstLetter(info.status)}</Text></View>
+          </View><AppJob info={info} vendor={data.vendor} setInfo={setInfo} services={data.services} time={data.time} /><View style={{ marginHorizontal: 20, marginVertical: 30 }}>
+            <ListItem
+              containerStyle={[{ paddingVertical: 20, borderBottomColor: colors.lg.color, borderTopColor: colors.lg.color, borderBottomWidth: 0.5, borderTopWidth: 0.5 }]}
+              onPress={() => {
+                //dispatch(setDefault(pay))
+                navigation.navigate('VendorDetail',
+                  {
+                    id: data.vendor.id,
+                  });
+              } }>
+              <FastImage
+                style={{ width: 40, height: 40, borderRadius: 50 }}
+
+                source={{
+                  uri: data.vendor.logo,
+                  headers: { Authorization: 'someAuthToken' },
+                  priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.cover} />
+
+
+              <ListItem.Content>
+                <ListItem.Title style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color }}>
+                  {data.vendor.username}
+                </ListItem.Title>
+                <ListItem.Title style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: colors.dg.color }}>
+                  {data.vendor.name}
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron color={'#00463C'} size={30} />
+            </ListItem>
+
+          </View><Booking_action info={info} rebk={rebook} data={data} setblur={setblur} setCancelled={setCancelled} /><View style={{ marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: 'white', borderRadius: 20, width: '90%', alignSelf: 'center' }}>
+
+
+            <View style={{ padding: 20, borderBottomColor: colors.lg.color, borderBottomWidth: 1 }}>
+              {data.items.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
+                return (
+                  <View style={{ marginBottom: 15, display: 'flex', flexDirection: 'row' }}>
+                    <View style={{ width: 10, top: 5, marginRight: 10, height: 10, borderRadius: 10, backgroundColor: appointment_color }}></View>
+                    {data.items.length != 1 && _index2 + 1 !== data.items.length ?
+                      <View style={{ position: 'absolute', left: 5, top: 15, height: 45, width: 0.6, backgroundColor: '#BBB9BC' }}></View> : null}
+                    <View style={{ width: '70%' }}>
+
+                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>{name} - <Text style={{ color: '#BBB9BC', fontSize: 13, marginTop: -17 }}>{items_name}</Text></Text>
+                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: '#BBB9BC' }}> {convertMinutesToHoursAndMinutes(time)}</Text>
 
                     </View>
-           <Booking_action info={info} rebk={rebook} data={data} setblur={setblur} setCancelled={setCancelled}/>
+                    <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.dg.color, position: 'absolute', right: 9 }}>¢{total}</Text>
+                  </View>
+                );
+              })}
 
-                    <View style={{marginTop:20, marginVertical:10, shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4,backgroundColor:'white', borderRadius:20,width:'90%',alignSelf:'center' }}>
-        
-        
-        <View style={{padding:20,borderBottomColor:colors.lg.color,borderBottomWidth:1}}>
-        {data.items.filter(({total})=>total!=0).map(({  name, items_name,appointment_color, total,time,services }, _index2) => {
-        return(  
-        <View style={{marginBottom:15, display:'flex',flexDirection:'row'}}>
-               <View style={{width:10,top:5,marginRight:10, height:10 ,borderRadius:10, backgroundColor:appointment_color}}></View>
-            {data.items.length!=1 &&_index2+1 !== data.items.length ?  
-               <View style={{position:'absolute',left:5,top:15, height:45,width:0.6,backgroundColor:'#BBB9BC'}}></View>: null
-            } 
-                <View style={{width:'70%'}}>
-                  
-                    <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>{name} - <Text style={{color:'#BBB9BC',fontSize:13,marginTop:-17}}>{items_name}</Text></Text>
-                    <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:13,color:'#BBB9BC'}}> {convertMinutesToHoursAndMinutes(time)}</Text>
-                   
-                </View>
-                <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.dg.color,position:'absolute', right:9}}>¢{total}</Text>
             </View>
-         )
-        })}
-       
-        </View> 
-      <View style={{padding:20,display:'flex',flexDirection:'row',height:80}}>
-      <Text style={{left: 30,position:'absolute',top:20,fontFamily:FontFamily.sourceSansProSemibold,fontSize:18,color:colors.dg.color}}>
-        Total
-      </Text>
-      <View style={{position:'absolute',right:30, top:20}}>
-      <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:18,color:colors.lg.color}}>
-      ¢{data.payment_method== 'Pay with cash'? parseInt(data.total)/ 0.2: parseInt(data.total)}
-      </Text>
-      </View>
-      
-      </View>
+            <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
+              <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>
+                Total
+              </Text>
+              <View style={{ position: 'absolute', right: 30, top: 20 }}>
+                <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.lg.color }}>
+                  ¢{data.payment_method == 'Pay with cash' ? parseInt(data.total) / 0.2 : parseInt(data.total)}
+                </Text>
+              </View>
+
+            </View>
+            {data.payment_method == 'Pay with cash' &&
+              <View style={{ display: 'flex', flexDirection: 'row' }}>
+
+                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20, flex: 1 }}>
+                  Initial deposit
+                </Text>
+                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, flex: 1, textAlign: 'right', marginRight: 30 }}>¢{parseInt(data.total)}</Text></View>}
+          </View><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Location</Text><MapView
+            initialRegion={{
+              latitude: data.vendor.lat ? data.vendor.lat : 5.614818,
+              longitude: data.vendor.lon ? data.vendor.lon : -0.205874,
+              latitudeDelta: 0.00122,
+              longitudeDelta: 0.00121,
+            }}
+            style={{ width: '90%', height: 300, alignSelf: 'center', borderRadius: 20 }}
+            provider={PROVIDER_GOOGLE}
+          ></MapView><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Address</Text><Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 20, color: colors.dg.color, marginHorizontal: 30, marginBottom: 14 }}>{data.vendor.name}</Text><View style={{ marginTop: 30, marginBottom: 50, width: '90%', alignSelf: 'center' }}>
+
+            <ListItem
+              containerStyle={[{ paddingVertical: 20, borderTopColor: colors.lg.color, borderBottomColor: colors.lg.color, borderBottomWidth: 1, borderTopWidth: 1 }]}
+              onPress={() => {
+                // dispatch(setDefault(pay))
+                copyToClipboard();
+              } }>
+              <Icon
+                name="copy-outline"
+                type="ionicon"
+                size={20}
+                color={colors.lg.color} />
+
+              <ListItem.Content>
+                <ListItem.Title style={colors.dgb}>
+                  Copy address
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron color={'#00463C'} size={20} />
+            </ListItem>
+            <ListItem
+              containerStyle={[{ paddingVertical: 20, borderBottomColor: colors.lg.color, borderBottomWidth: 1 }]}
+              onPress={() => {
+                // dispatch(setDefault(pay))
+                openGoogleMaps();
+              } }>
+              <Icon
+                name="map-pin"
+                type="feather"
+                size={20}
+                color={colors.lg.color} />
+
+              <ListItem.Content>
+                <ListItem.Title style={colors.dgb}>
+                  Get directions
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron color={'#00463C'} size={20} />
+            </ListItem>
+
+          </View> 
+    </>
+             
+             : <Loading/>
+   }
      {
-      data.payment_method== 'Pay with cash'  &&
-       <View style={{display:'flex',flexDirection: 'row'}}>
-        
-       <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20,flex: 1 }}>
-            Initial deposit
-          </Text>
-          <Text style={{fontFamily: FontFamily.sourceSansProSemibold,fontSize:16, color: colors.dg.color,flex:1,textAlign:'right',marginRight:30 }}>¢{parseInt(data.total)}</Text></View>
-     }
-       </View>
-       <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:20,color:colors.dg.color,marginTop:55,marginHorizontal:30,marginBottom:14}}>Location</Text>
-       <MapView
-    initialRegion={{
-      latitude: data.vendor.lat?data.vendor.lat:5.614818,
-      longitude: data.vendor.lon? data.vendor.lon: -0.205874,
-      latitudeDelta: 0.00122,
-      longitudeDelta: 0.00121,
-    }}
-    style={{width:'90%',height:300,alignSelf:'center',borderRadius:20}}
-    provider={PROVIDER_GOOGLE}
-></MapView>
-<Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:20,color:colors.dg.color,marginTop:55,marginHorizontal:30,marginBottom:14}}>Address</Text>
-<Text style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:20,color:colors.dg.color,marginHorizontal:30,marginBottom:14}}>{data.vendor.name}</Text>
-<View style={{marginTop:30,marginBottom:50,width:'90%',alignSelf:'center'}}>
-
-                        <ListItem
-                  containerStyle={[{paddingVertical:20,borderTopColor:colors.lg.color,borderBottomColor:colors.lg.color,borderBottomWidth:1,borderTopWidth:1}]}
-                  onPress={() => {
-                 // dispatch(setDefault(pay))
-                 copyToClipboard()
-                  }}>
-                    <Icon
-                    name="copy-outline"
-                    type="ionicon"
-                    size={20}
-                    color={colors.lg.color}
-                    />
-         
-                  <ListItem.Content>
-                    <ListItem.Title style={colors.dgb}>
-                    Copy address
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron color={'#00463C'} size={20} />
-                </ListItem>
-                <ListItem
-                  containerStyle={[{paddingVertical:20,borderBottomColor:colors.lg.color,borderBottomWidth:1}]}
-                  onPress={() => {
-                 // dispatch(setDefault(pay))
-                 openGoogleMaps()
-                  }}>
-                     <Icon
-                    name="map-pin"
-                    type="feather"
-                    size={20}
-                    color={colors.lg.color}
-                    />
-         
-                  <ListItem.Content>
-                    <ListItem.Title style={colors.dgb}>
-                    Get directions
-                    </ListItem.Title>
-                  </ListItem.Content>
-                  <ListItem.Chevron color={'#00463C'} size={20} />
-                </ListItem>
-
-                    </View>
-                    {
-            noti && 
-            <View style={style2.copy_info}>
-               <Text style={style2.copy_info_text}>Location copied Successfully!</Text>
-           </View>
-           }
-                   {blur&& <Blur/>} 
-
+       noti && 
+       <View style={style2.copy_info}>
+          <Text style={style2.copy_info_text}>Location copied Successfully!</Text>
+      </View>
+      }
+ {blur&& <Blur/>} 
    </ScrollView>
   ) 
 };

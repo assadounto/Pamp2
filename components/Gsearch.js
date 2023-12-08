@@ -1,58 +1,54 @@
-import React, { useState } from 'react';
-import { View, TextInput,StyleSheet,ScrollView ,Text,TouchableOpacity} from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, TextInput, StyleSheet, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Icon } from '@rneui/base';
 import Geolocation from 'react-native-geolocation-service';
 import { useSelector } from 'react-redux';
 import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
-const Gsearch = ({setLoc, handleS}) => {
-  const user=useSelector(state=>state.user)
-  const refInput = React.useRef(null);
+
+const Gsearch = ({ setLoc, handleS }) => {
+  const user = useSelector(state => state.user);
+  const refInput = useRef(null);
+  const [prev,setPrev]= useState(user.location.name)
   const [searchQuery, setSearchQuery] = useState(user.location.name);
   const [searchResults, setSearchResults] = useState([]);
-  const[start,setstart]=useState(true)
-  const [selectedLocation, setSelectedLocation] = useState(
-    {
+  const [start, setStart] = useState(true);
+  const [show, setShow] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState({
     coordinates: {
       lat: user.location.lat,
       lng: user.location.lon,
     },
-    name: user.location.name
-  }
-  );
- 
-  React.useEffect(() => {
-    console.log(user.location)
-    setLoc(selectedLocation)
-   
+    name: user.location.name,
+  });
+
+  useEffect(() => {
+    setLoc(selectedLocation.coordinates.lat,selectedLocation.coordinates.lng,selectedLocation.name);
+
     if (start) {
       const delaySearch = setTimeout(() => {
         handleSearch();
-      }, 500); // Delay of 500 milliseconds before triggering the search
-  
+      }, 500);
+
       return () => clearTimeout(delaySearch);
     }
   }, [searchQuery, start]);
- 
+
   const handleSelectLocation = (location) => {
     setSelectedLocation(location);
-    setLoc(location)
-   
-    // Do something with the selected location, such as updating state or triggering an action
+    setLoc(location.coordinates.lat,location.coordinates.lng,location.name);
   };
 
-  const  reverseGeocode=async (lat, lng)=> {
-    const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0'; // Replace with your actual Google API key
-    
+  const reverseGeocode = async (lat, lng) => {
+    const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0';
+
     try {
       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
       const data = await response.json();
-  
+
       if (data.status === 'OK' && data.results.length > 0) {
         const address = data.results[0].formatted_address;
-        setSearchQuery(address)
-
-        
+        setSearchQuery(address);
       } else {
         throw new Error('Unable to retrieve address');
       }
@@ -60,19 +56,17 @@ const Gsearch = ({setLoc, handleS}) => {
       console.error(error);
       throw new Error('Error occurred during reverse geocoding');
     }
-  }
+  };
 
   function getUserLocation() {
     Geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        reverseGeocode(latitude,longitude)
+        reverseGeocode(latitude, longitude);
         handleSearch();
-  
-    
       },
       (error) => {
-       
+        console.error(error);
       },
       {
         showLocationDialog: true,
@@ -81,8 +75,8 @@ const Gsearch = ({setLoc, handleS}) => {
         maximumAge: 0,
       }
     );
+ setShow(false)
   }
-   
 
   const handleSearch = async () => {
     try {
@@ -91,102 +85,81 @@ const Gsearch = ({setLoc, handleS}) => {
         `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchQuery}&key=${apiKey}`
       );
       const data = await response.json();
-     
-      // Extract the search results from the API response
+
       const results = data.results || [];
       setSearchResults(results);
-      handleS()
     } catch (error) {
       console.error('Error occurred while searching:', error);
     }
   };
 
   const clearSearch = () => {
-    setstart(true)
+    setStart(true);
+    setShow(true);
     setSearchQuery('');
     setSearchResults([]);
+    refInput.current.focus();
   };
-  
+
+  const hideSearchResults = () => {
+    setShow(false);
+    searchQuery== '' && setSearchQuery(prev)
+  };
 
   return (
-    <View >
-      <TextInput
-        style={s_style.text_input}
-        placeholder="Search"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        onSubmitEditing={handleSearch}
-        keyboardType='web-search'
-        onsu
-        //editable={edit} 
-       //ref={refInput}
-      />
-      <View style={s_style.icon}>
-      <Icon
-     name= 'map-pin'
-        type="feather"
-        size={25}
-        color="#BCC4CC"
-      />
+    <TouchableWithoutFeedback onPress={hideSearchResults}>
+      <View>
+        <TextInput
+        ref={refInput}
+          style={s_style.text_input}
+          placeholder={searchQuery}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onSubmitEditing={handleSearch}
+          keyboardType="web-search"
+        />
+        <View style={s_style.icon}>
+          <Icon name="map-pin" type="feather" size={25} color="#BCC4CC" />
+        </View>
+        <View style={s_style.icon2}>
+          <Icon name="x" type="feather" size={30} color="#BCC4CC" onPress={clearSearch} />
+        </View>
+
+        {show ? (
+          <ScrollView showsVerticalScrollIndicator={false} style={s_style.box}>
+            <TouchableOpacity style={s_style.button} onPress={getUserLocation}>
+              <View style={{ display: 'flex', flexDirection: 'row' }}>
+                <Icon name="locate-outline" type="ionicon" />
+                <Text style={{ fontSize: 14, marginTop: 3, color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold }}> Use Current Location</Text>
+              </View>
+            </TouchableOpacity>
+            {searchResults.map((result) => (
+              <TouchableOpacity
+                style={s_style.column}
+                key={result.place_id}
+                onPress={() => {
+                  handleSelectLocation({
+                    name: result.name,
+                    coordinates: result.geometry.location,
+                  });
+                  setSearchQuery(result.name);
+                  setStart(false);
+                  setSearchResults([]);
+                  setShow(false)
+                }}
+              >
+                <View style={{ marginLeft: 20 }}>
+                  <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProSemibold }}>{result.name}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        ) : null}
       </View>
-  <View style={s_style.icon2}>
-  <Icon
-        
-        name="x"
-        type="feather"
-        size={30}
-        color="#BCC4CC"
-        onPress={clearSearch}
-      />
-  </View>      
-
-      
-
-      {/* Render search results */}
-      {
-        searchResults.length==0?null:
-        <ScrollView showsVerticalScrollIndicator={false} style={s_style.box}>
-        
-      
-        <TouchableOpacity
-          style={s_style.button}
-          onPress={getUserLocation}
-        >
-          <View style={{display:'flex',flexDirection:'row'}}>
-
-          <Icon name='locate-outline' type='ionicon'/>
-          <Text style={{fontSize: 14, marginTop:3, color:colors.dg.color, fontFamily: FontFamily.sourceSansProBold}}> Use Current Location</Text>
-
-          </View>
-        </TouchableOpacity>
-        {searchResults.map((result) => (
-          <TouchableOpacity
-          style={s_style.column}
-          key={result.place_id}
-          onPress={() =>{
-            handleSelectLocation({
-              name: result.name,
-              coordinates: result.geometry.location,
-            })
-            setSearchQuery(result.name)
-            setstart(false)
-            setSearchResults([])
-          }}
-        >
-          <View style={{marginLeft:20}}>
-            {/* Render each search result */}
-            {/* Customize the rendering based on your needs */}
-            <Text style={ {color:colors.dg.color, fontFamily:FontFamily.sourceSansProSemibold}}>{result.name}</Text>
-            
-          </View>
-        </TouchableOpacity>
-        ))}
-        </ScrollView>
-      }
-     
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
+
 
 const s_style= StyleSheet.create({
   column:{

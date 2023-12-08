@@ -12,7 +12,7 @@ const Help =()=>{
     return(
         <SafeAreaView  style={{flex:1,backgroundColor:'white'}} >
 
-      <BHeader title="Help & Support"/>
+      <BHeader title="Help & Support" color={colors.dg2.color}/>
         <View
         style={[
           {

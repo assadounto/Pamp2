@@ -7,6 +7,7 @@ import booking, { set_date } from "../../redux/booking";
 import Blur from "../start_screens/Blur";
 import Pop2 from "../start_screens/pop2";
 import axios from "axios";
+import { formatTimeForRails } from "../../Functions";
 import { setbooking,setVendor,setvendorname,setvendorid  } from '../../redux/booking'
 import { backendURL } from "../../services/http";
 let monthNames =[
@@ -14,7 +15,7 @@ let monthNames =[
     "July", "August", "September", "October", "November", "December"
   ]
 const SelectDate=({navigation,route})=>{
-  const {rebooked,id,vendor}= route.params
+  const {rebooked,id,vendor,noti_id}= route.params
  
     const formatDateForRails = (dateObj) => {
         const { day, month, year } = dateObj;
@@ -41,16 +42,7 @@ const SelectDate=({navigation,route})=>{
         return formattedDate;
       };
     
-      const formatTimeForRails = (timeString,dates) => {
-        const currentDate = new Date(dates);
-        const [hours, minutes] = timeString.split(':');
-        
-        currentDate.setHours(hours);
-        currentDate.setMinutes(minutes);
       
-        return currentDate.toISOString();
-      };
-
     let date = new Date()
    
     const dispatch=useDispatch()
@@ -63,9 +55,10 @@ const SelectDate=({navigation,route})=>{
    const rebook=async(item)=>{
     let items = {
         date: formatDateForRails(option),
-        time: formatTimeForRails(item.split(' ')[0],formatDateForRails(option)),
+        time: formatTimeForRails(item),
         booking_id: id,
-        status: 'booked'
+        status: 'booked',
+        noti_id
     }
     let {data}= await axios.patch(`${backendURL}/booking`,items)
      if (data.status=='ok'){
@@ -75,7 +68,7 @@ const SelectDate=({navigation,route})=>{
            navigation.push('main');
         }, 3000);
      }
-    console.log(data.status)
+    console.log(items)
   
    }
     return(

@@ -7,6 +7,7 @@ import { colors} from '../../Common_styles';
 import Save from '../../../components/Save';
 import { styles as styles2 } from '../../Common_styles';
 import { useLazyForgotAccountQuery } from '../../redux/authapi';
+import { FontFamily } from '../../GlobalStyles';
 const ResetPassword = ({route,navigation}) => {
   const[ forgotAccount,{data,isError}]= useLazyForgotAccountQuery()
 const {info} = route.params
@@ -41,19 +42,23 @@ const {info} = route.params
       method: option,
       email: info.email
     })
-    // forgotAccount({
-    //   method: option,
-    //   email: info.email
-    // })
+    forgotAccount({
+      method: option,
+      email: info.email
+    })
     navigation.navigate('VerifyEmail',{scope: 'reset'})
   
   }
   return (
     <>
-      <BHeader
-      color={colors.dg}
-        title={'How do you want to reset password?'} subtitle={'We found the following information associated with your account'}
+    <View style={{marginTop:40}}>
+    <BHeader
+      color={colors.dg.color}
+        title={'How do you want to reset password?'} 
       />
+    <Text style={{paddingHorizontal:50,marginTop: -20,color: colors.dg.color,fontFamily:FontFamily.sourceSansProRegular,fontSize:14}}>{"We found the following information associated with your account"}</Text>
+    </View>
+     
       <View style={styles.mt50}>
     <ListItem
               containerStyle={[styles.cont]}
@@ -79,7 +84,7 @@ const {info} = route.params
               <ListItem.Content>
                 <ListItem.Title style={colors.lg}>Text a confirmation code to 
  </ListItem.Title>
-                <ListItem.Title style={colors.lg}>phone number ending with 50 </ListItem.Title>
+                <ListItem.Title style={colors.lg}>phone number ending with {info.phone.slice(-3)}</ListItem.Title>
               </ListItem.Content>
             </ListItem>
             }

@@ -54,6 +54,31 @@ target 'Pamp2' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  $static_framework = [
+    'react-native-maps',
+    'react-native-google-maps',
+    'Google-Maps-iOS-Utils',
+    'GoogleMaps',
+    'RNPermissions',
+    'Permission-LocationWhenInUse',
+    'Permission-Notifications',
+    'react-native-paste-input',
+    'vision-camera-code-scanner',
+    'VisionCamera'
+  ]
+
+  pre_install do |installer|
+    Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+        installer.pod_targets.each do |pod|
+            if $static_framework.include?(pod.name)
+                def pod.build_type;
+                Pod::BuildType.static_library # >= 1.9
+            end
+        end
+    end
+end
+
+
   target 'Pamp2Tests' do
     inherit! :complete
     # Pods for testing
@@ -66,6 +91,13 @@ target 'Pamp2' do
       # necessary for Mac Catalyst builds
       :mac_catalyst_enabled => false
     )
+    installer.pods_project.targets.each do |target|
+      if target.name == 'RCT-Folly'
+        target.build_configurations.each do |config|
+          config.build_settings['HEADER_SEARCH_PATHS'] = "$(inherited) ${PODS_ROOT}/fmt/include"
+        end
+      end
+    end
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 end

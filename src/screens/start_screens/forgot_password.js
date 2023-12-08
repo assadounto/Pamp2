@@ -11,7 +11,7 @@ const ForgotPassword = ({navigation}) => {
   const onSubmit = async () => {
 
    let {status,data
-}= await searchAccount(email)
+}= await searchAccount(email.toLocaleLowerCase())
 console.log(data)
   status== 'fulfilled'   &&
      navigation.navigate('ResetPassword',{info: data})

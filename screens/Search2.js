@@ -55,14 +55,25 @@ const Search2 = () => {
   const [location, setLocation] = React.useState({
     name: 'amasaman'
   });
+
+  const setNewLocation=(lat,lon,name)=>{
+setLoc({
+  lat,
+  lon,
+  name
+})
+  }
+
+
+
   const [query, setQuery] = React.useState('');
   const handleSearch = async () => {
-    const {data}= await axios.get(`${backendURL}/search?query=${query}&lat=${loc.coordinates.lat}&lon=${loc.coordinates.lng}]`)
+    const {data}= await axios.get(`${backendURL}/search?query=${query}&lat=${loc.lat}&lon=${loc.lon}`)
     //setData(data)
     dispatch(addRecent({cat: 'query',search: query}))
 
      data    &&   navigation.navigate('Searches1', { location: loc, category: query,data});
-     data && console.log(data[0].distance)
+    
   };
   const handleContainerPress = () => {
     inputRef.current.focus();
@@ -77,7 +88,7 @@ const Search2 = () => {
 
   const searchRecent=async()=>{
     if (userstate.recent_view.cat=='cat'){
-      const {data}= await axios.get(`${backendURL}/search?category=${userstate.recent_view.search}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`)
+      const {data}= await axios.get(`${backendURL}/search?category=${userstate.recent_view.search}&lat=${loc.lat}&lon=${loc.lon}`)
   navigation.navigate('Searches1', { location: loc, category:  userstate.recent_view.search,data});
     } else {
       setQuery(userstate.recent_view.search);
@@ -110,7 +121,7 @@ const Search2 = () => {
         onSubmitEditing={handleSearch}
         />
       </TouchableOpacity>
-       <Gsearch  handleS={ handleSearch} setLoc={setLoc}/>
+       <Gsearch  handleS={ handleSearch} setLoc={setNewLocation}/>
       {/* <View style={{ flex: 1 }}>
       <GooglePlacesSearchModal setLocation={setLocation} location={location} setVisible={setModalVisible} visible={modalVisible}/>
     </View> */}
@@ -118,7 +129,7 @@ const Search2 = () => {
  <Categories data={data1} onSelect={async(val) => {
   setoption(val);
   dispatch(addRecent({cat: 'cat',search: val}))
-  const {data}= await axios.get(`${backendURL}/search?category=${val}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`)
+  const {data}= await axios.get(`${backendURL}/search?category=${val}&lat=${loc.lat}&lon=${loc.lon}`)
   navigation.navigate('Searches1', { location: loc, category: val ,data});
 }}/> 
 { userstate.recent_view.search&&

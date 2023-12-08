@@ -57,7 +57,7 @@ const Edit_profile = ({navigation}) => {
 
   return (
     <><SafeAreaView style={[styles.EP]}>
-      <BHeader title="Edit info" color={colors.lg.color} />
+      <BHeader title="Edit info" color={colors.dg2.color} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"} // Adjust behavior for iOS and Android
       >
@@ -65,7 +65,7 @@ const Edit_profile = ({navigation}) => {
      // contentContainerStyle= {{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-         <View style={{flex:1,marginBottom:80}}>
+         <View style={{flex:1,marginBottom:120}}>
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>First name</Text>
         <TextInput
         

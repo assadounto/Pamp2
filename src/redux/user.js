@@ -74,6 +74,7 @@ const userSlice = createSlice({
     user: null,
     image1: null,
     location:{},
+    recent_vendors:[],
     notification_count:0,
     newnoti: true,
     currentServiceIndex: 0,
@@ -83,6 +84,7 @@ const userSlice = createSlice({
       cat:'',
       search:''
     },
+    vPM:{},
     serviceStatus:{
       color:'',
       status:''
@@ -141,8 +143,14 @@ const userSlice = createSlice({
     setUser(state, action) {
       state.userInfo = action.payload;
     },
+    setRecentvendors(state, action) {
+      state.recent_vendors.unshift(action.payload)
+      if (state.recent_vendors.length>6){
+        state.recent_vendors.pop()
+      }
+    },
     setImage(state, action) {
-      state.image1 = action.payload;
+      state.userInfo = {...state.userInfo,image: action.payload};
     },
     userLogout(state) {
       (state.userInfo = null),
@@ -170,6 +178,9 @@ const userSlice = createSlice({
           setServiceStatus(state, action) {
             state.serviceStatus = action.payload
             },
+            setVPM(state, action) {
+              state.vPM= action.payload
+              },
             setnotifications_count(state, action) {
               if (action.payload > state.notification_count) {
                 return {
@@ -267,6 +278,8 @@ export const {
   addRecent,
   delete_rating,
   add_new_rating,
-  setExistingRating
+  setExistingRating,
+  setVPM,
+  setRecentvendors
 } = userSlice.actions;
 export default userSlice.reducer;

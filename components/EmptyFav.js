@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_xl,
   },
   youDontHave: {
-    top: "92.17%",
+    top: "85.17%",
    
     fontSize: FontSize.size_lg,
   },

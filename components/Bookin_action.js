@@ -15,8 +15,9 @@ import cancel1 from '../assets/cancel.png'
 import cancel2 from '../assets/cancel5.png'
 import { useSelector } from 'react-redux';
 const Booking_action = ({ info,setblur,rebk,data}) => {
+
     console.log(info,'ll')
-    const canc = data.status=='cancelled'? true:false
+    const canc = data.status=='cancelled' || data.status=='ongoing'? true:false
     const [cancelled,cancel]= useState(canc)
     const [cancel_modal,setcancel]=useState(false)
     const [notes,setnotes]=useState(false)
@@ -41,13 +42,13 @@ const Booking_action = ({ info,setblur,rebk,data}) => {
       <View>
       <TouchableOpacity
           // delayPressIn={}
-         disabled={cancelled||info?.status=='completed'}
-          style={[md_style.action,cancelled||info?.status=='completed' && md_style.cancel]}
+         disabled={cancelled||data?.status=='completed'}
+          style={[md_style.action,cancelled  && md_style.cancel, data?.status=='completed' && md_style.cancel]}
           // key={index}
           onPress={() =>{setblur(true);setnotes(true)}}>
              
              <Image
-          source={cancelled ||info?.status=='completed' ? note2:note}
+          source={cancelled ||data?.status=='completed' ? note2:note}
           style={{width:22,height:22,alignSelf:'center'}}
           />
            
@@ -58,13 +59,13 @@ const Booking_action = ({ info,setblur,rebk,data}) => {
 <View>
           <TouchableOpacity 
     // delayPressIn={}
-    disabled={cancelled ||info?.status=='completed'}
-  style={[md_style.action,cancelled && md_style.cancel_red || info?.status=='completed' && md_style.cancel]}
+    disabled={cancelled ||data?.status=='completed'}
+  style={[md_style.action,cancelled && md_style.cancel_red || data?.status=='completed' && md_style.cancel]}
    // key={index}
    onPress={() =>{setblur(true); setcancel(true)}}>
       <Image
-          source={cancelled ||info?.status=='completed' ? cancel2: cancel1}
-          style={{width:22,height:22,alignSelf:'center',tintColor:info?.status=='completed' &&  '#EFEFEF' }}
+          source={cancelled || data?.status=='completed' ? cancel2: cancel1}
+          style={{width:22,height:22,alignSelf:'center',tintColor: data?.status=='completed' &&  '#EFEFEF' }}
           />
          
 

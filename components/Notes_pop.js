@@ -29,7 +29,7 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
 
     React.useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-          setpop(250)
+          setpop(200)
         });
     
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {

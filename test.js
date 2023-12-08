@@ -1,19 +1,7 @@
-const formatTimeForRails = (timeString) => {
-  const currentDate = new Date();
-  const [hours, minutes, period] = timeString.split(/:|\s/); // Split the time string using a regular expression
-
-  let hourValue = parseInt(hours, 10);
-
-  if (period.toLowerCase() === 'pm' && hourValue !== 12) {
-    hourValue += 12; // Convert the hour to 24-hour format for PM times
-  } else if (period.toLowerCase() === 'am' && hourValue === 12) {
-    hourValue = 0; // Convert 12 AM to 0 (midnight) in 24-hour format
-  }
-
-  currentDate.setHours(hourValue);
-  currentDate.setMinutes(parseInt(minutes, 10));
-
-  return currentDate.toISOString().slice(11, 19);
-};
-
-console.log(formatTimeForRails('6:00 pm'))
+c
+  const obj1 = { "email": "Assadohountoriko@gmail.com", "password": "123456", "phone": "0556255233", "username": "Gmmj" };
+  const obj2 = { "email": "assadohountoriko@gmail.com", "password": "123456", "phone": "0556255233", "username": "gmmj" };
+  
+  const result = areObjectsEqual(obj1, obj2);
+  console.log(result); // Should log true if objects are equal (case-insensitive)
+  

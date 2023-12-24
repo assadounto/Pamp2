@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StatusBar} from 'react-native';
+import {StatusBar,Animated} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Profile from '../screens/home_screens/Profile';
@@ -23,40 +23,78 @@ import Help from '../screens/home_screens/Help';
 import VerifyEmail from '../screens/start_screens/VerifyYourEmail';
 import Change_pass from '../screens/home_screens/Change_pass';
 import Ratings from '../screens/home_screens/Ratings';
+import Discount from '../screens/home_screens/Discount';
+import DiscountFullInfo from '../screens/home_screens/DiscountInfoFull';
+import { TransitionPresets} from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
+const forFade2 = ({ current }) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
+
+
+
+const forFade = ({ current, next }) => {
+  const opacity = Animated.add(
+    current.progress,
+    next ? next.progress : 0
+  ).interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [0, 1, 0],
+  });
+
+  return {
+    leftButtonStyle: { opacity },
+    rightButtonStyle: { opacity },
+    titleStyle: { opacity },
+    backgroundStyle: { opacity },
+  };
+};
 const ApplicationNavigator = () => {
   return (
     <NavigationContainer>
       <StatusBar />
       <Stack.Navigator
+      
         screenOptions={{
           headerShown: false,
           cardStyle: {
             backgroundColor: '#fff',
+
           },
         }}>
-        <Stack.Screen name="main" component={MainNavigator} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="edit_profile" component={Edit_profile} />
-        <Stack.Screen name="change_email" component={Change_email} /> 
-        <Stack.Screen name="change_pass" component={Change_pass} /> 
-        <Stack.Screen name="Search" component={Search2} /> 
-        <Stack.Screen name="Searches1" component={Searches1} /> 
-        <Stack.Screen name="VendorDetail" component={VendorDetail} /> 
-        <Stack.Screen name="SelectDate" component={SelectDate} /> 
-        <Stack.Screen name="All_notifications" component={Notifications} /> 
-        <Stack.Screen name='Mapview' component={Mapview}/> 
-        <Stack.Screen name={'Confirm'} component={Confirm_payment}/> 
-        <Stack.Screen name={'Success'} component={Success}/> 
-        <Stack.Screen name={'Select_payment'} component={Select_payment}/> 
-        <Stack.Screen name={'Add_payment'} component={Add_payment}/> 
-        <Stack.Screen name={'Booking_detail'} component={Booking_detail}/>
-        <Stack.Screen name={'Processing'} component={Processing}/>
-        <Stack.Screen name={'Invite'} component={Invite}/>
-        <Stack.Screen name={'Help'} component={Help}/>
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="main" component={MainNavigator} />
+        <Stack.Screen name="Profile" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Profile} />
+        <Stack.Screen name="edit_profile"  options={{ cardStyleInterpolator: forFade2 }}   component={Edit_profile} />
+        <Stack.Screen name="change_email"  options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Change_email} /> 
+        <Stack.Screen name="change_pass" options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Change_pass} /> 
+        <Stack.Screen 
+           options={{ 
+            presentation: 'modal',
+        
+          }}
+          name="Search" component={Search2} 
+       /> 
+          
+        <Stack.Screen name="Searches1" options={{ cardStyleInterpolator: forFade2 }} component={Searches1} /> 
+        <Stack.Screen name="VendorDetail"  options={{ cardStyleInterpolator: forFade2 }}  component={VendorDetail} /> 
+        <Stack.Screen name="SelectDate" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={SelectDate} /> 
+        <Stack.Screen name="All_notifications" options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Notifications} /> 
+        <Stack.Screen name='Mapview'  options={{ cardStyleInterpolator: forFade2 }}  component={Mapview}/> 
+        <Stack.Screen name={'Confirm'} options={{ cardStyleInterpolator: forFade2 }} component={Confirm_payment}/> 
+        <Stack.Screen name={'Success'}  options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Success}/> 
+        <Stack.Screen name={'Select_payment'}  options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Select_payment}/> 
+        <Stack.Screen name={'Add_payment'} options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Add_payment}/> 
+        <Stack.Screen name={'Booking_detail'} options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Booking_detail}/>
+        <Stack.Screen name={'Processing'} options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Processing}/>
+        <Stack.Screen name={'Invite'} options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Invite}/>
+        <Stack.Screen name={'Help'} options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Help}/>
         <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
-        <Stack.Screen name="Reviews" component={Ratings} />
+        <Stack.Screen name="Reviews" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Ratings} />
+        <Stack.Screen name="discount" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Discount} />
+        <Stack.Screen name="discountfull" options={{ cardStyleInterpolator: forFade2 }}  component={DiscountFullInfo} />
 
       </Stack.Navigator>
     </NavigationContainer>

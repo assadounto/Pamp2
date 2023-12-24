@@ -8,8 +8,9 @@ import Blur from "../start_screens/Blur";
 import Pop2 from "../start_screens/pop2";
 import axios from "axios";
 import { formatTimeForRails } from "../../Functions";
-import { setbooking,setVendor,setvendorname,setvendorid  } from '../../redux/booking'
+import { setbooking,set_staff,setVendor,setvendorname,setvendorid  } from '../../redux/booking'
 import { backendURL } from "../../services/http";
+
 let monthNames =[
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -49,7 +50,7 @@ const SelectDate=({navigation,route})=>{
     const [option,setOption] =useState({
         day: date.getDate(), month: monthNames[date.getMonth()] , year: date.getFullYear()
     })
-
+   
     dispatch(set_date(option))
     const [modal,setModal]= useState(false)
    const rebook=async(item)=>{

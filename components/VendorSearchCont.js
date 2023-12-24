@@ -89,7 +89,7 @@ const Item =({image,badge,logo,name,items,location,dist,id,ratings})=>(
     elevation: 2,
     shadowOffset: {width: 5, height: 0},marginTop:10,marginBottom:10}]}>
        <Pressable  onPress={()=> postVendorUserId(id)}> 
-       <ImageCont uri={ image} styles={{ alignSelf:'center',width: '100%', height:200, borderRadius: 20 }}/>
+       <ImageCont show={true} uri={ image} styles={{ alignSelf:'center',width: '100%', height:200, borderRadius: 20 }}/>
    
    </Pressable>
     

@@ -3,6 +3,62 @@ import {createApi} from '@reduxjs/toolkit/query';
 import axios from 'axios';
 import {backendURL} from '../services/http';
 
+
+
+const initialState = {
+  cancelled:false,
+  loading: false,
+  userInfo: null,
+  userToken: null,
+  errorMessage: null,
+  success: false,
+  first_time: true,
+  email_confirmed: false,
+  notifications: false,
+  createError: null,
+  user: null,
+  image1: null,
+  location:{},
+  recent_vendors:[],
+  notification_count:0,
+  newnoti: true,
+  currentServiceIndex: 0,
+  bottom_nav:true,
+  categories:[],
+  recent_view:{
+    cat:'',
+    search:''
+  },
+  vPM:{},
+  serviceStatus:{
+    color:'',
+    status:''
+   },
+   rating:[],
+
+  payment_methods:{
+    default:  {  
+       id:1,
+      name: 'Pay with cash',
+      img: 'cash'  
+  },
+    methods: [
+      {   id:1,
+        name: 'Pay with cash',
+        img: 'cash'  
+    },
+    {   id:2,
+      name: 'Pay with card',
+      img: 'master'  
+  },
+  {   id:3,
+    name: 'Pay with momo',
+    img: 'momo'  
+},
+    ]
+  },
+}
+
 export const login = createAsyncThunk(
   'user/login',
   async (details, {rejectWithValue}) => {
@@ -60,59 +116,7 @@ export const logout = createAsyncThunk('user/logout', async () => {
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    cancelled:false,
-    loading: false,
-    userInfo: null,
-    userToken: null,
-    errorMessage: null,
-    success: false,
-    first_time: true,
-    email_confirmed: false,
-    notifications: false,
-    createError: null,
-    user: null,
-    image1: null,
-    location:{},
-    recent_vendors:[],
-    notification_count:0,
-    newnoti: true,
-    currentServiceIndex: 0,
-    bottom_nav:true,
-    categories:[],
-    recent_view:{
-      cat:'',
-      search:''
-    },
-    vPM:{},
-    serviceStatus:{
-      color:'',
-      status:''
-     },
-     rating:[],
-  
-    payment_methods:{
-      default:  {  
-         id:1,
-        name: 'Pay with cash',
-        img: 'cash'  
-    },
-      methods: [
-        {   id:1,
-          name: 'Pay with cash',
-          img: 'cash'  
-      },
-      {   id:2,
-        name: 'Pay with card',
-        img: 'master'  
-    },
-    {   id:3,
-      name: 'Pay with momo',
-      img: 'momo'  
-  },
-      ]
-    },
-  },
+initialState,
 
   reducers: {
     setMessage(state, action) {
@@ -127,6 +131,9 @@ const userSlice = createSlice({
     },
     setCat(state, action) {
       state.categories = action.payload;
+    },
+    updateEmail(state, action) {
+      state.userInfo = {...state.userInfo,email:action.payload};
     },
     setVerified_p(state, action) {
       state.unverified_p = action.payload;
@@ -153,12 +160,8 @@ const userSlice = createSlice({
       state.userInfo = {...state.userInfo,image: action.payload};
     },
     userLogout(state) {
-      (state.userInfo = null),
-        (state.userToken = null),
-        (state.email_confirmed = null),
-        (state.first_time = false),
-        (state.user = null);
-        state.image1=null
+      return {...initialState,first_time:false};
+
     },
     setPayment(state,action){
       state.payment_methods.methods.push(action.payload)
@@ -204,7 +207,13 @@ const userSlice = createSlice({
           delete_rating(state, action) {
             state.rating=[]  
         }, 
-            
+             
+      loginUser(state,action){
+        state.userInfo = action.payload.user;
+        state.userToken = action.payload.token;
+        state.image1=action.payload.image;
+        state.email_confirmed = action.payload.email_confirmed;
+      }, 
         setExistingRating(state, action) {
           state.rating= action.payload
       }, 
@@ -280,6 +289,8 @@ export const {
   add_new_rating,
   setExistingRating,
   setVPM,
-  setRecentvendors
+  setRecentvendors,
+  updateEmail,
+  loginUser
 } = userSlice.actions;
 export default userSlice.reducer;

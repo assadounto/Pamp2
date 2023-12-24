@@ -12,7 +12,7 @@ const AppointmentsContainer = ({navigation,data}) => {
   const [info,setInfo]= React.useState()
   function formatServiceNames(services) {
     const maxLength = 25; // Maximum length of the final formatted string
-    const names = services.map(service => service.name);
+    const names = services.filter((serv)=>serv.items_name!='').map(service => service.items_name);
     let formattedString = names.join(" & ");
  
     if (formattedString.length > maxLength) {
@@ -296,8 +296,10 @@ const styles = StyleSheet.create({
     top: "50%",
   },
   path636Parent: {
-    shadowColor:'#707070',shadowOpacity:0.3,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4,  
-    height: 424,
+    elevation: 3,
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 4 },    height: 424,
     marginBottom: 20.63,
     alignSelf: "center",
     backgroundColor:'white',

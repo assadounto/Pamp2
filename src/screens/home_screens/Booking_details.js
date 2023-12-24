@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import BHeader from '../../../components/BHeader';
 import {colors, styles} from '../../Common_styles';
-import {View, TextInput, Text, ScrollView,Platform, SafeAreaView,Pressable, StyleSheet,Linking} from 'react-native';
+import {View, TextInput, Text, ScrollView,Platform, SafeAreaView,Pressable, StyleSheet,Linking, Alert} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Button, color} from '@rneui/base';
 import { SliderBox } from "react-native-image-slider-box";
@@ -16,7 +16,7 @@ import Blur from '../start_screens/Blur';
 import axios from 'axios';
 import FastImage from 'react-native-fast-image';
 import { backendURL } from '../../services/http';
-import { setbooking, setVendor,setvendorid,setvendorimg,setvendorname } from '../../redux/booking';
+import { setBooking, setVendor,setvendorid,setvendorimg,setvendorname } from '../../redux/booking';
 import { useSelector } from 'react-redux';
 import { convertMinutesToHoursAndMinutes,getTotalByKey } from '../../Functions';
 import CustomImageSlider from '../../../components/CustomSlider';
@@ -52,7 +52,7 @@ const Booking_detail = ({route,navigation}) => {
     const response = await axios.get(backendURL + `/booking/info?id=${user.id}&booking_id=${id}`);
     setdata(response.data ); // Use an empty array as a fallback if the response data is undefined
     setFav(response.data.favorite)
-    console.log(response.data);
+    console.log(response.data.amount_paid,'jj');
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -122,15 +122,15 @@ function capitalizeFirstLetter(str) {
       navigation.navigate('SelectDate',{rebooked:true,id:data.id})
     }
     else if(data?.status=='booked'|| data?.status=='unconfirmed'){
-      dispatch(setbooking({topping2: data.items,name: data.vendor.username}))
+      dispatch(setBooking({topping2: data.items,name: data.vendor.username}))
       navigation.navigate('SelectDate',{rebooked:true,id:data.id})
     }
     else if(data?.status=='completed'){
-      dispatch(setbooking({topping2: data.items,name: data.vendor.username}))
+      dispatch(setBooking({topping2: data.items,name: data.vendor.username}))
       navigation.navigate('SelectDate',{rebooked:false,id:data.id})
     }
     else {
-      alert('You cannot rebook since its within 48hours to appointment.However you can send notes to vendor requesting a reschedule. If vendor approves, you can rebook')
+     Alert.alert('Info','You cannot rebook since its within 48hours to appointment.However you can send notes to vendor requesting a reschedule. If vendor approves, you can rebook')
     }
   }
 
@@ -260,11 +260,22 @@ function capitalizeFirstLetter(str) {
             </View>
             <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
               <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>
+           Discount
+              </Text>
+              <View style={{ position: 'absolute', right: 30, top: 20 }}>
+                <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.lg.color }}>
+                  ¢{data.discount_amount||0}
+                </Text>
+              </View>
+
+            </View>
+            <View style={{marginTop:-20, padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
+              <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>
                 Total
               </Text>
               <View style={{ position: 'absolute', right: 30, top: 20 }}>
                 <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.lg.color }}>
-                  ¢{data.payment_method == 'Pay with cash' ? parseInt(data.total) / 0.2 : parseInt(data.total)}
+                  ¢{data.total-(data.discount_amount)}
                 </Text>
               </View>
 
@@ -275,7 +286,7 @@ function capitalizeFirstLetter(str) {
                 <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20, flex: 1 }}>
                   Initial deposit
                 </Text>
-                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, flex: 1, textAlign: 'right', marginRight: 30 }}>¢{parseInt(data.total)}</Text></View>}
+                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, flex: 1, textAlign: 'right', marginRight: 30 }}>¢{data.amount_paid}</Text></View>}
           </View><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Location</Text><MapView
             initialRegion={{
               latitude: data.vendor.lat ? data.vendor.lat : 5.614818,

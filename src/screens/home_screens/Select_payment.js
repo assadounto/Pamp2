@@ -14,12 +14,13 @@ import { useSelector,useDispatch } from "react-redux";
 import { setPayment } from "../../redux/user";
 import { setDefault } from "../../redux/user";
 const Select_payment=({navigation,route})=>{
-  const {data}= route? route.params:{}
+  const { data } = route && route.params ? route.params : {};
+
 
     const dispatch=useDispatch()
     const default_method= useSelector((state)=>state.user.payment_methods.default)
     const payment_methods=useSelector((state)=>state.user.payment_methods.methods)
-    const truePrefs = Object.keys(data).filter(key => data[key]).map(key => `Pay with ${key}`);
+    const truePrefs = data? Object.keys(data).filter(key => data[key]).map(key => `Pay with ${key}`):[ 'Pay with cash','Pay with card' ,'Pay with momo'];
     console.log(truePrefs,'hr')
     const isdefault= (name)=>{
       return default_method.name=== name

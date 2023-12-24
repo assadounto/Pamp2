@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { colors } from '../src/Common_styles';
 
-const ImageCont = ({ styles, uri,smallStyle }) => {
+const ImageCont = ({ styles,show, uri,smallStyle }) => {
   const [imageLoading, setImageLoading] = useState(true);
 
   const handleImageLoad = () => {
@@ -12,9 +12,7 @@ const ImageCont = ({ styles, uri,smallStyle }) => {
 
   return (
     <>
-      {imageLoading && (
-        <ActivityIndicator size="large" color={colors.dg.color} style={ smallStyle?smallStyle: styles2.loadingIndicator} />
-      )}
+    
       <FastImage
         style={styles}
         source={{
@@ -23,7 +21,7 @@ const ImageCont = ({ styles, uri,smallStyle }) => {
           priority: FastImage.priority.high,
         }}
         resizeMode={FastImage.resizeMode.cover}
-        onLoad={handleImageLoad}
+       
       />
     </>
   );

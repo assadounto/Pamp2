@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Text, Pressable, Image,TextInput, SafeAreaView,Modal,TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text,ActivityIndicator, Pressable, Image,TextInput, SafeAreaView,Modal,TouchableOpacity, Alert } from "react-native";
 import { Styles } from "react-native-google-places-autocomplete";
 import { useNavigation } from "@react-navigation/native";
 import { useLazyGetcategoriesQuery } from "../src/redux/authapi";
@@ -68,11 +68,19 @@ setLoc({
 
   const [query, setQuery] = React.useState('');
   const handleSearch = async () => {
-    const {data}= await axios.get(`${backendURL}/search?query=${query}&lat=${loc.lat}&lon=${loc.lon}`)
-    //setData(data)
-    dispatch(addRecent({cat: 'query',search: query}))
-
-     data    &&   navigation.navigate('Searches1', { location: loc, category: query,data});
+    
+    setImageLoading(true)
+    try{
+      const {data}= await axios.get(`${backendURL}/search?query=${query}&lat=${loc.lat}&lon=${loc.lon}`)
+      //setData(data)
+      dispatch(addRecent({cat: 'query',search: query}))
+  
+       data    &&   navigation.navigate('Searches1', { location: loc, category: query,data});
+    } catch{
+      Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+      setImageLoading(false)
+    }
+   
     
   };
   const handleContainerPress = () => {
@@ -88,14 +96,24 @@ setLoc({
 
   const searchRecent=async()=>{
     if (userstate.recent_view.cat=='cat'){
-      const {data}= await axios.get(`${backendURL}/search?category=${userstate.recent_view.search}&lat=${loc.lat}&lon=${loc.lon}`)
-  navigation.navigate('Searches1', { location: loc, category:  userstate.recent_view.search,data});
+      setImageLoading(true)
+      try{
+        const {data}= await axios.get(`${backendURL}/search?category=${userstate.recent_view.search}&lat=${loc.lat}&lon=${loc.lon}`)
+        navigation.navigate('Searches1', { location: loc, category:  userstate.recent_view.search,data});
+      }
+      catch(e){
+        setImageLoading(false)
+        Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+
+      }
+    
     } else {
       setQuery(userstate.recent_view.search);
       handleSearch()
     }
   }
-  
+  const [imageLoading, setImageLoading] = React.useState(false);
+
   return(
     <SafeAreaView>
       <TouchableOpacity
@@ -114,12 +132,15 @@ setLoc({
       <TextInput 
        ref={inputRef}
       style={{ flex: 1 }}
+      
        autoFocus={true}
         placeholder='Search for a service or venue'
         onChangeText={setQuery}
         keyboardType="web-search"
         onSubmitEditing={handleSearch}
         />
+          {imageLoading&& <ActivityIndicator color={colors.dg2.color} style={{position:"absolute", right:20, alignSelf:'center',}} size={'small'}/>}
+
       </TouchableOpacity>
        <Gsearch  handleS={ handleSearch} setLoc={setNewLocation}/>
       {/* <View style={{ flex: 1 }}>
@@ -129,8 +150,15 @@ setLoc({
  <Categories data={data1} onSelect={async(val) => {
   setoption(val);
   dispatch(addRecent({cat: 'cat',search: val}))
-  const {data}= await axios.get(`${backendURL}/search?category=${val}&lat=${loc.lat}&lon=${loc.lon}`)
-  navigation.navigate('Searches1', { location: loc, category: val ,data});
+  try{
+    const {data}= await axios.get(`${backendURL}/search?category=${val}&lat=${loc.lat}&lon=${loc.lon}`)
+    navigation.navigate('Searches1', { location: loc, category: val ,data});
+  }
+  catch{
+    Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+
+  }
+ 
 }}/> 
 { userstate.recent_view.search&&
   <View style={{marginHorizontal:30}}>
@@ -144,9 +172,10 @@ flexDirection:'row'}}>
   <Text style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:17}}>{userstate.recent_view.search}</Text>
   </View>
   </View>
-  
+
 </View>
-}
+} 
+
     </SafeAreaView>
   )
 }

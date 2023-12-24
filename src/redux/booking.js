@@ -9,7 +9,7 @@ const bookingSlice = createSlice({
   name: 'booking',
   initialState: {
     cancelled:false,
-     Booking_detail:null,
+     booking:[],
      time:null,
      date:null,
      vendors:[],
@@ -24,8 +24,8 @@ const bookingSlice = createSlice({
     cancel(state, action) {
     state.cancelled = !state.cancelled
     },
-    setbooking(state, action) {
-    state.Booking_detail = action.payload;
+    setBooking(state, action) {
+    state.booking = action.payload
     },
      set_actual_booking(state, action) {
     state.actual_booking = action.payload;
@@ -65,7 +65,7 @@ const bookingSlice = createSlice({
 
 export const {
   cancel,
-  setbooking,
+  setBooking,
   set_date,
   set_time,
   setVendor,

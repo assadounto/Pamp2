@@ -1,18 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import { Animated, Easing } from 'react-native';
-import { useResendEmailMutation } from '../../redux/authapi';
+import { useResendEmailMutation, useVerifyPhoneMutation } from '../../redux/authapi';
 import {
   SafeAreaView,
   Text,
   StyleSheet,
   TouchableOpacity,
   Pressable,
+  View,
   Alert,
 } from 'react-native';
 import Header from './header';
 import {styles, colors} from '../../Common_styles';
 import {Button} from '@rneui/base';
-import Pop2 from './pop2';
+import Pop from './pop';
 import Blur from './Blur';
 import {useGetEmailConfirmMutation,useGetPhoneConfirmMutation} from '../../redux/authapi';
 import { useSelector } from 'react-redux';
@@ -22,21 +23,24 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import { useDispatch } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
-import { updateEmail } from '../../redux/user';
-
+import { useLazyVerifyResetCodeQuery } from '../../redux/authapi';
+import BHeader from '../../../components/BHeader';
+import { useLazyForgotAccountQuery } from '../../redux/authapi';
+import Pop2 from './pop2';
 const CELL_COUNT = 4;
 let error_color='#B0EBBD';
-const VerifyEmail = ({navigation,route}) => {
-   const {scope}= route.params
+const ResetAccount = ({navigation,route}) => {
+  const { datas } = route?.params || {};
+  const[ forgotAccount,{}]= useLazyForgotAccountQuery()
+
   const [shakeAnimation] = useState(new Animated.Value(0));
-const dispatch=useDispatch()
+
   const user= useSelector((state)=>state.user.userInfo)
     const [getEmailConfirm,{isSuccess,isLoading,data,isError}]= useGetEmailConfirmMutation()
-    const [resendEmail,{isSuccess:email_success}]= useResendEmailMutation()
-    const [getPhoneConfirm]= useGetPhoneConfirmMutation()
- 
+    const [verify]= useLazyVerifyResetCodeQuery()
+    const [VerifyResetCode,{data: infodata, isSuccess: verifySuccess,isError:verifyError}] = useLazyVerifyResetCodeQuery()
+  console.log(user,'k');
   const [value, setValue] = useState('');
   const [wrong,setwrong] =useState('')
   const [error,seterror]=useState(false)
@@ -48,43 +52,16 @@ const dispatch=useDispatch()
   const [modalVisible, setModal] = useState(false);
   const [timerCount, setTimerCount] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
- 
-  useEffect(() => {
-   
-    isError ? error_color ='red': ''
-    if (isSuccess) {
-      setModal(true);
-      scope!=='ce'&&  getPhoneConfirm({
-        scope: 'user',
-        phone: user.phone,
-        id: user.id
-      })
-      setTimeout(() => {
-        setModal(false);
-        
-        scope=='ce'? sendEmail(data.data): navigation.navigate('VerifyNumber');
-      }, 4000);
-    } 
-    else  if (!isSuccess){
-     
-      
-    }
-  }, [isSuccess, navigation,handleSubmit]);
+  console.log(user)
+  
 
   const incall=()=>{
    seterror(true)
    shakeAnimationStart();
 
   }
-
-  const sendEmail=(email)=>{
-    dispatch(updateEmail(email))
-    setTimeout(() => {
-      navigation.navigate('main')
-    }, 1000);
-  }
   const startTimer = () => {
-     resendEmail(user.email)
+     resend()
     if (!timerActive) {
      
 
@@ -128,23 +105,48 @@ const dispatch=useDispatch()
   };
   
   const handleSubmit = async () => {
-   
+    console.log(typeof value, value.length);
+   try{
+    const {data}= await VerifyResetCode({
+        email: datas.email,
+        token: value
+      })
+      console.log(data)
+      if(data.status=='ok'){
+        setModal(true);
     
-    if (value.length < 4) {
-      alert('Please enter a valid code');
-      return;
-    }
+      setTimeout(() => {
+        setModal(false);
+        // next? navigation.navigate(next):
+         navigation.navigate('PassReset',{datas:{
+            email:datas.email,
+            token: value
+         }});
+      }, 4000);
+      } else{
+       incall()
+      }
+      
+   }catch(e){
 
-    const age= await getEmailConfirm(value).then((data,error)=>{
+  console.log(e.response.data)
+   }
+    
+    
+     
+      }
+   
+const resend=()=>{
+    forgotAccount({
+        method: datas.method,
+        email: datas.email
+      })
+}
 
-      isError && incall()
-    });
-
-  };
   const styles1 = StyleSheet.create({
     root: {flex: 1, padding: 10,marginHorizontal:40},
     title: {textAlign: 'center', fontSize: 30},
-    codeFieldRoot: {marginTop: 20,
+    codeFieldRoot: {marginTop: 20,marginHorizontal:40,
       transform: [
         {
           translateX: 1,
@@ -180,15 +182,17 @@ const dispatch=useDispatch()
     },
   });
 
-  
+
   return (
     <>
-      <SafeAreaView style={styles1.root}>
-        <Header
-          main={'Verify Your Email'}
-          sub={'Please enter the 4 digit code sent'}
-          sub2={'to your email'}
+      <View style={{}}>
+      <Header
+          main={'Reset your password'}
+          sub={`Please enter the 4 digit code sent`}
+        sub2={`to your ${datas.method}`}
         />
+      
+
         <CodeField
           ref={ref}
           {...props}
@@ -232,27 +236,24 @@ const dispatch=useDispatch()
 </Text>
 
 <Text> </Text>
-       
+        <TouchableOpacity>
           <Button
-            title="Verify Your Email"
+            title="Verify Code"
             onPress={handleSubmit}
             loading={isLoading}
             buttonStyle={[styles.button,{width:300}]}
           />
-     
+        </TouchableOpacity>
           
-        <Text style={[colors.lg, styles.bold, styles.tc]}>
-          Change Email
-        </Text>
-
+       
         <Pop2
-          main={'You have Successfully verified your Email'}
+          main={'Reset code verified successfully'}
           modal={modalVisible}
         />
-      </SafeAreaView>
+      </View>
       {modalVisible && <Blur />}
     </>
   );
 };
 
-export default VerifyEmail;
+export default  ResetAccount;

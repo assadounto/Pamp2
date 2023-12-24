@@ -2,6 +2,8 @@ import * as React from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import FastImage from "react-native-fast-image";
+import SvgUri from 'react-native-svg-uri';
+import { colors } from "../src/Common_styles";
 const VendorMapPin = ({data}) => {
   return (
     <View style={styles.component38}>
@@ -16,27 +18,28 @@ const VendorMapPin = ({data}) => {
             }}
             resizeMode={FastImage.resizeMode.cover} />
       <Text style={[styles.likkleSalon, styles.likkleSalonPosition]}>
-        {data.name} <Image
-        //style={[styles.path3468Icon]}
-        resizeMode="cover"
-        source={require("../assets/path-34682.png")}
-      />
+        {data.name}  {
+        data.badge?<View style={{marginLeft:5}}>
+        <SvgUri
+        
+        source={require('../assets/svgs/verified.svg')}/>
+        </View>: <></>
+      }  
       </Text>
       <Text
         style={[styles.airportResidentialRoad, styles.kmTypo]}
       >{data.location}</Text>
-      <Image
-        style={[styles.component38Inner, styles.iconLayout]}
-        resizeMode="cover"
-       source={require("../assets/ellipse-13.png")}
-      />
+       
+      
       <Image
         style={[styles.starIcon, styles.iconLayout]}
         resizeMode="cover"
         source={require("../assets/star2.png")}
       />
       <Text style={[styles.text, styles.kmPosition]}>{data.sum_rating?.average_rating==0?'0.0': data.sum_rating.average_rating}</Text>
-      <Text style={[styles.km, styles.kmPosition]}>{data.dist.toFixed(0)}m</Text>
+      <Text style={[styles.km, styles.kmPosition]}><SvgUri
+      
+      source={require('../assets/svgs/loc.svg')}/>{" "}{data.dist.toFixed(0)}m</Text>
      
     </View>
   );
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
   },
   likkleSalonPosition: {
     textAlign: "left",
-    color: Color.darkslategray_300,
+    color: colors.dg.color,
     left: "44.03%",
     position: "absolute",
   },
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
   kmPosition: {
     top: "71.11%",
     textAlign: "left",
-    color: Color.darkslategray_300,
+  
     position: "absolute",
   },
   component38Child: {
@@ -119,13 +122,15 @@ const styles = StyleSheet.create({
   text: {
     left: "50.63%",
     fontSize: FontSize.size_sm,
-    fontWeight: "700",
+
+    color: colors.dg.color,
     fontFamily: FontFamily.sourceSansProBold,
   },
   km: {
     left: "67.92%",
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: FontSize.size_smi,
+    color: colors.dg.color,
   },
   path3468Icon: {
     height: "7.51%",

@@ -7,7 +7,7 @@ import {
   Pressable,
   Alert,
   StyleSheet,
-  Linking
+  Linking,ActivityIndicator
 } from 'react-native';
 import { Image } from 'react-native';
 
@@ -72,7 +72,7 @@ const menuTwo = [
   {
     title: 'About Pamp',
     icon: require('../../../assets/pamp-logo.png'),
-    route: 'ChangePassword',
+    route: 'https://www.trypamp.com',
   },
 ];
 
@@ -81,24 +81,25 @@ const menuThree = [
   {
     title: 'Privacy policy',
     icon: require('../../../assets/Path660.png'),
-    route: 'privacy',
+    route: 'https://www.trypamp.com/privacy-policy',
   },
   {
     title: 'Terms of Use',
     icon: require('../../../assets/group-1892.png'),
-    route: 'PaymentMethods',
+    route: 'https://www.trypamp.com/terms-of-use',
   },
   {
     title: 'Terms of Service',
     icon: require('../../../assets/group-1892.png'),
-    route: 'ChangePassword',
+    route: 'https://www.trypamp.com/terms-of-service',
   },
 ];
 const Settings = ({navigation}) => {
 
+  const [log,setLog]=useState(false)
 
    
-  const [isEnabled, setIsEnabled] = useState();
+  const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const dispatch = useDispatch();
   async function checkApplicationPermission() {
@@ -118,7 +119,19 @@ const Settings = ({navigation}) => {
 
   const [prevScrollY, setPrevScrollY] = useState(0);
 
- 
+  async function handleSignOut() {
+    try {
+      await GoogleSignin.signOut();
+      setLog(true);
+      setTimeout(() => {
+        setLog(false);
+        dispatch(userLogout());
+      }, 1000);
+    } catch (error) {
+      console.error('Error signing out:', error);
+      // Handle error if needed
+    }
+  }
 
   useEffect(() => {
     checkApplicationPermission()
@@ -130,15 +143,14 @@ const [modal,setmodal]=useState(false)
   
      
       contentContainerStyle={{ width: '90%', alignSelf: 'center' }}
-      refreshControl={<RefreshControl
-        //refreshing={isFetching || isLoading}
-        onRefresh={() => { } } />}
+     
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
       <Text style={styles.St1}>Settings</Text>
 
 
       <View
+      key={1}
         style={[
           {
             borderRadius: 15,
@@ -174,14 +186,12 @@ const [modal,setmodal]=useState(false)
         {menuOne.map((item, index) => {
           return (
             <ListItem
+            key={index}
               containerStyle={[{ backgroundColor: '#F9F9F9' }]}
               onPress={() => {
-                if (item.route == 'discount') {
-                  dispatch(showBottom(false))
-                  setmodal(true);
-                } else {
+               
                   navigation.navigate(item.route);
-                }
+                
 
               } }>
               <Icon
@@ -213,11 +223,12 @@ const [modal,setmodal]=useState(false)
         {menuTwo.map((item, index) => {
           return (
             <ListItem
+            key={index}
               containerStyle={[{ backgroundColor: '#F9F9F9' }]}
-              key={index}
+            
               onPress={() => {
                 item.icon === 'bell'
-                  ? toggleSwitch()
+                  ? toggleSwitch(): item.title === 'About Pamp'? Linking.openURL(item.route)       
                   : navigation.navigate(item.route);
               } }>
               {item.title !== 'About Pamp' ?
@@ -235,7 +246,7 @@ const [modal,setmodal]=useState(false)
                 </ListItem.Title>
               </ListItem.Content>
               {item.icon === 'bell' ? (
-                <Pressable onPress={() => console.log('h')}>
+                <Pressable>
                      <SwitchToggle
                       switchOn={isEnabled}
                       onPress={() => {
@@ -289,10 +300,10 @@ const [modal,setmodal]=useState(false)
         {menuThree.map((item, index) => {
               return (
                 <ListItem
+                key={index}
                   containerStyle={[{backgroundColor: '#F9F9F9'}]}
                   onPress={() => {
-                    navigation.navigate(item.route);
-                  }}>
+                    Linking.openURL(item.route)                  }}>
                    <Image
                     source={item.icon}
                     />
@@ -316,6 +327,7 @@ const [modal,setmodal]=useState(false)
           },
         ]}>
         <ListItem
+
           containerStyle={[
             {
               borderRadius: 15,
@@ -324,14 +336,7 @@ const [modal,setmodal]=useState(false)
               backgroundColor: '#F9F9F9',
             },
           ]}
-          onPress={async() => {
-            await GoogleSignin.signOut().then((result)=>{
-              dispatch(userLogout());
-            }
-            
-            )
-           
-          } }>
+          onPress={handleSignOut}>
           <Icon name="log-out" type="feather" color={'#CD3D49'} />
           <ListItem.Content>
             <ListItem.Title style={[{fontFamily:FontFamily.sourceSansProSemibold},colors.dgb]}>Logout </ListItem.Title>
@@ -341,8 +346,10 @@ const [modal,setmodal]=useState(false)
       </View>
 <Socials/>
     </ScrollView>
-    <Discount_pop setmodal={setmodal} modal={modal}/>
+    <Discount_pop  setmodal={setmodal} modal={modal}/>
     {modal&& <Blur/>}
+    {log && <Blur/>}
+    {log&&  <ActivityIndicator style={{position:'absolute', alignSelf:'center',top:'50%'}}  size={'small'}/>}
     </>
 
   );

@@ -236,7 +236,8 @@ width:'85%'
     borderWidth: 1,
     borderRadius: 10,
     marginBottom: 20,
-    height:42
+    height:42,
+    color:"#00463C"
   },
   St1: {
     fontFamily: FontFamily.sourceSansProBold,
@@ -289,6 +290,10 @@ export const colors = StyleSheet.create({
   dg2: {
     color: '#86D694',
   },
+  slate:{
+    color:"#DAECD2"
+  },
+
   bw: {
     backgroundColor: '#FFFFFF',
   },

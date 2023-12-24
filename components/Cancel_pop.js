@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { cancel } from '../src/redux/booking';
 import { backendURL } from '../src/services/http';
 import axios from 'axios';
+import Pop2 from '../src/screens/start_screens/pop2';
 const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
     const dispatch =  useDispatch()
   console.log(data.id)
@@ -20,7 +21,7 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
     }
 
     const handlePressOK=async()=>{
-   const info= await axios.post(`${backendURL}/booking/cancel?id=${data.id}`)
+   const info= await axios.post(`${backendURL}/booking/cancel?id=${data.id}&scope=user`)
    console.log(info.data)
      cancel(true)
      setcancel(false)
@@ -40,16 +41,16 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
               }
               <View style={{ display: 'flex', flexDirection: 'row', gap: 10, marginVertical: 20 }}>
           
-                  <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: '#CD3D49', width: 120, height: 40 }} title='cancel'>
+                  <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: '#CD3D49', width: 120, height: 40 }} title='Yes'>
 
                   </Button>
-                  <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='Keep'>
+                  <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='No'>
 
 </Button>
               </View>
 
           </View>
-      </Modal><Pop main={'You have successfully cancelled your appointment'} modal={notify_cancel}/></>
+      </Modal><Pop2 main={'You have successfully cancelled your appointment'} modal={notify_cancel}/></>
   );r
 };
 const pop=StyleSheet.create({

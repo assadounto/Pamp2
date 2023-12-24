@@ -10,9 +10,18 @@ import ResetPassword from '../screens/start_screens/ResetPassword';
 import VerifyEmail from '../screens/start_screens/VerifyYourEmail';
 import VerifyNumber from '../screens/start_screens/VerifyNumber';
 import Turnon from '../screens/start_screens/TurnonNotifications';
+import ResetAccount from '../screens/start_screens/ResetAccount';
+import PassReset from '../screens/start_screens/PaswordReset';
+import { TransitionPresets} from '@react-navigation/stack';
+
 import { login } from '../redux/user';
 
 const Stack = createStackNavigator();
+const forFade2 = ({ current }) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
 
 const AuthNavigator = () => {
   const {first_time} = useSelector(state => state.user);
@@ -26,18 +35,20 @@ const AuthNavigator = () => {
           },
         }}>
         {first_time ? (
-          <Stack.Screen name="GettingStarted" component={Getting_started} />
+          <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="GettingStarted" component={Getting_started} />
         ) : (
           
-          <Stack.Screen name="login" component={Login} />
+          <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="login" component={Login} />
         )}
-        <Stack.Screen name="login2" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-        <Stack.Screen name="ResetPassword" component={ResetPassword} />
-        <Stack.Screen name="VerifyEmail" component={VerifyEmail} />
-        <Stack.Screen name="VerifyNumber" component={VerifyNumber} />
-        <Stack.Screen name="noti" component={Turnon} />
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="login2" component={Login} />
+        <Stack.Screen  name="Register" component={Register} />
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="ResetPassword" component={ResetPassword} />
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="VerifyEmail" component={VerifyEmail} />
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="VerifyNumber" component={VerifyNumber} />
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="noti" component={Turnon} />
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="ResetAccount" component={ResetAccount} />
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="PassReset" component={PassReset} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,2 +1,2 @@
-export const backendURL = 'http://localhost:3000';
+export const backendURL = 'https://api.trypamp.com';
 //'https://pamp-api-base-5oxq6.ondigitalocean.app'

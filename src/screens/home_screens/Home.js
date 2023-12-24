@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import {View, Text} from 'react-native-animatable';
+import {View, Text,} from 'react-native-animatable';
 import {Input, Icon,TouchableOpacity} from '@rneui/base';
 import {styles, colors} from '../../Common_styles';
 import UHeader from '../../../components/UHeader';
@@ -13,6 +13,7 @@ import { setExistingRating, showBottom } from '../../redux/user';
 import { request, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import { FontFamily } from '../../GlobalStyles';
 import img from '../../../assets/s.png'
+import { ActivityIndicator } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import MyTabBar from '../../../components/Topnav';
@@ -31,6 +32,7 @@ import Rating_pop from '../../../components/Rating_pop';
 import Blur from '../start_screens/Blur';
 import { da } from 'date-fns/locale';
 import { Linking } from 'react-native';
+import notifee from '@notifee/react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import ImageCont from '../../../components/Image';
@@ -69,7 +71,7 @@ const  reverseGeocode=async (lat, lng)=> {
     }
   }
   Linking.addEventListener('url', (event) => {
-  
+    notifee.setBadgeCount(0).then(() => console.log('Badge count removed!'));
     handleDeepLink(event.url);
   });
   
@@ -93,7 +95,7 @@ const  reverseGeocode=async (lat, lng)=> {
     Geolocation.getCurrentPosition(
       async (position) => {
     const get=  await reverseGeocode(position.coords.latitude,position.coords.longitude)
-    
+    const {data}=  await axios.post(backendURL+'/user/location',{lat:position.coords.latitude,lon:position.coords.longitude,id: user.id})
     dispatch(setLocation(
       {
        name:name && name,
@@ -113,16 +115,21 @@ const  reverseGeocode=async (lat, lng)=> {
     );
   }
    
-  const onMessageReceived = async message => {
 
-    };
 
     const [token, setToken] = React.useState('');
     async function fetchData() {
       const generatedToken = await messaging().getToken()
        setToken(generatedToken);
        if(generatedToken){
-     await  axios.get(`${backendURL}/token?token=${generatedToken}&user_id=${user.id}`)
+        try{
+          await  axios.get(`${backendURL}/token?token=${generatedToken}&user_id=${user.id}`)
+
+        }
+        catch{
+          Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+
+        }
        }
      }
 
@@ -210,40 +217,67 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
 
 const Popular=({navigation})=>{
 const dispatch=useDispatch()
+const[loading,setLoading]= React.useState(false)
+
   const userstate =useSelector((state)=>state.user)
   const [getcategories,{data,isLoadig}]=useLazyGetcategoriesQuery()
   useEffect(()=>{
     const a= async()=>{
-      const {data}= await getcategories('Popular')
-      data&& dispatch(setCat(data))
-
+      setLoading(true)
+      try{
+        const {data}= await getcategories('Popular')
+        data&& dispatch(setCat(data))
+        setLoading(false)
+      }
+      
+      catch(e) {
+        Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+        setLoading(false)
+      }
+     
     }
    a()
  
 
   },[])
-  const handleSearch = async (id,title) => {
-     
-    
-    const {data}= await axios.get(`${backendURL}/search?category=${title}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`)
-    //setData(data)
-    
-     data    &&   navigation.navigate('Searches1', { location: userstate.location , category: title,data});
-
+  const handleSearch = async (id, title) => {
+    setImageLoading(true)
+    try {
+      const { data } = await axios.get(`${backendURL}/search?category=${title}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`);
+      
+      if (data) {
+        setImageLoading(false)
+        navigation.navigate('Searches1', { location: userstate.location, category: title, data });
+      } else {
+        setImageLoading(false)
+        // Handle the case when data is empty or falsy
+        Alert.alert('Error', 'Failed to fetch data. Please try again.');
+      }
+    } catch (error) {
+      setImageLoading(false)
+      // Handle network errors
+      Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+    }
   };
+  const [imageLoading, setImageLoading] = useState(false);
   const location= useSelector(state=>state.user)
   const Item = ({title, id, source}) => (
     <Pressable key={id} onPress={()=>handleSearch(id,title)} style={{padding:8, borderRadius:20,marginTop:20,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
       <View style={{borderRadius:20,marginTop:5, backgroundColor: '#ffff',alignItems:'center'}}>
         <ImageCont uri={source} styles={{width: '95%', height: 300, borderRadius: 20}}/>
+
       </View>
   
     <Text style={[colors.dg,{marginLeft:20,marginTop:15,fontFamily:FontFamily.sourceSansProSemibold,fontSize:24,marginBottom:20}]}>{title}</Text>
+    {imageLoading&& <ActivityIndicator color={colors.dg2.color} style={{position:"absolute", alignSelf:'center',top:'50%'}} size={'small'}/>}
     </Pressable>
   );
 
   return (
-    <><FlatList style={{}}
+    <>
+{
+      loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>:
+    <FlatList style={{}}
       showsVerticalScrollIndicator={false}
       data={data}
       renderItem={({ item }) => (
@@ -252,7 +286,7 @@ const dispatch=useDispatch()
       keyExtractor={item => item.id} />
       
       
-      
+}
       </>
   )
 }
@@ -261,31 +295,41 @@ const dispatch=useDispatch()
 const Recent=({scope})=>{
   const user =useSelector((state)=>state.user)
   const navigation=useNavigation()
+  const[loading,setLoading]= React.useState(false)
   const[datas,setData]= useState([])
-  console.log(user.recent_vendors,'here')
-  const get=async()=>{ 
-    const {data}= await axios.get(`${backendURL}/categories?scope=recent&lat=${user.location.lat}&lon=${user.location.lon}&vendor_ids=${JSON.stringify(user.recent_vendors)}`)
-    const vendors= data.map((vendor)=>{
-      return {
-        id: vendor.id,
-        image: vendor.cover_url,
-        logo: vendor.avatar_url,
-        name:vendor.username,
-        ratings:vendor.ratings,
-        badge: vendor.badge,
-        location: vendor.name,
-        dist: vendor.distance,
-        items: vendor.top_services.split(",").map((item)=>{
-       return {
-          value: item
-        }
-      }
-        )
-      }
-        
-     })
-    setData( vendors)
 
+  const get=async()=>{ 
+    setLoading(true)
+try{
+  const {data}= await axios.get(`${backendURL}/categories?scope=recent&lat=${user.location.lat}&lon=${user.location.lon}&vendor_ids=${JSON.stringify(user.recent_vendors)}`)
+  const vendors= data.map((vendor)=>{
+    return {
+      id: vendor.id,
+      image: vendor.cover_url,
+      logo: vendor.avatar_url,
+      name:vendor.username,
+      ratings:vendor.ratings,
+      badge: vendor.badge,
+      location: vendor.name,
+      dist: vendor.distance,
+      items: vendor.top_services.split(",").map((item)=>{
+     return {
+        value: item
+      }
+    }
+      )
+    }
+      
+   })
+  setData( vendors)
+  setLoading(false)
+}
+catch{
+  setLoading(false) 
+  Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+
+}
+  
   }
   
   useFocusEffect(
@@ -297,7 +341,13 @@ const Recent=({scope})=>{
   
 
  return(
+<>
+  {
+    
+    loading ? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/> :
   <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
+  }
+  </>
  )
 }
 
@@ -306,8 +356,13 @@ const Recent=({scope})=>{
 const Top=({scope})=>{
   const user =useSelector((state)=>state.user)
   const navigation=useNavigation()
+  const[loading,setLoading]= React.useState(false)
+
   const[datas,setData]= useState([])
   const get=async()=>{ 
+
+    try{
+      setLoading(true)
     const {data}= await axios.get(`${backendURL}/categories?scope=top&lat=${user.location.lat}&lon=${user.location.lon}&vendor_ids=[1,8]`)
     const vendors= data.map((vendor)=>{
       return {
@@ -329,7 +384,14 @@ const Top=({scope})=>{
         
      })
     setData( vendors)
+    setLoading(false) 
+    }
+    catch{
+      setLoading(false) 
+      Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
 
+    }
+   
   }
   
   useFocusEffect(
@@ -341,7 +403,12 @@ const Top=({scope})=>{
   
 
  return(
+<>
+  {
+    
+    loading ? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/> :
   <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
- )
+  }
+  </> )
 }
 export default Home;

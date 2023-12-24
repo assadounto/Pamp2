@@ -1,41 +1,63 @@
 import React, {useState} from 'react';
-import {View, ImageBackground, Text, StyleSheet, Pressable} from 'react-native';
+import {View, ImageBackground, Text, StyleSheet, Pressable,ActivityIndicator, Alert} from 'react-native';
 import {FontFamily} from '../../../GlobalStyles';
-import {setNotification} from '../../redux/user';
+import {loginUser, setnotifications} from '../../redux/user';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../../redux/user';
 import pop2 from './pop';
 import Blur from './Blur';
 import Pop2 from './pop2';
 import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
+import { backendURL } from '../../services/http';
+
 
 import {useGetCategoriesQuery} from '../../redux/authapi';
+import {request, PERMISSIONS} from 'react-native-permissions';
 const Turnon = ({navigation}) => {
   const dispatch = useDispatch();
   const notification = useSelector(state => state.user.notifications);
-  const user = useSelector(state => state.user.user);
+  const user= useSelector((state)=>state.user.userInfo)
   const [modalVisible, setModal] = useState(false);
+  const [loading,setLoading]= useState(false)
 
   const notify = () => {
-    dispatch(setNotification(true));
+    
     setModal(true);
     setTimeout(() => {
       setModal(false);
-     
-      dispatch(login({user: user}));
+       login( user);
     }, 4000);
    
   };
-  const requestPermission = () => {
-    messaging()
-      .requestPermission()
-      .then(() => {
-       
-        notify()
-      })
-      .catch((error) => {
-        console.log('permission rejected ' + error);
-      });
+  const maybe=()=>{
+    login(user);
+  }
+
+  const login=async(values)=>{
+    setLoading(true)
+      try {
+        const {data} = await axios.post(backendURL+'/user/login', {user:values});
+          // Handle success
+          console.log(data)
+          dispatch(loginUser(data))
+          setLoading(false)
+        } catch (error) {
+          // Handle error
+          setLoading(false)
+          Alert.alert("Error",'Something went wrong.Try again')
+        }
+    }
+  
+  const request = async() => {
+    const authorizationStatus = await messaging().requestPermission({ providesAppNotificationSettings: true });
+  
+    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
+      notify()
+    } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
+      login(user);
+    } else {
+      login(user);    }
   };
   return (
     <View style={styles.container}>
@@ -62,17 +84,21 @@ const Turnon = ({navigation}) => {
           <Text style={styles.c5}>
             Don't miss appointments, promos and exclusive offers.{' '}
           </Text>
-
-          <Pressable style={styles.c6} onPress={requestPermission}>
-            <Text style={styles.c7}>Turn on</Text>
-          </Pressable>
-          <Pressable onPress={()=>dispatch(login({user: user}))}>
-            <Text style={styles.cl}>Maybe later</Text>
-          </Pressable>
+{
+  loading? <View style={styles.activity}><ActivityIndicator size="large" color="#00ff00" /></View>
+  
+  :   <><Pressable style={styles.c6} onPress={request}>
+                <Text style={styles.c7}>Turn on</Text>
+              </Pressable><Pressable onPress={maybe}>
+                  <Text style={styles.cl}>Maybe later</Text>
+                </Pressable></>
+}
+         
         </View>
       </ImageBackground>
-      {notification && (
-        <Pop2 main={'Notification sucessfully turned on'} modal={modalVisible} />
+    
+      {modalVisible && (
+        <Pop2 main={'Notification sucesfully turned on'} modal={modalVisible} />
       )}
       {modalVisible && <Blur />}
     </View>
@@ -84,6 +110,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  activity:{
+alignSelf: 'center'
   },
   text: {
     fontSize: 30,

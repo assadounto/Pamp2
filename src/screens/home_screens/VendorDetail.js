@@ -11,7 +11,7 @@ import Staff from '../../../components/Staff'
 import { ImageBackground } from 'react-native'
 import { SliderBox } from "react-native-image-slider-box";
 import { useDispatch,useSelector } from 'react-redux'
-import { setbooking,setVendor,set_staff,setvendorimg } from '../../redux/booking'
+import { setbooking,setVendor,set_staff,setvendorimg, setBooking } from '../../redux/booking'
 import { convertMinutesToHoursAndMinutes ,modifyItemList} from '../../Functions'
 import { useFetchVendorQuery } from '../../redux/authapi'
 import { setvendorname,setvendorid } from '../../redux/booking'
@@ -29,6 +29,8 @@ import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry'
 import { da } from 'date-fns/locale'
 import { setVPM } from '../../redux/user'
 import SvgUri from 'react-native-svg-uri';
+import { useFocusEffect } from '@react-navigation/native';
+
 const getFormattedPrice = (price) => `$${price.toFixed(2)}`;
 const windowHeight = Dimensions.get('window').height;
 const swiperHeight = windowHeight * 0.5; // Set the swiper height to 50% of the window height
@@ -37,14 +39,14 @@ const VendorDetail = ({navigation,route}) => {
   const user = useSelector((state)=>state.user.userInfo)
   const location = useSelector((state)=>state.user.location)
   const [fav,setFav]=useState(false)
-  const {id}= route.params
+  const {id,datas}= route?route.params:{}
   const [data1,setdata]=useState()
   const [modal,setModal]=useState(false)
   const [checkedState, setCheckedState] = useState(
-  
+   
   );
-
-
+ 
+  //data &&setCheckedState(data)
   function generateRatingsSummary(ratings) {
     // Initial template
     let summary = {
@@ -164,14 +166,24 @@ const VendorDetail = ({navigation,route}) => {
    
   );
   console.log()
+
+ 
+  
   ///const {data,isLoading}=useFetchVendorQuery(id)
    useEffect(()=>{
+    
    async  function get(){
         const{ data }=await axios.get(`${backendURL}/details?id=${id}&user_id=${user.id}&lat=${location.lat}&lon=${location.lon}`)
         
         
          data && console.log(data.distance,'klllll')
           setFav(data.favorited)
+          dispatch(setVPM(data.payment_method))
+          dispatch(setvendorname(data.username))
+          dispatch(setvendorid(data.id))
+          dispatch(setvendorimg(data.avatar_url))
+          dispatch(setVendor(data.opening_hours))
+          dispatch(set_staff(staff))
           setdata(
             { 
               payment_method: data.payment_method,
@@ -258,6 +270,7 @@ const VendorDetail = ({navigation,route}) => {
             time:0,
             services:0,
             items_name:'',
+            list:[],
             items: cat.services.map((service)=>{
               return {
                 id: service.id,
@@ -287,17 +300,27 @@ const VendorDetail = ({navigation,route}) => {
   const [staff,setStaff]= useState('');
   
 
-    const handleBookingSubmit=()=>{
-     dispatch(setbooking(checkedState))
-    
-      dispatch(setVPM(data1.payment_method))
-      dispatch(setvendorname(data1.name))
-      dispatch(setvendorid(data1.id))
-      dispatch(setvendorimg(data1.logo))
-      dispatch(setVendor(data1.hours))
-      dispatch(set_staff(staff))
-    navigation.navigate('SelectDate',{id: id,rebooked: false})
+  const handleBookingSubmit = () => {
+    // Check if any service is selected
+    const isAnyServiceSelected = checkedState.topping2.some(category =>
+      category.items.some(item => item.check)
+    );
+  
+    if (!isAnyServiceSelected) {
+      // If no service is selected, show an alert or handle it in a way that suits your UI
+      Alert.alert('No Service Selected', 'Please select at least one service before submitting.');
+      return;
     }
+  
+    // Dispatch set_staff action
+    dispatch(set_staff(staff));
+  
+    // Dispatch setBooking action
+    dispatch(setBooking(JSON.stringify(checkedState)));
+  
+    // Navigate to the next screen
+    navigation.navigate('SelectDate', { id: id, rebooked: false });
+  };
     const all= [];
 
 
@@ -305,34 +328,35 @@ const VendorDetail = ({navigation,route}) => {
     const [total, setTotal] = useState(0);
   //console.log(topping2.length)
   const handleOnChange = (position, categoryName) => {
-    const updatedCheckedState = { ...checkedState };
-    const categoryIndex = updatedCheckedState.topping2.findIndex((category) => category.name === categoryName);
-    
-    if (categoryIndex !== -1) {
-      const itemIndex = updatedCheckedState.topping2[categoryIndex].items.findIndex((item) => item.id === position);
-      
-      if (itemIndex !== -1) {
-        const isChecked = updatedCheckedState.topping2[categoryIndex].items[itemIndex].check;
-        
-        updatedCheckedState.topping2[categoryIndex].items[itemIndex].check = !isChecked;
-        
-        if (isChecked) {
-          // Item is unchecked, update the total, time, and services
-          updatedCheckedState.topping2[categoryIndex].total -= updatedCheckedState.topping2[categoryIndex].items[itemIndex].price;
-          updatedCheckedState.topping2[categoryIndex].time -= updatedCheckedState.topping2[categoryIndex].items[itemIndex].time;
-          updatedCheckedState.topping2[categoryIndex].services -= 1;
-          updatedCheckedState.topping2[categoryIndex].items_name = modifyItemList(itemList, updatedCheckedState.topping2[categoryIndex].items[itemIndex].name2, false);
-        } else {
-          // Item is checked, update the total, time, and services
-          updatedCheckedState.topping2[categoryIndex].total += updatedCheckedState.topping2[categoryIndex].items[itemIndex].price;
-          updatedCheckedState.topping2[categoryIndex].time += updatedCheckedState.topping2[categoryIndex].items[itemIndex].time;
-          updatedCheckedState.topping2[categoryIndex].services += 1;
-          updatedCheckedState.topping2[categoryIndex].items_name = modifyItemList(itemList, updatedCheckedState.topping2[categoryIndex].items[itemIndex].name2, true);
+    setCheckedState((prevState) => {
+      const newState = { ...prevState };
+      const categoryIndex = newState.topping2.findIndex((category) => category.name === categoryName);
+  
+      if (categoryIndex !== -1) {
+        const itemIndex = newState.topping2[categoryIndex].items.findIndex((item) => item.id === position);
+  
+        if (itemIndex !== -1) {
+          newState.topping2[categoryIndex].items[itemIndex].check = !newState.topping2[categoryIndex].items[itemIndex].check;
+  
+          // Update total, time, services, etc.
+          if (newState.topping2[categoryIndex].items[itemIndex].check) {
+            newState.topping2[categoryIndex].total += newState.topping2[categoryIndex].items[itemIndex].price;
+            newState.topping2[categoryIndex].time += newState.topping2[categoryIndex].items[itemIndex].time;
+            newState.topping2[categoryIndex].services += 1;
+            newState.topping2[categoryIndex].list= [...newState.topping2[categoryIndex].list,newState.topping2[categoryIndex].items[itemIndex].name2];
+            newState.topping2[categoryIndex].items_name = modifyItemList(newState.topping2[categoryIndex].list, newState.topping2[categoryIndex].items[itemIndex].name2, true);
+            console.log(newState.topping2[categoryIndex].items[itemIndex].name2,'list',newState.topping2[categoryIndex].list)
+          } else {
+            newState.topping2[categoryIndex].total -= newState.topping2[categoryIndex].items[itemIndex].price;
+            newState.topping2[categoryIndex].time -= newState.topping2[categoryIndex].items[itemIndex].time;
+            newState.topping2[categoryIndex].services -= 1;
+            newState.topping2[categoryIndex].items_name = modifyItemList(newState.topping2[categoryIndex].list, newState.topping2[categoryIndex].items[itemIndex].name2, false);
+          }
         }
-        
-        setCheckedState(updatedCheckedState);
       }
-    }
+  
+      return newState;
+    });
   };
   
   
@@ -434,7 +458,7 @@ const VendorDetail = ({navigation,route}) => {
     name='star'
     type='ionicons'
     color={colors.lg.color} />
-  <Text>
+  <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:20,color:colors.dg.color}}>
     {data1.sum_rating?.average_rating==0?'0.0': data1.sum_rating.average_rating}
   </Text>
 </Pressable>
@@ -442,18 +466,19 @@ const VendorDetail = ({navigation,route}) => {
       <View style={{ position: 'relative', marginTop: -10, marginBottom: 80, }}>
         <View style={{left:20, display: 'flex', flexDirection: 'row' }}>
           <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color }}>{data1.name}</Text>
-          <TouchableOpacity onPress={()=>setModal(true)} style={{paddingHorizontal:5,marginLeft:5, marginTop:5, height:20,backgroundColor:checkVendorStatus(data1.hours) == 'Open'? '#86D694': '#CD3D49',borderRadius:20}}>{checkVendorStatus(data1.hours) === 'Open' ? (
-                    <Text style={{marginHorizontal:5,color:'white'}} >open</Text>
-                  ) : (
-                    <Text style={{color: 'white',marginHorizontal:5,fontFamily:FontFamily.sourceSansProSemibold }}>closed</Text>
-        )}</TouchableOpacity>
+         
       {
-        data1.badge?<View style={{marginTop:5,marginLeft:5}}>
+        data1.badge?<View style={{marginTop:8,marginLeft:5}}>
         <SvgUri
         
         source={require('../../../assets/svgs/verified.svg')}/>
         </View>: <Fragment/>
       }  
+       <TouchableOpacity onPress={()=>setModal(true)} style={{paddingHorizontal:5,marginLeft:5, marginTop:7, height:20,backgroundColor:checkVendorStatus(data1.hours) == 'Open'? '#86D694': '#CD3D49',borderRadius:20}}>{checkVendorStatus(data1.hours) === 'Open' ? (
+                    <Text style={{marginHorizontal:5,color:'white'}} >open</Text>
+                  ) : (
+                    <Text style={{color: 'white',marginHorizontal:5,fontFamily:FontFamily.sourceSansProSemibold }}>closed</Text>
+        )}</TouchableOpacity>
          <View style={{position:'absolute', top:0,right:60} }>
 
          <Icon 
@@ -470,6 +495,7 @@ const VendorDetail = ({navigation,route}) => {
             return (
 
               <Pressable
+              key={item.id}
                 style={{
                   backgroundColor: 'white',
                   borderRadius: 20,
@@ -481,7 +507,7 @@ const VendorDetail = ({navigation,route}) => {
                   borderWidth: 1,
                   marginRight: 10
                 }}
-                onPress={() => selectHandler(item.value)}>
+                >
                 <Text style={[styles.option, colors.dg]}> {item.value}</Text>
               </Pressable>
 
@@ -495,11 +521,11 @@ const VendorDetail = ({navigation,route}) => {
            data: data1
           })} style={{ color: colors.dg2.color }}>Show on map</Text></Text>
         </View>
-        <Text style={{left:20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, marginBottom: 20, marginTop: 20 }}> {data1.desc}</Text>
+        <Text style={{left:20, fontFamily: FontFamily.sourceSansProRegular, color:colors.dg.color, fontSize: 15, marginBottom: 20, marginTop: 20,paddingRight:60 }}> {data1.desc}</Text>
         <Text style={{left:20, fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: '#00463C', marginBottom: 15 }}> Services</Text>
         {checkedState.topping2.map(({ name, items, total, time, services, items_name }, index) => {
           return (
-            <View style={[styles.t6, {width:'100%',borderBottomColor: colors.lg.color, borderBottomWidth: 1, marginBottom: 20 ,left:20 }]}>
+            <View    key={name} style={[styles.t6, {width:'100%',borderBottomColor: colors.lg.color, borderBottomWidth: 1, marginBottom: 20 ,left:20 }]}>
               <View style={{left:-15}}>
               <CheckBox
               
@@ -534,8 +560,9 @@ const VendorDetail = ({navigation,route}) => {
                 </View>
               {parentState[index] === true && items.map(({ name2, time, id, price, check }, _index2) => {
                 return (
-                  <View style={{ marginLeft: 30 }}>
+                  <View   key={id} style={{ marginLeft: 30}}>
                     <CheckBox
+                      key={id}
                       title={<>
                       <Text  numberOfLines={2} ellipsizeMode="tail" style={[colors.dg, {  marginLeft: 10 }]}>
                         {name2}
@@ -563,14 +590,14 @@ const VendorDetail = ({navigation,route}) => {
             </View>
           )
         })}
-        <Text style={{left:20, marginTop: 30, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 26, color: colors.dg.color }}>Book with staff</Text>
-        <Text style={{left:20, color: '#BBB9BC', marginBottom: 20 }}>optional</Text>
-        <View style={{marginLeft:'3%',marginBottom:30}}><Staff data={data1.staff} onSelect={(value) => setStaff(value)} /></View>
+      {data1.staff.length!=0 &&<><Text style={{ left: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 26, color: colors.dg.color }}>Book with staff</Text><Text style={{ left: 20, color: '#BBB9BC', marginBottom: 20 }}>optional</Text><View style={{ marginLeft: '3%', marginBottom: 30 }}>
+          <Staff data={data1.staff} onSelect={(value) => setStaff(value)} />
+        </View></>}
       </View>
 
 
     </ScrollView>
-    <Opening data={data1.hours} modal={modal} setModal={setModal}/>
+    <Opening   key={data1.id} data={data1.hours} modal={modal} setModal={setModal}/>
     <View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: '#ffff',height:200, width: '100%', marginBottom: 0 }}>
         <Button
          titleStyle={{fontFamily:FontFamily.sourceSansProBold}}

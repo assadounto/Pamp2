@@ -17,7 +17,8 @@ export default Loading
 
 const styles = StyleSheet.create({
     container: {
-        top:'40%',
+        marginTop:'70%',
+
       justifyContent: 'center',
       alignItems: 'center',
     },

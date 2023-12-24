@@ -134,7 +134,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
         </View>
         <View style={[styles.Pcont]}>
           <View style={[styles.Pmain]}>
-            <Pressable onPress={() => navigation.navigate('edit_profile')}>
+            <Pressable onPress={() => navigation.replace('edit_profile')}>
               <Icon
                 name="edit-2"
                 type="feather"
@@ -191,7 +191,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
               </Text>}
             </View>
             <View style={[styles.Pmargin]}>
-              <Text style={styles.P1}>Addresss </Text>
+              <Text style={styles.P1}>Address </Text>
               {user.address ? <Text style={[styles.P2, colors.dg2]}>{user.address}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>

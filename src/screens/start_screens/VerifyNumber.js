@@ -67,7 +67,8 @@ const CELL_COUNT = 4;
 const VerifyNumber = ({navigation}) => {
     const [shakeAnimation] = useState(new Animated.Value(0));
 
-    const user= useSelector((state)=>state.user.user)
+    const user= useSelector((state)=>state.user.userInfo)
+    console.log(user,'ddd')
    const [timerCount, setTimerCount] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
   const [getPhoneConfirm]= useGetPhoneConfirmMutation()
@@ -129,7 +130,8 @@ const VerifyNumber = ({navigation}) => {
   const startTimer = () => {
     getPhoneConfirm({
         scope: 'user',
-        phone: user.phone
+        phone: user.phone,
+        id: user.id
       })
    if (!timerActive) {
     

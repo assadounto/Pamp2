@@ -7,7 +7,7 @@ import axios from 'axios';
 import { backendURL } from '../../services/http';
 import { useSelector } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
-
+import { useDispatch } from 'react-redux';
 const Change_email = ({ navigation }) => {
   const user =useSelector((state)=>state.user.userInfo)
   const [formData, setFormData] = useState({
@@ -52,14 +52,15 @@ const Change_email = ({ navigation }) => {
     // Form submission successful
     // console.log('Form Values:', formData);
       const {data}= await axios.get(`${backendURL}/change_email?scope=user&email=${formData.new_email}&id=${user.id}`)
-       if (data=='ok'){
+       if (data==='ok'){
        //alert('yes')
        setFormData((prevData) => ({
         ...prevData,
         isLoading: false,
       }));
+      
         navigation.navigate('VerifyEmail',{
-          scope: 'ce'
+          scope: 'ce',
         });
        }
   };

@@ -68,16 +68,16 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Pamp needs access to your location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Pamp needs access to your location</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>YOUR-PURPOSE-KEY</key>
-		<string>YOUR TEXT</string>
+		<string>Pamp needs access to your location</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Pamp needs access to your location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>YOUR TEXT</string>
 	<key>NSMotionUsageDescription</key>

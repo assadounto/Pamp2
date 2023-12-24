@@ -9,6 +9,7 @@ const Mapview = ({route,navigation}) => {
   const styles = StyleSheet.create({
     map: {
       ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'green',
     },
   });
   return (
@@ -26,7 +27,7 @@ const Mapview = ({route,navigation}) => {
 
       <Marker
         coordinate={{ latitude: 5.614818, longitude: -0.205874 }}
-
+        pinColor="red"
         
         >
        

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {Text, View, SafeAreaView, Image, Modal,Keyboard,StyleSheet, TextInput} from 'react-native';
+import {Text, View, SafeAreaView, Image, Modal,Keyboard,StyleSheet, TextInput, Alert} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
 import { Button,Rating } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
 import { Icon } from '@rneui/base';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showBottom } from '../src/redux/user';
 
 import axios from 'axios';
@@ -12,10 +12,13 @@ import StarRating from 'react-native-star-rating-widget';
 import { backendURL } from '../src/services/http';
 import Pop2 from '../src/screens/start_screens/pop2';
 import { use } from '../src/redux/homeapi';
+import { da } from 'date-fns/locale';
+import { useGetCouponsQuery } from '../src/redux/authapi';
 const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
+    const user= useSelector(state=>state.user.userInfo)
     const [text,setText]=useState('')
     const [poph,setpop]=useState(400)
-
+  const {data, isLoading,refetch}= useGetCouponsQuery({id:user.id})
     const [open,setOpen]=useState(false)
     const [notify,set_notify] =useState(false)
    const handlepressCancel=()=>{
@@ -24,14 +27,21 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
     }
     const dispatch=useDispatch()
     const handlePressOK=async()=>{
-    //const {data}= axios.post(`${backendURL}/booking/notes`,{id: id,notes: text })
-   setmodal(false)
+     const {data}= await axios.get(`${backendURL}/ref_code?id=${user.id}&ref_code=${text}`)
+     data && console.log(data)
+   if (data.message==='ok'){
+     setmodal(false)
     set_notify(true);
     setTimeout(() => {
         set_notify(false);
-        setblur(false);
+       // setblur(false);
+       dispatch(showBottom(true))
       }, 3000);
+   } else {
+    Alert.alert('Message',data.message)
+   }
     }
+  
 
     React.useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -65,17 +75,20 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
         <TextInput     placeholderTextColor={'#BBB9BC'} placeholder='Promo Code' onChangeText={setText}  style={[pop.input]}/>
         <Text style={pop.text2}>The discount will be applied to your next appointment.</Text>
        {
-       text.length>3 &&(
-            <View style={pop.coupon}>
-            <Text style={pop.head}>Your Discount</Text>
-            <Text style={pop.dis}>40% discount for 1 appointment</Text>
+      data && data.map((coupon)=>{
+
+      return  <View style={pop.coupon} key={coupon.id}>
+            <Text style={pop.head}>{coupon.code}</Text>
+            <Text style={pop.dis}>{coupon.description}</Text>
             <View style={pop.bar}/>
             <View style={pop.cont2}>
-                <Text style={pop.apply} >Applied</Text>
-                <Text style={[pop.apply,pop.hour]} > 24 hours left</Text>
+                <Text style={pop.apply} >Expiry</Text>
+                <Text style={[pop.apply,pop.hour]} >{coupon.expiry}</Text>
             </View>
         </View>
-        )
+      })
+            
+        
        }
         <View style={{ position: 'absolute', bottom: 20 }}>
             <Button

@@ -17,9 +17,13 @@ import axios from "axios";
 import { set_actual_booking } from "../../redux/booking";
 import { useDispatch } from "react-redux";
 import FastImage from "react-native-fast-image";
+import { useFocusEffect } from '@react-navigation/native';
+import { backendURL } from '../../services/http';
 
 
 import { convertMinutesToHoursAndMinutes,getTotalByKey} from "../../Functions";
+import { useGetCouponQuery } from "../../redux/authapi";
+import { da } from "date-fns/locale";
 
 const co=[
   'red',
@@ -35,33 +39,77 @@ const payment_methods=
 }
 
 const Confirm_payment=({navigation,route})=>{
+  const user =  useSelector((state)=>state.user.userInfo)
+  const booking= useSelector((state)=> state.booking)
+const [isLoading,setLoading]=useState(false)
+  const {data,refetch}= useGetCouponQuery({id:user.id,vendor_id: booking.vendor_id})
+  data && console.log(booking.booking)
  // const { completed, items ,time} = route.params || {};
   const dispatch=useDispatch()
   const pay_data_=  useSelector((state)=>state.user.payment_methods.default)
   const payment_pref=useSelector((state)=>state.user.vPM)
   let pay_data=pay_data_ && pay_data_
-  const user =  useSelector((state)=>state.user.userInfo)
-  const booking_= useSelector((state)=>state.booking)
-   const booking=booking_&& booking_
-    console.log(booking.vendorimg)
+   const booking_detail= JSON.parse( booking.booking)
+  
+   useFocusEffect(
+  
+    React.useCallback(() => {
+      refetch()
+    }, []) // Include user.id in the dependency array
+  );
+  
+
+
   const [ref,setref]=useState()
-   const a=booking.Booking_detail.topping2.filter(({total})=>total!=0)
-  const HandleSubmit=()=>{
+   const a=booking_detail.topping2.filter(({total})=>total!=0)
+  const HandleSubmit=async()=>{
+   if (getTotalByKey(booking_detail.topping2, 'total')- (data?.amount? data.amount:0) <=0){
+    setLoading(true)
+    await createBooking()
+    navigation.navigate('Success')
+   }
+   else{
     gather_actual()
-    let total=  getTotalByKey(booking.Booking_detail.topping2,'total')
+    let total=  getTotalByKey(booking_detail.topping2,'total')
     let pay_type =pay_data.name
-   
+      
+
+  
   //  start_transaction()
     navigation.navigate('Processing',{
+      amount_paid: theTotal(total),
       total: total,
       pay_type:pay_type,
+    
 
     })
+   }
+    
+  
   }
 
+
+
+
+  const theTotal=(amount)=>{
+    let total
+    if (pay_data.name!='Pay with cash'){
+      if (data?.amount){
+         total= amount - data.amount
+      } else 
+      {
+        total=amount
+      }
+      
+    }
+    else {
+      total=amount*0.2
+    }
+    return total.toFixed(2)
+  }
 const getTotalMin=()=>{
  let min= 0
- booking && booking.Booking_detail.topping2.map(({  time  }) =>{
+ booking && booking_detail.topping2.map(({  time  }) =>{
   min+=time
  })
   return min
@@ -77,8 +125,9 @@ const getTotalMin=()=>{
       status: 'booked',
       staff: booking.staff,
       payment_method: pay_data.name,
-      total: getTotalByKey(booking.Booking_detail.topping2,'total'),
-      items: booking.Booking_detail.topping2
+      total: getTotalByKey(booking_detail.topping2,'total'),
+      items: booking_detail.topping2,
+      coupon_id:data?.id
      })
    dispatch(set_actual_booking({
     user:user.id,
@@ -89,15 +138,16 @@ const getTotalMin=()=>{
     status: 'booked',
     staff: booking.staff,
     payment_method: pay_data.name,
-    total: getTotalByKey(booking.Booking_detail.topping2,'total'),
-    items: booking.Booking_detail.topping2,
-    total_mins: getTotalMin()
+    total: getTotalByKey(booking_detail.topping2,'total'),
+    items: booking_detail.topping2,
+    total_mins: getTotalMin(),
+    coupon_id:data?.id  
 }))
   }
   
   const getIds=()=>{
   let array=[]
-  booking.Booking_detail.topping2.map((dat)=> {
+  booking_detail.topping2.map((dat)=> {
     dat.items.map((u)=>{
         if (u.check){
           array.push(u.id)
@@ -108,30 +158,81 @@ const getTotalMin=()=>{
      return array
   }
 
-  const start_transaction=async ()=>{
-   let total=  getTotalByKey(booking.Booking_detail.topping2,'total')
-   let prov =pay_data&& pay_data.name.toLowerCase()
-   RNPaystack.chargeCardWithAccessCode({
-    cardNumber: '4123450131001381', 
-    expiryMonth: '10', 
-    expiryYear: '17', 
-    cvc: '883',
-    accessCode: '2p3j42th639duy4'
-  })
-.then(response => {
+
+const formatDateForRails = (dateObj) => {
+  const { day, month, year } = dateObj;
+  
+  // Convert month name to a numerical value
+  const monthMap = {
+    January: "01",
+    February: "02",
+    March: "03",
+    April: "04",
+    May: "05",
+    June: "06",
+    July: "07",
+    August: "08",
+    September: "09",
+    October: "10",
+    November: "11",
+    December: "12"
+  };
+  
+  // Format the date string in 'YYYY-MM-DD' format
+  const formattedDate = `${year}-${monthMap[month]}-${day.toString().padStart(2, "0")}`;
+  
+  return formattedDate;
+};
+
+const formatTimeForRails = (timeString) => {
+  const currentDate = new Date();
+  const [hours, minutes, period] = timeString.split(/:|\s/); // Split the time string using a regular expression
+
+  let hourValue = parseInt(hours, 10);
+
+  if (period.toLowerCase() === 'pm' && hourValue !== 12) {
+    hourValue += 12; // Convert the hour to 24-hour format for PM times
+  } else if (period.toLowerCase() === 'am' && hourValue === 12) {
+    hourValue = 0; // Convert 12 AM to 0 (midnight) in 24-hour format
+  }
+
+  currentDate.setHours(hourValue);
+  currentDate.setMinutes(parseInt(minutes, 10));
+
+  return currentDate.toISOString().slice(11, 19);
+};
+
+
+
+const createBooking=async (ref)=>{
  
-})
-.catch(error => {
- 
- 
- 
-})
+  const {data}= await axios.post(`${backendURL}/booking`,
+  {
+    date: formatDateForRails(booking.date),
+    time:  formatTimeForRails(booking.time),
+    status: 'booked',
+    service_ids:getIds(),
+    user: user.id,
+    vendor: booking.vendor_id,
+    payment_method: pay_data.name,
+    total: getTotalByKey(booking_detail.topping2,'total'),
+    ref: ref,
+    others: booking_detail.topping2,
+    staff:  booking.staff,
+    total_min: getTotalMin(),
+    coupon_id: data?.id,
+    amount_paid: theTotal(getTotalByKey(booking_detail.topping2,'total'))
+
+  }
+
+  )
+  setLoading(false)
 }
 
   
   const payment_method =useSelector((state)=>state.user.payment_methods.default)
     return(
-        <><SafeAreaView>
+      <><SafeAreaView>
         <ScrollView
           contentContainerStyle={{ backgroundColor: 'white' }}
         >
@@ -177,7 +278,7 @@ const getTotalMin=()=>{
                 name="alert-circle-outline"
                 type="ionicon"
                 size={25} />
-              <Text style={{ width: '80%', marginLeft: 20, flexWrap: 'wrap', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: colors.dg.color }}>You need to add a debit or credit card to use the 'Pay with cash' option, Vendors charge a deposit of 20% ahead, the rest will be collected in-store. you'll lose your deposit in case of a late cancellation or no-show.</Text>
+              <Text style={{ width: '80%', marginLeft: 20, flexWrap: 'wrap', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: colors.dg.color }}>You will be required to pay with Mobile Money, Debit or Credit card to use the 'Pay with cash' option, Vendors charge a deposit of 20% ahead, the rest will be collected in-store. you'll lose your deposit in case of a late cancellation or no-show.</Text>
             </View>}
           <View style={{marginBottom:70, marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: 'white', borderRadius: 20, width: '90%', alignSelf: 'center' }}>
             <View style={{ padding: 20,  display: 'flex', flexDirection: 'row', marginLeft: 15 }}>
@@ -192,13 +293,13 @@ const getTotalMin=()=>{
               priority: FastImage.priority.high,
             }}
             resizeMode={FastImage.resizeMode.cover} />
-                  <Text style={{ fontFamily: FontFamily.sourceSansProRegular, top: 7, fontSize: 18, color: colors.dg.color }}>{booking.Booking_detail.name}</Text>
+                  <Text style={{ fontFamily: FontFamily.sourceSansProRegular, top: 7, fontSize: 18, color: colors.dg.color }}>{booking_detail.name}</Text>
                 </View>
               </View>
               <Pressable style={{
                 position: 'absolute', top: 20,
                 right: 30,
-              }} onPress={() => navigation.navigate('VendorDetail', { id: booking.vendor_id })}>
+              }} onPress={() => navigation.navigate('VendorDetail', { id: booking.vendor_id,datas: booking.Booking_detail })}>
                 <Icon
                   name="edit-2"
                   type="feather"
@@ -215,12 +316,12 @@ const getTotalMin=()=>{
               </Pressable>
             </View>
             <View style={{padding: 20,borderTopColor:colors.lg.color,borderTopWidth:0.5, borderBottomColor: colors.lg.color, borderBottomWidth: 0.5}}>
-              {booking && booking.Booking_detail.topping2.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
+              {booking && booking_detail.topping2.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
               
                 return (
                   <View style={{ marginBottom: 10, display: 'flex', flexDirection: 'row' }}>
                     <View style={{ width: 10, top: 5, marginRight: 10, height: 10, borderRadius: 10, backgroundColor: appointment_color }}></View>
-                    {a.length != 1 && _index2 + 1 !== booking.Booking_detail.topping2.length ?
+                    {a.length != 1 && _index2 + 1 !== booking_detail.topping2.length ?
                       <View style={{ position: 'absolute', left: 5, top: 15, height: 60, width: 0.6, backgroundColor: '#BBB9BC' }}></View> : null}
                     <View style={{width:'80%'}}>
 
@@ -245,10 +346,18 @@ const getTotalMin=()=>{
             </View>
             <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
               <Text style={{left:20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color }}>
-                Total
+                Discount
               </Text>
               <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.lg.color, position: 'absolute', top: 17, right: 30 }}>
-                ¢{getTotalByKey(booking.Booking_detail.topping2, 'total')}
+              ¢{data?.amount ? data.amount: 0}
+              </Text>
+            </View>
+            <View style={{marginTop:-20, padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
+              <Text style={{left:20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color }}>
+                 Total
+              </Text>
+              <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.lg.color, position: 'absolute', top: 17, right: 30 }}>
+                ¢{getTotalByKey(booking_detail.topping2, 'total')- (data?.amount? data.amount:0) <=0 ? 0: getTotalByKey(booking_detail.topping2, 'total')- (data?.amount?  data.amount:0)}
               </Text>
             </View>
           </View>
@@ -260,6 +369,7 @@ const getTotalMin=()=>{
           <Button
            titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
             title={'Confirm'}
+            loading={isLoading}
             // containerStyle={}
             buttonStyle={{
               width: 184,

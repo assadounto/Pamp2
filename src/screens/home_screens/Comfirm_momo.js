@@ -16,8 +16,10 @@ import { watchPosition } from 'react-native-geolocation-service';
 import { backendURL } from '../../services/http';
 const Processing = ({route}) => {
    const navigation=useNavigation()
+   const user=  useSelector((state)=>state.user.userInfo)
    const booking= useSelector((state)=>state.booking)
-    const { total,pay_type} = route.params;
+    const { total,pay_type,amount_paid} = route.params;
+    console.log(pay_type,'hh')
     const [modalVisible, setModal] = React.useState(false);
     const [verificationResult, setVerificationResult] = React.useState(null);
    const [info,setinfo]= useState('Please approve payment and verify')
@@ -69,7 +71,6 @@ const Processing = ({route}) => {
   
   // Example usage:
   
-  
     const createBooking=async (ref)=>{
       const {data}= await axios.post(`${backendURL}/booking`,
       {
@@ -80,14 +81,35 @@ const Processing = ({route}) => {
         user: booking.actual_booking.user,
         vendor: booking.actual_booking.vendor,
         payment_method: booking.actual_booking.payment_method,
-        total: pay_type==='Pay with cash'? (total*0.2):total,
+        total:total,
         ref: ref,
         others: booking.actual_booking.items,
         staff:  booking.actual_booking.staff,
-        total_min: booking.actual_booking.total_mins
+        total_min: booking.actual_booking.total_mins,
+        coupon_id: booking.actual_booking.coupon_id,
+        amount_paid: amount_paid
+
       }
       )
     }
+const channels=(name)=>{
+  let channel=[]
+  switch(name){
+     case "Pay with cash":
+        channel.push('mobile_money','card')
+     break;
+     case 'Pay with card':
+      channel.push('card')
+      break;
+     case 'Pay with momo':
+      channel.push('mobile_money')
+      break;
+  }
+  return channel
+}
+
+
+
 
     const nextpage=(ref)=>{
       createBooking(ref)
@@ -99,12 +121,13 @@ const Processing = ({route}) => {
         {
           success? <Success /> :
           <SafeAreaView style={styles2.cont}>
-          <Paystack  
+          <Paystack 
+
         paystackKey="pk_test_e4bdcee80587746aabcc7b289634c04024d9dac5"
-        amount={pay_type==='Pay with cash'? (total*0.2):total}
+        amount={amount_paid}
         currency={'GHS'}
-        channels={pay_type==='Pay with cash'? ["mobile_money","card"]:pay_type=== 'Pay with card'? ["card"]:["mobile_money"]}
-        billingEmail="adukyerer@gmail.com"
+        channels={channels(pay_type)}
+        billingEmail={user.email}
         activityIndicatorColor="green"
         onCancel={(e) => {
             navigation.navigate('main')

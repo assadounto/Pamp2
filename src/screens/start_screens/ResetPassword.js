@@ -46,8 +46,11 @@ const {info} = route.params
       method: option,
       email: info.email
     })
-    navigation.navigate('VerifyEmail',{scope: 'reset'})
-  
+    navigation.navigate('ResetAccount',{datas: {
+      method: option,
+      email: info.email,
+
+    }})  
   }
   return (
     <>
@@ -62,9 +65,7 @@ const {info} = route.params
       <View style={styles.mt50}>
     <ListItem
               containerStyle={[styles.cont]}
-              onPress={() => {
-                navigation.navigate('Business_setting');
-              }}>
+             >
 
               <CheckBoxComponent onPress={handleEmailCheckboxChange} state={email} />
               <ListItem.Content>
@@ -76,9 +77,7 @@ const {info} = route.params
             { info.phone &&
               <ListItem
               containerStyle={[styles.cont,styles.none]}
-              onPress={() => {
-                navigation.navigate('Business_setting');
-              }}>
+            >
 
               <CheckBoxComponent onPress={handlePhoneCheckboxChange} state={phone}/>
               <ListItem.Content>

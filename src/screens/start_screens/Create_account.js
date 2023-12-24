@@ -1,53 +1,66 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, TextInput} from 'react-native';
+import {View, Text, ScrollView, TextInput,Alert,Linking} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 import {Button, Input, Icon, CheckBox} from '@rneui/base';
 import {Image} from 'react-native';
-
+import { backendURL } from '../../services/http';
 import {Formik} from 'formik';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles, colors} from '../../Common_styles';
-import {register, setuser} from '../../redux/user';
+import {register, setUser, setuser} from '../../redux/user';
+
+import axios from 'axios';
 
 import Header from './header';
 import PhoneInput from 'react-native-phone-number-input';
 const Register = ({navigation}) => {
-  const {errorMessage, loading} = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const [loading,setLoading]= useState(false)
   const [showPassword, setShowPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [receivePushNotifications, setReceivePushNotifications] =
     useState(false);
 
-
-  const onSubmit = async values => {
-   dispatch(register(
-   {user: {
-    email:values.email,
-    name: values.name,
-    phone: values.phone,
-    username: values.username,
-    password: values.password
-   }}
+    const onSubmit = async values => {
+      register({user: values});
+    };
   
-   ));
-    dispatch(setuser({
-    email:values.email,
-    phone: values.phone,
-    password: values.password
-    }));
-
-   
-    navigation.navigate('VerifyEmail',{scope:''});
-  };
+  
+    const register=async(values)=>{
+     // console.log(values)
+      dispatch(setuser(values.user))
+      setLoading(true)
+      try {
+        const {data} = await axios.post(backendURL+'/user/signup', values);
+        console.log(data);
+         dispatch(setUser({...values.user,id:data.id}))
+    if(data.message==='exist'){
+           Alert.alert('Error','Account already Exist. Please login')
+        }
+        else if (data?.message==='created'){
+          dispatch(setUser({...values.user,id:data.id}))
+          navigation.navigate('VerifyEmail',{scope:''});
+        }
+        
+        
+        
+  
+        setLoading(false)
+        } catch (error) {
+          console.log(error.response.data);
+          Alert.alert('Error',error.response.data.errors[0])
+          // Use error.response.data to get the error response data
+          setLoading(false);
+        }
+    }
 
   return (
     <>
-      <ScrollView
-        style={styles.scroll}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}>
+     <Header
+                main={'Create New Account'}
+                sub={'Please fill in form to continue'}
+              />
         <Formik
           initialValues={{
             email: '',
@@ -61,7 +74,9 @@ const Register = ({navigation}) => {
           }}
           validate={values => {
             const errors = {};
+     
             if (!values.email) {
+             
               errors.email = 'Email is required';
             } else if (
               !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
@@ -77,10 +92,12 @@ const Register = ({navigation}) => {
             }
 
             if (!values.name) {
+  
               errors.name = 'Last name is required';
             }
 
             
+      
 
             return errors;
           }}>
@@ -92,14 +109,16 @@ const Register = ({navigation}) => {
             touched,
             errors,
           }) => (
+            <ScrollView
+       
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
             <View style={[styles.container,{marginTop:10,marginBottom:20}]}>
-              <Header
-                main={'Create New Account'}
-                sub={'Please fill in form to continue'}
-              />
+              
+         
               <View>
                 <TextInput
-                autoFocus
+                
                 placeholderTextColor={'#BBB9BC'}
                   placeholder="First Name"
                  style={[styles.textInput]}
@@ -129,19 +148,12 @@ const Register = ({navigation}) => {
            codeTextStyle={{color:colors.lg.color}}
             layout="second"
             //onChangeText={}
+            
             onChangeFormattedText={handleChange('phone')}
             placeholder="Phone Number"
            
           />
-                {/* <Input
-                  placeholder="Phone Number"
-                  inputContainerStyle={[[styles.textInput]]}
-                  onChangeText={handleChange('phone')}
-                  onBlur={handleBlur('phone')}
-                  value={values.phone}
-                  errorMessage={touched.phone && errors.phone}
-                  keyboardType="phone-pad"
-                /> */}
+           
 
                 <TextInput
                    placeholderTextColor={'#BBB9BC'}
@@ -194,14 +206,14 @@ const Register = ({navigation}) => {
                   title={
                     <Text style={[colors.dg, styles.terms]}>
                       I agree to the{' '}
-                      <Text style={[colors.lg, styles.bold]}>
+                      <Text onPress={()=> Linking.openURL("https://www.trypamp.com/privacy-policy")} style={[colors.lg, styles.bold]}>
                          Privacy Policy
                       </Text>{' '}
                       and{' '}
-                      <Text style={[colors.lg, styles.bold]}>
+                      <Text onPress={()=> Linking.openURL("https://www.trypamp.com/terms-of-use")}  style={[colors.lg, styles.bold]}>
                         Terms of Use
                       </Text>{' '}
-                      <Text style={[colors.lg, styles.bold]}>
+                      <Text onPress={()=> Linking.openURL("https://www.trypamp.com/terms-of-service")} style={[colors.lg, styles.bold]}>
                        Terms of Service
                       </Text>
                     </Text>
@@ -233,9 +245,7 @@ const Register = ({navigation}) => {
                   }
                 />
               </View>
-              <View style={styles.t6}>
-               
-              </View>
+           
               <Button
                 title="Sign Up"
                 onPress={handleSubmit}
@@ -243,17 +253,21 @@ const Register = ({navigation}) => {
                 loading={loading}
                 disabled={!agreedToTerms}
               />
+            
             </View>
+            <Text
+          style={[styles.t3,{marginBottom:70}]}
+          onPress={() => navigation.navigate('login')}>
+          Have an account?
+          <Text  style={[colors.lg]}> Login</Text>
+        </Text>
+            </ScrollView> 
           )}
+             
         </Formik>
 
-        <Text
-          style={[styles.t3]}
-          onPress={() => navigation.navigate('Login')}>
-          Have an account?
-          <Text style={[colors.lg]}> Login</Text>
-        </Text>
-      </ScrollView>
+       
+   
     </>
   );
 };

@@ -10,7 +10,7 @@ const Gsearch = ({ setLoc, handleS }) => {
   const user = useSelector(state => state.user);
   const refInput = useRef(null);
   const [prev,setPrev]= useState(user.location.name)
-  const [searchQuery, setSearchQuery] = useState(user.location.name);
+  const [searchQuery, setSearchQuery] = useState(user.location.name &&user.location.name);
   const [searchResults, setSearchResults] = useState([]);
   const [start, setStart] = useState(true);
   const [show, setShow] = useState(false);
@@ -21,7 +21,7 @@ const Gsearch = ({ setLoc, handleS }) => {
     },
     name: user.location.name,
   });
-
+console.log(user.location.name)
   useEffect(() => {
     setLoc(selectedLocation.coordinates.lat,selectedLocation.coordinates.lng,selectedLocation.name);
 

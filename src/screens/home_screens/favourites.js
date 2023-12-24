@@ -1,5 +1,5 @@
 import React ,{useMemo, useState}from "react"
-import { View,Text,Pressable,Image,ImageBackground,SafeAreaView } from "react-native"
+import { View,Text,Pressable,Image,ImageBackground,SafeAreaView ,ActivityIndicator} from "react-native"
 import MasonryList from '@react-native-seoul/masonry-list';
 import { styles ,colors} from "../../Common_styles";
 import { FontFamily } from "../../GlobalStyles";
@@ -15,6 +15,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const data=[]
 
 const Favourites=({navigation})=>{
+  const[loading,setLoading]= React.useState(false)
+
   const user = useSelector((state)=>state.user.userInfo)
   const [data,setData]=useState([])
   React.useEffect(()=>{
@@ -23,6 +25,7 @@ const Favourites=({navigation})=>{
     
   const getFav=async ()=>{
     try {
+      setLoading(true)
       const {data}= await axios.get(`${backendURL}/favorites?user_id=${user.id}`)
      console.log(data,'h')
      let d= data&& data.map((item,id)=>{
@@ -34,6 +37,7 @@ const Favourites=({navigation})=>{
         }
       })
       setData(d)
+      setLoading(false)
     }
     catch (e){
         console.error(e)
@@ -106,7 +110,7 @@ const Favourites=({navigation})=>{
       <SafeAreaView style={{flex:1}}>
    
         <Text style={{marginLeft:30,fontFamily:FontFamily.sourceSansProBold,fontSize:26,color:'#86D694'}}>My Fav</Text>
-        {
+        { loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>: 
           data.length==0? <Emptyfav 
           title={"No Favourites"}
           body={"You don't have any favourites yet"}

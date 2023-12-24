@@ -55,7 +55,7 @@ const navigation= useNavigation()
                     }}>
                         <View style={{ width: 9, height: 9, borderRadius: 50, backgroundColor: color, marginTop: 5 }}></View>
                         <Text style={[colors.dg,{fontFamily:FontFamily.sourceSansProBold,fontSize:17}]}>{data.title}</Text>
-                        <Text style={{ position: 'absolute', right: 10, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: "#999999" }}>{formatDateToAgo(data.created_at)}</Text>
+                        <Text style={{ position: 'absolute', right: 1, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: "#999999" }}>{formatDateToAgo(data.created_at)}</Text>
                     </View>
                     <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: "#999999", width: 300 }}>{status?status:data.body}</Text>
                    {

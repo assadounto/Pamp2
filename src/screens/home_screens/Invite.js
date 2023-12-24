@@ -1,27 +1,30 @@
 import React from 'react';
-import {View, ImageBackground, Text, StyleSheet, Pressable,Share, TouchableOpacity} from 'react-native';
+import {View, ImageBackground, Text, StyleSheet,Alert, Pressable,Share, TouchableOpacity} from 'react-native';
 import BHeader from '../../../components/BHeader';
 import { colors } from '../../Common_styles';
 import { FontFamily } from '../../GlobalStyles';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useSelector } from 'react-redux';
+
 const Invite = ({navigation}) => {
   const [noti, shownoti] = React.useState(false);
-  
+  const user= useSelector(state=>state.user.userInfo)
   const copyToClipboard = () => {
-    Clipboard.setString('hello world');
+    Clipboard.setString(user.ref_code);
     shownoti(true)
     setTimeout(()=>{
      shownoti(false)
     },3000
     )
-  };
+  }
+
 
 
   const onShare = async () => {
     try {
       const result = await Share.share({
         message:
-          'This is my share code yugvujg',
+          `Hey! 👋 I want to invite you to try Pamp with a GHC10 discount off your first appointment by using my unique referral code:  ${user.ref_code}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -33,7 +36,7 @@ const Invite = ({navigation}) => {
         // dismissed
       }
     } catch (error) {
-      Alert.alert(error.message);
+      Alert.alert("Error",error.message);
     }
   };
   return (
@@ -63,11 +66,11 @@ const Invite = ({navigation}) => {
             style={styles.c4}
           />
           <Text style={styles.c5}>
-          {'Invite your friends and get GHC10 off 1 appointments'}
+          {'Invite your friends and get GHC10 off 1 appointment(s)'}
           </Text>
           <View style={styles.copy}>
-            <Text style={styles.code}>d2xw2d</Text>
-            <TouchableOpacity onPress={copyToClipboard} style={styles.copy_text}><Text>copy</Text></TouchableOpacity>
+            <Text style={styles.code}>{user.ref_code}</Text>
+            <TouchableOpacity onPress={copyToClipboard} style={styles.copy_text}><Text style={styles.cptext}>Copy</Text></TouchableOpacity>
           </View>
           <Pressable
             style={styles.c6}
@@ -151,20 +154,20 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     width:200,
     height:40,
-    //justifyContent: 'center',
+    paddingHorizontal:15,
+    justifyContent:'space-between',
   alignSelf:'center',
-    borderColor: colors.lg.color,
+   alignItems:'center',
+    borderColor:colors.slate.color,
     borderWidth:1,
     
     borderRadius: 10,marginBottom:5
   },
   copy_text:{
-  left:100,
-  top:10
+
   },
   code:{
-    top:10,
-    left:10,
+   
     color:colors.dg.color
   },
   copy_info:{
@@ -183,5 +186,7 @@ const styles = StyleSheet.create({
     top:5,
     color:colors.dg.color
   }
+  ,cptext:{fontFamily:FontFamily.sourceSansProRegular,
+  color:colors.dgb.color}
 });
 export default Invite;

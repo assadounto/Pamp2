@@ -11,6 +11,8 @@ import { ListItem } from '@rneui/base';
 import Blur from '../src/screens/start_screens/Blur';
 import Pop2 from '../src/screens/start_screens/pop2';
 import { da } from 'date-fns/locale';
+import EmptyStateNoti from './EmptyNoti';
+import Emptyfav from './EmptyFav';
 const getLongDayName = (day) => {
   switch (day) {
     case 'Mon':
@@ -221,7 +223,10 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
       {isVendorOpen() ? (
         <>
           <Text style={{ marginVertical: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color, marginLeft: 30 }}>Time</Text>
-          <View  style={{
+         
+         { timeSlots.length==0 ?
+          <Emptyfav title={"Vendor is not accepting bookings at this time"} />
+          :<View  style={{
                  marginBottom: 300,
                  marginVertical: 15,
                  shadowColor: '#707070',
@@ -239,7 +244,7 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
           {timeSlots.map((item, index) => (
             <Pressable
               key={item}
-              style={{}}
+              style={{ }}
               onPress={() => {
                 const isTimeGreaterOrEqual = isCurrentTimeGreaterOrEqual(item, date);
                 console.log(isTimeGreaterOrEqual);
@@ -250,7 +255,7 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
               <ListItem style={{ borderBottomColor: index === timeSlots.length - 1 ? 'transparent' : colors.lg.color, borderBottomWidth: index === timeSlots.length - 1 ? 0 : 1 }}>
                 <Text
                   style={{
-                    marginTop: 30,
+                    marginVertical: 10,
                     fontFamily: FontFamily.sourceSansProBold,
                     fontSize: 20,
                     color: colors.dg.color,
@@ -261,7 +266,7 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
                 <ListItem.Content></ListItem.Content>
                 <View>
                   <Icon
-                    style={{ width: 30, marginTop: 30 }}
+                    style={{ width: 30, marginVertical: 10 }}
                     name={'chevron-forward'}
                     type="ionicon"
                     onPress={() => setShowPassword(!showPassword)}
@@ -272,7 +277,9 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
             </Pressable>
           ))}
           </View>
+                   }
         </>
+
       ) : (
         <Closed name={name} />
       )}

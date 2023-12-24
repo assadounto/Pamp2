@@ -190,6 +190,7 @@ export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) 
       {/* <ScrollView horizontal={userOption ==='Month' ?null :true} contentContainerStyle={{ marginLeft: 10,display:'flex',flexDirection:'row',flexWrap:'wrap'}} showsHorizontalScrollIndicator={false}> */}
       <View
         style={{
+          height: data.length>6 ?400: null,
           width: '90%',
           alignSelf: 'center',
           justifyContent: 'space-between',
@@ -206,6 +207,8 @@ export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) 
         }}>
         <FlatList
           data={data}
+          showsVerticalScrollIndicator={false}
+         
           key={Date.now()}
           renderItem={renderItem}
           keyExtractor={item => item.aday}
@@ -215,7 +218,7 @@ export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) 
         />
         {
         data.length>6 &&
-        <View style={{display:'flex', flexDirection:'row',marginBottom:10}}>
+        <View style={{display:'flex',height:50, justifyContent:'center', alignItems:'center' ,flexDirection:'row'}}>
         <TouchableOpacity style={{marginHorizontal:20,}} onPress={ PrevMonth}><Image resizeMode='contain' style={{width:20,height:20}} source={require('../assets/chevronright63.png')}/></TouchableOpacity>
        <TouchableOpacity onPress={NextMonth}><Image resizeMode='contain' style={{width:20,height:20}} source={require('../assets/chevronright64.png')}/></TouchableOpacity>
         </View>

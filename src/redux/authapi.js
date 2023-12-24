@@ -100,17 +100,31 @@ export const authApi = createApi({
       query: (data) => ({
         url: `user/password/forgot`,
         method: 'GET',
-        params:{
-          method: data
-        }
+        params:data
       }), 
     }),
     verifyResetCode: builder.query({
       query: (data) => ({
-        url: `user/password/reset?token=$${data}`,
+        url: `user/password/verify`,
         method: 'GET',
+        params: data
       }), 
     }),
+    getCoupons: builder.query({
+      query: (data) => ({
+        url: `user/coupons`,
+        method: 'GET',
+        params: data
+      }), 
+   
+    }),
+    getCoupon: builder.query({
+      query: (data) => ({
+        url: `user/coupon`,
+        method: 'GET',
+        params: data
+      }), 
+    })
   }),
 });
 export const {
@@ -125,5 +139,7 @@ export const {
   useGetReviewsQuery,
   useLazyForgotAccountQuery,
   useLazySearchAccountQuery,
-  useLazyVerifyResetCodeQuery
+  useLazyVerifyResetCodeQuery,
+  useGetCouponsQuery,
+  useGetCouponQuery
 } = authApi;

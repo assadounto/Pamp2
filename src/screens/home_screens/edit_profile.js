@@ -112,6 +112,7 @@ const Edit_profile = ({navigation}) => {
             backgroundColor: '#86D694',
             width: '50%',
             borderRadius: 20,
+            marginBottom:30,
             alignSelf: 'center',
             height: 50,
           }}

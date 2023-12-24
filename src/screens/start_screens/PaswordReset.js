@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, View,TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Input, Button,Icon } from '@rneui/base';
-import { styles } from '../../Common_styles';
+import { colors, styles } from '../../Common_styles';
 import axios from 'axios';
 import { backendURL } from '../../services/http';
 import BHeader from '../../../components/BHeader';
@@ -9,12 +9,12 @@ import Blur from '../start_screens/Blur';
 import Pop2 from '../start_screens/pop2';
 import { useSelector } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
-const Change_pass = ({ navigation }) => {
+const PassReset = ({ navigation,route}) => {
+    const { datas } = route?.params || {};
   const user =useSelector((state)=>state.user.userInfo)
   const [showPassword, setShowPassword] = useState(false);
   const [modalVisible, setModal] = useState(false);
-  const [formData, setFormData] = useState({
-    current_password: '', // Current Password field
+  const [formData, setFormData] = useState({ // Current Password field
     new_password: '', // New Password field (changed from new_email)
     confirm_password: '', // Confirm Password field (changed from confirm_email)
     isLoading: false,
@@ -28,9 +28,9 @@ const Change_pass = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-    const { current_password, new_password, confirm_password } = formData;
+    const {  new_password, confirm_password } = formData;
 
-    if (!current_password || !new_password || !confirm_password) {
+    if ( !new_password || !confirm_password) {
       Alert.alert('Error', 'All fields are required.');
       return;
     }
@@ -49,14 +49,11 @@ const Change_pass = ({ navigation }) => {
 
     try {
       // Assuming you are sending a POST request to change the password
-      const { data } = await axios.post(`${backendURL}/user/password/reset`, {
-        id: user.id,
-        current_password,
-        new_password,
-        scope:'inner'
+      const { data } = await axios.post(`${backendURL}/user/password/reset`, {...datas,
+      password:  new_password,
       });
 
-      if (data === 'ok') {
+      if (data.status === 'ok') {
         // Password change successful
         // Perform any necessary actions here
 
@@ -66,16 +63,15 @@ const Change_pass = ({ navigation }) => {
         }));
         setModal(true);
         setTimeout(() => {
-            
-            navigation.navigate('main')
             setModal(false);
+         navigation.navigate('login2')
           }, 4000);
 
         //navigation.navigate('PasswordChangedScreen'); // Navigate to a success screen
       } else {
         // Handle password change failure
         // This could be due to incorrect current password or other reasons
-        Alert.alert('Error', data);
+        Alert.alert('Error', 'Failed to change password. Please try again.');
         setFormData((prevData) => ({
           ...prevData,
           isLoading: false,
@@ -94,31 +90,17 @@ const Change_pass = ({ navigation }) => {
 
   return (
     <>
-    <SafeAreaView style={{ flex: 1 }}>
+
      
-      <BHeader title={'Change Password'} />
 
       <View style={{ alignSelf: 'center', marginTop: 40 }}>
-        <TextInput
-           placeholderTextColor={'#BBB9BC'}
-          placeholder="Current Password"
-       style={[styles.textInput]}
-          secureTextEntry={!showPassword}
-          rightIcon={
-            <Icon
-              name={showPassword ? 'eye' : 'eye-off'}
-              type="ionicon"
-              onPress={() => setShowPassword(!showPassword)}
-              color="#BBB9BC"
-            />
-          }
-          onChangeText={(value) => handleChange('current_password', value)}
-        />
+        
+      <BHeader color={colors.dg.color} title={'Change Password'} />
 
         <TextInput
-           placeholderTextColor={'#BBB9BC'}
+         placeholderTextColor={'#BBB9BC'}
           placeholder="New Password"
-          style={[styles.textInput]}
+          style={[styles.textInput,{marginTop:40}]}
           secureTextEntry={!showPassword}
           rightIcon={
             <Icon
@@ -130,20 +112,21 @@ const Change_pass = ({ navigation }) => {
           }
           onChangeText={(value) => handleChange('new_password', value)}
         />
-
+  <View  style={{position:'absolute',top:140,right:30}}>
+                <Icon
+                    
+                      name={showPassword ? 'eye' : 'eye-off'}
+                      type="ionicon"
+                      onPress={() => setShowPassword(!showPassword)}
+                      color='#BBB9BC'
+                    />
+                </View>
         <TextInput
-           placeholderTextColor={'#BBB9BC'}
+         placeholderTextColor={'#BBB9BC'}
           placeholder="Confirm Password"
           style={[styles.textInput]}
           secureTextEntry={!showPassword}
-          rightIcon={
-            <Icon
-              name={showPassword ? 'eye' : 'eye-off'}
-              type="ionicon"
-              onPress={() => setShowPassword(!showPassword)}
-              color="#BBB9BC"
-            />
-          }
+          
           onChangeText={(value) => handleChange('confirm_password', value)}
         />
 
@@ -163,11 +146,10 @@ const Change_pass = ({ navigation }) => {
           modal={modalVisible}
         />
         
-    </SafeAreaView>
 
      {modalVisible && <Blur />}
      </>
   );
 };
 
-export default Change_pass;
+export default PassReset;

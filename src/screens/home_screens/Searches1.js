@@ -90,16 +90,15 @@ const data1 =[
 
   return (
      <>
- <Pressable onPress={()=>navigation.navigate("Search")}>
+ <View >
       <Input
-   
         placeholder="Search for a service"
         inputContainerStyle={[styles.textInput, styles.tc, { marginTop: 80, width:'90%', paddingTop: 10 }]}
-        leftIcon={<Icon name="chevron-back" type="ionicon" color={'#BCC4CC'} size={30} />}
-        onFocus={() => navigation.navigate("Search")}
+        leftIcon={<Icon onPress={()=>navigation.navigate('main')} name="chevron-back" type="ionicon" color={'#BCC4CC'} size={30} />}
+        onFocus={() => navigation.navigate('Search')}
         
         value={location.name} />
-        </Pressable>
+        </View>
          <Tab.Navigator
          style={{marginTop:-30}}
          screenOptions={screenOptions}

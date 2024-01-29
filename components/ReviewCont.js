@@ -75,6 +75,7 @@ const ReviewCont = ({ data }) => {
   return (
     <>
       <View style={styles.cont}>
+
         <View style={[styles.border, styles.child1]}>
           <Text style={[styles.rating]}>{reviewData?.average_rating}</Text>
           <AirbnbRating
@@ -90,6 +91,7 @@ const ReviewCont = ({ data }) => {
           <Text style={styles.based}>based on {reviewData?.total_ratings} reviews</Text>
         </View>
         <View style={styles.child1}>
+       
           {reviewData && ratings(reviewData.ratings).map((rate) => {
             return (
               <View
@@ -114,6 +116,7 @@ const ReviewCont = ({ data }) => {
           })}
         </View>
       </View>
+      <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:24,color:colors.dg.color,left:20,marginTop:30}}>Reviews</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => <NotificationReviewCard item={item} />}

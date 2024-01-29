@@ -40,7 +40,7 @@ const Booking_detail = ({route,navigation}) => {
   id && console.log(id)
     
 
-  const statuses= ["completed","cancelled","confirmed","no show","booked","unconfirmed","pending"]
+  const statuses= ["declined","rebook", "completed","cancelled","confirmed","no show","booked","unconfirmed","pending"]
 
  useEffect(()=>{
    getData()
@@ -62,8 +62,10 @@ const Booking_detail = ({route,navigation}) => {
     completed: colors.dg2.color,
     confirmed: colors.dg2.color,
     booked: colors.dg.color,
+    rebook: colors.dg.color,
     "no show": '#CD3D49',
     unconfirmed: colors.dg.color,
+    declined:'#CD3D49',
     pending:data?.services[0]? data.services[0].color: 'red'
 
 
@@ -73,10 +75,12 @@ const Booking_detail = ({route,navigation}) => {
     cancelled: 'white',
     confirmed: 'white',
     completed: 'white',
+    declined: 'white',
     booked: 'white',
     pending: 'white',
     "no show": 'white',
-    unconfirmed: 'white'
+    unconfirmed: 'white',
+    rebook: 'white'
   }
 
 
@@ -125,8 +129,12 @@ function capitalizeFirstLetter(str) {
       dispatch(setBooking({topping2: data.items,name: data.vendor.username}))
       navigation.navigate('SelectDate',{rebooked:true,id:data.id})
     }
-    else if(data?.status=='completed'){
+    else if(data?.status=='rebook'|| data?.status=='unconfirmed'){
       dispatch(setBooking({topping2: data.items,name: data.vendor.username}))
+      navigation.navigate('SelectDate',{rebooked:true,id:data.id})
+    }
+    else if(data?.status=='completed'){
+      dispatch(setBooking(JSON.stringify({topping2: data.items,name: data.vendor.username})))
       navigation.navigate('SelectDate',{rebooked:false,id:data.id})
     }
     else {
@@ -155,7 +163,7 @@ function capitalizeFirstLetter(str) {
   }
 
   function formatDate(dateString) {
-    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    const options = { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' };
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', options);
   }
@@ -287,10 +295,11 @@ function capitalizeFirstLetter(str) {
                   Initial deposit
                 </Text>
                 <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, flex: 1, textAlign: 'right', marginRight: 30 }}>¢{data.amount_paid}</Text></View>}
-          </View><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Location</Text><MapView
+          </View><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Location</Text>
+          <MapView
             initialRegion={{
-              latitude: data.vendor.lat ? data.vendor.lat : 5.614818,
-              longitude: data.vendor.lon ? data.vendor.lon : -0.205874,
+              latitude: data.vendor.lat ? parseFloat(data.vendor.lat) : 5.614818,
+              longitude: data.vendor.lon ? parseFloat(data.vendor.lon) : -0.205874,
               latitudeDelta: 0.00122,
               longitudeDelta: 0.00121,
             }}

@@ -1,12 +1,20 @@
 import React from 'react';
-import { Text, View, StyleSheet, SafeAreaView, Image, Modal, Pressable, FlatList } from 'react-native';
+import { Text, View,Alert, StyleSheet, SafeAreaView, Image, Modal, Pressable, FlatList } from 'react-native';
 import { FontFamily } from '../src/GlobalStyles';
 import { styles, colors } from '../src/Common_styles';
 import { ListItem } from '@rneui/base';
 import { generateTimeRange } from '../src/Functions';
 
 const Opening = ({ data, modal, setModal }) => {
-   
+  function sortOpeningHours(openingHours) {
+    const getDayIndex = (day) => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].indexOf(day);
+  
+    // Create a new array with the sorted opening hours
+    const sortedOpeningHours = [...openingHours].sort((a, b) => getDayIndex(a.day) - getDayIndex(b.day));
+  
+    // Convert the sortedOpeningHours to JSON
+    return sortedOpeningHours;
+  }
   return (
     <>
       <Modal animationType="slide" transparent={true} visible={modal}>
@@ -23,14 +31,14 @@ const Opening = ({ data, modal, setModal }) => {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
             style={md_style.momo_cont}
-            data={data}
+            data={sortOpeningHours(data)}
             renderItem={({ item }) => (
-              <ListItem style={{borderBottomColor:'#B0EBBD',borderBottomWidth:1}}>
+              <ListItem  style={{borderBottomColor:'#B0EBBD',borderBottomWidth:1}}>
                 <Text style={md_style.text2}>{item.day}</Text>
                 <ListItem.Content>
                   
                 </ListItem.Content>
-                {item.opening_time && item.closing_time ? (
+                {item.opening_time && item.closing_time && item.opened ?  (
                     <Text style={md_style.text}>
                      {generateTimeRange(item.opening_time,item.closing_time)}
                     </Text>

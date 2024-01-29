@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     left: 53,
      flexWrap:'wrap',
     width:300,
-    color: colors.dg.color
+   
     
   },
   frameChild: {
@@ -55,22 +55,23 @@ const styles = StyleSheet.create({
   },
   jessi: {
     top: 1,
-    fontSize: FontSize.size_lg,
-    fontWeight: "600",
+    fontSize: 18,
+   
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: Color.darkslategray_300,
+    color: colors.dg.color,
     textAlign: "left",
     left: 53,
     position: "absolute",
   },
   july2022: {
     top: 21,
-    fontSize: FontSize.size_3xs,
-    color: Color.lightgreen,
+    fontSize: 10,
+    color:colors.dg2.color
+    
   },
   likkleSalonIs: {
     marginVertical:30,
-    fontSize: FontSize.size_sm,
+    fontSize: 15,
     letterSpacing: 0.8,
     color: Color.gray_200,
   },

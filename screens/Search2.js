@@ -24,6 +24,7 @@ import Gsearch from "../components/Gsearch";
 import axios from "axios";
 import { backendURL } from "../src/services/http";
 import { da } from "date-fns/locale";
+import Bottom from "../components/bottomsheet";
 
 
 const initData= [
@@ -176,7 +177,7 @@ flexDirection:'row'}}>
 </View>
 } 
 
-    </SafeAreaView>
+</SafeAreaView>
   )
 }
 export default Search2;

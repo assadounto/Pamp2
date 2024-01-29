@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Text, View, SafeAreaView, Image, Modal,StyleSheet} from 'react-native';
+import {Text, View, SafeAreaView, Image, Modal,StyleSheet, Linking} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
 import { Button } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
@@ -37,7 +37,7 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
             
               <Text style={[colors.dgb, pop.h1, styles.tac]}>Are you sure you want to cancel booking?</Text>
               {
-              !data.cancelable&&  <><Text style={[colors.dgb, pop.h2, styles.tac]}>{`Due to late cancellation, you'll lose your deposit of 20% from the services value`} <Text style={{fontFamily:FontFamily.sourceSansProSemibold}}>(¢{parseInt(data.total)})</Text></Text><Text style={[colors.dgb, pop.h3, styles.tac]}>See the <Text style={pop.h4}> Cancellation policy</Text></Text></>
+              !data.cancelable&&  <><Text style={[colors.dgb, pop.h2, styles.tac]}>{`Due to late cancellation, you'll lose your deposit of 20% from the services value`} <Text style={{fontFamily:FontFamily.sourceSansProSemibold}}>(¢{parseInt(data.total)})</Text></Text><Text style={[colors.dgb, pop.h3, styles.tac]}>See the <Text onPress={()=>Linking.openURL('https://www.trypamp.com/terms-of-use')} style={pop.h4}> Cancellation policy</Text></Text></>
               }
               <View style={{ display: 'flex', flexDirection: 'row', gap: 10, marginVertical: 20 }}>
           
@@ -82,7 +82,7 @@ const pop=StyleSheet.create({
         
     },
     h4:{
-        color: colors.lg.color
+        color: colors.dg2.color
     }
 })
 export default Cancel_pop;

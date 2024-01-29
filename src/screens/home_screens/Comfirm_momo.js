@@ -74,7 +74,7 @@ const Processing = ({route}) => {
     const createBooking=async (ref)=>{
       const {data}= await axios.post(`${backendURL}/booking`,
       {
-        date: formatDateForRails(booking.actual_booking.date),
+        date: booking.actual_booking.date,
         time:  formatTimeForRails(booking.actual_booking.time),
         status: booking.actual_booking.status,
         service_ids: booking.actual_booking.services_id,
@@ -123,7 +123,7 @@ const channels=(name)=>{
           <SafeAreaView style={styles2.cont}>
           <Paystack 
 
-        paystackKey="pk_test_e4bdcee80587746aabcc7b289634c04024d9dac5"
+        paystackKey="pk_live_cac01fe0c36e8e38e53f9dcae4a3a405fed0e7d1"
         amount={amount_paid}
         currency={'GHS'}
         channels={channels(pay_type)}

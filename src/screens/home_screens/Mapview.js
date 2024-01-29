@@ -15,8 +15,8 @@ const Mapview = ({route,navigation}) => {
   return (
     <><MapView
       initialRegion={{
-        latitude: data.lat?data.lat:5.614818,
-        longitude: data.lon? data.lon: -0.205874,
+        latitude: data.lat? parseFloat(data.lat):5.614818,
+        longitude: data.lon? parseFloat(data.lon): -0.205874,
         latitudeDelta: 0.00122,
         longitudeDelta: 0.00121,
       }}

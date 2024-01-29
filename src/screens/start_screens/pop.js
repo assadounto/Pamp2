@@ -5,7 +5,7 @@ import {styles, colors} from '../../Common_styles';
 const Pop = ({main, modal}) => {
   return (
     <Modal animationType="slide" transparent={true} visible={modal}>
-      <View style={styles.pop}>
+      <View style={styles.pop2}>
         <Image
           source={require('../../../assets/check.png')}
           style={styles.popimg}

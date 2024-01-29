@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, View,TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Alert, View,TextInput, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
 import { Input, Button,Icon } from '@rneui/base';
 import { colors, styles } from '../../Common_styles';
 import axios from 'axios';
@@ -93,7 +93,7 @@ const PassReset = ({ navigation,route}) => {
 
      
 
-      <View style={{ alignSelf: 'center', marginTop: 40 }}>
+      <View style={{ alignSelf: 'center', marginTop:Platform.OS==='ios' ?40:0 }}>
         
       <BHeader color={colors.dg.color} title={'Change Password'} />
 

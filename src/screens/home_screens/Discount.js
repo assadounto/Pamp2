@@ -57,8 +57,8 @@ const Discount = ({navigation}) => {
   
     return (
       <>
-        <SafeAreaView>
-          <BHeader color={colors.dg2.color} title="Coupons" />
+
+          <BHeader top={Platform.OS==='ios'?60:20} color={colors.dg2.color} title="Coupons" />
           <View style={pop.pop}>
             <Text style={pop.rate}>Enter Promo Code</Text>
             <TextInput
@@ -87,10 +87,11 @@ const Discount = ({navigation}) => {
               ))}
           </ScrollView>
 
-        </SafeAreaView>
-        <Save name="Apply" handlePress={handlePressOK} />
+
+       
         <Pop2 modal={notify} main="Discount code successfully applied" />
         {notify&& <Blur/>}
+         <Save name="Apply" handlePress={handlePressOK} />
       </>
     );
   };

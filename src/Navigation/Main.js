@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, SafeAreaView} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {Icon} from '@rneui/base';
 import Home from '../screens/home_screens/Home';
@@ -24,20 +24,20 @@ function MyTabBar({state, descriptors, navigation}) {
   return (
     <View
       style={[
-        {flexDirection: 'row'},
+        {},
         
         {
           shadowColor: '#707070',
           shadowOpacity: 0.2,
           shadowRadius: 10,
-          elevation: 2,
+          elevation: 4,
           shadowOffset: {width: 5, height: 0},
           backgroundColor: 'white',
-          height: 80,
-          justifyContent: 'space-evenly',
-          //marginBottom:20
+          
+       
         },
       ]}>
+        <SafeAreaView style={{marginVertical:10, justifyContent: 'space-evenly',flexDirection: 'row'}}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
 
@@ -139,6 +139,7 @@ function MyTabBar({state, descriptors, navigation}) {
           </Animatable.View>
         );
       })}
+      </SafeAreaView>
     </View>
   );
 }
@@ -151,7 +152,7 @@ const MainNavigator = () => {
   const [infoModal,setInfoModal]=useState(false)
   const checkAnyRating=()=>{
     const ratings= userstate.rating
-     console.log(ratings.length,'llllllllll')
+     console.log(ratings,'llllllllll')
     if (ratings.length!==0){
       setVendor(ratings[0])
      
@@ -160,7 +161,7 @@ const MainNavigator = () => {
   }
 
   useEffect(()=>{
-checkAnyRating()
+  checkAnyRating()
   },[userstate])
   return (
     <><Tab.Navigator

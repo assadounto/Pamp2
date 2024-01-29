@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, StyleSheet,FlatList, Text, View, ActivityIndicator } from "react-native";
+import { Image, StyleSheet,FlatList, Text, View, ActivityIndicator, Platform, SafeAreaView } from "react-native";
 import SalonContainer from "../components/SalonContainer";
 import AppointmentsContainer from "../components/AppointmentsContainer";
 import MenuContainer from "../components/MenuContainer";
@@ -31,8 +31,10 @@ const Bookings = ({navigation}) => {
     setLoading(false)
   }
   return (
-    <><Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: 60,marginBottom:20 }}>Appointments</Text>
-  
+
+    <SafeAreaView>
+      <Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: Platform.OS==='ios'?10:20,marginBottom:20 }}>Appointments</Text>
+
      {
       loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>: bookings.length!== 0 ?
     
@@ -53,8 +55,7 @@ const Bookings = ({navigation}) => {
 
      
      
-       
-    </>
+</SafeAreaView>
   );
 };
 

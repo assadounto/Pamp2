@@ -22,10 +22,10 @@ const EmptyAppoiment = () => {
 
 const styles = StyleSheet.create({
   youDontHaveTypo: {
-    textAlign: "left",
+    textAlign: "center",
     color: Color.darkslategray_200,
     fontFamily: FontFamily.sourceSansProRegular,
-    position: "absolute",
+
   },
   component44Child: {
     height: "65.97%",
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   noAppointments: {
     top: "83.11%",
-    left: "22.99%",
     fontSize: FontSize.size_xl,
   },
   youDontHave: {

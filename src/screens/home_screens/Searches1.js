@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList, Alert} from 'react-native'
+import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList, Alert, Platform} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
 import { Icon,Input } from '@rneui/base'
 import { colors } from '../../Common_styles'
@@ -13,6 +13,7 @@ import VendorSearchCon from '../../../components/VendorSearchCont'
 import { connect } from 'formik'
 import { useRoute } from '@react-navigation/core'
 import { ScreenProps } from 'react-native-screens'
+import { SafeAreaView } from 'react-native'
 const Searches1 = ({navigation,route}) => {
   const thedata=(dat)=>{
     let info=[]
@@ -90,15 +91,15 @@ const data1 =[
 
   return (
      <>
- <View >
+ <SafeAreaView>
       <Input
         placeholder="Search for a service"
-        inputContainerStyle={[styles.textInput, styles.tc, { marginTop: 80, width:'90%', paddingTop: 10 }]}
+        inputContainerStyle={[styles.textInput, styles.tc, { marginTop: Platform.OS==='ios'?10:30, width:'90%', paddingTop: 10 }]}
         leftIcon={<Icon onPress={()=>navigation.navigate('main')} name="chevron-back" type="ionicon" color={'#BCC4CC'} size={30} />}
         onFocus={() => navigation.navigate('Search')}
         
         value={location.name} />
-        </View>
+        </SafeAreaView>
          <Tab.Navigator
          style={{marginTop:-30}}
          screenOptions={screenOptions}

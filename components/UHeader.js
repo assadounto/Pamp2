@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon, Badge } from '@rneui/base';
 import FastImage from 'react-native-fast-image';
@@ -7,11 +7,11 @@ import { update_new } from '../src/redux/user';
 import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
 
-const UHeader = ({ navigation }) => {
+const UHeader = ({ navigation,newnoti }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.userInfo);
   const userimg = useSelector(state => state.user.image1);
-  const newnoti = useSelector(state => state.user.newnoti);
+
 console.log(userimg,'j')
   return (
     <View
@@ -19,7 +19,7 @@ console.log(userimg,'j')
         backgroundColor: 'white',
         marginBottom: 20,
         marginLeft:20,
-        marginTop: 55,
+        marginTop: Platform.OS==='ios'?35:10,
       }}
     >
       <View
@@ -37,7 +37,7 @@ console.log(userimg,'j')
               user.image
                 ? { uri: user.image, headers: { Authorization: 'someAuthToken' }, priority: FastImage.priority.high }
                
-                : require('../assets/userimg.png')
+                : require('../assets/place.png')
             }
             style={{
               borderRadius: 50,
@@ -57,23 +57,21 @@ console.log(userimg,'j')
         >
           Hi, {user.username}
         </Text>
-<View style= {{position:'absolute',right:30,top:27}}>
-        {newnoti? (
-          <TouchableOpacity onPress={() => { dispatch(update_new(false)); navigation.push('All_notifications'); }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Icon size={30} name="bell" type="feather" color={colors.lg.color} />
-              <Badge
+<TouchableOpacity onPress={() =>{ navigation.navigate('All_notifications')}}  style= {{flex:1,alignItems:'flex-end',justifyContent:'center', paddingHorizontal:30}}>
+{
+            newnoti  ?
+            <View style={{top:5}}>
+              <Icon onPress={() =>{ navigation.navigate('All_notifications')}} name="bell" type="feather" color={colors.lg.color} />
+            <Badge
+                 badgeStyle={{width:12,height:12,borderRadius:50}}
                 status="warning"
-                badgeStyle={{right:18, top:-10,width: 15, height: 15, borderRadius: 50 }}
-              />
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => navigation.navigate('All_notifications')}>
-            <Icon name="bell" type="feather" color={colors.lg.color} />
-          </TouchableOpacity>
-        )}
-        </View>
+                
+                containerStyle={{ position: 'relative', top: -28, right: -5 }} />
+                </View>:
+              <View  style={{}}> 
+              <Icon onPress={()=> navigation.navigate('All_notifications')} name="bell" type="feather" color={colors.lg.color} /></View> 
+          }
+        </TouchableOpacity>
       </View>
     </View>
   );

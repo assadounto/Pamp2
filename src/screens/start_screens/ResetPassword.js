@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import BHeader from '../../../components/BHeader';
-import {Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {Text, View, TouchableOpacity, Image, StyleSheet, Platform} from 'react-native';
 import {Input, Button, CheckBox,ListItem,Icon} from '@rneui/base';
 import CheckBoxComponent from '../../../components/Checkbox';
 import { colors} from '../../Common_styles';
@@ -54,7 +54,7 @@ const {info} = route.params
   }
   return (
     <>
-    <View style={{marginTop:40}}>
+    <View style={{marginTop:Platform.OS==='ios'? 40:0}}>
     <BHeader
       color={colors.dg.color}
         title={'How do you want to reset password?'} 
@@ -69,9 +69,9 @@ const {info} = route.params
 
               <CheckBoxComponent onPress={handleEmailCheckboxChange} state={email} />
               <ListItem.Content>
-                <ListItem.Title style={colors.lg}>Email a confirmation code to 
+                <ListItem.Title style={colors.dg2}>Email a confirmation code to 
 </ListItem.Title>
-                <ListItem.Title style={colors.lg}>{info.email}</ListItem.Title>
+                <ListItem.Title style={colors.dg2}>{info.email}</ListItem.Title>
               </ListItem.Content>
             </ListItem>
             { info.phone &&
@@ -81,9 +81,9 @@ const {info} = route.params
 
               <CheckBoxComponent onPress={handlePhoneCheckboxChange} state={phone}/>
               <ListItem.Content>
-                <ListItem.Title style={colors.lg}>Text a confirmation code to 
+                <ListItem.Title style={colors.dg2}>Text a confirmation code to 
  </ListItem.Title>
-                <ListItem.Title style={colors.lg}>phone number ending with {info.phone.slice(-3)}</ListItem.Title>
+                <ListItem.Title style={colors.dg2}>phone number ending with {info.phone.slice(-3)}</ListItem.Title>
               </ListItem.Content>
             </ListItem>
             }

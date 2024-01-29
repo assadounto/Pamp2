@@ -118,7 +118,7 @@ style={{
           </View>
 
 
-    <View style={{width: 60,position:'absolute',right:30,top:200,backgroundColor:'white',display:'flex',flexDirection:'row',width:74,height:44,alignItems:'center',borderRadius:40,hadowColor: "#000",
+    <View style={{width: 60,position:'absolute',right:30,top:200,backgroundColor:'white',display:'flex', flexDirection:'row',width:74,height:44,alignItems:'center',borderRadius:40,hadowColor: "#000",
           shadowOffset: {
             width: 0,
             height: 2,
@@ -127,7 +127,8 @@ style={{
           shadowRadius: 3.84,
   
           elevation: 8,
-     justifyContent:'center'
+     justifyContent:'center',
+     gap:5
   }}> 
       <Icon
       name='star'
@@ -135,18 +136,22 @@ style={{
       color={colors.lg.color  
       }
       />
-      <Text>
+      <Text style={{fontFamily: FontFamily.sourceSansProSemibold,color:colors.dg.color,fontSize:15}}>
         {ratings.average_rating==0?'0.0':ratings.average_rating}
       </Text>
     </View>
     <View style={{position:'relative',top:-30}}>
-    <Text style={{marginBottom:15, fontFamily:FontFamily.sourceSansProBold,fontSize:24,fontWeight:'bold',color:colors.dg.color}}>{name} {
-      badge?<View style={{marginTop:4,marginLeft:5}}>
+      <View style={{display:'flex',alignContent:'center', flexDirection:'row',marginBottom:15, }}>
+    <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:24,fontWeight:'bold',color:colors.dg.color}}>{name} 
+   {" "} </Text>
+   {
+      badge?<View style={{display:'flex', marginTop:7,marginLeft:5}}>
         <SvgUri
         
         source={require('../assets/svgs/verified.svg')}/>
         </View>: <></>
-      }</Text>
+      }
+      </View>
    
     <View style={{display:'flex',flexDirection:'row'}}>  
     {items.map((item) => {
@@ -214,7 +219,7 @@ const styles2= StyleSheet.create({
       backgroundColor:'white',
       padding:20,
       width: '90%',
-      alignSelf: 'center',
+marginHorizontal:20,
       borderRadius:20
     }
   

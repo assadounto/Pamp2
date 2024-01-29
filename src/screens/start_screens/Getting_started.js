@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
   },
   c2: {
     width: screenWidth * 0.8,
-    height: screenHeight * 0.35,
+ 
     backgroundColor: '#FFFFFF',
     position: 'absolute',
     alignSelf: 'center',
-    top: screenHeight * 0.48,
+    bottom: screenHeight * 0.10,
     borderRadius: 40,
   },
   c3: {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     height: screenHeight * 0.39,
     alignSelf: 'center',
     position: 'absolute',
-    top: screenHeight * 0.18,
+    bottom: screenHeight * 0.36,
   },
   c4: {
     marginTop: screenHeight * 0.035,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.46,
     height: screenHeight * 0.052,
     marginTop: screenHeight * 0.01,
-    marginBottom: 10,
+    marginBottom: 40,
     justifyContent: 'center', // Center the content vertically
     alignItems: 'center', // Center the content horizontally
   },
@@ -100,8 +100,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontFamily: FontFamily.sourceSansProBold,
     textAlign: 'center',
-    padding: 10,
-   
   },
 });
 

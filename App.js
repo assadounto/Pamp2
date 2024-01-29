@@ -11,7 +11,7 @@ import axios from 'axios';
 import { backendURL } from './src/services/http';
 import { useNavigation } from '@react-navigation/core';
 import { Linking } from 'react-native';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 function App() {
 
 
@@ -52,7 +52,9 @@ function App() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <Navigator_index />
+        </GestureHandlerRootView>
       </PersistGate>
     </Provider>
   );

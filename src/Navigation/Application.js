@@ -71,10 +71,7 @@ const ApplicationNavigator = () => {
         <Stack.Screen name="change_email"  options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Change_email} /> 
         <Stack.Screen name="change_pass" options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Change_pass} /> 
         <Stack.Screen 
-           options={{ 
-            presentation: 'modal',
-        
-          }}
+             options={{presentation:'modal'}}
           name="Search" component={Search2} 
        /> 
           

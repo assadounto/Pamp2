@@ -23,8 +23,11 @@ const Normal= ({data}) => {
         <View>
             <View style={{display:'flex',
         flexDirection:'row', gap:5,}}>
-                <View style={{width:9,height:9,borderRadius:50,backgroundColor:color ,marginTop:5}}></View>
-                <Text style={[colors.dg,{fontFamily:FontFamily.sourceSansProBold,fontSize:17}]}>{data.title}</Text>
+{!data.read &&
+              <View style={{ width: 9, height: 9, borderRadius: 50, backgroundColor: color, marginTop: 5 }}></View>
+            }              
+            
+          <Text style={[colors.dg,{fontFamily:FontFamily.sourceSansProBold,fontSize:17}]}>{data.title}</Text>
             </View>
             <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:13,color:"#999999",width:300}}>{data.body}</Text>
             <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:13,color:colors.dg.color,marginTop:5}}>{formatDate(data.created_at)}</Text>

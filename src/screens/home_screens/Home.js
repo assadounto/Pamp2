@@ -9,7 +9,7 @@ import RadioButton from '../../../components/RadioButton';
 import Geolocation from 'react-native-geolocation-service';
 import {useSelector,useDispatch} from 'react-redux';
 import { backendURL } from '../../services/http';
-import { setExistingRating, showBottom } from '../../redux/user';
+import { setExistingRating, setImage, showBottom } from '../../redux/user';
 import { request, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import { FontFamily } from '../../GlobalStyles';
 import img from '../../../assets/s.png'
@@ -34,8 +34,9 @@ import { da } from 'date-fns/locale';
 import { Linking } from 'react-native';
 import notifee from '@notifee/react-native';
 import { useFocusEffect } from '@react-navigation/native';
-
+import BottomSheet from '@gorhom/bottom-sheet';
 import ImageCont from '../../../components/Image';
+import Bottom from '../../../components/bottomsheet';
 const Tab = createMaterialTopTabNavigator();
 
 
@@ -43,14 +44,14 @@ const Tab = createMaterialTopTabNavigator();
 const Home = ({navigation}) => {
 const user =useSelector((state)=>state.user.userInfo)
 const userstate =useSelector((state)=>state.user)
-
+const [unread,setunread]= useState(false)
 
   const dispatch= useDispatch()
-  const [ name,setName]=useState()
+  const [ name,setName]=useState('')
   const [option, setOption] = React.useState('Popular');
    const [modal,setmodal]= React.useState(false)
    const [vendor,setVendor]= React.useState({})
-
+console.log(user.image,'here')
 const  reverseGeocode=async (lat, lng)=> {
     const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0'; // Replace with your actual Google API key
     
@@ -60,7 +61,7 @@ const  reverseGeocode=async (lat, lng)=> {
   
       if (data.status === 'OK' && data.results.length > 0) {
         const address = data.results[0].formatted_address;
-        setName(address)
+        return address
         
       } else {
         throw new Error('Unable to retrieve address');
@@ -74,7 +75,7 @@ const  reverseGeocode=async (lat, lng)=> {
     notifee.setBadgeCount(0).then(() => console.log('Badge count removed!'));
     handleDeepLink(event.url);
   });
-  
+
   const handleDeepLink = (url) => {
     const route = url.replace(/.*?:\/\//g, '');
     const id = route.match(/\/([^\/]+)\/?$/)[1];
@@ -95,10 +96,11 @@ const  reverseGeocode=async (lat, lng)=> {
     Geolocation.getCurrentPosition(
       async (position) => {
     const get=  await reverseGeocode(position.coords.latitude,position.coords.longitude)
+    
     const {data}=  await axios.post(backendURL+'/user/location',{lat:position.coords.latitude,lon:position.coords.longitude,id: user.id})
     dispatch(setLocation(
       {
-       name:name && name,
+        name:get ||'',
         lat: position.coords.latitude,
         lon: position.coords.longitude
     }))
@@ -134,55 +136,59 @@ const  reverseGeocode=async (lat, lng)=> {
      }
 
     const getUdates=async()=>{
-const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
-      dispatch(setnotifications_count(data.notifications.length))
-      dispatch(setExistingRating(data.ratings))
+      const {data}= await axios.get(`${backendURL}/has_unread?id=${user.id}&scope=user`)
+      setunread(data.has_unread)
+      dispatch(setExistingRating(data.unrated))
+      dispatch(setImage(data.image))
     }
+console.log(userstate.location)
+    useFocusEffect(
+    
+      React.useCallback(() => {
+        getUdates()  
+        getUserLocation();
+
+        userstate.location.name=='' &&
+        request(Platform.OS==='ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
+          switch (result) {
+            case RESULTS.UNAVAILABLE:
+              console.log(
+                "This feature is not available (on this device / in this context)"
+              );
+              break;
+            case RESULTS.DENIED:
+              console.log(
+                "The permission has not been requested / is denied but requestable"
+              );
+              break;
+            case RESULTS.LIMITED:
+              console.log("The permission is limited: some actions are possible");
+              break;
+            case RESULTS.GRANTED:
+              console.log("The permission is granted");
+              // Permission has been granted - app can request location coordinates
+              getUserLocation();
+              break;
+            case RESULTS.BLOCKED:
+              console.log("The permission is denied and not requestable anymore");
+              break;
+          }
+        });
+      }, []) // Include user.id in the dependency array
+    );
 
   React.useEffect(()=>{
    
     dispatch(showBottom(true))
     fetchData()
  
-    getUdates()
-    userstate.location.name==undefined&&
-    request(Platform.OS==='ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log(
-            "This feature is not available (on this device / in this context)"
-          );
-          break;
-        case RESULTS.DENIED:
-          console.log(
-            "The permission has not been requested / is denied but requestable"
-          );
-          break;
-        case RESULTS.LIMITED:
-          console.log("The permission is limited: some actions are possible");
-          break;
-        case RESULTS.GRANTED:
-          console.log("The permission is granted");
-          // Permission has been granted - app can request location coordinates
-          getUserLocation();
-          break;
-        case RESULTS.BLOCKED:
-          console.log("The permission is denied and not requestable anymore");
-          break;
-      }
-    });
+ 
+  
   },[])
 
  
   // const data = useGetCategoriesQuery();
  
-  const data2 = [
-    { value: 'Popular' },
-    { value: 'Recently viewed' },
-    { value: 'Top Rated Hail salons' },
-    {value: 'Top Rated Beauty Salons'},
-    { value: 'Top Rated Spa' },
-  ];
 
   const selectHandler=(value)=>{
      getlo()
@@ -194,8 +200,8 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
   
   return (
     <Fragment >
-     <UHeader navigation={navigation} />
- 
+     <UHeader newnoti={unread}  navigation={navigation} />
+
     <Pressable onPress={()=>navigation.navigate("Search")}>
      <Image
        
@@ -210,6 +216,7 @@ const {data}= await axios.get(`${backendURL}/user/notifications?id=${user.id}`)
         <Tab.Screen name="Popular" component={Popular} />
         <Tab.Screen name="Recent viewed" component={Recent } />
         <Tab.Screen name="Top Rated Vendors" component={Top} />
+       {user.role=='admin'? <Tab.Screen name="Extra Vendors" component={Others} />: <></>}
     </Tab.Navigator>
     </Fragment>
   );
@@ -277,7 +284,7 @@ const[loading,setLoading]= React.useState(false)
     <>
 {
       loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>:
-    <FlatList style={{}}
+    <FlatList contentContainerStyle={{paddingBottom:30}}
       showsVerticalScrollIndicator={false}
       data={data}
       renderItem={({ item }) => (
@@ -336,6 +343,7 @@ catch{
   
     React.useCallback(() => {
       get()
+
     }, []) // Include user.id in the dependency array
   );
   
@@ -408,6 +416,73 @@ const Top=({scope})=>{
     
     loading ? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/> :
   <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
+  }
+  </> )
+}
+
+
+
+
+
+
+const Others=({scope})=>{
+  const user =useSelector((state)=>state.user)
+  const navigation=useNavigation()
+  const[loading,setLoading]= React.useState(false)
+
+  const[datas,setData]= useState([])
+  const get=async()=>{ 
+
+    try{
+      setLoading(true)
+    const {data}= await axios.get(`${backendURL}/categories?scope=extra&lat=${user.location.lat}&lon=${user.location.lon}`)
+    const vendors= data.map((vendor)=>{
+      return {
+        id: vendor.id,
+        image: vendor.cover_url,
+        logo: vendor.avatar_url,
+        name:vendor.username,
+        ratings:vendor.ratings,
+        badge: vendor.badge,
+        location: vendor.name,
+        dist: vendor.distance,
+        items: vendor.top_services.split(",").map((item)=>{
+       return {
+          value: item
+        }
+      }
+        )
+      }
+        
+     })
+    setData( vendors)
+    setLoading(false) 
+    }
+    catch{
+      setLoading(false) 
+      Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+
+    }
+   
+  }
+  
+  useFocusEffect(
+  
+    React.useCallback(() => {
+      get()
+    }, []) // Include user.id in the dependency array
+  );
+  
+
+ return(
+<>
+  {
+    
+    loading ? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/> :
+
+         <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
+
+
   }
   </> )
 }

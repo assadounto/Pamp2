@@ -22,20 +22,26 @@ const Phone_pop = ({setcancel, modal,setblur,id,data,login,googledata}) => {
 
     const handlePressOK=async()=>{
         setLoading(true)
-    const {data}= axios.post(`${backendURL}/phone/confirm`,{id: id,phone: text,scope:'update_user' })
-    console.log(data)
-    setLoading(false)
+        try{
+          const {data}= axios.post(`${backendURL}/phone/confirm`,{id: id,phone: text.replace(/\s/g, ''),scope:'update_user' })
+          console.log(data)
+          setLoading(false)
+         
+          setcancel(false)
+          if (googledata) {
+              // Introduce a delay of 1 second before calling login
+              setTimeout(() => {
+                login(googledata);
+              }, 1000);
+            } else {
+              Alert.alert('Success','Please click on resend code to get new code.');
+            }
+        }
    
-    setcancel(false)
-    if (googledata) {
-        // Introduce a delay of 1 second before calling login
-        setTimeout(() => {
-          login(googledata);
-        }, 1000);
-      } else {
-        Alert.alert('Error','Something went wrong. Please try again');
-      }
+catch(e){
+  Alert.alert('Error','Something went wrong. Please try again');
 
+}
     }
 
     React.useEffect(() => {
@@ -74,7 +80,7 @@ const Phone_pop = ({setcancel, modal,setblur,id,data,login,googledata}) => {
 
          </View>
          <Text style={pop.text}>Add your phone number</Text>
-        <TextInput maxLength={13}  placeholderTextColor={'#BBB9BC'} placeholder='+23324xxxxxxx' onChangeText={setText}    style={pop.input}/>
+        <TextInput  placeholderTextColor={'#BBB9BC'} placeholder='eg +233241234567' onChangeText={setText}    style={pop.input}/>
           <Button loading={loading} titleStyle={{fontFamily:FontFamily.sourceSansProBold}} onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='Add'>
 
                   </Button>

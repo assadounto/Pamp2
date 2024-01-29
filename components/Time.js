@@ -77,8 +77,8 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
       <Pressable
         style={{}}
         onPress={() => {
-         let ans= isCurrentTimeGreaterOrEqual(item,date)
-          console.log( ans)
+      
+          
           dispatch(set_time(item));
           rebooked? rebook(item):
           navigation.navigate('Confirm');
@@ -246,8 +246,7 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
               key={item}
               style={{ }}
               onPress={() => {
-                const isTimeGreaterOrEqual = isCurrentTimeGreaterOrEqual(item, date);
-                console.log(isTimeGreaterOrEqual);
+              
                 dispatch(set_time(item));
                 rebooked ? rebook(item) : navigation.navigate('Confirm');
               }}

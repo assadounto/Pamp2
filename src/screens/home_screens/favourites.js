@@ -1,5 +1,5 @@
 import React ,{useMemo, useState}from "react"
-import { View,Text,Pressable,Image,ImageBackground,SafeAreaView ,ActivityIndicator} from "react-native"
+import { View,Text,Pressable,Image,ImageBackground,SafeAreaView ,ActivityIndicator, Platform} from "react-native"
 import MasonryList from '@react-native-seoul/masonry-list';
 import { styles ,colors} from "../../Common_styles";
 import { FontFamily } from "../../GlobalStyles";
@@ -107,7 +107,7 @@ const Favourites=({navigation})=>{
 
 
     return(
-      <SafeAreaView style={{flex:1}}>
+      <SafeAreaView style={{flex:1,marginTop:Platform.OS==='android'?20:0}}>
    
         <Text style={{marginLeft:30,fontFamily:FontFamily.sourceSansProBold,fontSize:26,color:'#86D694'}}>My Fav</Text>
         { loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>: 

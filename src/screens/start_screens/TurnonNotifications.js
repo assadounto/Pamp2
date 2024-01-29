@@ -98,7 +98,7 @@ const Turnon = ({navigation}) => {
       </ImageBackground>
     
       {modalVisible && (
-        <Pop2 main={'Notification sucesfully turned on'} modal={modalVisible} />
+        <Pop2 main={'Notification successfully turned on'} modal={modalVisible} />
       )}
       {modalVisible && <Blur />}
     </View>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, TextInput,Alert,Linking} from 'react-native';
+import {View, Text, ScrollView, TextInput,Alert,Linking, Platform} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 import {Button, Input, Icon, CheckBox} from '@rneui/base';
@@ -143,7 +143,7 @@ const Register = ({navigation}) => {
                  textContainerStyle={{marginHorizontal:10, backgroundColor: '#EFEFEF',}}
             //ref={phoneInput}
             //defaultValue={value}
-            containerStyle={[[styles.textInput,{alignSelf:'center',marginBottom:22}]]}
+            containerStyle={[Platform.OS==='ios'? styles.textInput:{borderRadius:20,  backgroundColor: '#EFEFEF',alignSelf:'center',marginBottom:22,height:75}]}
             defaultCode="GH"
            codeTextStyle={{color:colors.lg.color}}
             layout="second"
@@ -224,7 +224,7 @@ const Register = ({navigation}) => {
                  <CheckBox
                   title={
                     <Text style={[colors.dg, styles.terms]}>
-               {" I agree to receive marketing notifications with \n offers and  news"}
+               {" I agree to receive marketing notifications with offers and  news"}
                     </Text>
                   }
                   uncheckedIcon={<Image

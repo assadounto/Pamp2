@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
+import Phone_pop from '../../../components/PhoneInput';
 import Header from './header';
 import {styles, colors} from '../../Common_styles';
 import {Button} from '@rneui/base';
@@ -66,6 +67,7 @@ const CELL_COUNT = 4;
 
 const VerifyNumber = ({navigation}) => {
     const [shakeAnimation] = useState(new Animated.Value(0));
+    const [visible,setVisible]=useState(false)
 
     const user= useSelector((state)=>state.user.userInfo)
     console.log(user,'ddd')
@@ -83,7 +85,22 @@ const VerifyNumber = ({navigation}) => {
   });
   const [modalVisible, setModal] = useState(false);
   React.useEffect(() => {
-   
+    if (!timerActive) {
+    
+
+      setTimerActive(true);
+      setTimerCount(60);
+      // Start the timer countdown
+      const interval = setInterval(() => {
+        setTimerCount((prevCount) => prevCount - 1);
+      }, 1000);
+  
+      // Stop the timer when it reaches 0
+      setTimeout(() => {
+        clearInterval(interval);
+        setTimerActive(false);
+      }, 60000);
+    }
     if (isSuccess) {
       setModal(true);
       setTimeout(() => {
@@ -170,7 +187,7 @@ const VerifyNumber = ({navigation}) => {
         <Header
           main={'Verify Phone Number'}
           sub={'Please enter the 4 digit code sent'}
-          sub2={'to ypur phone number'}
+          sub2={'to your phone number'}
         />
         <CodeField
           ref={ref}
@@ -208,18 +225,18 @@ const VerifyNumber = ({navigation}) => {
         </Text>
 
         <Text> </Text>
-        <TouchableOpacity>
+
           <Button
             title="Verify Phone Number"
             onPress={() => {
               handleSubmit()
             }}
             loading={isLoading}
-            buttonStyle={[styles.button,{width:300}]}
+            buttonStyle={[styles.button,{width:'100%'}]}
           />
-        </TouchableOpacity>
+  
 
-        <Text style={[colors.lg, styles.bold, styles.tc]}>
+        <Text onPress={()=>setVisible(true)} style={[colors.lg, styles.bold, styles.tc]}>
           Change Phone Number
         </Text>
         <Pop2
@@ -227,7 +244,9 @@ const VerifyNumber = ({navigation}) => {
           modal={modalVisible}
         />
       </SafeAreaView>
+      <Phone_pop modal={visible} id={user.id} setcancel={setVisible}/>
       {modalVisible && <Blur />}
+      {visible && <Blur />}
     </>
   );
 };

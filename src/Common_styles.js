@@ -26,6 +26,7 @@ export const styles = StyleSheet.create({
     width: 330,
     height: 63,
     margin:0,
+    
     alignSelf:'center',
     backgroundColor: '#EFEFEF',
     borderRadius: 23,
@@ -131,9 +132,9 @@ width:'85%'
   forgot: {
     color: '#BBB9BC',
     fontSize: 15,
-    alignSelf: 'flex-end',
-    marginRight: 20,
+    marginTop:15,
     marginBottom: 60,
+    textAlign:'right'
   },
   bold: {
     fontWeight: 'bold',
@@ -237,7 +238,7 @@ width:'85%'
     borderRadius: 10,
     marginBottom: 20,
     height:42,
-    color:"#00463C"
+    color:"#86D694"
   },
   St1: {
     fontFamily: FontFamily.sourceSansProBold,
@@ -245,6 +246,7 @@ width:'85%'
     color: '#86D694',
     marginTop: 60,
     marginLeft: 20,
+    paddingBottom:10
   },
   option: {
     fontSize: 13,

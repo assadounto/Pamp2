@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView,Dimensions, Modal,Share, Alert} from 'react-native'
+import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView,Dimensions, Modal,Share, Alert, Platform} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
 import { Icon,Input ,Button,CheckBox} from '@rneui/base'
 import { colors } from '../../Common_styles'
@@ -89,7 +89,7 @@ const VendorDetail = ({navigation,route}) => {
 
   const handleShare = () => {
     Share.share({
-      message: `Check this vendor out… 👀: ${backendURL}/home/show/${data1.id}`,
+      message: `Check this vendor out… 👀: ${backendURL}/vendor/pamp/${data1.id}`,
     })
       .then((result) => {
         if (result.action === Share.sharedAction) {
@@ -106,6 +106,8 @@ const VendorDetail = ({navigation,route}) => {
         console.error(error.message);
       });
   };
+  
+
   
    const checkVendorStatus = (openingHours) => {
     const currentDate = new Date();
@@ -382,7 +384,7 @@ const VendorDetail = ({navigation,route}) => {
     >
 <CustomImageSlider images={data1.images} border={true}/>
     
-      <View style={{ position: 'absolute', top: 60, right: 30 }}>
+      <View style={{ position: 'absolute', top: Platform.OS==='ios'? 60:30, right: 30 }}>
         <Icon
         onPress={createFav}
           name={fav?'heart': 'heart-outline'}
@@ -391,7 +393,7 @@ const VendorDetail = ({navigation,route}) => {
           
           color={'#FFFFFF'} />
       </View>
-      <View style={{ position: 'absolute', top: 60, left: 20 }}>
+      <View style={{ position: 'absolute', top:  Platform.OS==='ios'? 60:30, left: 20 }}>
         <Icon
           name='chevron-back-outline'
           type='ionicon'
@@ -514,7 +516,7 @@ const VendorDetail = ({navigation,route}) => {
             )
           })}
         </View>
-        <Text style={{left:20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: '#00463C', marginBottom: 15 }}> {data1.location}</Text>
+        <Text style={{left:20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: '#00463C', marginBottom: 15,marginRight:20 }}> {data1.location}</Text>
         <View style={{left:20, display: 'flex', flexDirection: 'row' }}>
           <Icon name='map-pin' type='feather' color={colors.lg.color} />
           <Text style={{ color: colors.lg.color, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {parseInt(data1.dist/1000)}km - <Text onPress={() => navigation.navigate('Mapview', {

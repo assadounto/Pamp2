@@ -99,11 +99,11 @@ const styles = StyleSheet.create({
   c1: {width: '100%', height: '100%' },
   c2: {
     width: '80%',
-    height: '45%',
+
     backgroundColor: '#FFFFFF',
     position: 'absolute',
     alignSelf: 'center',
-    top: '50%',
+   bottom: 30,
     borderRadius: 40,
   },
   c3: {
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     height: 310,
     alignSelf: 'center',
     position: 'absolute',
-    top: '18%',
+    bottom: 380,
   },
   c4: {
     marginTop: 15,

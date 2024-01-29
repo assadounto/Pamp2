@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View,SafeAreaView,Pressable,StyleSheet,FlatList} from 'react-native';
+import {Text, View,SafeAreaView,Pressable,StyleSheet,FlatList, Platform} from 'react-native';
 import { Icon } from '@rneui/base';
 import {colors} from '../../Common_styles';
 import Normal from './Normal';
@@ -12,19 +12,51 @@ import EmptyStateNoti from '../../../components/EmptyNoti';
 import { useNavigation,useIsFocused } from '@react-navigation/core';
 import { useLazyGetnotificationsQuery } from '../../redux/authapi';
 import { useSelector } from 'react-redux';
-
+import { backendURL } from '../../services/http';
+import { useFocusEffect,} from '@react-navigation/core';
+import axios from 'axios';
 
 const Notifications = () => {
   const user = useSelector(state => state.user.userInfo);
   const[refetch, { data, isLoading,  }] = useLazyGetnotificationsQuery();
   const isFocused = useIsFocused(); // Check if the screen is focused
+  const markAllAsCompleted=async()=>{
+    const res= axios.patch(backendURL+'/mark_all_as_read',{
+      id: user.id,
+      scope: "user"
+    
+    })
 
-  React.useEffect(() => {
-    if (isFocused) {
-      // Fetch new data when the screen is focused
-      refetch(user.id);
     }
-  }, [isFocused]);
+
+    useFocusEffect(
+      React.useCallback(() => {
+        refetch(user.id);
+    }, [])
+    );
+  React.useEffect(() => {
+    console.log(data,'l')
+    const markAllAsCompletedHandler = async () => {
+      await markAllAsCompleted();
+    };
+  
+    const timeoutId = setTimeout(markAllAsCompletedHandler, 1000);
+  
+    // Cleanup logic when component unmounts or user navigates away
+    return () => {
+      clearTimeout(timeoutId);
+    };
+      // Fetch new data when the screen is focused
+     
+      
+    
+
+  }, []);
+
+
+
+
+  
 
   const renderNotificationComponent = ({ item }) => {
     switch (item.notification_type) {
@@ -48,7 +80,8 @@ const Notifications = () => {
   const navigation = useNavigation();
   
   return (
-    <>
+    <SafeAreaView style={{marginTop:20}}>
+      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
       <Text style={[styles.notifications, styles.myFavTypo]}>Notifications</Text>
       <Pressable style={styles.x} onPress={() => navigation.goBack()}>
         <Icon
@@ -61,14 +94,14 @@ const Notifications = () => {
           source={require('../../../assets/x5.png')}
         />
       </Pressable>
-      {data && data.length === 0 ? <EmptyStateNoti /> : (
+      </View>
         <FlatList
           data={data?.notifications}
           renderItem={renderNotificationComponent}
           keyExtractor={item => item.id.toString()}
+          ListEmptyComponent={<EmptyStateNoti />}
         />
-      )}
-    </>
+    </SafeAreaView>
   );
 };
 
@@ -80,13 +113,13 @@ const styles = StyleSheet.create({
     color: colors.dg2.color,
     fontWeight: 'bold',
     marginLeft: 40,
-    marginTop: 70,
-    marginBottom: 30,
+  
+   paddingBottom:10
   },
   x: {
-    position: 'absolute',
-    top: 72,
-    right: 20,
+ 
+marginRight:20
+
   },
   icon: {
     fontWeight: 'bold',

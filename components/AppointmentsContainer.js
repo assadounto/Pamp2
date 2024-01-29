@@ -60,7 +60,7 @@ const AppointmentsContainer = ({navigation,data}) => {
   
 
 
-  const statuses= ["completed","cancelled","confirmed","no show","booked","unconfirmed","pending"]
+  const statuses= ['declined', "rebook","completed","cancelled","confirmed","no show","booked","unconfirmed","pending"]
 
 
 
@@ -69,19 +69,23 @@ const AppointmentsContainer = ({navigation,data}) => {
     completed: colors.dg2.color,
     confirmed: colors.dg2.color,
     booked: colors.dg.color,
+    rebook: colors.dg.color,
+    declined:'#CD3D49',
     "no show": '#CD3D49',
     unconfirmed: colors.dg.color,
     pending: data.services[0]? data.services[0].color: 'red'
   }
   
   const c={
+    declined: 'white',
     cancelled: 'white',
     confirmed: 'white',
     completed: 'white',
     booked: 'white',
     "no show": 'white',
     pending: 'white',
-    unconfirmed: 'white'
+    unconfirmed: 'white',
+    rebook:'white',
   }
 
 
@@ -217,12 +221,12 @@ const styles = StyleSheet.create({
   },
   likkleSalon: {
     marginTop: 38.99,
-    marginLeft: -116.5,
+
     color: Color.darkslategray_200,
     textAlign: "left",
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: FontSize.size_mid,
-    left: "50%",
+    left: 60,
     top: "50%",
   },
   sewIn: {

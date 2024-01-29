@@ -106,18 +106,19 @@ console.log(user.location.name)
     searchQuery== '' && setSearchQuery(prev)
   };
 
+
+
   return (
-    <TouchableWithoutFeedback onPress={hideSearchResults}>
+    <><TouchableWithoutFeedback onPress={hideSearchResults}>
       <View>
         <TextInput
-        ref={refInput}
+          ref={refInput}
           style={s_style.text_input}
           placeholder={searchQuery}
           value={searchQuery}
           onChangeText={setSearchQuery}
           onSubmitEditing={handleSearch}
-          keyboardType="web-search"
-        />
+          keyboardType="web-search" />
         <View style={s_style.icon}>
           <Icon name="map-pin" type="feather" size={25} color="#BCC4CC" />
         </View>
@@ -145,8 +146,8 @@ console.log(user.location.name)
                   setSearchQuery(result.name);
                   setStart(false);
                   setSearchResults([]);
-                  setShow(false)
-                }}
+                  setShow(false);
+                } }
               >
                 <View style={{ marginLeft: 20 }}>
                   <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProSemibold }}>{result.name}</Text>
@@ -157,6 +158,8 @@ console.log(user.location.name)
         ) : null}
       </View>
     </TouchableWithoutFeedback>
+    
+  </>
   );
 };
 
@@ -183,7 +186,6 @@ const s_style= StyleSheet.create({
     display:'flex',
     flexDirection:'row',
     marginTop:20,
-
   },
   icon:{
     margin:15,

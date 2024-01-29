@@ -7,9 +7,11 @@ import booking, { set_date } from "../../redux/booking";
 import Blur from "../start_screens/Blur";
 import Pop2 from "../start_screens/pop2";
 import axios from "axios";
+import { useFocusEffect,} from '@react-navigation/core';
 import { formatTimeForRails } from "../../Functions";
 import { setbooking,set_staff,setVendor,setvendorname,setvendorid  } from '../../redux/booking'
 import { backendURL } from "../../services/http";
+import { Alert } from "react-native";
 
 let monthNames =[
     "January", "February", "March", "April", "May", "June",
@@ -17,7 +19,7 @@ let monthNames =[
   ]
 const SelectDate=({navigation,route})=>{
   const {rebooked,id,vendor,noti_id}= route.params
- 
+  let date = new Date()
     const formatDateForRails = (dateObj) => {
         const { day, month, year } = dateObj;
         
@@ -42,20 +44,28 @@ const SelectDate=({navigation,route})=>{
         
         return formattedDate;
       };
-    
+      const [option,setOption] =useState(date.getFullYear()+"-"+ monthNames[date.getMonth()]+ "-"+date.getDate())
+      useFocusEffect(
+        React.useCallback(() => {
+          const date = new Date().toISOString().split('T')[0]
+          dispatch( set_date(date ))
+      }, [])
+      );
       
-    let date = new Date()
+  
    
     const dispatch=useDispatch()
-    const [option,setOption] =useState({
-        day: date.getDate(), month: monthNames[date.getMonth()] , year: date.getFullYear()
-    })
-   
-    dispatch(set_date(option))
+    const setDate=(date)=>{
+      setOption(date)
+
+      dispatch(set_date(date))
+    }
+    
+    
     const [modal,setModal]= useState(false)
    const rebook=async(item)=>{
     let items = {
-        date: formatDateForRails(option),
+        date: option,
         time: formatTimeForRails(item),
         booking_id: id,
         status: 'booked',
@@ -75,9 +85,9 @@ const SelectDate=({navigation,route})=>{
     return(
         <><SafeAreaView>
             <BHeader title={'Select date & time'} color="#86D694"/>
-            <Calender rebook={rebook} rebooked={rebooked} onSelect={(value) => setOption(value)} navigation={navigation} />
+            <Calender rebook={rebook} rebooked={rebooked} onSelect={(value) => setDate(value)} navigation={navigation} />
         </SafeAreaView>
-        <Pop2 main={'Sucessfully rebooked appointment'} modal={modal}/>
+        <Pop2 main={'Successfully rebooked appointment'} modal={modal}/>
         {
           modal&&   <Blur/>
         }

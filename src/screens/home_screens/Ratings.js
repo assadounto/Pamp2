@@ -7,7 +7,7 @@ import ReviewContainer from "../../../components/ReviewContainer"
 
 const Ratings=({route})=>{
     const {data}= route.params
-    console.log(data,'m')
+
     return( 
         <SafeAreaView>
                <BHeader title="Rating and reviews" color={'#86D694'}/>

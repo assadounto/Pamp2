@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {Formik} from 'formik';
 import {Button, Input, Icon, CheckBox, BottomSheet} from '@rneui/base';
@@ -16,8 +17,9 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {Color, FontFamily} from '../../GlobalStyles';
+import CheckBoxComponent from '../../../components/Checkbox';
 import {styles} from '../../Common_styles';
-import { setUser } from '../../redux/user';
+import {setRemember, setUser } from '../../redux/user';
 import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import { backendURL } from '../../services/http';
@@ -25,19 +27,42 @@ import { loginUser } from '../../redux/user';
 import { useGetPhoneConfirmMutation } from '../../redux/authapi';
 import Phone_pop from '../../../components/PhoneInput';
 import Blur from './Blur';
+import Bottom from '../../../components/bottomsheet';
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
+  const remember= useSelector(state=>state.user.remember)
+  const [password,setPass]=useState(remember.password)
+
   const [errorMessage,setError]= useState('')
   const [id,setId]=useState()
   const [visible,setVisible]=useState(false)
  const [loading,setLoading]= useState(false)
  const [getPhoneConfirm]= useGetPhoneConfirmMutation()
-  const onSubmit = async values => {
-   login(values)
-
+ const onSubmit = async values => {
+  //  
+  dispatch(setRemember(values))
+  setTimeout(()=>{
+    login(values)
+  },500)
+    console.log(remember,values)
   };
+  console.log(remember)
 
+  const handleRemember=()=>{
+    if (remember.state===true){
+    setPass('')
+    }
 
+    dispatch(setRemember({state: !remember.state}))
+    
+  }
+  
+  const handleShow=()=>{
+    if (remember.state){
+      return
+    }
+    setShowPassword(!showPassword)
+  }
   const login=async(values)=>{
   setLoading(true)
   
@@ -116,8 +141,8 @@ const Login = ({navigation}) => {
   const [useGoogle, setUseGoogle] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(false);
   GoogleSignin.configure({
-    webClientId:
-      '772716520012-ichh7fr2ps938dj0hsa5l2v4hh76iqd7.apps.googleusercontent.com',
+
+    webClientId: Platform.OS === 'ios' ? '772716520012-1rdo1akce15utlpd0md2c9q2p8qq36je.apps.googleusercontent.com' : '772772796235-if95s392sfalr9k203fvpgrmqqvt24h7.apps.googleusercontent.com',
     offlineAccess: true,
     iosClientId:'772716520012-1rdo1akce15utlpd0md2c9q2p8qq36je.apps.googleusercontent.com'
   });
@@ -126,7 +151,7 @@ const Login = ({navigation}) => {
     try {
       await GoogleSignin.hasPlayServices();
       const result = await GoogleSignin.signIn();
-    
+    console.log(result)
       setUseGoogle({  // Update useGoogle state with Google sign-in result
         email: result.user.email,
         password: result.user.id,
@@ -171,8 +196,8 @@ const Login = ({navigation}) => {
         showsVerticalScrollIndicator={false}>
         <Formik
           initialValues={{
-            email: '',
-            password: '',
+            email: remember.state? remember.email:'',
+            password: remember.state? password:'',
           }}
           onSubmit={values => onSubmit(values)}
           validate={values => {
@@ -204,20 +229,25 @@ const Login = ({navigation}) => {
                 inputContainerStyle={[styles.textInput]}
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
-                value={values.password}
+                value={remember.state&&password}
                 errorMessage={touched.password && errors.password}
                 secureTextEntry={!showPassword}
                 rightIcon={<Icon
                   name={showPassword ? 'eye' : 'eye-off'}
                   type="ionicon"
-                  onPress={() => setShowPassword(!showPassword)}
+                  onPress={handleShow}
                   color='#BBB9BC' />} />
 
-              <Text
-                style={[styles.forgot,{marginTop:-10}]}
+<View style={{display:'flex', flexDirection:'row', justifyContent:'center'}}>
+                <CheckBoxComponent color='#BBB9BC' state={remember.state} height={22} onPress={handleRemember} width={22} title={'Remember me'}/>
+
+               <Text
+                style={[styles.forgot]}
                 onPress={() => navigation.navigate('ForgotPassword')}>
-                Forgot Password
+                Forgot Password?
               </Text>
+
+               </View>
 
               <TouchableOpacity>
                 <Button
@@ -255,7 +285,7 @@ const Login = ({navigation}) => {
         <Pressable>
 
           <Text
-            style={[styles.t3, { marginTop: 20 }]}
+            style={[styles.t3, { marginTop: 20 ,marginBottom:70}]}
             onPress={() => navigation.navigate('Register')}>
             Don't have an account?
             <Text style={styles.t4}> Sign Up</Text>
@@ -265,7 +295,7 @@ const Login = ({navigation}) => {
       </ScrollView>
 
     </View>
-    
+
         <Phone_pop login={login} googledata={useGoogle} modal={visible} id={id} setcancel={setVisible}/>
      {
 visible&&  <Blur />

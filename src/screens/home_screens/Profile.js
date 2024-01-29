@@ -8,6 +8,7 @@ import {
   Pressable,
   Modal,
   TextInput,
+  Platform,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import BHeader from '../../../components/BHeader';
@@ -51,8 +52,8 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
 
       const source = response.assets[0];
 
-      setSelectedImage(source);
-      dispatch(setImage(source.uri));
+      setSelectedImage(Platform.OS==='android'?'file://'+source:source);
+      dispatch(setImage(Platform.OS==='android'? 'file://'+source.uri: source.uri));
       console.log('source', source.uri);
       onUploadImage(source);
     });
@@ -76,7 +77,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
       .then(res => res.json())
       .then(res => {
 
-         dispatch(setImage(res.image))
+         dispatch(setImage( res.image))
         console.log('upload succes', res);
         //alert('Upload success!');
       })
@@ -105,7 +106,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             } }>
             <FastImage
             
-            source={selectedImage || user.image ? { uri: user.image,headers: { Authorization: 'someAuthToken' } }  : require('../../../assets/userimg.png')} 
+            source={selectedImage || user.image ? { uri: user.image,headers: { Authorization: 'someAuthToken' } }  : require('../../../assets/place.png')} 
 
              style={{borderRadius: 50,width:80,height:80 }
              
@@ -201,7 +202,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
           </View>
         </View>
         <Pressable onPress={() => setModal(true)}>
-          <View style={[styles.Pmain, styles.flex, styles.Da]}>
+          <View style={[styles.Pmain, styles.flex, styles.Da,{marginBottom:150}]}>
             <Image
               source={require('../../../assets/account.png')}
               style={{ width: 30, height: 25, marginTop: 6 }} />
@@ -216,14 +217,15 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
         </Pressable>
       </ScrollView>
 
-    </SafeAreaView><Modal
+    </SafeAreaView>
+    <Modal
       animationType="slide"
       transparent={true}
       visible={modal}
       onRequestClose={() => {
         setModal(!modal);
       } }>
-        <View style={[styles.pop, { backgroundColor: '#ffff' }]}>
+        <View style={[styles.pop, { position:'absolute', alignItems:'center',alignSelf:'center',borderRadius:20,width:'90%', bottom:30, backgroundColor: '#ffff' }]}>
           <Pressable
             onPress={() => setModal(!modal)}
             style={{ alignSelf: 'flex-end', marginRight: 20, marginTop: 20 }}>

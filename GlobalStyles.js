@@ -1,10 +1,17 @@
 /* fonts */
-export const FontFamily = {
+import { Platform } from "react-native";
+
+/* fonts */
+export const FontFamily = Platform.OS==='ios'? {
   sourceSansProRegular: 'SourceSansPro-Regular',
   sourceSansProSemibold: 'SourceSansPro-Semibold',
   sourceSansProBold: 'SourceSansPro-Bold',
   bodoniBdBTBoldItalic: "Bodoni Bd BT_bold_italic",
   segoeUIRegular: "Segoe UI_regular",
+  bodonBd: "BodonBd",
+}:  { sourceSansProRegular: 'Source Sans Pro Regular',
+sourceSansProSemibold: 'Source Sans Semibold',
+sourceSansProBold: 'Source Sans Pro Bold',
 };
 /* font sizes */
 export const FontSize = {

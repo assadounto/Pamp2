@@ -68,7 +68,7 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
 
                   </Button>
           </View>
-      </Modal><Pop2 main={'Note successfully sent to Likkle salon'} modal={notify_cancel}/></>
+      </Modal><Pop2 main={'Note successfully sent'} modal={notify_cancel}/></>
   );
 };
 const pop=StyleSheet.create({

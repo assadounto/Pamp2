@@ -30,6 +30,11 @@ const initialState = {
     search:''
   },
   vPM:{},
+  remember: {
+    state: false,
+    email: '',
+    password:''
+  },
   serviceStatus:{
     color:'',
     status:''
@@ -132,6 +137,10 @@ initialState,
     setCat(state, action) {
       state.categories = action.payload;
     },
+    setRemember(state, action) {
+      state.remember = {...state.remember, ...action.payload};
+    
+      },
     updateEmail(state, action) {
       state.userInfo = {...state.userInfo,email:action.payload};
     },
@@ -160,7 +169,7 @@ initialState,
       state.userInfo = {...state.userInfo,image: action.payload};
     },
     userLogout(state) {
-      return {...initialState,first_time:false};
+      return {...initialState,first_time:false,remember: state.remember};
 
     },
     setPayment(state,action){
@@ -291,6 +300,7 @@ export const {
   setVPM,
   setRecentvendors,
   updateEmail,
-  loginUser
+  loginUser,
+  setRemember
 } = userSlice.actions;
 export default userSlice.reducer;

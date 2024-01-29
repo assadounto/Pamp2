@@ -121,7 +121,7 @@ const Settings = ({navigation}) => {
 
   async function handleSignOut() {
     try {
-      await GoogleSignin.signOut();
+
       setLog(true);
       setTimeout(() => {
         setLog(false);
@@ -139,14 +139,18 @@ const Settings = ({navigation}) => {
 const [modal,setmodal]=useState(false)
   return (
     
-      <><ScrollView
+      <SafeAreaView>
+      
+          <Text style={[styles.St1,Platform.OS==='android'?{marginVertical:0,}:{marginTop:20}]}>Settings</Text>
+      
+      <ScrollView
   
      
       contentContainerStyle={{ width: '90%', alignSelf: 'center' }}
      
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
-      <Text style={styles.St1}>Settings</Text>
+  
 
 
       <View
@@ -169,7 +173,7 @@ const [modal,setmodal]=useState(false)
           <ListItem.Content>
             <ListItem.Title style={[colors.dgb, styles2.title]}>Profile </ListItem.Title>
           </ListItem.Content>
-          <ListItem.Chevron style={colors.dgb} size={25} />
+          <ListItem.Chevron color={colors.dg.color} size={25} />
         </ListItem>
       </View>
 
@@ -204,7 +208,7 @@ const [modal,setmodal]=useState(false)
                   {item.title}{' '}
                 </ListItem.Title>
               </ListItem.Content>
-              <ListItem.Chevron style={colors.dgb} size={25} />
+              <ListItem.Chevron  color={colors.dg.color} size={25} />
             </ListItem>
           );
         })}
@@ -281,7 +285,7 @@ const [modal,setmodal]=useState(false)
                     />
                 </Pressable>
               ) : (
-                <ListItem.Chevron style={colors.dgb} size={25} />
+                <ListItem.Chevron color={colors.dg.color} size={25} />
               )}
             </ListItem>
           );
@@ -312,7 +316,7 @@ const [modal,setmodal]=useState(false)
                       {item.title}{' '}
                     </ListItem.Title>
                   </ListItem.Content>
-                  <ListItem.Chevron style={colors.dgb} size={25} />
+                  <ListItem.Chevron color={colors.dg.color} size={25} />
                 </ListItem>
               );
             })}
@@ -341,16 +345,19 @@ const [modal,setmodal]=useState(false)
           <ListItem.Content>
             <ListItem.Title style={[{fontFamily:FontFamily.sourceSansProSemibold},colors.dgb]}>Logout </ListItem.Title>
           </ListItem.Content>
-          <ListItem.Chevron style={colors.dgb} size={25} />
+          <ListItem.Chevron color={colors.dg.color} size={25} />
         </ListItem>
       </View>
-<Socials/>
+      <View style={{marginBottom:100}}>
+      <Socials/>
+      </View>
+
     </ScrollView>
     <Discount_pop  setmodal={setmodal} modal={modal}/>
     {modal&& <Blur/>}
     {log && <Blur/>}
     {log&&  <ActivityIndicator style={{position:'absolute', alignSelf:'center',top:'50%'}}  size={'small'}/>}
-    </>
+    </SafeAreaView>
 
   );
 };

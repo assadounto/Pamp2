@@ -42,28 +42,53 @@ const Confirm_payment=({navigation,route})=>{
   const user =  useSelector((state)=>state.user.userInfo)
   const booking= useSelector((state)=> state.booking)
 const [isLoading,setLoading]=useState(false)
-  const {data,refetch}= useGetCouponQuery({id:user.id,vendor_id: booking.vendor_id})
-  data && console.log(booking.booking)
+const [coupon_id,setC]=useState()
+  const {data:coupon_info,refetch}= useGetCouponQuery({id:user.id,vendor_id: booking.vendor_id})
+  
  // const { completed, items ,time} = route.params || {};
   const dispatch=useDispatch()
   const pay_data_=  useSelector((state)=>state.user.payment_methods.default)
   const payment_pref=useSelector((state)=>state.user.vPM)
   let pay_data=pay_data_ && pay_data_
-   const booking_detail= JSON.parse( booking.booking)
-  
+   const booking_detail= booking.booking? JSON.parse( booking.booking):[]
+ const data={}
    useFocusEffect(
   
     React.useCallback(() => {
       refetch()
+      // data && setC(info)
     }, []) // Include user.id in the dependency array
   );
   
 
-
+  function formatDate(dateString) {
+    const dateParts = dateString.split("-");
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]);
+    const day = parseInt(dateParts[2]);
+  
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+  
+    const formattedDate = `${day} ${months[month - 1]} ${year}`;
+    return formattedDate;
+  }
   const [ref,setref]=useState()
    const a=booking_detail.topping2.filter(({total})=>total!=0)
   const HandleSubmit=async()=>{
-   if (getTotalByKey(booking_detail.topping2, 'total')- (data?.amount? data.amount:0) <=0){
+   if (getTotalByKey(booking_detail.topping2, 'total')- (coupon_info?.amount? coupon_info?.amount:0) <=0){
     setLoading(true)
     await createBooking()
     navigation.navigate('Success')
@@ -94,8 +119,8 @@ const [isLoading,setLoading]=useState(false)
   const theTotal=(amount)=>{
     let total
     if (pay_data.name!='Pay with cash'){
-      if (data?.amount){
-         total= amount - data.amount
+      if (coupon_info?.amount){
+         total= amount - coupon_info?.amount
       } else 
       {
         total=amount
@@ -127,21 +152,21 @@ const getTotalMin=()=>{
       payment_method: pay_data.name,
       total: getTotalByKey(booking_detail.topping2,'total'),
       items: booking_detail.topping2,
-      coupon_id:data?.id
+      coupon_id: coupon_info?.id
      })
    dispatch(set_actual_booking({
     user:user.id,
     vendor: booking.vendor_id,
     services_id: getIds(),
-    date:booking.date ,
-    time: booking.time ,
+    date:booking.date,
+    time: booking.time  ,
     status: 'booked',
     staff: booking.staff,
     payment_method: pay_data.name,
     total: getTotalByKey(booking_detail.topping2,'total'),
     items: booking_detail.topping2,
     total_mins: getTotalMin(),
-    coupon_id:data?.id  
+    coupon_id:coupon_info?.id  
 }))
   }
   
@@ -206,9 +231,9 @@ const formatTimeForRails = (timeString) => {
 
 const createBooking=async (ref)=>{
  
-  const {data}= await axios.post(`${backendURL}/booking`,
+ const {data}= await axios.post(`${backendURL}/booking`,
   {
-    date: formatDateForRails(booking.date),
+    date: booking.date,
     time:  formatTimeForRails(booking.time),
     status: 'booked',
     service_ids:getIds(),
@@ -220,12 +245,14 @@ const createBooking=async (ref)=>{
     others: booking_detail.topping2,
     staff:  booking.staff,
     total_min: getTotalMin(),
-    coupon_id: data?.id,
-    amount_paid: theTotal(getTotalByKey(booking_detail.topping2,'total'))
+    coupon_id: coupon_info?.id,
+    amount_paid: 0
 
   }
 
   )
+
+  
   setLoading(false)
 }
 
@@ -234,6 +261,8 @@ const createBooking=async (ref)=>{
     return(
       <><SafeAreaView>
         <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
           contentContainerStyle={{ backgroundColor: 'white' }}
         >
           <BHeader color={'#86D694'} title={'Confirm Payment'} />
@@ -280,10 +309,10 @@ const createBooking=async (ref)=>{
                 size={25} />
               <Text style={{ width: '80%', marginLeft: 20, flexWrap: 'wrap', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: colors.dg.color }}>You will be required to pay with Mobile Money, Debit or Credit card to use the 'Pay with cash' option, Vendors charge a deposit of 20% ahead, the rest will be collected in-store. you'll lose your deposit in case of a late cancellation or no-show.</Text>
             </View>}
-          <View style={{marginBottom:70, marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: 'white', borderRadius: 20, width: '90%', alignSelf: 'center' }}>
+          <View style={{marginBottom:150, marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: 'white', borderRadius: 20, width: '90%', alignSelf: 'center' }}>
             <View style={{ padding: 20,  display: 'flex', flexDirection: 'row', marginLeft: 15 }}>
               <View>
-                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 23, color: colors.dg.color }}>{[booking.date.day, ' ', booking.date.month, ' ', booking.date.year]}</Text>
+                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 23, color: colors.dg.color }}>{booking.date&& formatDate(booking.date)}</Text>
                 <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <FastImage
                 style={{ width: 30, height: 30, borderRadius: 40,marginTop:4, marginRight: 10 }}  
@@ -349,15 +378,15 @@ const createBooking=async (ref)=>{
                 Discount
               </Text>
               <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.lg.color, position: 'absolute', top: 17, right: 30 }}>
-              ¢{data?.amount ? data.amount: 0}
+              ¢{coupon_info?.amount ? coupon_info.amount: 0}
               </Text>
             </View>
-            <View style={{marginTop:-20, padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
+            <View style={{marginTop:-20,padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
               <Text style={{left:20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color }}>
                  Total
               </Text>
               <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.lg.color, position: 'absolute', top: 17, right: 30 }}>
-                ¢{getTotalByKey(booking_detail.topping2, 'total')- (data?.amount? data.amount:0) <=0 ? 0: getTotalByKey(booking_detail.topping2, 'total')- (data?.amount?  data.amount:0)}
+                ¢{getTotalByKey(booking_detail.topping2, 'total')- (coupon_info?.amount ? coupon_info.amount:0) <=0 ? 0: getTotalByKey(booking_detail.topping2, 'total')- (coupon_info?.amount?  coupon_info.amount:0)}
               </Text>
             </View>
           </View>

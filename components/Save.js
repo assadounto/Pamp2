@@ -1,76 +1,94 @@
 import React from 'react';
-import {Button } from '@rneui/base';
-import {StyleSheet, View, Keyboard} from 'react-native';
-import {colors} from '../src/Common_styles';
+import { Button } from '@rneui/base';
+import { StyleSheet, View, Keyboard, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
+import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
 
-const Save = ({name, handlePress, loading}) => {
-  const [key, setKeyboardShow] = React.useState(false);
+const Save = ({ name, handlePress, disabled, loading }) => {
+  const [keyboardVisible, setKeyboardVisible] = React.useState(false);
+
   React.useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardShow(true);
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardShow(false);
-      },
-    );
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardVisible(true);
+    });
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardVisible(false);
+    });
 
     return () => {
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
   }, []);
+
   return (
-    <>
-      {!key && (
-        <View style={styles2.cont}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : null}
+      style={styles2.container}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100} // Adjust this offset based on your needs
+    >
+      <View style={styles2.safeArea}>
+       
+        <View style={[styles2.buttonContainer, keyboardVisible && styles2.keyboardVisible]}>
           <Button
-          
-          titleStyle={styles2.title}
+            disabled={disabled}
+            titleStyle={styles2.title}
             title={name}
-            // containerStyle={}
             buttonStyle={styles2.button}
             onPress={handlePress}
             loading={loading}
           />
         </View>
-      )}
-    </>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles2 = StyleSheet.create({
-  title:{
-    fontFamily:FontFamily.sourceSansProBold,
-    fontSize:15
+  container: {
+    flex: 1,
+    
+  
   },
-  cont: {
-    top:'90%',
+  safeArea: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'white',
+  },
+  buttonContainer: {
     position: 'absolute',
-    height:200,
     alignSelf: 'center',
-    backgroundColor: '#ffff',
-    width: '100%',
-    marginBottom: 0,
+    width:'100%',
+    paddingVertical:20,
+    display:'flex',
+    alignItems:'center',
+    backgroundColor: 'white', // Add a white background
+  },
+
+  keyboardVisible: {
+    // Adjust this value based on your needs
+    width:'100%',
+    display:'flex',
+    alignItems:'center',
+    paddingVertical:20,
+   
+  },
+  title: {
+    fontFamily: FontFamily.sourceSansProBold,
+    fontSize: 15,
   },
   button: {
     width: 184,
     height: 54,
-    //margin: 'auto',
-    marginBottom: 20,
-    marginTop: 10,
-    alignSelf: 'center',
     borderRadius: 25,
     backgroundColor: colors.dg2.color,
     shadowColor: colors.dg2.color,
     shadowOpacity: 0,
     shadowRadius: 5,
-    shadowOffset: {width: 5, height: 0},
+    shadowOffset: { width: 5, height: 0 },
   },
 });
 

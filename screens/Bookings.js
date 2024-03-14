@@ -11,6 +11,7 @@ import { backendURL } from "../src/services/http";
 import { da } from "date-fns/locale";
 import { useIsFocused } from "@react-navigation/core";
 import { ScrollView } from "react-native-gesture-handler";
+import LoadingSkeleton from "../components/LoadingSketon";
 const Bookings = ({navigation}) => {
   const user = useSelector((state)=>state.user.userInfo)
   const isFocused = useIsFocused();
@@ -25,37 +26,47 @@ const Bookings = ({navigation}) => {
 
   async   function get(){
     setLoading(true)
+  if (user?.id){
     const {data}= await axios.get(`${backendURL}/booking?id=${user.id}`)
     data && setBookings(data)
     console.log(data[0])
     setLoading(false)
+  } 
   }
+
+  const Event = () => {
+    if (user?.id) {
+      return (
+        loading ? <LoadingSkeleton/> : (bookings.length !== 0 ?
+          <>
+            <FlatList 
+              contentContainerStyle={{paddingBottom: 60, paddingTop: 10}}
+              showsVerticalScrollIndicator={false}
+              data={bookings}
+              renderItem={({ item }) => (
+                <AppointmentsContainer data={item} navigation={navigation} />
+              )}
+              keyExtractor={item => item.id}
+            />
+          </>
+          :
+          <EmptyAppoiment />
+        )
+      );
+    }
+    return <>
+      <EmptyAppoiment mt={10} sub="Login in or sign up to manage your upcoming and past appointments" col={'#BBB9BC'} showBtn={true} />
+      </>;
+  };
+  
+
+
   return (
 
-    <SafeAreaView>
+    <View style={{marginTop: Platform.OS==='ios'?40:20}}>
       <Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: Platform.OS==='ios'?10:20,marginBottom:20 }}>Appointments</Text>
-
-     {
-      loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>: bookings.length!== 0 ?
-    
-        <><FlatList 
-        contentContainerStyle={{marginTop:10}}
-          showsVerticalScrollIndicator={false}
-          data={bookings}
-          renderItem={({ item }) => (
-
-
-            <AppointmentsContainer data={item} navigation={navigation} />
-
-          )}
-          keyExtractor={item => item.id} /></>
-
-:
-        <EmptyAppoiment />}
-
-     
-     
-</SafeAreaView>
+<Event/>   
+</View>
   );
 };
 

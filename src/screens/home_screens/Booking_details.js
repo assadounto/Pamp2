@@ -204,14 +204,16 @@ function capitalizeFirstLetter(str) {
               color={'#FFFFFF'} />
           </Pressable><View>
             <Text style={{ marginTop: 10, color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 20 }}>{formatDate(data.date)}</Text>
+           <View >
             <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 15 }}> at {formatTime(data.time)}{'  '}
-
-            </Text>
             <View style={[{
-              paddingHorizontal: 10, height: 21, borderRadius: 10, position: 'absolute', top: 50, left: 160,
+          marginTop:7,
+              paddingHorizontal: 10, height: 20, borderRadius: 20,
               alignContent: 'center', justifyContent: 'center'
             }, statuses.includes(data.status) ? { backgroundColor: bgc[data.status] } : { backgroundColor: info?.color }]}>
               <Text style={[{ fontSize: 11, textAlign: 'center', fontFamily: FontFamily.sourceSansProSemibold }, statuses.includes(data.status) ? { color: c[data.status] } : { color: 'white' }, styles.sewInTypo]}>{statuses.includes(data.status) ? capitalizeFirstLetter(data.status) : info && capitalizeFirstLetter(info.status)}</Text></View>
+            </Text>
+            </View>
           </View><AppJob info={info} vendor={data.vendor} setInfo={setInfo} services={data.services} time={data.time} /><View style={{ marginHorizontal: 20, marginVertical: 30 }}>
             <ListItem
               containerStyle={[{ paddingVertical: 20, borderBottomColor: colors.lg.color, borderTopColor: colors.lg.color, borderBottomWidth: 0.5, borderTopWidth: 0.5 }]}

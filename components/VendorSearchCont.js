@@ -25,7 +25,7 @@ const postVendorUserId = async (vendorId) => {
       `${backendURL}/views`,
       {
         vendor_id: vendorId,
-        user_id: user.id,
+        user_id: 20,
       }
     );
     navigation.navigate('VendorDetail',
@@ -142,18 +142,18 @@ style={{
     </View>
     <View style={{position:'relative',top:-30}}>
       <View style={{display:'flex',alignContent:'center', flexDirection:'row',marginBottom:15, }}>
-    <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:24,fontWeight:'bold',color:colors.dg.color}}>{name} 
-   {" "} </Text>
-   {
-      badge?<View style={{display:'flex', marginTop:7,marginLeft:5}}>
+    <Text style={{fontFamily:FontFamily.sourceSansProBold,fontSize:24,fontWeight:'bold',color:colors.dg.color}}>{name}
+   {" "}{
+      badge?<View style={{display:'flex', marginTop:3,marginLeft:5}}>
         <SvgUri
         
         source={require('../assets/svgs/verified.svg')}/>
         </View>: <></>
-      }
+      } </Text>
+   
       </View>
    
-    <View style={{display:'flex',flexDirection:'row'}}>  
+    <ScrollView showsHorizontalScrollIndicator={false} horizontal style={{display:'flex',flexDirection:'row'}}>  
     {items.map((item) => {
       return (
       
@@ -172,13 +172,13 @@ style={{
             }
           }
          >
-          <Text style={[styles.option, colors.dg]}> {item.value}</Text>
+          <Text style={[styles.option, colors.dg]}>{item.value}</Text>
         </Pressable>
      
       );
     })}
-  </View>
-    <Text style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:18,color:'#00463C',marginBottom:15}}> {location}</Text>
+  </ScrollView>
+    {/* <Text style={{fontFamily:FontFamily.sourceSansProRegular,fontSize:18,color:'#00463C',marginBottom:15}}> {location}</Text> */}
     <View style={{display:'flex',flexDirection:'row'}}>
       <Icon name='location-outline' type='ionicon' color={colors.lg.color} />
       <Text style={{color:colors.lg.color,fontFamily:FontFamily.sourceSansProSemibold,fontSize:16}}> {parseInt(dist)}m from you</Text>
@@ -215,7 +215,7 @@ export default VendorSearchCon
 
 const styles2= StyleSheet.create({
     cont:{
-      height:430,
+      height:400,
       backgroundColor:'white',
       padding:20,
       width: '90%',

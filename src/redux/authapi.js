@@ -132,7 +132,7 @@ export const {
   useGetEmailConfirmMutation,
   useVerifyPhoneMutation,
   useGetPhoneConfirmMutation,
-  useLazyGetcategoriesQuery,
+  useGetcategoriesQuery,
   useGetcategoryQuery,
   useLazyGetnotificationsQuery,
   useFetchVendorQuery,

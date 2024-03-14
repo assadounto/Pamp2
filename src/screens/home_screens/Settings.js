@@ -27,6 +27,7 @@ import Discount_pop from '../../../components/Discount_pop';
 import Blur from '../start_screens/Blur';
 import Socials from '../../../components/Socials';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { request,check, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 
 
 
@@ -93,18 +94,48 @@ const menuThree = [
     icon: require('../../../assets/group-1892.png'),
     route: 'https://www.trypamp.com/terms-of-service',
   },
+  {
+    title: 'Help Center',
+    icon: require('../../../assets/group-1892.png'),
+    route: 'https://www.trypamp.com/help-center',
+  },
 ];
 const Settings = ({navigation}) => {
 
   const [log,setLog]=useState(false)
-
+const user= useSelector(state=>state.user.userInfo)
    
-  const [isEnabled, setIsEnabled] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const dispatch = useDispatch();
-  async function checkApplicationPermission() {
-    const authorizationStatus = await messaging().requestPermission({ providesAppNotificationSettings: true });
+
+
+  const requestNotificationPermission = async () => {
+    const result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+    return result;
+  };
   
+  const checkNotificationPermission = async () => {
+    const result = await check(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
+    return result;
+  };
+  
+  const requestPermissionAndroid = async () => {
+    const checkPermission = await checkNotificationPermission();
+    if (checkPermission !== RESULTS.GRANTED) {
+     const request = await requestNotificationPermission();
+       if(request !== RESULTS.GRANTED){
+            console.log(request,'red')
+        }
+    }
+  };
+
+
+  async function checkApplicationPermission() {
+   
+   
+    const authorizationStatus = await messaging().requestPermission({ providesAppNotificationSettings: true });
+      
     if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
       setIsEnabled(true)
     } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
@@ -126,6 +157,7 @@ const Settings = ({navigation}) => {
       setTimeout(() => {
         setLog(false);
         dispatch(userLogout());
+        Alert.alert('Success','Successfully logged out')
       }, 1000);
     } catch (error) {
       console.error('Error signing out:', error);
@@ -151,148 +183,155 @@ const [modal,setmodal]=useState(false)
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}>
   
+{
+  user &&user?.id ? <View
+  key={1}
+    style={[
+      {
+        borderRadius: 15,
+        padding: 6,
+        backgroundColor: '#F9F9F9',
 
+        marginTop: 20,
+      },
+    ]}>
+    <ListItem
+      containerStyle={[{ borderRadius: 15, backgroundColor: '#F9F9F9' }]}
+      onPress={() => {
+        navigation.navigate('Profile');
+      } }>
+      <Icon name="user" type="feather" color={colors.lg.color} />
+      <ListItem.Content>
+        <ListItem.Title style={[colors.dgb, styles2.title]}>Profile </ListItem.Title>
+      </ListItem.Content>
+      <ListItem.Chevron color={colors.dg.color} size={25} />
+    </ListItem>
+  </View>:<></>
+  
+}
 
-      <View
-      key={1}
-        style={[
-          {
-            borderRadius: 15,
-            padding: 6,
-            backgroundColor: '#F9F9F9',
+     
+{
+   user && user?.id? <View
+   style={[
+     {
+       borderRadius: 15,
+       padding: 6,
+       backgroundColor: '#F9F9F9',
 
-            marginTop: 20,
-          },
-        ]}>
+       marginTop: 50,
+     },
+   ]}>
+   {menuOne.map((item, index) => {
+     return (
+       <ListItem
+       key={index}
+         containerStyle={[{ backgroundColor: '#F9F9F9' }]}
+         onPress={() => {
+          
+             navigation.navigate(item.route);
+           
+
+         } }>
+         <Icon
+           name={item.icon}
+           size={18}
+           type="feather"
+           color={colors.lg.color} />
+         <ListItem.Content>
+           <ListItem.Title style={[colors.dgb, styles2.title]}>
+             {item.title}{' '}
+           </ListItem.Title>
+         </ListItem.Content>
+         <ListItem.Chevron  color={colors.dg.color} size={25} />
+       </ListItem>
+     );
+   })}
+ </View>
+:<></>
+
+}
+      
+<View
+  style={[
+    {
+      borderRadius: 15,
+      padding: 6,
+      backgroundColor: '#F9F9F9',
+      marginTop: 50,
+    },
+  ]}>
+  {menuTwo.map((item, index) => {
+    // Check if the item is 'Push Notifications' and user is not authenticated
+    const shouldRenderToggle = item.title !== 'Push Notifications' || (item.title === 'Push Notifications' && user && user.id);
+
+    return (
+      shouldRenderToggle && (
         <ListItem
-          containerStyle={[{ borderRadius: 15, backgroundColor: '#F9F9F9' }]}
+          key={index}
+          containerStyle={[{ backgroundColor: '#F9F9F9' }]}
           onPress={() => {
-            navigation.navigate('Profile');
-          } }>
-          <Icon name="user" type="feather" color={colors.lg.color} />
+            item.icon === 'bell'
+              ? toggleSwitch()
+              : item.title === 'About Pamp'
+              ? Linking.openURL(item.route)
+              : navigation.navigate(item.route);
+          }}>
+          {item.title !== 'About Pamp' ? (
+            <Icon name={item.icon} size={18} type="feather" color={colors.lg.color} />
+          ) : (
+            <Image style={{ marginLeft: 4 }} source={item.icon} />
+          )}
           <ListItem.Content>
-            <ListItem.Title style={[colors.dgb, styles2.title]}>Profile </ListItem.Title>
+            <ListItem.Title style={[colors.dgb, styles2.title]}>{item.title} </ListItem.Title>
           </ListItem.Content>
-          <ListItem.Chevron color={colors.dg.color} size={25} />
+          {item.icon === 'bell' ? (
+            <Pressable>
+              <SwitchToggle
+                switchOn={isEnabled}
+                onPress={() => {
+                  if (!isEnabled) {
+                    // If notifications are not enabled, open settings to enable them
+                    openNotificationSettings();
+                  } else {
+                    openNotificationSettings();
+                    // If notifications are enabled, toggle the switch
+                  }
+                }}
+                circleColorOff={colors.w.color}
+                backgroundColorOn={colors.lg.color}
+                backgroundColorOff="#fff"
+                containerStyle={{
+                  width: 55,
+                  height: 30,
+                  borderWidth: 1.5,
+                  borderColor: colors.lg.color,
+                  borderRadius: 25,
+                  padding: 5,
+                  backgroundColor: 'white',
+                }}
+                circleStyle={{
+                  borderWidth: 1.5,
+                  borderColor: colors.lg.color,
+                  width: 20,
+                  height: 20,
+                  borderRadius: 20,
+                }}
+              />
+            </Pressable>
+          ) : (
+            <ListItem.Chevron color={colors.dg.color} size={25} />
+          )}
         </ListItem>
-      </View>
+      )
+    );
+  })}
+</View>
 
-      <View
-        style={[
-          {
-            borderRadius: 15,
-            padding: 6,
-            backgroundColor: '#F9F9F9',
 
-            marginTop: 50,
-          },
-        ]}>
-        {menuOne.map((item, index) => {
-          return (
-            <ListItem
-            key={index}
-              containerStyle={[{ backgroundColor: '#F9F9F9' }]}
-              onPress={() => {
-               
-                  navigation.navigate(item.route);
-                
 
-              } }>
-              <Icon
-                name={item.icon}
-                size={18}
-                type="feather"
-                color={colors.lg.color} />
-              <ListItem.Content>
-                <ListItem.Title style={[colors.dgb, styles2.title]}>
-                  {item.title}{' '}
-                </ListItem.Title>
-              </ListItem.Content>
-              <ListItem.Chevron  color={colors.dg.color} size={25} />
-            </ListItem>
-          );
-        })}
-      </View>
 
-      <View
-        style={[
-          {
-            borderRadius: 15,
-            padding: 6,
-            backgroundColor: 'red',
-            backgroundColor: '#F9F9F9',
-            marginTop: 50,
-          },
-        ]}>
-        {menuTwo.map((item, index) => {
-          return (
-            <ListItem
-            key={index}
-              containerStyle={[{ backgroundColor: '#F9F9F9' }]}
-            
-              onPress={() => {
-                item.icon === 'bell'
-                  ? toggleSwitch(): item.title === 'About Pamp'? Linking.openURL(item.route)       
-                  : navigation.navigate(item.route);
-              } }>
-              {item.title !== 'About Pamp' ?
-                <Icon
-                  name={item.icon}
-                  size={18}
-                  type="feather"
-                  color={colors.lg.color} /> :
-                <Image
-                  style={{ marginLeft: 4 }}
-                  source={item.icon} />}
-              <ListItem.Content>
-                <ListItem.Title style={[colors.dgb, styles2.title]}>
-                  {item.title}{' '}
-                </ListItem.Title>
-              </ListItem.Content>
-              {item.icon === 'bell' ? (
-                <Pressable>
-                     <SwitchToggle
-                      switchOn={isEnabled}
-                      onPress={() => {
-                        if (!isEnabled) {
-                          // If notifications are not enabled, open settings to enable them
-                          openNotificationSettings();
-                        } else {
-                          openNotificationSettings();
-                          // If notifications are enabled, toggle the switch
-                       
-                        }
-                      }}
-                      circleColorOff={colors.w.color}
-                      backgroundColorOn={colors.lg.color}
-                      backgroundColorOff="#fff"
-                      containerStyle={{
-                        width: 55,
-                        height: 30,
-                        borderWidth: 1.5,
-                        borderColor: colors.lg.color,
-                        borderRadius: 25,
-                        padding: 5,
-                        backgroundColor: 'white',
-                      }}
-                      circleStyle={{
-                        borderWidth: 1.5,
-                        borderColor: colors.lg.color,
-                        width: 20,
-                        height: 20,
-                        borderRadius: 20,
-                      }}
-                    />
-                </Pressable>
-              ) : (
-                <ListItem.Chevron color={colors.dg.color} size={25} />
-              )}
-            </ListItem>
-          );
-        })}
-      </View>
-
-      <View
+         <View
         style={[
           {
             borderRadius: 15,
@@ -322,7 +361,7 @@ const [modal,setmodal]=useState(false)
             })}
       </View>
 
-      <View
+{    user?.id&&  <View
         style={[
           {
             borderRadius: 15,
@@ -347,7 +386,7 @@ const [modal,setmodal]=useState(false)
           </ListItem.Content>
           <ListItem.Chevron color={colors.dg.color} size={25} />
         </ListItem>
-      </View>
+      </View>}
       <View style={{marginBottom:100}}>
       <Socials/>
       </View>
@@ -355,7 +394,7 @@ const [modal,setmodal]=useState(false)
     </ScrollView>
     <Discount_pop  setmodal={setmodal} modal={modal}/>
     {modal&& <Blur/>}
-    {log && <Blur/>}
+   
     {log&&  <ActivityIndicator style={{position:'absolute', alignSelf:'center',top:'50%'}}  size={'small'}/>}
     </SafeAreaView>
 

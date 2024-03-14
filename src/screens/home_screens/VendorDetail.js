@@ -154,8 +154,13 @@ const VendorDetail = ({navigation,route}) => {
 
 
   const createFav=async()=>{
+    if (!user&& !user?.id){
+     Alert.alert('Please login', 'Please login or sign up to add favourites')
+     return
+    }
+    
     try {
-     const {data}= await axios.post(`${backendURL}/favorites`,{vendor_id: id,user_id:user.id})
+     const {data}= await axios.post(`${backendURL}/favorites`,{vendor_id: id,user_id:user?.id})
      data.message=='added'? setFav(true): setFav(false)
     }
     catch(e){
@@ -175,7 +180,7 @@ const VendorDetail = ({navigation,route}) => {
    useEffect(()=>{
     
    async  function get(){
-        const{ data }=await axios.get(`${backendURL}/details?id=${id}&user_id=${user.id}&lat=${location.lat}&lon=${location.lon}`)
+        const{ data }=await axios.get(`${backendURL}/details?id=${id}${user?.id ?  '&user_id='+user?.id:''}&lat=${location.lat}&lon=${location.lon}`)
         
         
          data && console.log(data.distance,'klllll')
@@ -467,8 +472,7 @@ const VendorDetail = ({navigation,route}) => {
 
       <View style={{ position: 'relative', marginTop: -10, marginBottom: 80, }}>
         <View style={{left:20, display: 'flex', flexDirection: 'row' }}>
-          <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color }}>{data1.name}</Text>
-         
+          <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color,maxWidth:200 }}>{data1.name}</Text>
       {
         data1.badge?<View style={{marginTop:8,marginLeft:5}}>
         <SvgUri
@@ -492,7 +496,7 @@ const VendorDetail = ({navigation,route}) => {
          </View>
         </View>
 
-        <View style={{ left:20, display: 'flex', flexDirection: 'row' }}>
+        <ScrollView contentContainerStyle={{paddingRight:20}} horizontal showsHorizontalScrollIndicator={false} style={{ left:20, display: 'flex', flexDirection: 'row' }}>
           {data1.tops.map((item) => {
             return (
 
@@ -515,7 +519,7 @@ const VendorDetail = ({navigation,route}) => {
 
             )
           })}
-        </View>
+        </ScrollView>
         <Text style={{left:20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: '#00463C', marginBottom: 15,marginRight:20 }}> {data1.location}</Text>
         <View style={{left:20, display: 'flex', flexDirection: 'row' }}>
           <Icon name='map-pin' type='feather' color={colors.lg.color} />
@@ -532,12 +536,12 @@ const VendorDetail = ({navigation,route}) => {
               <CheckBox
               
                 title={<>
-                  <View><Text style={[colors.dg, {marginTop:0,fontFamily: FontFamily.sourceSansProBold, fontSize:18, marginLeft: 10 }]}>
+                  <View><Text style={[colors.dg, {marginTop:0,fontFamily: FontFamily.sourceSansProBold, fontSize:18,width:200, marginLeft: 10 }]}>
                     {name}
                   </Text>
                     {time != 0 &&
-                      <Text style={[colors.dg, { marginLeft: 10, fontFamily: FontFamily.sourceSansProRegular, fontSize: 12, color: '#BBB9BC' }]}>
-                        {convertMinutesToHoursAndMinutes(time)}-{services} service
+                      <Text style={[colors.dg, { marginLeft: 10, fontFamily: FontFamily.sourceSansProRegular, fontSize: 12,width:200, color: '#BBB9BC' }]}>
+ {convertMinutesToHoursAndMinutes(time)}-{services} service
                       </Text>}
                   </View>
                   {total > 0 &&
@@ -566,7 +570,7 @@ const VendorDetail = ({navigation,route}) => {
                     <CheckBox
                       key={id}
                       title={<>
-                      <Text  numberOfLines={2} ellipsizeMode="tail" style={[colors.dg, {  marginLeft: 10 }]}>
+                      <Text  numberOfLines={2} ellipsizeMode="tail" style={[colors.dg, { maxWidth:200, marginLeft: 10 }]}>
                         {name2}
                       </Text>
 

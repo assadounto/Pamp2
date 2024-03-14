@@ -9,7 +9,7 @@ import { FontFamily } from '../GlobalStyles';
 const BHeader = ({title, subtitle, back,bg, color,setDateVisible,close,top}) => {
   const navigation=useNavigation()
   return (
-    <View style={[color, { marginTop: 0, marginBottom: 20 ,marginTop:top||0}]}>
+    <View style={[color, {  marginBottom: 20 ,marginTop:top||10}]}>
      
    
       <Text style={[styles.f1,{textAlign:'center',fontFamily:FontFamily.sourceSansProSemibold,marginHorizontal:30}, color?{color}: colors.dg]}>{title}</Text>

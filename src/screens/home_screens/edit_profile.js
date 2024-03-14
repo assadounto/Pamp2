@@ -22,6 +22,7 @@ const Edit_profile = ({navigation}) => {
   const [address, setAddress] = useState(user.address);
   const [isEmailDisabled, setIsEmailDisabled] = useState(true); // Set to true to disable email input initially
   const [modal,setModal]=useState(false)
+  const [loading,setLoading]=useState(false)
    const dispatch= useDispatch()
   const handleSave = () => {
     // Construct the data to be sent in the PATCH request
@@ -36,20 +37,24 @@ const Edit_profile = ({navigation}) => {
     };
 
  
-
+setLoading(true)
     // Send the PATCH request to the /user endpoint with updated data
     axios
       .patch(`${backendURL}/user`, userData)
       .then((response) => {
         // Handle the response from the server, e.g., show a success message, update state, etc.
        dispatch(setUser(response.data))
+       setLoading(false)
+
        setModal(true)
        setTimeout(() => {
         setModal(false);
-        navigation.navigate('Profile')
-      }, 4000);
+        
+        navigation.goBack()
+      }, 3000);
       })
       .catch((error) => {
+        setLoading(false)
         // Handle any errors that occurred during the request
         console.error('Error updating user data:', error);
       });
@@ -71,27 +76,32 @@ const Edit_profile = ({navigation}) => {
         
           style={[styles.EI]}
           value={username}
+          placeholderTextColor={'#BBB9BC'}
           onChangeText={setUsername} />
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Last name</Text>
         <TextInput
           style={[styles.EI]}
           value={name}
+          placeholderTextColor={'#BBB9BC'}
           onChangeText={setName} />
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Phone number</Text>
         <TextInput
           style={[styles.EI]}
           value={phone}
+          placeholderTextColor={'#BBB9BC'}
           onChangeText={setPhone} />
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Email Address</Text>
         <TextInput
           style={[styles.EI]}
           value={email}
+          placeholderTextColor={'#BBB9BC'}
           onChangeText={setEmail}
           disabled={isEmailDisabled} // Disable email input
         />
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Date of birth</Text>
         <TextInput
          placeholder={'dd/mm/yyyy'}
+         placeholderTextColor={'#BBB9BC'}
           style={[styles.EI]}
           value={dateOfBirth}
           onChangeText={setDateOfBirth} />
@@ -99,12 +109,14 @@ const Edit_profile = ({navigation}) => {
         <TextInput
           style={[styles.EI]}
           value={gender}
+          placeholderTextColor={'#BBB9BC'}
           onChangeText={setGender} />
         <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Address</Text>
         <TextInput
           style={[styles.EI]}
           value={address}
-         
+          
+       placeholderTextColor={'red'}
           onChangeText={setAddress} />
         <Button
           title="Save"
@@ -116,11 +128,13 @@ const Edit_profile = ({navigation}) => {
             alignSelf: 'center',
             height: 50,
           }}
+          loading={loading}
           onPress={handleSave} />
           </View> 
       </ScrollView>
 </KeyboardAvoidingView>
-    </SafeAreaView><Pop2  modal={modal} main='Profile updated successfully' />
+    </SafeAreaView>
+    <Pop2  modal={modal} main='Profile updated successfully' />
     {modal&&<Blur/>}
     </>
   );

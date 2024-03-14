@@ -14,6 +14,8 @@ import axios from 'axios';
 
 import Header from './header';
 import PhoneInput from 'react-native-phone-number-input';
+import { horizontalScale, verticalScale } from '../../Dimensions';
+import { FontFamily } from '../../GlobalStyles';
 const Register = ({navigation}) => {
   const dispatch = useDispatch();
   const [loading,setLoading]= useState(false)
@@ -29,6 +31,7 @@ const Register = ({navigation}) => {
   
     const register=async(values)=>{
      // console.log(values)
+     
       dispatch(setuser(values.user))
       setLoading(true)
       try {
@@ -40,7 +43,7 @@ const Register = ({navigation}) => {
         }
         else if (data?.message==='created'){
           dispatch(setUser({...values.user,id:data.id}))
-          navigation.navigate('VerifyEmail',{scope:''});
+          navigation.replace('VerifyEmail',{scope:''});
         }
         
         
@@ -58,7 +61,7 @@ const Register = ({navigation}) => {
   return (
     <>
      <Header
-                main={'Create New Account'}
+                main={'Create Account'}
                 sub={'Please fill in form to continue'}
               />
         <Formik
@@ -113,7 +116,7 @@ const Register = ({navigation}) => {
        
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
-            <View style={[styles.container,{marginTop:10,marginBottom:20}]}>
+            <View style={[styles.container,{marginTop:verticalScale(10),marginBottom:verticalScale(120)}]}>
               
          
               <View>
@@ -137,22 +140,7 @@ const Register = ({navigation}) => {
                   value={values.name}
                   errorMessage={touched.name && errors.name}
                 />
-                 <PhoneInput
-                    placeholderTextColor={'#BBB9BC'}
-                  
-                 textContainerStyle={{marginHorizontal:10, backgroundColor: '#EFEFEF',}}
-            //ref={phoneInput}
-            //defaultValue={value}
-            containerStyle={[Platform.OS==='ios'? styles.textInput:{borderRadius:20,  backgroundColor: '#EFEFEF',alignSelf:'center',marginBottom:22,height:75}]}
-            defaultCode="GH"
-           codeTextStyle={{color:colors.lg.color}}
-            layout="second"
-            //onChangeText={}
-            
-            onChangeFormattedText={handleChange('phone')}
-            placeholder="Phone Number"
-           
-          />
+                
            
 
                 <TextInput
@@ -177,7 +165,23 @@ const Register = ({navigation}) => {
                   secureTextEntry={!showPassword}
                
                 />
-                 <View  style={{position:'absolute',top:20,right:30}}>
+                 <PhoneInput
+                    placeholderTextColor={'#BBB9BC'}
+                  
+                 textContainerStyle={{marginHorizontal:10, backgroundColor: '#FAFAFA',}}
+            //ref={phoneInput}
+            //defaultValue={value}
+            containerStyle={[Platform.OS==='ios'? styles.textInput:{borderRadius:20,  backgroundColor: '#EFEFEF',alignSelf:'center',marginBottom:verticalScale(22),height:verticalScale(75)}]}
+            defaultCode="GH"
+           codeTextStyle={{color:colors.dg2.color,fontWeight:'bold', fontFamily:FontFamily.sourceSansProBold}}
+            layout="second"
+            //onChangeText={}
+            
+            onChangeFormattedText={handleChange('phone')}
+            placeholder="Phone Number"
+           
+          />
+                 <View  style={{position:'absolute',top:verticalScale(20),right:horizontalScale(30)}}>
                 <Icon
                     
                       name={showPassword ? 'eye' : 'eye-off'}
@@ -193,12 +197,12 @@ const Register = ({navigation}) => {
                 <CheckBox
                   uncheckedIcon={<Image
                     resizeMode='contain'
-                    style={{width:33,height:33}}
+                    style={{width:22,height:22}}
                       source={require('../../../assets/rectangle1063.png')}
                        />}
                   checkedIcon={
                     <Image
-                    style={{width:33,height:33}}
+                    style={{width:22,height:22}}
                     resizeMode='contain'
                       source={require('../../../assets/group2210.png')}
                        />
@@ -221,7 +225,10 @@ const Register = ({navigation}) => {
                   checked={agreedToTerms}
                   onPress={() => setAgreedToTerms(!agreedToTerms)}
                 />
-                 <CheckBox
+
+              </View>
+           <View style={styles.t6}>
+           <CheckBox
                   title={
                     <Text style={[colors.dg, styles.terms]}>
                {" I agree to receive marketing notifications with offers and  news"}
@@ -229,12 +236,12 @@ const Register = ({navigation}) => {
                   }
                   uncheckedIcon={<Image
                     resizeMode='contain'
-                    style={{width:33,height:33}}
+                    style={{width:22,height:22}}
                       source={require('../../../assets/rectangle1063.png')}
                        />}
                   checkedIcon={
                     <Image
-                    style={{width:33,height:33}}
+                    style={{width:22,height:22}}
                     resizeMode='contain'
                       source={require('../../../assets/group2210.png')}
                        />
@@ -244,23 +251,20 @@ const Register = ({navigation}) => {
                     setReceivePushNotifications(!receivePushNotifications)
                   }
                 />
-              </View>
-           
+           </View>
+
+
               <Button
+                           titleStyle={styles.tbtn}
                 title="Sign Up"
                 onPress={handleSubmit}
-                buttonStyle={[styles.button, {marginTop:20}]}
+                buttonStyle={[styles.button, {marginTop:verticalScale(10)}]}
                 loading={loading}
                 disabled={!agreedToTerms}
               />
             
             </View>
-            <Text
-          style={[styles.t3,{marginBottom:70}]}
-          onPress={() => navigation.navigate('login')}>
-          Have an account?
-          <Text  style={[colors.lg]}> Login</Text>
-        </Text>
+          
             </ScrollView> 
           )}
              

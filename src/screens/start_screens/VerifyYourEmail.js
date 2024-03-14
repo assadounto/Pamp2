@@ -25,11 +25,12 @@ import {
 import { useDispatch } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
 import { updateEmail } from '../../redux/user';
+import { horizontalScale } from '../../Dimensions';
 
 const CELL_COUNT = 4;
 let error_color='#B0EBBD';
 const VerifyEmail = ({navigation,route}) => {
-   const {scope}= route.params
+   const {scope}= route.params? route.params : {}
   const [shakeAnimation] = useState(new Animated.Value(0));
 const dispatch=useDispatch()
   const user= useSelector((state)=>state.user.userInfo)
@@ -62,7 +63,7 @@ const dispatch=useDispatch()
       setTimeout(() => {
         setModal(false);
         
-        scope=='ce'? sendEmail(data.data): navigation.navigate('VerifyNumber');
+        scope=='ce'? sendEmail(data.data): navigation.replace('VerifyNumber');
       }, 4000);
     } 
     else  if (!isSuccess){
@@ -84,7 +85,7 @@ const dispatch=useDispatch()
     }, 1000);
   }
   const startTimer = () => {
-     resendEmail(user.email)
+    // resendEmail(user.email)
     if (!timerActive) {
      
 
@@ -234,14 +235,15 @@ const dispatch=useDispatch()
 <Text> </Text>
        
           <Button
+                       titleStyle={styles.tbtn}
             title="Verify Your Email"
             onPress={handleSubmit}
             loading={isLoading}
-            buttonStyle={[styles.button,{width:300}]}
+            buttonStyle={[styles.button,{width:horizontalScale(290)}]}
           />
      
           
-        <Text style={[colors.lg, styles.bold, styles.tc]}>
+        <Text onPress={()=>navigation.replace('Register')} style={[colors.lg, styles.bold, styles.tc]}>
           Change Email
         </Text>
 

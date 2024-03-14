@@ -35,6 +35,7 @@ target 'Pamp2' do
   pod 'FirebaseCore', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'Firebase/Messaging'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   # Flags change depending on the env values.
   flags = get_default_flags()
 

@@ -7,14 +7,14 @@ const Navigator_index = () => {
   const {userInfo, userToken, email_confirmed} = useSelector(
     state => state.user,
   );
-  if (userInfo && userToken) {
-    if (!email_confirmed) {
-      return <VerificationStack />;
-    }
+  // if (userInfo && userToken) {
+  //   if (!email_confirmed) {
+  //     return <VerificationStack />;
+  //   }
     return <ApplicationNavigator />;
     
-  }
-  return <AuthNavigator />;
+  // }
+  // return <AuthNavigator />;
 };
 
 export default Navigator_index;

@@ -6,16 +6,17 @@ import {styles, colors} from '../../Common_styles';
 import { FontFamily } from '../../GlobalStyles';
 import mail from '../../../assets/mail.png'
 import { formatDate } from '../../Functions';
+import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions';
 const Normal= ({data}) => {
     const [color,usecolor]= React.useState('#F9B015')
   return (
 <Pressable onPress={()=> usecolor('red')}>
     <View
       style={{
-        marginTop:20,
+        marginTop:verticalScale(20),
         display:'flex',
         flexDirection:'row',
-       marginLeft:40,
+       marginHorizontal:40,
        gap:10
         
       }} >
@@ -27,10 +28,10 @@ const Normal= ({data}) => {
               <View style={{ width: 9, height: 9, borderRadius: 50, backgroundColor: color, marginTop: 5 }}></View>
             }              
             
-          <Text style={[colors.dg,{fontFamily:FontFamily.sourceSansProBold,fontSize:17}]}>{data.title}</Text>
+          <Text style={[colors.dg,{fontFamily:FontFamily.sourceSansProBold,fontSize:moderateScale(17)}]}>{data.title}</Text>
             </View>
-            <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:13,color:"#999999",width:300}}>{data.body}</Text>
-            <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:13,color:colors.dg.color,marginTop:5}}>{formatDate(data.created_at)}</Text>
+            <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:moderateScale(13),paddingRight:30,color:"#999999"}}>{data.body.trimEnd()}</Text>
+            <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:moderateScale(13),color:colors.dg.color,marginTop:5}}>{formatDate(data.created_at)}</Text>
         </View>
     </View>
     </Pressable>

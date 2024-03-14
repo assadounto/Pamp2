@@ -18,7 +18,7 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
     const user= useSelector(state=>state.user.userInfo)
     const [text,setText]=useState('')
     const [poph,setpop]=useState(400)
-  const {data, isLoading,refetch}= useGetCouponsQuery({id:user.id})
+  const {data, isLoading,refetch}= useGetCouponsQuery({id:user?.id})
     const [open,setOpen]=useState(false)
     const [notify,set_notify] =useState(false)
    const handlepressCancel=()=>{

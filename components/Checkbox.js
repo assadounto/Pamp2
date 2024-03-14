@@ -3,7 +3,8 @@ import { CheckBox,Text,Image } from "@rneui/base";
 import { View } from "react-native-animatable";
 import { styles,colors } from "../src/Common_styles";
 import { setuser } from "../src/redux/user";
-const CheckBoxComponent=({onPress,state,title,containerWidth=200,mark,height=33, width=33,color=colors.lg.color})=>{
+import { verticalScale,horizontalScale,moderateScale } from "../src/Dimensions";
+const CheckBoxComponent=({onPress,state,title,containerWidth=horizontalScale(200),mark,height=verticalScale(33), width=horizontalScale(33),color=colors.lg.color})=>{
     return(
       <View 
       style={{width: containerWidth}}
@@ -11,7 +12,7 @@ const CheckBoxComponent=({onPress,state,title,containerWidth=200,mark,height=33,
         <CheckBox
         title={title}
         
-        textStyle={{marginLeft:10,fontWeight:'normal', fontSize: 15,color:color}}
+        textStyle={{marginLeft:horizontalScale(10),fontWeight:'normal', fontSize: moderateScale(15),color:color}}
         uncheckedIcon={<Image
           resizeMode='contain'
           style={{width,height}}

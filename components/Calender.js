@@ -76,7 +76,7 @@ function addDay(date) {
 
 
 export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) {
-  const vendor_id= useSelector((state)=>state.user.userInfo.id)
+  const vendor_id= useSelector((state)=>state.user.userInfo?.id)
     const windowWidth= Dimensions.get('window').width
     const desiredWidth= Math.min(52,windowWidth)
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());

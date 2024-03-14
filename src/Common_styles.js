@@ -1,7 +1,7 @@
 import {color, Text} from '@rneui/base';
 import {StyleSheet} from 'react-native';
 import {FontFamily} from './GlobalStyles';
-
+import { verticalScale,horizontalScale,moderateScale } from './Dimensions';
 export const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -11,107 +11,114 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   mt100: {
-    marginTop: 100,
+    marginTop: verticalScale(100),
   },
   mt10: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
   },
   mb20: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   textInput: {
-    marginBottom:20,
-    paddingHorizontal:20,
-    fontSize:14,
-    width: 330,
-    height: 63,
+    marginBottom:verticalScale(20),
+    paddingHorizontal:horizontalScale(20),
+    fontSize:moderateScale(14),
+    width: horizontalScale(330),
+    height: verticalScale(63),
     margin:0,
     
     alignSelf:'center',
-    backgroundColor: '#EFEFEF',
-    borderRadius: 23,
+    backgroundColor: '#FAFAFA',
+    borderRadius: horizontalScale(23),
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: '#FAFAFA',
     fontFamily: FontFamily.sourceSansProRegular
   },
   t1: {
-    fontSize: 26,
+    fontSize: moderateScale(26),
     color: '#00463C',
+    marginBottom:10,
     fontFamily: FontFamily.sourceSansProBold,
   },
+  tbtn:{
+    fontFamily:FontFamily.sourceSansProBold
+  },
   t2: {
-    fontSize: 15,
-    color: '#00463C',
+    fontSize: moderateScale(16),
+    color: '#BBB9BC',
+    textAlign:'center',
+    width:'60%',
+    marginBottom:10,
     fontFamily: FontFamily.sourceSansProRegular,
   },
   t3: {
-    fontSize: 15,
+    fontSize: moderateScale(15),
     color: '#00463C',
     fontFamily: FontFamily.sourceSansProRegular,
-   marginTop:-20,
+   marginTop:verticalScale(-20),
     alignSelf: 'center',
   },
   t4: {
-    fontSize: 15,
+    fontSize: moderateScale(14),
     color: '#B0EBBD',
     fontFamily: FontFamily.sourceSansProBold,
-    marginTop: 20,
+    marginTop: verticalScale(20),
     alignSelf: 'center',
   },
   t5: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: '#000000',
     fontFamily: FontFamily.sourceSansProRegular,
-    marginLeft: 20,
+    marginLeft: horizontalScale(20),
     alignSelf: 'center',
   },
   t6: {
    
-   
+marginTop:-20,
 width:'85%'
 
    
   },
   m1: {
-    margin: 10,
+    margin: horizontalScale(10),
   },
   terms: {
-    marginHorizontal: 10,
-    marginTop:10,
+    marginHorizontal: horizontalScale(10),
+    marginTop:verticalScale(10),
     fontFamily:FontFamily.sourceSansProRegular
   },
   check: {
-    width: 18,
-    height: 18,
+    width: horizontalScale(18),
+    height: verticalScale(18),
     resizeMode: 'center',
   },
   checkc: {
-    width: 23,
-    height: 23,
-    padding: 3,
+    width: horizontalScale(23),
+    height: verticalScale(23),
+    padding: horizontalScale(3),
     backgroundColor: '#B0EBBD',
-    borderRadius: 5,
+    borderRadius: horizontalScale(5),
    alignItems: 'center',
    ustifyContent: 'center',
   },
   button: {
-    width: 330,
-    height: 71,
+    width: horizontalScale(330),
+    height: verticalScale(71),
     backgroundColor: '#86D694',
-    borderWidth: 1,
+    borderWidth: horizontalScale(1),
     borderColor: '#86D694',
-    marginBottom: 10,
+    marginBottom: verticalScale(10),
     alignSelf: 'center',
-    borderRadius: 23,
+    borderRadius: horizontalScale(23),
   },
   scroll: {
     backgroundColor: 'white',
   },
   input: {
-    marginTop: 60,
+    marginTop: verticalScale(20),
   },
   input2: {
-    marginTop: 30,
+    marginTop: verticalScale(30),
     alignItems: 'center',
     textAlign: 'center',
   },
@@ -124,16 +131,16 @@ width:'85%'
     flexDirection: 'row',
     borderColor: '#DEDCDC',
     backgroundColor:'white',
-    borderRadius: 23,
-    width: 330,
-    height: 71,
+    borderRadius: horizontalScale(23),
+    width: horizontalScale(300),
+    height: verticalScale(71),
     alignSelf: 'center',
   },
   forgot: {
     color: '#BBB9BC',
-    fontSize: 15,
-    marginTop:15,
-    marginBottom: 60,
+    fontSize: moderateScale(14),
+    marginTop:verticalScale(17),
+
     textAlign:'right'
   },
   bold: {
@@ -141,17 +148,17 @@ width:'85%'
   },
   head: {
     alignItems: 'center',
-    marginBottom: 15,
-    marginTop: 20,
+    marginBottom: verticalScale(15),
+    marginTop: verticalScale(20),
     backgroundColor: 'white',
     marginBottomColor: 'white',
   },
   fs25: {
-    fontSize: 26,
+    fontSize: moderateScale(26),
   },
   fs18: {
-    fontSize: 18,
-    width: 230,
+    fontSize: moderateScale(18),
+    width: moderateScale(230),
   },
   tc: {
     alignSelf: 'center',
@@ -163,26 +170,29 @@ width:'85%'
     width: '80%',
   },
   pop: {
-    marginTop: 300,
+    marginTop: verticalScale(300),
     width: '95%',
     backgroundColor: '#fff',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: horizontalScale(20),
     alignSelf: 'center',
-    padding: 10,
+    padding: horizontalScale(10),
     
   },
 
   pop2: {
     position:'absolute',
-    bottom:40,
+    bottom:verticalScale(40),
     backgroundColor: '#fff',
     alignItems: 'center',
-    borderRadius: 20,
+    justifyContent:'center',
+    borderRadius: horizontalScale(20),
     alignSelf: 'center',
-    padding: 40,
+    padding: horizontalScale(40),
+   alignContent:'center',
+    
     width: '95%',
-    height: 324,
+    height: verticalScale(250),
   },
   popimg: {
     resizeMode: 'center',
@@ -192,37 +202,37 @@ width:'85%'
   },
   f1: {
     fontFamily: FontFamily.sourceSansProRegular,
-    fontSize: 25,
+    fontSize: moderateScale(25),
   },
   Pmain: {
-    borderRadius: 40,
-    paddingHorizontal: 30,
+    borderRadius: horizontalScale(40),
+    paddingHorizontal: horizontalScale(30),
     backgroundColor: '#ffff',
     width: '90%',
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: verticalScale(30),
   },
   Pcont: {
     backgroundColor: '#F9F9F9',
-    marginTop: 30,
+    marginTop: verticalScale(30),
   },
 
   P1: {
     fontFamily: FontFamily.sourceSansProSemibold,
-    fontSize: 18,
+    fontSize: moderateScale(18),
     color: '#00463C'
   },
   P2: {
     fontFamily: FontFamily.sourceSansProRegular,
-    fontSize: 15,
+    fontSize: moderateScale(15),
   },
   Pmargin: {
-    marginBottom: 20,
+    marginBottom: horizontalScale(20),
   },
   Da: {
-    padding: 10,
-    marginBottom: 50,
-    height: 60,
+    padding: horizontalScale(10),
+    marginBottom: verticalScale(50),
+    height: verticalScale(60),
   },
   EP: {
     backgroundColor: '#ffff',
@@ -233,46 +243,46 @@ width:'85%'
     width: '90%',
     alignSelf:'center',
     borderColor: '#86D694',
-    paddingHorizontal:10,
-    borderWidth: 1,
-    borderRadius: 10,
-    marginBottom: 20,
-    height:42,
+    paddingHorizontal:horizontalScale(10),
+    borderWidth: horizontalScale(1),
+    borderRadius: horizontalScale(10),
+    marginBottom: verticalScale(20),
+    height:verticalScale(42),
     color:"#86D694"
   },
   St1: {
     fontFamily: FontFamily.sourceSansProBold,
-    fontSize: 26,
+    fontSize: moderateScale(26),
     color: '#86D694',
-    marginTop: 60,
-    marginLeft: 20,
-    paddingBottom:10
+    marginTop: verticalScale(60),
+    marginLeft: horizontalScale(20),
+    paddingBottom:verticalScale(10)
   },
   option: {
-    fontSize: 13,
+    fontSize: moderateScale(13),
     fontFamily: FontFamily.sourceSansProRegular,
     textAlign: 'center',
   },
   unselected: {
     backgroundColor: 'white',
-    borderRadius: 20,
-    height:34,
-    padding:8,
-    marginBottom:30,
+    borderRadius: horizontalScale(20),
+    height:verticalScale(34),
+    padding:horizontalScale(8),
+    marginBottom:verticalScale(30),
     borderColor:'#B0EBBD',
     borderWidth: 1,
-    marginHorizontal:7
+    marginHorizontal:horizontalScale(7)
 
   },
 
   selected: {
     backgroundColor: '#86D694',
-    borderRadius: 20,
+    borderRadius: horizontalScale(20),
     color: 'white',
-    height:34,
-    padding:8,
-    marginBottom:20,
-    marginHorizontal:7
+    height:verticalScale(34),
+    padding:horizontalScale(8),
+    marginBottom:verticalScale(20),
+    marginHorizontal:horizontalScale(7)
   },
 });
 
@@ -294,6 +304,9 @@ export const colors = StyleSheet.create({
   },
   slate:{
     color:"#DAECD2"
+  },
+  faded:{
+    color: '#BBB9BC',
   },
 
   bw: {

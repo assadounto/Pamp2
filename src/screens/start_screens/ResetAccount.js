@@ -238,6 +238,7 @@ const resend=()=>{
 <Text> </Text>
         <TouchableOpacity>
           <Button
+                       titleStyle={styles.tbtn}
             title="Verify Code"
             onPress={handleSubmit}
             loading={isLoading}

@@ -9,6 +9,7 @@ import Blur from '../start_screens/Blur';
 import Pop2 from '../start_screens/pop2';
 import { useSelector } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
+import { verticalScale } from '../../Dimensions';
 const PassReset = ({ navigation,route}) => {
     const { datas } = route?.params || {};
   const user =useSelector((state)=>state.user.userInfo)
@@ -112,15 +113,7 @@ const PassReset = ({ navigation,route}) => {
           }
           onChangeText={(value) => handleChange('new_password', value)}
         />
-  <View  style={{position:'absolute',top:140,right:30}}>
-                <Icon
-                    
-                      name={showPassword ? 'eye' : 'eye-off'}
-                      type="ionicon"
-                      onPress={() => setShowPassword(!showPassword)}
-                      color='#BBB9BC'
-                    />
-                </View>
+ 
         <TextInput
          placeholderTextColor={'#BBB9BC'}
           placeholder="Confirm Password"

@@ -37,7 +37,7 @@ const Profile = ({navigation}) => {
     
   const handledelete=async()=>{
     dispatch(userLogout());
-await axios.post(`${backendURL}/delete`,{id:user.id})
+await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
 
   }
   const onPickImage = () => {
@@ -89,14 +89,12 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
 
   return (
     <><SafeAreaView style={[colors.Pc]}>
-      <BHeader title="Profile" color={colors.dg2.color} />
+      <BHeader top={Platform.OS==='ios'?0:20} title="Profile" color={colors.dg2.color} />
 
       <ScrollView
         style={[]}
-        contentContainerStyle={[]}
-        refreshControl={<RefreshControl
-          //refreshing={isFetching || isLoading}
-          onRefresh={() => { } } />}
+        contentContainerStyle={[{}]}
+        
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <View style={{ alignSelf: 'center', marginTop: 20 }}>
@@ -106,7 +104,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             } }>
             <FastImage
             
-            source={selectedImage || user.image ? { uri: user.image,headers: { Authorization: 'someAuthToken' } }  : require('../../../assets/place.png')} 
+            source={selectedImage || user?.image ? { uri: user?.image,headers: { Authorization: 'someAuthToken' } }  : require('../../../assets/place.png')} 
 
              style={{borderRadius: 50,width:80,height:80 }
              
@@ -156,7 +154,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Last name</Text>
-              {user.name ? <Text style={[styles.P2, colors.dg2]}>{user.name}</Text> : <Text
+              {user?.name ? <Text style={[styles.P2, colors.dg2]}>{user.name}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
@@ -164,7 +162,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Phone number</Text>
-              {user.phone ? <Text style={[styles.P2, colors.dg2]}>{user.phone}</Text> : <Text
+              {user?.phone ? <Text style={[styles.P2, colors.dg2]}>{user.phone}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
@@ -177,7 +175,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Date of birth </Text>
-              {user.date_of_birth ? <Text style={[styles.P2, colors.dg2]}>{user.date_of_birth}</Text> : <Text
+              {user?.date_of_birth ? <Text style={[styles.P2, colors.dg2]}>{user.date_of_birth}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
@@ -185,7 +183,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Gender </Text>
-              {user.gender ? <Text style={[styles.P2, colors.dg2]}>{user.gender}</Text> : <Text
+              {user?.gender ? <Text style={[styles.P2, colors.dg2]}>{user.gender}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
@@ -193,7 +191,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id})
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Address </Text>
-              {user.address ? <Text style={[styles.P2, colors.dg2]}>{user.address}</Text> : <Text
+              {user?.address ? <Text style={[styles.P2, colors.dg2]}>{user.address}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add

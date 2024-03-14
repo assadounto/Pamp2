@@ -8,6 +8,7 @@ import { Icon } from '@rneui/base';
 import axios from 'axios';
 import { backendURL } from '../src/services/http';
 import Pop2 from '../src/screens/start_screens/pop2';
+import { moderateScale, verticalScale } from '../src/Dimensions';
 const Notes_pop = ({setcancel, modal,setblur,id}) => {
     const [notify_cancel,set_notify]=useState(false)
     const [poph,setpop]=useState(400)
@@ -29,11 +30,11 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
 
     React.useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-          setpop(200)
+          setpop(verticalScale(200))
         });
     
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-            setpop(400)
+            setpop(verticalScale(400))
         });
     
         return () => {
@@ -75,19 +76,19 @@ const pop=StyleSheet.create({
   
     h1:{
         fontFamily:FontFamily.sourceSansProSemibold,
-        fontSize:24,
+        fontSize:moderateScale(24),
         width:'80%',
-        marginVertical:20
+        marginVertical:verticalScale(20)
     },
     h2:{
         fontFamily: FontFamily.sourceSansProRegular,
-        fontSize:14,
+        fontSize:moderateScale(12),
         width:'80%'
     },
     h3:{
         fontFamily:FontFamily.sourceSansProSemibold,
-        fontSize:14,
-        marginVertical:20
+        fontSize:moderateScale(14),
+        marginVertical:verticalScale(20)
         
     },
     h4:{
@@ -101,7 +102,7 @@ const pop=StyleSheet.create({
     },
     input:{
         width:'90%',
-        height:100,
+        height:verticalScale(100),
      borderColor:'#EFEFEF',
      borderWidth:1,
      borderRadius:10,

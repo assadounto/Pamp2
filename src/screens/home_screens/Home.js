@@ -3,16 +3,17 @@ import {View, Text,} from 'react-native-animatable';
 import {Input, Icon,TouchableOpacity} from '@rneui/base';
 import {styles, colors} from '../../Common_styles';
 import UHeader from '../../../components/UHeader';
-import { useLazyGetcategoriesQuery } from '../../redux/authapi';
+import { useGetcategoriesQuery } from '../../redux/authapi';
 import {Pressable, FlatList, Image, Platform, Alert} from 'react-native';
 import RadioButton from '../../../components/RadioButton';
 import Geolocation from 'react-native-geolocation-service';
 import {useSelector,useDispatch} from 'react-redux';
 import { backendURL } from '../../services/http';
 import { setExistingRating, setImage, showBottom } from '../../redux/user';
-import { request, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
+import { request,check, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import { FontFamily } from '../../GlobalStyles';
 import img from '../../../assets/s.png'
+import Pop2 from '../start_screens/pop2';
 import { ActivityIndicator } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -37,21 +38,24 @@ import { useFocusEffect } from '@react-navigation/native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ImageCont from '../../../components/Image';
 import Bottom from '../../../components/bottomsheet';
+import { userLogout } from '../../redux/user';
+import Skeleton from '../../../components/LoadingSketon';
+import LoadingSkeleton from '../../../components/LoadingSketon';
+import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions';
+import Location_pop from '../../../components/Location_pop';
 const Tab = createMaterialTopTabNavigator();
-
-
 
 const Home = ({navigation}) => {
 const user =useSelector((state)=>state.user.userInfo)
 const userstate =useSelector((state)=>state.user)
 const [unread,setunread]= useState(false)
+const [showInfoModal, setShowInfoModal] = useState(false);
 
-  const dispatch= useDispatch()
-  const [ name,setName]=useState('')
-  const [option, setOption] = React.useState('Popular');
+const dispatch= useDispatch()
+const [ name,setName]=useState('')
+const [option, setOption] = React.useState('Popular');
    const [modal,setmodal]= React.useState(false)
    const [vendor,setVendor]= React.useState({})
-console.log(user.image,'here')
 const  reverseGeocode=async (lat, lng)=> {
     const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0'; // Replace with your actual Google API key
     
@@ -96,8 +100,10 @@ const  reverseGeocode=async (lat, lng)=> {
     Geolocation.getCurrentPosition(
       async (position) => {
     const get=  await reverseGeocode(position.coords.latitude,position.coords.longitude)
-    
-    const {data}=  await axios.post(backendURL+'/user/location',{lat:position.coords.latitude,lon:position.coords.longitude,id: user.id})
+    if (user?.id){
+      const {data}=  await axios.post(backendURL+'/user/location',{lat:position.coords.latitude,lon:position.coords.longitude,id: user?.id})
+
+    }
     dispatch(setLocation(
       {
         name:get ||'',
@@ -135,58 +141,109 @@ const  reverseGeocode=async (lat, lng)=> {
        }
      }
 
-    const getUdates=async()=>{
-      const {data}= await axios.get(`${backendURL}/has_unread?id=${user.id}&scope=user`)
-      setunread(data.has_unread)
-      dispatch(setExistingRating(data.unrated))
-      dispatch(setImage(data.image))
+     const getUpdates = async () => {
+     if (user?.id){
+      try {
+        const { data } = await axios.get(`${backendURL}/has_unread?id=${user?.id}&scope=user`);
+        setunread(data.has_unread);
+        dispatch(setExistingRating(data.unrated));
+        dispatch(setImage(data.image));
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          // Navigate to the login page
+          // You can use the navigation library you are using (e.g., React Navigation)
+          // Replace 'LoginScreen' with the actual screen or route name for your login page
+          confirmQuitApp()
+        } else {
+          // Handle other errors as needed
+          console.error('Error:', error);
+        }
+      }
+     }
+    };
+
+
+    const contactSupport = () => {
+      const supportEmail = 'partners@trypamp.com';
+      const subject = 'I cannot Access App';
+    
+      const url = `mailto:${supportEmail}?subject=${encodeURIComponent(subject)}`;
+    
+      Linking.openURL(url).catch((err) =>
+        console.error('Error opening email client:', err)
+      );
+    };
+    async function handleSignOut() {
+      try {
+      
+  
+        setTimeout(() => {
+       
+          dispatch(userLogout());
+        }, 1000);
+      } catch (error) {
+        console.error('Error signing out:', error);
+        // Handle error if needed
+      }
     }
+    // Function to prompt before quitting the app
+    const confirmQuitApp = () => {
+      Alert.alert(
+        'Your account has been restricted',
+        'Please contact pamp support',
+        [
+          {
+            text: 'Contact',
+            style: 'cancel',
+            onPress: contactSupport
+          },
+          {
+            text: 'Quit',
+            onPress: handleSignOut
+          },
+        ],
+        { cancelable: true }
+      );
+    };
+
+ 
+
+
+
 console.log(userstate.location)
     useFocusEffect(
     
       React.useCallback(() => {
-        getUdates()  
+       
+       
+    user?.id&& getUpdates()  
         getUserLocation();
-
-        userstate.location.name=='' &&
-        request(Platform.OS==='ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
-          switch (result) {
-            case RESULTS.UNAVAILABLE:
-              console.log(
-                "This feature is not available (on this device / in this context)"
-              );
-              break;
-            case RESULTS.DENIED:
-              console.log(
-                "The permission has not been requested / is denied but requestable"
-              );
-              break;
-            case RESULTS.LIMITED:
-              console.log("The permission is limited: some actions are possible");
-              break;
-            case RESULTS.GRANTED:
-              console.log("The permission is granted");
-              // Permission has been granted - app can request location coordinates
-              getUserLocation();
-              break;
-            case RESULTS.BLOCKED:
-              console.log("The permission is denied and not requestable anymore");
-              break;
-          }
-        });
+        checkAndShowInfoModal();
       }, []) // Include user.id in the dependency array
     );
 
   React.useEffect(()=>{
    
     dispatch(showBottom(true))
-    fetchData()
+   user?.id && fetchData()
  
  
   
   },[])
 
- 
+  const checkAndShowInfoModal = async () => {
+    try {
+      const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+
+      if (result === RESULTS.DENIED) {
+        // Permission hasn't been granted yet, show info modal
+        setShowInfoModal(true);
+      }
+    } catch (error) {
+      console.error('Error checking location permission:', error);
+    }
+  };
+
   // const data = useGetCategoriesQuery();
  
 
@@ -206,7 +263,7 @@ console.log(userstate.location)
      <Image
        
           source={img}
-          style={{ width: '90%', borderRadius:20, height: 60, paddingTop: 8, alignSelf: 'center', marginBottom: 15 }} 
+          style={{ width: horizontalScale(330), borderRadius:20, height: verticalScale(60), paddingTop: verticalScale(8), alignSelf: 'center', marginBottom: 15 }} 
           
           />
     </Pressable>
@@ -214,10 +271,11 @@ console.log(userstate.location)
       sceneContainerStyle={{ backgroundColor: 'white' }}
       tabBar={props => <MyTabBar {...props} />}>
         <Tab.Screen name="Popular" component={Popular} />
-        <Tab.Screen name="Recent viewed" component={Recent } />
+        <Tab.Screen name="Recently viewed" component={Recent } />
         <Tab.Screen name="Top Rated Vendors" component={Top} />
-       {user.role=='admin'? <Tab.Screen name="Extra Vendors" component={Others} />: <></>}
+       {user?.role=='admin'? <Tab.Screen name="Extra Vendors" component={Others} />: <></>}
     </Tab.Navigator>
+    <Location_pop setmodal={setShowInfoModal} modal={showInfoModal} getUserLocation={getUserLocation}/>
     </Fragment>
   );
 };
@@ -227,8 +285,17 @@ const dispatch=useDispatch()
 const[loading,setLoading]= React.useState(false)
 
   const userstate =useSelector((state)=>state.user)
-  const [getcategories,{data,isLoadig}]=useLazyGetcategoriesQuery()
-  useEffect(()=>{
+
+  console.log(userstate.userInfo)
+  const {data,isLoading,refetch}=useGetcategoriesQuery('Popular')
+  // useFocusEffect(
+  
+  //   React.useCallback(() => {
+  //     a()
+
+  //   }, []) // Include user.id in the dependency array
+  // );
+ console.log(isLoading)
     const a= async()=>{
       setLoading(true)
       try{
@@ -243,10 +310,9 @@ const[loading,setLoading]= React.useState(false)
       }
      
     }
-   a()
  
 
-  },[])
+  
   const handleSearch = async (id, title) => {
     setImageLoading(true)
     try {
@@ -268,14 +334,16 @@ const[loading,setLoading]= React.useState(false)
   };
   const [imageLoading, setImageLoading] = useState(false);
   const location= useSelector(state=>state.user)
-  const Item = ({title, id, source}) => (
-    <Pressable key={id} onPress={()=>handleSearch(id,title)} style={{padding:8, borderRadius:20,marginTop:20,backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
-      <View style={{borderRadius:20,marginTop:5, backgroundColor: '#ffff',alignItems:'center'}}>
-        <ImageCont uri={source} styles={{width: '95%', height: 300, borderRadius: 20}}/>
+  const item = ({item}) => (
+    <Pressable key={item.id} onPress={()=>handleSearch(item.id,item.name)} style={{paddingTop:13,paddingHorizontal:6, borderRadius:20,marginTop:verticalScale(20),backgroundColor:'white',width:'90%',alignSelf:'center',shadowColor:'#707070',shadowOpacity:0.2,shadowRadius: 10,shadowOffset:{width:5,height:0},elevation:4}} >
+   
 
-      </View>
+   
+        <ImageCont uri={item.photo_url} styles={{width: '95%',alignSelf:'center', height: verticalScale(300), borderRadius: 20}}/>
+
+
   
-    <Text style={[colors.dg,{marginLeft:20,marginTop:15,fontFamily:FontFamily.sourceSansProSemibold,fontSize:24,marginBottom:20}]}>{title}</Text>
+    <Text style={[colors.dg,{marginLeft:20,marginTop:verticalScale(15),fontFamily:FontFamily.sourceSansProSemibold,fontSize:moderateScale(24),marginBottom:verticalScale(20)}]}>{item.name}</Text>
     {imageLoading&& <ActivityIndicator color={colors.dg2.color} style={{position:"absolute", alignSelf:'center',top:'50%'}} size={'small'}/>}
     </Pressable>
   );
@@ -283,17 +351,22 @@ const[loading,setLoading]= React.useState(false)
   return (
     <>
 {
-      loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>:
+      isLoading? <LoadingSkeleton/>:
     <FlatList contentContainerStyle={{paddingBottom:30}}
       showsVerticalScrollIndicator={false}
       data={data}
-      renderItem={({ item }) => (
-        <Item title={item.name} id={item.id} source={item.photo_url} />
-      )}
-      keyExtractor={item => item.id} />
+      renderItem={ item}
+      
+
+refreshing={false}
+      keyExtractor={item => item.id}
+      ListEmptyComponent={<Text></Text>}
+      onRefresh={refetch}
+      />
       
       
 }
+
       </>
   )
 }
@@ -328,6 +401,7 @@ try{
     }
       
    })
+   
   setData( vendors)
   setLoading(false)
 }
@@ -352,7 +426,7 @@ catch{
 <>
   {
     
-    loading ? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/> :
+    loading ?  <LoadingSkeleton/> :
   <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
   }
   </>
@@ -414,7 +488,7 @@ const Top=({scope})=>{
 <>
   {
     
-    loading ? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/> :
+    loading ?  <LoadingSkeleton/> :
   <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
   }
   </> )
@@ -478,7 +552,7 @@ const Others=({scope})=>{
 <>
   {
     
-    loading ? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/> :
+    loading ? <LoadingSkeleton/> :
 
          <VendorSearchCon notext={true} navigation={navigation} datas={datas}/>
 

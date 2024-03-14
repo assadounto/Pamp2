@@ -23,6 +23,10 @@ const Select_payment=({navigation,route})=>{
     const truePrefs = data? Object.keys(data).filter(key => data[key]).map(key => `Pay with ${key}`):[ 'Pay with cash','Pay with card' ,'Pay with momo'];
     console.log(truePrefs,'hr')
     const isdefault= (name)=>{
+
+      if (!default_method){
+return
+      }
       return default_method.name=== name
     }
    const payment_method=

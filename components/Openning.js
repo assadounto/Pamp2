@@ -17,16 +17,17 @@ const Opening = ({ data, modal, setModal }) => {
   }
   return (
     <>
-      <Modal animationType="slide" transparent={true} visible={modal}>
+      <Modal  animationType="slide" transparent={true} visible={modal}>
+       <View style={{         alignSelf: 'center',  position:'absolute',bottom:30,      width: '95%',}} >
         <View style={[ { alignItems: 'center',
-            
+           
             backgroundColor: 'white',
-            marginTop: 10,
+        
             height: 54,
             borderRadius: 18,
-            width: '95%',
-            alignSelf: 'center', 
-            marginTop: '90%', paddingTop: 20, height: 400 }]}>
+      
+   
+           height: 400 }]}>
           <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -58,13 +59,14 @@ const Opening = ({ data, modal, setModal }) => {
             marginTop: 10,
             height: 54,
             borderRadius: 18,
-            width: '95%',
+            width: '100%',
             alignSelf: 'center',
           }}
           onPress={() => setModal(false)}
         >
           <Text style={md_style.text}>BACK</Text>
         </Pressable>
+        </View>
       </Modal>
     </>
   );

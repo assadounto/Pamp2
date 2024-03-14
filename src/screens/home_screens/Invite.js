@@ -60,11 +60,15 @@ const Invite = ({navigation}) => {
           style={styles.c3}
         />
         <View style={styles.c2}>
-          <ImageBackground
-          resizeMode='contain'
-           source={require('../../../assets/savehere.png')}
-            style={styles.c4}
-          />
+          <View style={{transform: [{rotate: '7deg'}, ],marginTop:20}}>
+              <Text style={[styles.italic,styles.nobold]}>Want to</Text>
+           </View>
+        <View style={{transform: [{rotate: '-3deg'},  ],}}>
+           <Text style={[styles.italic,styles.bold]}>Save</Text>
+        </View>
+        <View style={{transform: [{rotate: '-3deg'}, ],}}>
+           <Text style={[styles.italic,styles.nobold]}>GHC10?</Text>
+         </View>
           <Text style={styles.c5}>
           {'Invite your friends and get GHC10 off 1 appointment(s)'}
           </Text>
@@ -111,7 +115,7 @@ const styles = StyleSheet.create({
     height: 310,
     alignSelf: 'center',
     position: 'absolute',
-    bottom: 380,
+    bottom: 330,
   },
   c4: {
     marginTop: 15,
@@ -178,6 +182,21 @@ const styles = StyleSheet.create({
     height:32,
     borderRadius:23,
     backgroundColor:'white'
+  },
+  italic:{
+    textAlign:'center',  
+    color: colors.dg.color
+    
+  },
+  bold:{
+    marginTop:-10,
+    fontSize: 45,
+    fontFamily: FontFamily.bondonBoldItalic
+  },
+  nobold:{
+    fontSize: 25,
+
+    fontFamily: FontFamily.bondonBoldItalic
   },
   copy_info_text:{
     fontFamily:FontFamily.sourceSansProRegular,

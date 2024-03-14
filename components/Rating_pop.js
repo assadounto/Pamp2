@@ -14,7 +14,7 @@ import { useDispatch,useSelector } from 'react-redux';
 const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
   const dispatch= useDispatch()
   const [poph,setpop]=useState(400)
-  const id = useSelector(state=>state.user.userInfo.id)
+  const user = useSelector(state=>state.user.userInfo)
     const [text,setText]=useState('')
     const [rating, setRating] = useState(0);
   
@@ -38,7 +38,7 @@ const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
     }, []);
     const handlePressOK=async()=>{
    
-   const {data}= await axios.post(`${backendURL}/rating`,{id,vendor_id: vendor[0], rating, description:text })
+   const {data}= await axios.post(`${backendURL}/rating`,{id: user?.id,vendor_id: vendor[0], rating, description:text })
    console.log(data)
    if (data=='created'){
     dispatch(delete_rating(vendor.id))

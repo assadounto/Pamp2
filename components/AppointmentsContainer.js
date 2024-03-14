@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   likkleSalon: {
     marginTop: 38.99,
-
+width:200,
     color: Color.darkslategray_200,
     textAlign: "left",
     fontFamily: FontFamily.sourceSansProRegular,
@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
   },
   sewIn: {
     left: 25,
+    width:200,
     color: Color.darkslategray_200,
     marginTop: 90.99,
     textAlign: "left",

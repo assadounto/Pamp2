@@ -13,6 +13,7 @@ import Pop2 from '../src/screens/start_screens/pop2';
 import { da } from 'date-fns/locale';
 import EmptyStateNoti from './EmptyNoti';
 import Emptyfav from './EmptyFav';
+import { setNextNav } from '../src/redux/user';
 const getLongDayName = (day) => {
   switch (day) {
     case 'Mon':
@@ -65,6 +66,7 @@ function getMonthNumber(monthName) {
 }
 const Time = ({ navigation, userOption,rebooked,rebook}) => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.userInfo);
  const openingHours = useSelector((state) => state.booking.vendor);
 
   const name = useSelector((state) => state.booking.vendor_name);
@@ -75,16 +77,23 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
     const isLastItem = index === timeSlots.length - 1;
     return (
       <Pressable
-        style={{}}
-        onPress={() => {
-      
-          
-          dispatch(set_time(item));
-          rebooked? rebook(item):
-          navigation.navigate('Confirm');
-        }}
-        
-      >
+      style={{}}
+      onPress={() => {
+        dispatch(set_time(item));
+        if (rebooked) {
+          rebook(item);
+        } else {
+          if (user && user?.id) {
+            navigation.navigate('Confirm');
+          } else {
+            // Navigate to the authentication stack
+            navigation.navigate('AuthNavigator', {
+              screen: 'login', // You can replace 'login' with the initial route you want to show in AuthNavigator
+            });
+          }
+        }
+      }}
+    >
       
        <ListItem style={{ borderBottomColor: isLastItem ? 'transparent' : colors.lg.color,
             borderBottomWidth: isLastItem ? 0 : 1}}>
@@ -225,7 +234,7 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
           <Text style={{ marginVertical: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color, marginLeft: 30 }}>Time</Text>
          
          { timeSlots.length==0 ?
-          <Emptyfav title={"Vendor is not accepting bookings at this time"} />
+          <Emptyfav top={30} title={"Vendor not accepting bookings at this time"} />
           :<View  style={{
                  marginBottom: 300,
                  marginVertical: 15,
@@ -248,7 +257,8 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
               onPress={() => {
               
                 dispatch(set_time(item));
-                rebooked ? rebook(item) : navigation.navigate('Confirm');
+                dispatch(setNextNav('Confirm'))
+                rebooked ? rebook(item) :   user && user?.id ? navigation.navigate('Confirm'):navigation.replace('login',)
               }}
             >
               <ListItem style={{ borderBottomColor: index === timeSlots.length - 1 ? 'transparent' : colors.lg.color, borderBottomWidth: index === timeSlots.length - 1 ? 0 : 1 }}>

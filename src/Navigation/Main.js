@@ -17,7 +17,9 @@ import { set } from 'date-fns';
 import Blur from '../screens/start_screens/Blur';
 import Rating_pop from '../../components/Rating_pop';
 import Pop2 from '../screens/start_screens/pop2';
-const Tab = createBottomTabNavigator();
+import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
+import { colors } from '../Common_styles';
+const Tab = AnimatedTabBarNavigator();
 
 function MyTabBar({state, descriptors, navigation}) {
  
@@ -165,24 +167,70 @@ const MainNavigator = () => {
   },[userstate])
   return (
     <><Tab.Navigator
-      sceneContainerStyle={{ backgroundColor: 'white' }}
-      screenOptions={{
-        headerShown: false,
-        tabBarHideOnKeyboard: true,
-        unmountOnBlur: true,
-      }}
-      tabBar={props => bottom ? <MyTabBar {...props} /> : null}>
-      <Tab.Screen options={{
-        //  title: "HomePage",
-        //  unmountOnBlur: true,
+    appearance={{
+      shadow:true,
+      horizontalPadding:30
+    }}
+    tabBarOptions={{
+      activeBackgroundColor:colors.dg2.color,
+      activeTintColor: colors.w.color,
+      inactiveTintColor: colors.w.color
+    }}>
+      <Tab.Screen  options={{
+        tabBarIcon: ({ focused, color, size }) => (
+            <Icon
+                name="home"
+
+                type='feather'
+                size={size ? size : 24}
+                color={focused ? color : colors.dg2.color}
+                focused={focused}
+            
+            />
+        )
       }} name="Home" component={Home} />
       {/* Bookings */}
-      <Tab.Screen name="Bookings" component={Bookings} />
-      <Tab.Screen name="Favorites" component={Favourites} />
-      <Tab.Screen name="Settings" component={Settings} options={{
-        //  title: "HomePage",
-        unmountOnBlur: true,
-      }} />
+      <Tab.Screen name="Bookings" options={{
+        tabBarIcon: ({ focused, color, size }) => (
+            <Icon
+                name="calendar"
+
+                type='feather'
+                size={size ? size : 24}
+                color={focused ? color : colors.dg2.color}
+                focused={focused}
+            
+            />
+        )
+      }}  component={Bookings} />
+      <Tab.Screen name="Favorites" options={{
+        tabBarIcon: ({ focused, color, size }) => (
+            <Icon
+                name="hearto"
+
+                type='antdesign'
+                size={size ? size : 24}
+                color={focused ? color :colors.dg2.color}
+                focused={focused}
+            
+            />
+        )
+      }} component={Favourites} />
+  <Tab.Screen  options={{
+      tabBarIcon: ({ focused, color, size }) => (
+          <Icon
+              name="sound-mix"
+
+              type='entypo'
+              size={size ? size : 24}
+              color={focused ? color : colors.dg2.color}
+              focused={focused}
+          
+          />
+      )
+    }} name="Settings" 
+    component={Settings}       
+    />
     </Tab.Navigator>
     <Rating_pop  vendor={vendor}  setInfoModal={setInfoModal} setmodal={setmodal} modal={modal}/>
     {

@@ -34,21 +34,19 @@ const AuthNavigator = () => {
             backgroundColor: '#fff',
           },
         }}>
-        {first_time ? (
-          <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="GettingStarted" component={Getting_started} />
-        ) : (
+       
           
-          <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="login" component={Login} />
-        )}
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="login2" component={Login} />
-        <Stack.Screen  name="Register" component={Register} />
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="ForgotPassword" component={ForgotPassword} />
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="ResetPassword" component={ResetPassword} />
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="VerifyEmail" component={VerifyEmail} />
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="VerifyNumber" component={VerifyNumber} />
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="noti" component={Turnon} />
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="ResetAccount" component={ResetAccount} />
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="PassReset" component={PassReset} />
+          <Stack.Screen  options={{presentation:'modal'}} name="login" component={Login} />
+          <Stack.Screen options={{presentation:'modal'}}   name="Register" component={Register} />
+          <Stack.Screen options={{presentation:'modal'}}   name="ForgotPassword" component={ForgotPassword} />
+          <Stack.Screen options={{presentation:'modal'}}   name="ResetPassword" component={ResetPassword} />
+          <Stack.Screen options={{presentation:'modal'}}   name="VerifyEmailOne" component={VerifyEmail} />
+          <Stack.Screen options={{presentation:'modal'}}   name="VerifyNumber" component={VerifyNumber} />
+          <Stack.Screen options={{presentation:'modal'}}   name="noti" component={Turnon} />
+          <Stack.Screen options={{presentation:'modal'}}   name="ResetAccount" component={ResetAccount} />
+          <Stack.Screen options={{presentation:'modal'}}  name="PassReset" component={PassReset} />
+      
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Text, View, SafeAreaView,FlatList, Image, Modal,Keyboard,StyleSheet, TextInput, Alert, ScrollView} from 'react-native';
+import {Text, View, SafeAreaView,FlatList,Platform, Image, Modal,Keyboard,StyleSheet, TextInput, Alert, ScrollView} from 'react-native';
 import { styles,colors } from '../../Common_styles';
 import { Button,Rating } from '@rneui/base';
 import { FontFamily } from '../../GlobalStyles';
@@ -58,7 +58,7 @@ const Discount = ({navigation}) => {
     return (
       <>
 
-          <BHeader top={Platform.OS==='ios'?60:20} color={colors.dg2.color} title="Coupons" />
+          <BHeader top={Platform.OS==='ios'?60:20} color={colors.dg2.color} />
           <View style={pop.pop}>
             <Text style={pop.rate}>Enter Promo Code</Text>
             <TextInput

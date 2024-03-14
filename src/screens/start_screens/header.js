@@ -8,8 +8,8 @@ const Header = ({main, sub, sub2, modalVisible}) => {
     <SafeAreaView style={[styles.head, modalVisible && styles1.dim]}>
       <View>
         <Text style={[colors.dgb, styles.fs25,{fontFamily:FontFamily.sourceSansProBold}]}>{main}</Text>
-        <Text style={[colors.dgb, styles.tc]}>{sub}</Text>
-        <Text style={[colors.dgb, styles.tc]}>{sub2}</Text>
+        <Text style={[colors.faded, styles.tc]}>{sub}</Text>
+        <Text style={[colors.faded, styles.tc]}>{sub2}</Text>
       </View>
     </SafeAreaView>
   );

@@ -96,7 +96,7 @@ const Change_pass = ({ navigation }) => {
     <>
     <SafeAreaView style={{ flex: 1 }}>
      
-      <BHeader title={'Change Password'} />
+      <BHeader top={Platform.OS==='ios'?0:20}  title={'Change Password'} />
 
       <View style={{ alignSelf: 'center', marginTop: 40 }}>
         <TextInput
@@ -152,7 +152,7 @@ const Change_pass = ({ navigation }) => {
           titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
             title="Change password"
             onPress={handleSubmit}
-            buttonStyle={[styles.button,{marginTop:'30%'}]}
+            buttonStyle={[styles.button,{marginTop:20}]}
 
             loading={formData.isLoading}
           />

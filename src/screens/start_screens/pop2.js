@@ -1,16 +1,19 @@
 import React from 'react';
 import {Text, View, SafeAreaView, Image, Modal} from 'react-native';
 import {styles, colors} from '../../Common_styles';
-
+import LottieView from 'lottie-react-native';
+import { verticalScale } from '../../Dimensions';
 const Pop2 = ({main, modal}) => {
   return (
-    <Modal animationType="slide" transparent={true} visible={modal}>
+    <Modal animationType='fade' transparent={true} visible={modal}>
       <View style={styles.pop2}>
-        <Image
-          source={require('../../../assets/check.png')}
-          style={styles.popimg}
-        />
-        <Text style={[colors.dgb, styles.fs18, styles.tac]}>{main}</Text>
+      <LottieView
+              source={require('../../../assets/lottie/test.json')}
+              style={{ width:209, height: 150,marginTop:verticalScale(-20) }}
+              autoPlay
+              loop={false}
+            />
+        <Text style={[colors.dgb,{marginTop:verticalScale(-40)}, styles.fs18, styles.tac]}>{main}</Text>
       </View>
     </Modal>
   );

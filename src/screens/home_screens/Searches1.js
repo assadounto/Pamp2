@@ -94,7 +94,7 @@ const data1 =[
  <SafeAreaView>
       <Input
         placeholder="Search for a service"
-        inputContainerStyle={[styles.textInput, styles.tc, { marginTop: Platform.OS==='ios'?10:30, width:'90%', paddingTop: 10 }]}
+        inputContainerStyle={[styles.textInput, styles.tc, {alignContent:'center', marginTop: Platform.OS==='ios'?10:30, width:'90%', }]}
         leftIcon={<Icon onPress={()=>navigation.navigate('main')} name="chevron-back" type="ionicon" color={'#BCC4CC'} size={30} />}
         onFocus={() => navigation.navigate('Search')}
         

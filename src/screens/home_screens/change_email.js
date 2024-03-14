@@ -67,7 +67,7 @@ const Change_email = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{flex:1}}>
-      <BHeader title={'Change Email'} />
+      <BHeader top={Platform.OS==='ios'?0:20} title={'Change Email'} />
 
       <View style={{ alignSelf: 'center',marginTop:40}}>
         <TextInput
@@ -99,7 +99,7 @@ const Change_email = ({ navigation }) => {
             title="Save"
             titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
             onPress={handleSubmit}
-            buttonStyle={[styles.button,{marginTop:'30%'}]}
+            buttonStyle={[styles.button,{marginTop:20}]}
             loading={formData.isLoading}
           />
         </TouchableOpacity>

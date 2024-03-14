@@ -10,7 +10,7 @@ const Success = () => {
   const navigation=useNavigation()
   return (
     
-        <><ImageBackground style={{ width: '100%', height: '100%' }} source={require('../../../assets/success.png')} /><SucessPop /></>
+        <><ImageBackground style={{ width: '100%', height: '100%', }} source={require('../../../assets/success.png')} /><SucessPop /></>
  
     
   );

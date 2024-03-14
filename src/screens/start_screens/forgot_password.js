@@ -5,6 +5,7 @@ import {Input, Button} from '@rneui/base';
 import {Formik} from 'formik';
 import {styles} from '../../Common_styles';
 import { useLazySearchAccountQuery} from '../../redux/authapi';
+import { verticalScale } from '../../Dimensions';
 const ForgotPassword = ({navigation}) => {
   const[searchAccount,{isLoading,isSuccess}]=useLazySearchAccountQuery()
   const [email,setEmail]= useState('')
@@ -18,11 +19,12 @@ console.log(data)
   };
   return (
     <>
-      <Header main={'Find Your Pamp Account'} />
+
       
-          <View style={styles.input2}>
+          <View style={[styles.input2,{marginTop: verticalScale(60)}]}>
+          <Header  main={'Find Your Pamp Account'} />
             <TextInput 
-           
+              placeholderTextColor={'#BBB9BC'}
               placeholder="try@pamp.com"
               style={[styles.textInput,styles.tc]}
               onChangeText={setEmail}

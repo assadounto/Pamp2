@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { FontFamily, FontSize, Color } from "../GlobalStyles";
 import { AirbnbRating } from "react-native-ratings";
 import { colors } from "../src/Common_styles";
+import { horizontalScale } from "../src/Dimensions";
 
 const NotificationReviewCard = ({item}) => {
   return (
@@ -56,21 +57,21 @@ const styles = StyleSheet.create({
   jessi: {
     top: 1,
     fontSize: 18,
-   
+    width: horizontalScale(150),
     fontFamily: FontFamily.sourceSansProSemibold,
     color: colors.dg.color,
     textAlign: "left",
     left: 53,
-    position: "absolute",
+
   },
   july2022: {
-    top: 21,
+
     fontSize: 10,
     color:colors.dg2.color
     
   },
   likkleSalonIs: {
-    marginVertical:30,
+  
     fontSize: 15,
     letterSpacing: 0.8,
     color: Color.gray_200,

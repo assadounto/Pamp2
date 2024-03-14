@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text,ActivityIndicator, Pressable, Image,TextInput, SafeAreaView,Modal,TouchableOpacity, Alert } from "react-native";
 import { Styles } from "react-native-google-places-autocomplete";
 import { useNavigation } from "@react-navigation/native";
-import { useLazyGetcategoriesQuery } from "../src/redux/authapi";
+import { useGetcategoriesQuery, useLazyGetcategoriesQuery } from "../src/redux/authapi";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView ,{PROVIDER_GOOGLE,Marker} from "react-native-maps";
 import Categories from "../components/Categories";
@@ -29,17 +29,7 @@ import Bottom from "../components/bottomsheet";
 
 const initData= [
   { value: 'All categories' },
-  // { value: 'Beauty Salon' },
-  // { valxue: 'Hair Salon' },
-  // { value: 'Eyebrows & Lashes' },
-  // { value: 'Massage' },
-  // { value: 'Barbershop' },
-  // { value: 'Massage' },
-  // { value: 'Barbershop' },
-  // { value: 'Massage' },
-  // { value: 'Spa' },
-  // { value: 'Aesthetics' },
-  // { value: 'Waxi' },
+  
 ];
 
 
@@ -48,8 +38,8 @@ const Search2 = () => {
   const [loc,setLoc]= React.useState()
   const inputRef =  React.useRef(null);
   const userstate =useSelector((state)=>state.user)
-  const [getcategories,{data,isLoadig}]=useLazyGetcategoriesQuery()
-  const navigation=useNavigation()
+ const {data }= useGetcategoriesQuery('Popular')
+   const navigation=useNavigation()
   const [modalVisible, setModalVisible] = React.useState(false);
   const [option,setoption]=React.useState('')
  
@@ -75,7 +65,7 @@ setLoc({
       const {data}= await axios.get(`${backendURL}/search?query=${query}&lat=${loc.lat}&lon=${loc.lon}`)
       //setData(data)
       dispatch(addRecent({cat: 'query',search: query}))
-  
+      setImageLoading(false)
        data    &&   navigation.navigate('Searches1', { location: loc, category: query,data});
     } catch{
       Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
@@ -88,7 +78,7 @@ setLoc({
     inputRef.current.focus();
   };
 
-  const data1=  initData.concat( userstate.categories.map((cat)=>{
+  const data1= data && initData.concat( data.map((cat)=>{
     return {
       value: cat.name
     }
@@ -101,6 +91,7 @@ setLoc({
       try{
         const {data}= await axios.get(`${backendURL}/search?category=${userstate.recent_view.search}&lat=${loc.lat}&lon=${loc.lon}`)
         navigation.navigate('Searches1', { location: loc, category:  userstate.recent_view.search,data});
+        setImageLoading(false)
       }
       catch(e){
         setImageLoading(false)

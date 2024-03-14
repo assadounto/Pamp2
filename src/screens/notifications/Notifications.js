@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { backendURL } from '../../services/http';
 import { useFocusEffect,} from '@react-navigation/core';
 import axios from 'axios';
+import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions';
 
 const Notifications = () => {
   const user = useSelector(state => state.user.userInfo);
@@ -80,7 +81,7 @@ const Notifications = () => {
   const navigation = useNavigation();
   
   return (
-    <SafeAreaView style={{marginTop:20}}>
+    <View style={{marginTop:verticalScale(60)}}>
       <View style={{flexDirection:'row', justifyContent:'space-between'}}>
       <Text style={[styles.notifications, styles.myFavTypo]}>Notifications</Text>
       <Pressable style={styles.x} onPress={() => navigation.goBack()}>
@@ -96,12 +97,13 @@ const Notifications = () => {
       </Pressable>
       </View>
         <FlatList
+        contentContainerStyle={{paddingBottom:100}}
           data={data?.notifications}
           renderItem={renderNotificationComponent}
           keyExtractor={item => item.id.toString()}
           ListEmptyComponent={<EmptyStateNoti />}
         />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -109,16 +111,16 @@ export default Notifications;
 
 const styles = StyleSheet.create({
   notifications: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
     color: colors.dg2.color,
     fontWeight: 'bold',
-    marginLeft: 40,
+    marginLeft: horizontalScale(40),
   
    paddingBottom:10
   },
   x: {
  
-marginRight:20
+marginRight:horizontalScale(20)
 
   },
   icon: {

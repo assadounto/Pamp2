@@ -11,6 +11,7 @@ import FastImage from "react-native-fast-image";
 import { useSelector } from "react-redux";
 import { backendURL } from "../../services/http";
 import { use } from "../../redux/homeapi";
+import { useFocusEffect } from "@react-navigation/core";
 import { TouchableOpacity } from "react-native-gesture-handler";
 const data=[]
 
@@ -19,15 +20,21 @@ const Favourites=({navigation})=>{
 
   const user = useSelector((state)=>state.user.userInfo)
   const [data,setData]=useState([])
-  React.useEffect(()=>{
-   getFav()
-  },[])
-    
+
+  useFocusEffect(
+  
+    React.useCallback(() => {
+      if (user?.id){
+        getFav()
+      } 
+    }, [user?.id]) // Include user.id in the dependency array
+  );
+ 
   const getFav=async ()=>{
     try {
       setLoading(true)
-      const {data}= await axios.get(`${backendURL}/favorites?user_id=${user.id}`)
-     console.log(data,'h')
+      const {data}= await axios.get(`${backendURL}/favorites?user_id=${user?.id}`)
+   
      let d= data&& data.map((item,id)=>{
         return {
           id: id,
@@ -91,6 +98,7 @@ const Favourites=({navigation})=>{
       <Text
         style={{
           margin: 5,
+          marginRight:10,
           fontFamily: FontFamily.sourceSansProSemibold,
           fontSize: 12,
           color: 'white'
@@ -104,17 +112,14 @@ const Favourites=({navigation})=>{
 
     </TouchableOpacity>
       );
-
-
-    return(
-      <SafeAreaView style={{flex:1,marginTop:Platform.OS==='android'?20:0}}>
-   
-        <Text style={{marginLeft:30,fontFamily:FontFamily.sourceSansProBold,fontSize:26,color:'#86D694'}}>My Fav</Text>
-        { loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>: 
+      const Event = () => {
+        if (user?.id) {
+          return (
+            loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>: 
           data.length==0? <Emptyfav 
           title={"No Favourites"}
           body={"You don't have any favourites yet"}
-          top={150}
+          top={85}
           />:
           <MasonryList
   data={data &&data}
@@ -126,10 +131,20 @@ const Favourites=({navigation})=>{
   onRefresh={() => getFav()}
   onEndReachedThreshold={0.1}
   //onEndReached={() => loadNext(ITEM_CNT)}
-/>
+/>)
         }
+        return <>
+          <Emptyfav title={"No Favourites"} mt={10}  col={'#BBB9BC'} body="Login in or sign up to manage your upcoming and past appointments" showBtn={true} />
+          </>;
+      };
 
-</SafeAreaView>
+    return(
+      <View style={{flex:1,marginTop:Platform.OS==='android'?20:50}}>
+   
+        <Text style={{marginLeft:30,fontFamily:FontFamily.sourceSansProBold,fontSize:26,color:'#86D694'}}>My Favs</Text>
+       <Event/>
+
+</View>
     )
 }
 

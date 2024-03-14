@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, TextInput, StyleSheet, ScrollView,Platform, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Icon } from '@rneui/base';
 import Geolocation from 'react-native-geolocation-service';
 import { useSelector } from 'react-redux';
 import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
-
+import { request, PERMISSIONS, RESULT, RESULTS, check } from "react-native-permissions";
+import Location_pop from './Location_pop';
 const Gsearch = ({ setLoc, handleS }) => {
   const user = useSelector(state => state.user);
   const refInput = useRef(null);
@@ -21,6 +22,7 @@ const Gsearch = ({ setLoc, handleS }) => {
     },
     name: user.location.name,
   });
+  const [showInfoModal, setShowInfoModal]= useState(false)
 console.log(user.location.name)
   useEffect(() => {
     setLoc(selectedLocation.coordinates.lat,selectedLocation.coordinates.lng,selectedLocation.name);
@@ -57,6 +59,25 @@ console.log(user.location.name)
       throw new Error('Error occurred during reverse geocoding');
     }
   };
+
+
+
+  const checkAndShowInfoModal = async () => {
+    try {
+      const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+
+      if (result === RESULTS.DENIED) {
+        // Permission hasn't been granted yet, show info modal
+        setShowInfoModal(!showInfoModal)      }
+
+        else if(result === RESULTS.GRANTED){
+          getUserLocation();
+        }
+    } catch (error) {
+      console.error('Error checking location permission:', error);
+    }
+  };
+
 
   function getUserLocation() {
     Geolocation.getCurrentPosition(
@@ -128,7 +149,7 @@ console.log(user.location.name)
 
         {show ? (
           <ScrollView showsVerticalScrollIndicator={false} style={s_style.box}>
-            <TouchableOpacity style={s_style.button} onPress={getUserLocation}>
+            <TouchableOpacity style={s_style.button} onPress={checkAndShowInfoModal}>
               <View style={{ display: 'flex', flexDirection: 'row' }}>
                 <Icon name="locate-outline" type="ionicon" />
                 <Text style={{ fontSize: 14, marginTop: 3, color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold }}> Use Current Location</Text>
@@ -158,7 +179,8 @@ console.log(user.location.name)
         ) : null}
       </View>
     </TouchableWithoutFeedback>
-    
+    <Location_pop setmodal={setShowInfoModal} modal={showInfoModal} getUserLocation={getUserLocation}/>
+
   </>
   );
 };

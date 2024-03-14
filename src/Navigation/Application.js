@@ -5,6 +5,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import Profile from '../screens/home_screens/Profile';
 import Edit_profile from '../screens/home_screens/edit_profile';
 import MainNavigator from './Main';
+import {useSelector} from 'react-redux';
+
 import Change_email from '../screens/home_screens/change_email';
 import Search2 from '../../screens/Search2';
 import Searches1 from '../screens/home_screens/Searches1';
@@ -20,12 +22,23 @@ import Booking_detail from '../screens/home_screens/Booking_details';
 import Processing from '../screens/home_screens/Comfirm_momo';
 import Invite from '../screens/home_screens/Invite';
 import Help from '../screens/home_screens/Help';
-import VerifyEmail from '../screens/start_screens/VerifyYourEmail';
+import Register from '../screens/start_screens/Create_account';
+
 import Change_pass from '../screens/home_screens/Change_pass';
 import Ratings from '../screens/home_screens/Ratings';
 import Discount from '../screens/home_screens/Discount';
 import DiscountFullInfo from '../screens/home_screens/DiscountInfoFull';
+import Login from '../screens/start_screens/Login';
+import ForgotPassword from '../screens/start_screens/forgot_password';
+import ResetPassword from '../screens/start_screens/ResetPassword';
+import VerifyEmail from '../screens/start_screens/VerifyYourEmail';
+import VerifyNumber from '../screens/start_screens/VerifyNumber';
+import Turnon from '../screens/start_screens/TurnonNotifications';
+import ResetAccount from '../screens/start_screens/ResetAccount';
+import PassReset from '../screens/start_screens/PaswordReset';
 import { TransitionPresets} from '@react-navigation/stack';
+import Getting_started from '../screens/start_screens/Getting_started';
+import Location_pop from '../../components/Location_pop';
 const Stack = createStackNavigator();
 
 const forFade2 = ({ current }) => ({
@@ -53,6 +66,7 @@ const forFade = ({ current, next }) => {
   };
 };
 const ApplicationNavigator = () => {
+  const {first_time} = useSelector(state => state.user);
   return (
     <NavigationContainer>
       <StatusBar />
@@ -65,7 +79,11 @@ const ApplicationNavigator = () => {
 
           },
         }}>
-        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="main" component={MainNavigator} />
+{  first_time?      <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="Getting_started" component={Getting_started} />:
+<Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="main2" component={MainNavigator} />
+}     
+<Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="main" component={MainNavigator} />   
+
         <Stack.Screen name="Profile" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Profile} />
         <Stack.Screen name="edit_profile"  options={{ cardStyleInterpolator: forFade2 }}   component={Edit_profile} />
         <Stack.Screen name="change_email"  options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Change_email} /> 
@@ -74,11 +92,11 @@ const ApplicationNavigator = () => {
              options={{presentation:'modal'}}
           name="Search" component={Search2} 
        /> 
-          
+             <Stack.Screen name="location" options={{ cardStyleInterpolator: forFade2 }} component={Location_pop} /> 
         <Stack.Screen name="Searches1" options={{ cardStyleInterpolator: forFade2 }} component={Searches1} /> 
         <Stack.Screen name="VendorDetail"  options={{ cardStyleInterpolator: forFade2 }}  component={VendorDetail} /> 
         <Stack.Screen name="SelectDate" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={SelectDate} /> 
-        <Stack.Screen name="All_notifications" options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Notifications} /> 
+        <Stack.Screen name="All_notifications" options={{ cardStyleInterpolator: forFade2}}  component={Notifications} /> 
         <Stack.Screen name='Mapview'  options={{ cardStyleInterpolator: forFade2 }}  component={Mapview}/> 
         <Stack.Screen name={'Confirm'} options={{ cardStyleInterpolator: forFade2 }} component={Confirm_payment}/> 
         <Stack.Screen name={'Success'}  options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Success}/> 
@@ -92,7 +110,15 @@ const ApplicationNavigator = () => {
         <Stack.Screen name="Reviews" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Ratings} />
         <Stack.Screen name="discount" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Discount} />
         <Stack.Screen name="discountfull" options={{ cardStyleInterpolator: forFade2 }}  component={DiscountFullInfo} />
-
+        <Stack.Screen  options={{presentation:'modal'}} name="login" component={Login} />
+        <Stack.Screen options={{presentation:'modal'}}   name="Register" component={Register} />
+        <Stack.Screen options={{presentation:'modal'}}   name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen options={{presentation:'modal'}}   name="ResetPassword" component={ResetPassword} />
+        <Stack.Screen options={{presentation:'modal'}}   name="VerifyEmailOne" component={VerifyEmail} />
+        <Stack.Screen options={{presentation:'modal'}}   name="VerifyNumber" component={VerifyNumber} />
+        <Stack.Screen options={{presentation:'modal'}}   name="noti" component={Turnon} />
+        <Stack.Screen options={{presentation:'modal'}}   name="ResetAccount" component={ResetAccount} />
+        <Stack.Screen options={{presentation:'modal'}}  name="PassReset" component={PassReset} />
       </Stack.Navigator>
     </NavigationContainer>
   );

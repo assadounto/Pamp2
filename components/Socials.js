@@ -11,7 +11,7 @@ const Socials = () => {
   };
 
   return (
-    <View style={{ marginBottom: 30 }}>
+    <View style={{ marginBottom: 30,marginTop:20 }}>
       <Text
         style={{
           color: "#707070",

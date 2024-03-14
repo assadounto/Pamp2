@@ -6,12 +6,16 @@ export const FontFamily = Platform.OS==='ios'? {
   sourceSansProRegular: 'SourceSansPro-Regular',
   sourceSansProSemibold: 'SourceSansPro-Semibold',
   sourceSansProBold: 'SourceSansPro-Bold',
-  bodoniBdBTBoldItalic: "Bodoni Bd BT_bold_italic",
   segoeUIRegular: "Segoe UI_regular",
   bodonBd: "BodonBd",
+  bondonBoldItalic:"BodoniFLF-BoldItalic",
+  bondonItalic:"BodoniFLF-Italic"
 }:  { sourceSansProRegular: 'Source Sans Pro Regular',
 sourceSansProSemibold: 'Source Sans Semibold',
 sourceSansProBold: 'Source Sans Pro Bold',
+bodonBd: "BodonBd",
+bondonBoldItalic:"BodoniFLF-BoldItalic",
+bondonItalic:"BodoniFLF-Italic" 
 };
 /* font sizes */
 export const FontSize = {

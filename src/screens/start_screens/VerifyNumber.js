@@ -105,7 +105,7 @@ const VerifyNumber = ({navigation}) => {
       setModal(true);
       setTimeout(() => {
         setModal(false);
-        navigation.navigate('noti');
+        navigation.replace('noti');
       }, 4000);
     } 
     else  if (!isSuccess){
@@ -227,6 +227,7 @@ const VerifyNumber = ({navigation}) => {
         <Text> </Text>
 
           <Button
+                       titleStyle={styles.tbtn}
             title="Verify Phone Number"
             onPress={() => {
               handleSubmit()
@@ -236,15 +237,19 @@ const VerifyNumber = ({navigation}) => {
           />
   
 
-        <Text onPress={()=>setVisible(true)} style={[colors.lg, styles.bold, styles.tc]}>
+        <Text onPress={()=>setVisible(true)} style={[colors.lg, styles.bold, styles.tc,{marginTop:20,}]}>
           Change Phone Number
+        </Text>
+
+        <Text onPress={()=>  navigation.replace('noti')} style={[colors.lg, styles.bold, styles.tc,{marginTop:40,color: colors.dg.color}]}>
+          Verify later
         </Text>
         <Pop2
           main={'You have Successfully verified your Phone Number'}
           modal={modalVisible}
         />
       </SafeAreaView>
-      <Phone_pop modal={visible} id={user.id} setcancel={setVisible}/>
+      <Phone_pop modal={visible} id={user?.id} setcancel={setVisible}/>
       {modalVisible && <Blur />}
       {visible && <Blur />}
     </>

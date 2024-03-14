@@ -4,9 +4,10 @@ import { Icon } from '@rneui/base';
 import { ScrollView } from 'react-native-gesture-handler';
 import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
+import { horizontalScale, verticalScale } from '../src/Dimensions';
 function MyTabBar({state, descriptors, navigation}) {
     return (
-        <View style={{marginBottom:20,marginLeft:20,marginTop:10}}>
+        <View style={{marginBottom:verticalScale(20),marginHorizontal:horizontalScale(20), marginTop:verticalScale(10)}}>
       <ScrollView
       showsHorizontalScrollIndicator={false}
 
@@ -56,8 +57,8 @@ function MyTabBar({state, descriptors, navigation}) {
                   ? {
                       backgroundColor: '#86D694',
                       borderRadius: 20,
-                     paddingHorizontal:12,
-                      height:34,
+                     paddingHorizontal:horizontalScale(12),
+                      height:verticalScale(34),
                       alignSelf: 'center',
                       alignItems: 'center',
                       justifyContent: 'space-around',
@@ -67,7 +68,7 @@ function MyTabBar({state, descriptors, navigation}) {
                   marginLeft:10,
                   borderRadius: 20,
                   paddingHorizontal:12,
-                  height:34,
+                  height:verticalScale(34),
                   alignSelf: 'center',
                   alignItems: 'center',
                   borderColor:'#B0EBBD',

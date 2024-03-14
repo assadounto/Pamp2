@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, ImageBackground, Text, StyleSheet, Pressable,ActivityIndicator, Alert} from 'react-native';
+import {View, ImageBackground,PermissionsAndroid ,Platform, Text, StyleSheet, Pressable,ActivityIndicator, Alert} from 'react-native';
 import {FontFamily} from '../../../GlobalStyles';
 import {loginUser, setnotifications} from '../../redux/user';
 import {useDispatch, useSelector} from 'react-redux';
@@ -14,12 +14,14 @@ import { backendURL } from '../../services/http';
 
 import {useGetCategoriesQuery} from '../../redux/authapi';
 import {request, PERMISSIONS} from 'react-native-permissions';
+import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions';
 const Turnon = ({navigation}) => {
   const dispatch = useDispatch();
   const notification = useSelector(state => state.user.notifications);
   const user= useSelector((state)=>state.user.userInfo)
   const [modalVisible, setModal] = useState(false);
   const [loading,setLoading]= useState(false)
+  const next= useSelector(state=>state.user.next)
 
   const notify = () => {
     
@@ -32,16 +34,41 @@ const Turnon = ({navigation}) => {
   };
   const maybe=()=>{
     login(user);
+    if(next && next=='Favourites'){
+     
+      // navigation.goBack()
+        navigation.navigate('main')
+      
+     }
+
+     
+     else{
+
+       navigation.replace(next)
+     }
   }
 
   const login=async(values)=>{
     setLoading(true)
       try {
+        
         const {data} = await axios.post(backendURL+'/user/login', {user:values});
           // Handle success
           console.log(data)
           dispatch(loginUser(data))
           setLoading(false)
+          if(next && next=='Favourites'){
+     
+            // navigation.goBack()
+              navigation.navigate('main')
+            
+           }
+
+           
+           else{
+
+             navigation.replace(next)
+           }
         } catch (error) {
           // Handle error
           setLoading(false)
@@ -50,6 +77,31 @@ const Turnon = ({navigation}) => {
     }
   
   const request = async() => {
+    if(Platform.OS ==="android"){
+      try {
+        PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS').then(
+          response => {
+            if(!response){
+              PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS',{
+                  title: 'Notification',
+                  message:
+                    'Pamp needs access to your notification ' +
+                    'so you can get Updates',
+                  buttonNeutral: 'Ask Me Later',
+                  buttonNegative: 'Cancel',
+                  buttonPositive: 'OK',
+              })
+            }
+          }
+        ).catch(
+          err => {
+            console.log("Notification Error=====>",err);
+          }
+        )
+      } catch (err){
+        console.log(err);
+      }
+    }
     const authorizationStatus = await messaging().requestPermission({ providesAppNotificationSettings: true });
   
     if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
@@ -115,59 +167,60 @@ const styles = StyleSheet.create({
 alignSelf: 'center'
   },
   text: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
   },
   c1: {width: '100%', height: '100%'},
   c2: {
     width: '90%',
-    height: '35%',
+paddingBottom:20,
     backgroundColor: '#FFFFFF',
     position: 'absolute',
     alignSelf: 'center',
-    top: 400,
+    bottom:verticalScale(148),
     borderRadius: 20,
   },
   c3: {
-    width: 300,
-    height: 200,
+    width: horizontalScale(300),
+    height: verticalScale(200),
     alignSelf: 'center',
     position: 'absolute',
-    top: 120,
+    top: 100,
   },
   c4: {
-    marginTop: 20,
-    width: 170,
-    height: 100,
+    marginTop: verticalScale(20),
+    width: horizontalScale(170),
+    height: verticalScale(100),
     alignSelf: 'center',
   },
   c5: {
     alignSelf: 'center',
-    width: 220,
+    width: horizontalScale(220),
     textAlign: 'center',
     color: '#00463C',
     padding: 10,
-    fontSize: 15,
+    fontSize: moderateScale(15),
   },
   c6: {
-    alignSelf: 'center',
-    borderRadius: 23,
+    justifyContent:'center',
+  alignSelf:'center',
+    borderRadius: 30,
     backgroundColor: '#86D694',
-    width: 150,
-    height: 50,
-    marginTop: 30,
+    width: horizontalScale(150),
+    height: verticalScale(50),
+    marginTop: verticalScale(30),
   },
   c7: {
-    textAlign: 'center',
-    alignSelf: 'center',
-    fontSize: 20,
+  alignSelf:'center',
+
+    fontSize: moderateScale(20),
     color: '#FFFFFF',
-    padding: 10,
+
   },
   cl: {
     alignSelf: 'center',
     textAlign: 'center',
     marginTop: 20,
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontFamily: FontFamily.sourceSansProRegular,
 
     color: '#00463C',

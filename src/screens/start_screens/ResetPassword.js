@@ -67,7 +67,7 @@ const {info} = route.params
               containerStyle={[styles.cont]}
              >
 
-              <CheckBoxComponent onPress={handleEmailCheckboxChange} state={email} />
+              <CheckBoxComponent containerWidth={50} onPress={handleEmailCheckboxChange} state={email} />
               <ListItem.Content>
                 <ListItem.Title style={colors.dg2}>Email a confirmation code to 
 </ListItem.Title>
@@ -79,7 +79,7 @@ const {info} = route.params
               containerStyle={[styles.cont,styles.none]}
             >
 
-              <CheckBoxComponent onPress={handlePhoneCheckboxChange} state={phone}/>
+              <CheckBoxComponent  containerWidth={50} onPress={handlePhoneCheckboxChange} state={phone}/>
               <ListItem.Content>
                 <ListItem.Title style={colors.dg2}>Text a confirmation code to 
  </ListItem.Title>

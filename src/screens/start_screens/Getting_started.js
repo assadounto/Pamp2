@@ -1,8 +1,16 @@
 import React from 'react';
 import { View, ImageBackground,Image, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import { FontFamily } from '../../GlobalStyles';
-
+import { moderateScale } from '../../Dimensions';
+import { setFirst } from '../../redux/user';
+import { useDispatch } from 'react-redux';
 const Getting_started = ({ navigation }) => {
+  const dispatch=useDispatch()
+  const handleSubmit=()=>{
+dispatch(setFirst(false))
+
+  navigation.replace('main')
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -25,7 +33,7 @@ const Getting_started = ({ navigation }) => {
           </Text>
           <Pressable
             style={styles.c6}
-            onPress={() => navigation.replace('login2')}
+            onPress={handleSubmit}
           >
             <Text style={styles.c7}>Get Started</Text>
           </Pressable>
@@ -45,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
   },
   c1: {
     width: '100%',
@@ -61,11 +69,11 @@ const styles = StyleSheet.create({
     borderRadius: 40,
   },
   c3: {
-    width: screenWidth * 0.9,
-    height: screenHeight * 0.39,
+    width: screenWidth * 1.2,
+    height: 350,
     alignSelf: 'center',
     position: 'absolute',
-    bottom: screenHeight * 0.36,
+    bottom: screenHeight * 0.42,
   },
   c4: {
     marginTop: screenHeight * 0.035,
@@ -80,7 +88,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#D0D8C3',
     padding: 10,
-    fontSize: 13,
+    fontSize: 16,
     marginBottom: 10,
     marginTop: screenHeight * 0.0193,
   },

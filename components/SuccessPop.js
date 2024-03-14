@@ -3,6 +3,7 @@ import { StyleSheet, View, Pressable, Text, Image } from "react-native";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
+import { horizontalScale, verticalScale } from "../src/Dimensions";
 const SucessPop = () => {
     const name = useSelector((state) => state.booking.vendor_name);
     const navigation =useNavigation()
@@ -12,7 +13,7 @@ const SucessPop = () => {
       
       <Image
         style={styles.path650Icon}
-        resizeMode="cover"
+        resizeMode="contain"
         source={require("../assets/path-650.png")}
       />
       <Text style={[styles.success]}>Success</Text>
@@ -44,20 +45,20 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   backToHome: {
-    top: 17,
-    left: 47,
+   textAlignVertical:'center',
+  alignSelf:'center',
     fontSize: FontSize.size_mini,
     fontWeight: "700",
     fontFamily: FontFamily.sourceSansProBold,
     color: Color.white,
-    textAlign: "left",
-    position: "absolute",
+    
   },
   backToHomeWrapper: {
     height: "11.98%",
     width: "53.8%",
-
+    alignContent:'center',
    marginTop:40,
+   justifyContent:'center',
   alignSelf:'center',
 
     borderRadius: Border.br_4xl,
@@ -65,18 +66,18 @@ const styles = StyleSheet.create({
   
   },
   path650Icon: {
-    height: "7.68%",
-    width: "13.4%",
+    height: verticalScale(50),
+    width: horizontalScale(40),
     alignSelf:'center',
 
-    marginTop:40
+    marginTop:verticalScale(30)
    
   },
   success: {
   textAlign:'center',
     fontSize: 25,
     lineHeight: 38,
-    marginVertical:70,
+    marginVertical:verticalScale(50),
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
     color: '#00463C',
@@ -89,9 +90,9 @@ const styles = StyleSheet.create({
     color: Color.lightgreen,
   },
   component48: {
-    top: 231,
-    width: 342,
-    height: 434,
+    top: '30%',
+    width: horizontalScale(342),
+  height: verticalScale(400),
     position: "absolute",
     alignSelf:'center',
     

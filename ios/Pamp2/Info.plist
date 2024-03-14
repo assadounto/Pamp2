@@ -34,7 +34,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.772716520012-1rdo1akce15utlpd0md2c9q2p8qq36je</string>
-        <string>pamp</string>
+				<string>pamp</string>
 			</array>
 		</dict>
 	</array>
@@ -53,47 +53,21 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSCameraUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSContactsUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>YOUR TEXT</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Pamp needs access to your location</string>
+	<string>Pamp needs access to your location to help find vendors near you</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Pamp needs access to your location</string>
+	<string>Pamp needs access to your location to help find vendors near you</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>YOUR-PURPOSE-KEY</key>
-		<string>Pamp needs access to your location</string>
+		<string>Pamp needs access to your location to help find vendors near you</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Pamp needs access to your location</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSMotionUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Pamp needs access to your location to help find vendors near you</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Pamp needs access to your photo library to upload a cover or avatar</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSRemindersUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSSiriUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>YOUR TEXT</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Pamp needs access to your photo library to upload a cover or avatar</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>SourceSansPro-Black.otf</string>
@@ -108,7 +82,11 @@
 		<string>SourceSansPro-Regular.otf</string>
 		<string>SourceSansPro-Semibold.otf</string>
 		<string>SourceSansPro-SemiboldIt.otf</string>
-		<string>AntDesign.ttf</string>
+		<string>BodoniFLF-Bold.ttf</string>
+		<string>BodoniFLF-BoldItalic.ttf</string>
+		<string>BodoniFLF-Italic.ttf</string>
+		<string>BodoniFLF-Roman.ttf</string>
+	    <string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>
@@ -122,8 +100,6 @@
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>MaterialIcons.ttf</string>
 		<string>Octicons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>Zocial.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

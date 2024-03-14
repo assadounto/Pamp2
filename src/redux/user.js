@@ -24,11 +24,13 @@ const initialState = {
   newnoti: true,
   currentServiceIndex: 0,
   bottom_nav:true,
+  next:'',
   categories:[],
   recent_view:{
     cat:'',
     search:''
   },
+
   vPM:{},
   remember: {
     state: false,
@@ -42,11 +44,7 @@ const initialState = {
    rating:[],
 
   payment_methods:{
-    default:  {  
-       id:1,
-      name: 'Pay with cash',
-      img: 'cash'  
-  },
+    default:null,
     methods: [
       {   id:1,
         name: 'Pay with cash',
@@ -131,6 +129,9 @@ initialState,
     setNotification(state, action) {
       state.notifications = action.payload;
     },
+    setNextNav(state, action) {
+      state.next = action.payload;
+    },
     addRecent(state, action) {
       state.recent_view= action.payload;
     },
@@ -175,6 +176,10 @@ initialState,
     setPayment(state,action){
       state.payment_methods.methods.push(action.payload)
     },
+    setFirst(state,action){
+      state.first_time=action.payload
+    },
+
     setDefault(state,action){
       state.payment_methods.default=action.payload
     },
@@ -301,6 +306,8 @@ export const {
   setRecentvendors,
   updateEmail,
   loginUser,
-  setRemember
+  setRemember,
+  setNextNav,
+  setFirst
 } = userSlice.actions;
 export default userSlice.reducer;

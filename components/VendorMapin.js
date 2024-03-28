@@ -18,7 +18,7 @@ const VendorMapPin = ({data}) => {
             }}
             resizeMode={FastImage.resizeMode.cover} />
       <Text style={[styles.likkleSalon, styles.likkleSalonPosition]}>
-        {data.name}  {
+      {data.name.length > 16 ? `${data.name.substring(0, 14)}...` : data.name}{
         data.badge?<View style={{marginLeft:5}}>
         <SvgUri
         
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.sourceSansProSemibold,
   },
   airportResidentialRoad: {
-    top: "37.04%",
+    top: "40.04%",
     textAlign: "left",
     width:180,
     color: Color.darkslategray_300,

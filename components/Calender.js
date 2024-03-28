@@ -8,10 +8,12 @@ import {navigate} from '@react-navigation/routers/lib/typescript/src/CommonActio
 import {Image} from '@rneui/base';
 import { backendURL } from '../src/services/http';
 import axios from 'axios';
+import { verticalScale } from '../src/Dimensions';
 import {format, addMonths, subMonths} from 'date-fns';
 import {useDispatch} from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+import LottieView from 'lottie-react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Time from './Time';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -81,7 +83,7 @@ export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) 
     const desiredWidth= Math.min(52,windowWidth)
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   //const [currentmonth,set_current_month]=useState(defaultLocalizationOptions.monthNames[currentMonth])
-
+  const [isLoading, setIsLoading] = useState(true); // State to manage loading spinner
   console.log(currentMonth);
   const finditem = day => {
     const index = data.findIndex(date => date.aday === day);
@@ -165,8 +167,9 @@ const weekdays=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   };
 
   const fetchDates = async (year, month, vendorId) => {
-  
+    setIsLoading(true); 
     const response = await axios.get(`${backendURL}/dates?year=${year}&month=${month}&vendor_id=${1}`);
+    setIsLoading(false); 
     return response.data;
   };
 
@@ -334,6 +337,21 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
       </Pressable>
     );
   };
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{marginTop: verticalScale(100)}}>
+     <LottieView
+              source={require('../assets/lottie/calender.json')}
+              style={{ width:209, height: 150 }}
+              autoPlay
+              loop={false}
+            />
+            </View>
+      </View>
+    );
+  }
   return (
     <>
       <Pressable {...panResponder.panHandlers} onPress={() =>{set_dates('Month')}}>
@@ -381,7 +399,7 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
   showsHorizontalScrollIndicator={false}
   showsVerticalScrollIndicator={false}
 />
-      : <ActivityIndicator size={'small'}/>    }
+      : <Text>hjhbvhjavbxjhavxbhjavxbja</Text>  }
       {
         data.length>6 &&
         <View style={{display:'flex', justifyContent:'center',alignContent:'center',alignItems:'center', flexDirection:'row',height:50,padding:10,}}>

@@ -15,13 +15,11 @@ import { setPayment } from "../../redux/user";
 import { setDefault } from "../../redux/user";
 const Select_payment=({navigation,route})=>{
   const { data } = route && route.params ? route.params : {};
-
+console.log(data,'mkk')
 
     const dispatch=useDispatch()
     const default_method= useSelector((state)=>state.user.payment_methods.default)
-    const payment_methods=useSelector((state)=>state.user.payment_methods.methods)
-    const truePrefs = data? Object.keys(data).filter(key => data[key]).map(key => `Pay with ${key}`):[ 'Pay with cash','Pay with card' ,'Pay with momo'];
-    console.log(truePrefs,'hr')
+    const payment_methods= convertToPaymentArray(data)
     const isdefault= (name)=>{
 
       if (!default_method){
@@ -36,12 +34,48 @@ return
        'Pay with card': 'credit-card',
     }
 
+
+    function convertToPaymentArray(paymentMethods) {
+      const convertedArray = [];
+  
+      if (paymentMethods.cash) {
+          convertedArray.push({
+              id: convertedArray.length + 1,
+              name: 'Pay with cash',
+              img: 'cash'
+          });
+      }
+  
+      if (paymentMethods.card) {
+          convertedArray.push({
+              id: convertedArray.length + 1,
+              name: 'Pay with card',
+              img: 'master'
+          });
+      }
+  
+      if (paymentMethods.momo) {
+          convertedArray.push({
+              id: convertedArray.length + 1,
+              name: 'Pay with momo',
+              img: 'momo'
+          });
+      }
+  
+      return convertedArray;
+  }
+  
+  // Example usage:
+  const paymentMethods = { id: 6, card: false, momo: false, cash: false };
+  console.log(convertToPaymentArray(paymentMethods));
+  
+
     return(
 
       <><BHeader top={Platform.OS==='ios'?60:20} title={'Payment methods'} color={colors.dg2.color} /><ScrollView
         contentContainerStyle={{ backgroundColor: 'white', marginTop: Platform.OS === 'ios' ? 40 : 0 }}
       >
-        {payment_methods.filter((method) => truePrefs.includes(method.name)).map((pay, index) => <View style={{ marginHorizontal: 30, }}>
+        {payment_methods.map((pay, index) => <View style={{ marginHorizontal: 30, }}>
           <ListItem
             containerStyle={[{ paddingVertical: 30, borderBottomColor: index == payment_methods.length - 1 ? colors.lg.color : null, borderBottomWidth: index == payment_methods.length - 1 ? 1 : null, borderTopColor: colors.lg.color, borderTopWidth: 1 }]}
             onPress={() => {

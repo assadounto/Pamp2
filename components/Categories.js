@@ -3,6 +3,7 @@ import { View, Text, Pressable,ScrollView, StyleSheet} from 'react-native';
 import { Icon } from '@rneui/base';
 import { colors} from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
+import NoInternetComponent from './NoInternet';
 
 export default function Categories({ data, onSelect}) {
   const [userOption, setUserOption] = useState();
@@ -11,9 +12,14 @@ export default function Categories({ data, onSelect}) {
     onSelect(value);
     setUserOption(value);
   };
+  if (!data){
+return(
+  <NoInternetComponent />
+)
+  }
   return (
     <View  style={{marginTop:20,alignSelf:'center',width:'90%', marginLeft:10,display:'flex',flexDirection:'row',flexWrap:'wrap'}}>  
-      {data.map((item,id) => {
+      {data?.map((item,id) => {
         return (
            
           <Pressable

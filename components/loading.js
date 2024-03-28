@@ -1,13 +1,19 @@
 import React from "react";
+import { verticalScale } from "../src/Dimensions";
+import LottieView from 'lottie-react-native';
 import { Image } from "react-native-animatable";
 import { StyleSheet,View } from "react-native";
 
 const Loading=()=>{
     return(
         <View style={styles.container}>
-        <Image
-          source={require('../assets/loading.gif')}
-          />
+   
+      <LottieView
+              source={require('../assets/lottie/loading.json')}
+              style={{ width:209, height: 150,marginTop:verticalScale(-20) }}
+              autoPlay
+              loop={false}
+            />
           </View>
     )
 }

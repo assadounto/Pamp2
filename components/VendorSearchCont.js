@@ -15,7 +15,7 @@ import { setRecentvendors } from '../src/redux/user'
 const Tab = createMaterialTopTabNavigator();
 
 const VendorSearchCon=({datas,notext,navigation,category})=>{
-  console.log(datas&&datas,'hereeeee')
+
   const user= useSelector(state=> state.user.userInfo)
 const dispatch=useDispatch()
 const postVendorUserId = async (vendorId) => {

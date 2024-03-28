@@ -3,6 +3,7 @@ import {View, Text,} from 'react-native-animatable';
 import {Input, Icon,TouchableOpacity} from '@rneui/base';
 import {styles, colors} from '../../Common_styles';
 import UHeader from '../../../components/UHeader';
+import { useInternet } from '../../../components/Internetcontext';
 import { useGetcategoriesQuery } from '../../redux/authapi';
 import {Pressable, FlatList, Image, Platform, Alert} from 'react-native';
 import RadioButton from '../../../components/RadioButton';
@@ -43,9 +44,12 @@ import Skeleton from '../../../components/LoadingSketon';
 import LoadingSkeleton from '../../../components/LoadingSketon';
 import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions';
 import Location_pop from '../../../components/Location_pop';
+import NoInternetComponent from '../../../components/NoInternet';
 const Tab = createMaterialTopTabNavigator();
 
 const Home = ({navigation}) => {
+  const isInternetConnected = useInternet();
+
 const user =useSelector((state)=>state.user.userInfo)
 const userstate =useSelector((state)=>state.user)
 const [unread,setunread]= useState(false)
@@ -94,6 +98,19 @@ const  reverseGeocode=async (lat, lng)=> {
         break;     
     }
   };
+  const showAlert = () => {
+    Alert.alert(
+      'No Internet Connection',
+      'Please check your internet connection and try again.',
+      [
+        {
+          text: 'OK',
+        //  onPress: handleRefresh, // Call the handleRefresh function on OK press
+        },
+      ]
+    );
+  };
+
 
 
   function getUserLocation() {
@@ -254,7 +271,7 @@ console.log(userstate.location)
 
   }
   
-  
+
   return (
     <Fragment >
      <UHeader newnoti={unread}  navigation={navigation} />
@@ -267,6 +284,7 @@ console.log(userstate.location)
           
           />
     </Pressable>
+  
     <Tab.Navigator
       sceneContainerStyle={{ backgroundColor: 'white' }}
       tabBar={props => <MyTabBar {...props} />}>
@@ -281,20 +299,27 @@ console.log(userstate.location)
 };
 
 const Popular=({navigation})=>{
+  const isInternetConnected = useInternet();
 const dispatch=useDispatch()
 const[loading,setLoading]= React.useState(false)
-
+const [error,setError]= React.useState()
   const userstate =useSelector((state)=>state.user)
 
   console.log(userstate.userInfo)
-  const {data,isLoading,refetch}=useGetcategoriesQuery('Popular')
-  // useFocusEffect(
-  
-  //   React.useCallback(() => {
-  //     a()
 
-  //   }, []) // Include user.id in the dependency array
-  // );
+  
+
+  const {data,isLoading,refetch,isError}=useGetcategoriesQuery('Popular')
+  useFocusEffect(
+  
+    React.useCallback(() => {
+  if (!data){
+    refetch()
+
+  } 
+
+    }, []) // Include user.id in the dependency array
+  );
  console.log(isLoading)
     const a= async()=>{
       setLoading(true)
@@ -302,10 +327,12 @@ const[loading,setLoading]= React.useState(false)
         const {data}= await getcategories('Popular')
         data&& dispatch(setCat(data))
         setLoading(false)
+        setError(false)
       }
       
       catch(e) {
         Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
+        setError(true)
         setLoading(false)
       }
      
@@ -347,11 +374,13 @@ const[loading,setLoading]= React.useState(false)
     {imageLoading&& <ActivityIndicator color={colors.dg2.color} style={{position:"absolute", alignSelf:'center',top:'50%'}} size={'small'}/>}
     </Pressable>
   );
-
+ 
   return (
     <>
+   
 {
-      isLoading? <LoadingSkeleton/>:
+      isLoading? <LoadingSkeleton/>
+      :
     <FlatList contentContainerStyle={{paddingBottom:30}}
       showsVerticalScrollIndicator={false}
       data={data}
@@ -360,7 +389,7 @@ const[loading,setLoading]= React.useState(false)
 
 refreshing={false}
       keyExtractor={item => item.id}
-      ListEmptyComponent={<Text></Text>}
+      ListEmptyComponent={  <NoInternetComponent retry={()=>refetch()}/>}
       onRefresh={refetch}
       />
       

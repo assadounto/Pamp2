@@ -73,7 +73,7 @@ const AppointmentsContainer = ({navigation,data}) => {
     declined:'#CD3D49',
     "no show": '#CD3D49',
     unconfirmed: colors.dg.color,
-    pending: data.services[0]? data.services[0].color: 'red'
+    pending: data?.services[0]? data?.services[0].color: 'red'
   }
   
   const c={

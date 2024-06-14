@@ -1,26 +1,26 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React from 'react';
-import {Text, View, SafeAreaView, Image, Modal, TextInput,StyleSheet,Pressable} from 'react-native';
-import MapView,{ PROVIDER_GOOGLE,Marker } from 'react-native-maps';
+import { Text, View, SafeAreaView, Image, Modal, TextInput, StyleSheet, Pressable } from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import mark from '../assets/m.png'
 import { Icon } from '@rneui/base';
 import VendorMapPin from '../../../components/VendorMapin';
-const Mapview = ({route,navigation}) => {
-  const {data} =route.params
+const Mapview = ({ route, navigation }) => {
+  const { data } = route.params
   const useStyles = makeStyles((theme) => ({
     map: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: 'green',
     },
   }));
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
     <><MapView
       initialRegion={{
-        latitude: data.lat? parseFloat(data.lat):5.614818,
-        longitude: data.lon? parseFloat(data.lon): -0.205874,
+        latitude: data.lat ? parseFloat(data.lat) : 5.614818,
+        longitude: data.lon ? parseFloat(data.lon) : -0.205874,
         latitudeDelta: 0.00122,
         longitudeDelta: 0.00121,
       }}
@@ -32,9 +32,9 @@ return (
       <Marker
         coordinate={{ latitude: 5.614818, longitude: -0.205874 }}
         pinColor="red"
-        
-        >
-       
+
+      >
+
       </Marker>
     </MapView>
       <Pressable onPress={() => navigation.goBack()} style={{ position: 'absolute', top: 60, left: 20 }}>
@@ -45,7 +45,7 @@ return (
           size={30} />
       </Pressable>
       <VendorMapPin data={data} />
-      </>
+    </>
   );
 };
 
@@ -55,14 +55,14 @@ return (
 //     <View style={{ opacity:100,
 //        backgroundColor:'#00000029',width:318,height:130,borderRadius:20,display:'flex',flexDirection:'row'}}> 
 //       <Image style ={{resizeMode: 'contain' ,height:110,width:110}} source={require('../../../assets/rectangle-9091.png')}> 
-     
+
 //       </Image>
 //       <View>
 //       <Text>Likkle Salon</Text>
 //        <Text>Airport Residential Road</Text>
 //        <Text>Likkle Salon</Text>
 //       </View>
-       
+
 //     </View>
 //   )
 // }

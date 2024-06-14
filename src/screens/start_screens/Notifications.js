@@ -1,14 +1,14 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React from 'react';
-import {View, ImageBackground, Text, StyleSheet, Pressable} from 'react-native';
+import { View, ImageBackground, Text, StyleSheet, Pressable } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
-const Getting_started = ({navigation}) => {
- 
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
+const Getting_started = ({ navigation }) => {
+
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
     <View style={styles.container}>
       <ImageBackground
         source={require('../assets/Group2.png')}
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   text: {
     fontSize: 30,
   },
-  c1: {width: '100%', height: '100%'},
+  c1: { width: '100%', height: '100%' },
   c2: {
     width: '80%',
     height: '40%',

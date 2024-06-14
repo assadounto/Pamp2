@@ -1,10 +1,10 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React from "react"
 import ContentLoader, { Rect, Circle, Path } from "react-content-loader/native"
 
 const Loader1 = (props) => (
-    <ContentLoader 
+  <ContentLoader
     speed={2}
     width={400}
     height={400}

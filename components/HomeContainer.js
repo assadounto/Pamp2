@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { StyleSheet, View, Image, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -9,8 +9,8 @@ const HomeContainer = () => {
   const navigation = useNavigation();
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <Pressable
       style={[styles.menu, styles.mt2_6300000000000026]}
       onPress={() => navigation.navigate("Settings")}

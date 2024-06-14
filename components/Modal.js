@@ -1,62 +1,64 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { Background } from '@react-navigation/elements';
 import React from 'react';
-import {Text, View,StyleSheet, SafeAreaView, Image, Modal,Pressable,FlatList} from 'react-native';
+import { Text, View, StyleSheet, SafeAreaView, Image, Modal, Pressable, FlatList } from 'react-native';
 import { FontFamily } from '../src/GlobalStyles';
-import { styles,colors } from '../src/Common_styles';
+import { styles, colors } from '../src/Common_styles';
 
 
-const data =['MTN','VODAFONE','AIRTELTIGO']
+const data = ['MTN', 'VODAFONE', 'AIRTELTIGO']
 
-const Modal_Pop = ({main, modal,onchange,setOption}) => {
-  const styles = useStyles();
-const { theme} = useTheme();
-return (
-    <><Modal animationType="slide" transparent={true} visible={modal}>
+const Modal_Pop = ({ main, modal, onchange, setOption }) => {
+    const styles = useStyles();
+    const { theme } = useTheme();
+    return (
+        <><Modal animationType="slide" transparent={true} visible={modal}>
 
-<View style={[styles.pop2,{ padding:0,height:200,bottom:110}]}>
-<FlatList style={md_style.momo_cont}
-        data={data}
-        renderItem={({item}) => (
-          
-            <View style={md_style.info} ><Text onPress={()=>{setOption(item) ;onchange(false)}} style={md_style.text}>{item}</Text></View>
-       
-        )}
-        keyExtractor={item => item}
-      
-        
-      />
- </View>
+            <View style={[styles.pop2, { padding: 0, height: 200, bottom: 110 }]}>
+                <FlatList style={md_style.momo_cont}
+                    data={data}
+                    renderItem={({ item }) => (
+
+                        <View style={md_style.info} ><Text onPress={() => { setOption(item); onchange(false) }} style={md_style.text}>{item}</Text></View>
+
+                    )}
+                    keyExtractor={item => item}
 
 
+                />
+            </View>
 
-        
-         <Pressable style={{ alignItems:'center',position:'absolute',bottom:40,
-        justifyContent: 'center',backgroundColor:'white',marginTop:10,height:54,
-         borderRadius:18,width:'95%',alignSelf:'center'}} onPress={()=>onchange(false)}><Text style={md_style.text}>BACK</Text></Pressable> 
-          </Modal>
-     </>
-  );
+
+
+
+            <Pressable style={{
+                alignItems: 'center', position: 'absolute', bottom: 40,
+                justifyContent: 'center', backgroundColor: 'white', marginTop: 10, height: 54,
+                borderRadius: 18, width: '95%', alignSelf: 'center'
+            }} onPress={() => onchange(false)}><Text style={md_style.text}>BACK</Text></Pressable>
+        </Modal>
+        </>
+    );
 };
 
 export default Modal_Pop;
 const useStyles = makeStyles((theme) => ({
     momo_cont: {
-        width:'90%',
-      
+        width: '90%',
+
     },
-    info:{
-        borderBottomColor:'#B0EBBD',
-        borderBottomWidth:0.5,
-        height:60,
-        alignItems:'center',
+    info: {
+        borderBottomColor: '#B0EBBD',
+        borderBottomWidth: 0.5,
+        height: 60,
+        alignItems: 'center',
         justifyContent: 'center'
     },
-    text:{
-        fontFamily:FontFamily.sourceSansProSemibold,
-        fontSize:16,
-        color:"#00463C"
+    text: {
+        fontFamily: FontFamily.sourceSansProSemibold,
+        fontSize: 16,
+        color: "#00463C"
 
     }
 }))

@@ -1,11 +1,11 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { colors } from '../src/Common_styles';
 
-const ImageCont = ({ styles,show, uri,smallStyle }) => {
+const ImageCont = ({ styles, show, uri, smallStyle }) => {
   const [imageLoading, setImageLoading] = useState(true);
 
   const handleImageLoad = () => {
@@ -13,10 +13,10 @@ const ImageCont = ({ styles,show, uri,smallStyle }) => {
   };
 
 
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <>
-    
+
       <FastImage
         style={styles}
         source={{
@@ -25,7 +25,7 @@ return (
           priority: FastImage.priority.normal,
         }}
         resizeMode={FastImage.resizeMode.cover}
-       
+
       />
     </>
   );

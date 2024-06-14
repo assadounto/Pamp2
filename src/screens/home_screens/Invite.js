@@ -1,35 +1,35 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React from 'react';
-import {View, ImageBackground, Text, StyleSheet,Alert, Pressable,Share, TouchableOpacity} from 'react-native';
+import { View, ImageBackground, Text, StyleSheet, Alert, Pressable, Share, TouchableOpacity } from 'react-native';
 import BHeader from '../../../components/BHeader';
 import { colors } from '../../Common_styles';
 import { FontFamily } from '../../GlobalStyles';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useSelector } from 'react-redux';
 
-const Invite = ({navigation}) => {
+const Invite = ({ navigation }) => {
   const [noti, shownoti] = React.useState(false);
-  const user= useSelector(state=>state.user.userInfo)
+  const user = useSelector(state => state.user.userInfo)
   const copyToClipboard = () => {
-    if (!user.ref_code){
+    if (!user.ref_code) {
       Alert.alert('No referral code', 'If for some reason your referral code is blank, signout and signin again to fix it. Otherwise contact pamp support')
       return
-          }
+    }
     Clipboard.setString(user.ref_code);
     shownoti(true)
-    setTimeout(()=>{
-     shownoti(false)
-    },3000
+    setTimeout(() => {
+      shownoti(false)
+    }, 3000
     )
   }
 
 
 
   const onShare = async () => {
-    if (!user.ref_code){
-Alert.alert('No referral code', 'If for some reason your referral code is blank, signout and signin again to fix it. Otherwise contact pamp support')
-return
+    if (!user.ref_code) {
+      Alert.alert('No referral code', 'If for some reason your referral code is blank, signout and signin again to fix it. Otherwise contact pamp support')
+      return
     }
     try {
       const result = await Share.share({
@@ -46,43 +46,43 @@ return
         // dismissed
       }
     } catch (error) {
-      Alert.alert("Error",error.message);
+      Alert.alert("Error", error.message);
     }
   };
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
     <View style={styles.container}>
-     
+
       <ImageBackground
         source={require('../assets/Group2.png')}
         style={styles.c1}>
-          <View style={styles.head}>
-           <BHeader title='pamp' color={'#86D694'}/>
-           {
-            noti && 
+        <View style={styles.head}>
+          <BHeader title='pamp' color={'#86D694'} />
+          {
+            noti &&
             <View style={styles.copy_info}>
-               <Text style={styles.copy_info_text}>Referral code copied!</Text>
-           </View>
-           }
-           
-           </View>
+              <Text style={styles.copy_info_text}>Referral code copied!</Text>
+            </View>
+          }
+
+        </View>
         <ImageBackground
           source={require('../../../assets/excited.png')}
           style={styles.c3}
         />
         <View style={styles.c2}>
-          <View style={{transform: [{rotate: '7deg'}, ],marginTop:20}}>
-              <Text style={[styles.italic,styles.nobold]}>Want to</Text>
-           </View>
-        <View style={{transform: [{rotate: '-3deg'},  ],}}>
-           <Text style={[styles.italic,styles.bold]}>Save</Text>
-        </View>
-        <View style={{transform: [{rotate: '-3deg'}, ],}}>
-           <Text style={[styles.italic,styles.nobold]}>GHC10?</Text>
-         </View>
+          <View style={{ transform: [{ rotate: '7deg' },], marginTop: 20 }}>
+            <Text style={[styles.italic, styles.nobold]}>Want to</Text>
+          </View>
+          <View style={{ transform: [{ rotate: '-3deg' },], }}>
+            <Text style={[styles.italic, styles.bold]}>Save</Text>
+          </View>
+          <View style={{ transform: [{ rotate: '-3deg' },], }}>
+            <Text style={[styles.italic, styles.nobold]}>GHC10?</Text>
+          </View>
           <Text style={styles.c5}>
-          {'Invite your friends and get GHC10 off 1 appointment(s)'}
+            {'Invite your friends and get GHC10 off 1 appointment(s)'}
           </Text>
           <View style={styles.copy}>
             <Text style={styles.code}>{user.ref_code}</Text>
@@ -105,21 +105,21 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  head:{
-    marginTop:50
+  head: {
+    marginTop: 50
   },
 
   text: {
     fontSize: 30,
   },
-  c1: {width: '100%', height: '100%' },
+  c1: { width: '100%', height: '100%' },
   c2: {
     width: '80%',
 
     backgroundColor: '#FFFFFF',
     position: 'absolute',
     alignSelf: 'center',
-   bottom: 30,
+    bottom: 30,
     borderRadius: 40,
   },
   c3: {
@@ -137,13 +137,13 @@ const useStyles = makeStyles((theme) => ({
   },
   c5: {
     alignSelf: 'center',
-    fontFamily:FontFamily.sourceSansProRegular,
+    fontFamily: FontFamily.sourceSansProRegular,
     width: 269,
     textAlign: 'center',
     color: '#D0D8C3',
     padding: 10,
-    fontSize:20,
-    marginBottom:5
+    fontSize: 20,
+    marginBottom: 5
 
   },
   c6: {
@@ -152,8 +152,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#86D694',
     width: 184,
     height: 52,
-    marginTop:10,
-    marginBottom:10
+    marginTop: 10,
+    marginBottom: 10
   },
   c7: {
     textAlign: 'center',
@@ -161,63 +161,65 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 15,
     color: '#FFFFFF',
     fontFamily: FontFamily.sourceSansProBold,
-   
+
 
     padding: 15,
   },
-  copy:{
-    display:'flex',
-    flexDirection:'row',
-    width:200,
-    height:40,
-    paddingHorizontal:15,
-    justifyContent:'space-between',
-  alignSelf:'center',
-   alignItems:'center',
-    borderColor:colors.slate.color,
-    borderWidth:1,
-    
-    borderRadius: 10,marginBottom:5
+  copy: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: 200,
+    height: 40,
+    paddingHorizontal: 15,
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderColor: colors.slate.color,
+    borderWidth: 1,
+
+    borderRadius: 10, marginBottom: 5
   },
-  copy_text:{
+  copy_text: {
 
   },
-  code:{
-   
-    color:colors.dg.color
-  },
-  copy_info:{
-    width: '90%',
-    position:'absolute',
-    alignSelf:'center',
-    top:60,
-    height:32,
-    borderRadius:23,
-    backgroundColor:'white'
-  },
-  italic:{
-    textAlign:'center',  
+  code: {
+
     color: colors.dg.color
-    
   },
-  bold:{
-    marginTop:-10,
+  copy_info: {
+    width: '90%',
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 60,
+    height: 32,
+    borderRadius: 23,
+    backgroundColor: 'white'
+  },
+  italic: {
+    textAlign: 'center',
+    color: colors.dg.color
+
+  },
+  bold: {
+    marginTop: -10,
     fontSize: 45,
     fontFamily: FontFamily.bondonBoldItalic
   },
-  nobold:{
+  nobold: {
     fontSize: 25,
 
     fontFamily: FontFamily.bondonBoldItalic
   },
-  copy_info_text:{
-    fontFamily:FontFamily.sourceSansProRegular,
-    fontSize:14,
-    left:20,
-    top:5,
-    color:colors.dg.color
+  copy_info_text: {
+    fontFamily: FontFamily.sourceSansProRegular,
+    fontSize: 14,
+    left: 20,
+    top: 5,
+    color: colors.dg.color
   }
-  ,cptext:{fontFamily:FontFamily.sourceSansProRegular,
-  color:colors.dgb.color}
+  , cptext: {
+    fontFamily: FontFamily.sourceSansProRegular,
+    color: colors.dgb.color
+  }
 }));
 export default Invite;

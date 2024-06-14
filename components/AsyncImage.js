@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 /* @flow */
 
 import React, { // eslint-disable-line no-unused-vars
@@ -67,8 +67,8 @@ export default class AsyncImage extends Component {
     } = this.state
 
     const styles = useStyles();
-const { theme} = useTheme();
-return (
+    const { theme } = useTheme();
+    return (
       <View
         style={style}>
 

@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { useMemo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -19,8 +19,8 @@ const DiscountContainer = ({ propMarginTop, propMarginLeft }) => {
   }, [propMarginTop, propMarginLeft]);
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View
       style={[styles.giftParent, styles.mt79, styles.ml44, groupView4Style]}
     >

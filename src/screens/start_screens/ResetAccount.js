@@ -1,6 +1,6 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Animated, Easing } from 'react-native';
 import { useResendEmailMutation, useVerifyPhoneMutation } from '../../redux/authapi';
 import {
@@ -13,11 +13,11 @@ import {
   Alert,
 } from 'react-native';
 import Header from './header';
-import {styles, colors} from '../../Common_styles';
-import {Button} from '@rneui/base';
+import { styles, colors } from '../../Common_styles';
+import { Button } from '@rneui/base';
 import Pop from './pop';
 import Blur from './Blur';
-import {useGetEmailConfirmMutation,useGetPhoneConfirmMutation} from '../../redux/authapi';
+import { useGetEmailConfirmMutation, useGetPhoneConfirmMutation } from '../../redux/authapi';
 import { useSelector } from 'react-redux';
 import {
   CodeField,
@@ -31,22 +31,22 @@ import BHeader from '../../../components/BHeader';
 import { useLazyForgotAccountQuery } from '../../redux/authapi';
 import Pop2 from './pop2';
 const CELL_COUNT = 4;
-let error_color='#B0EBBD';
-const ResetAccount = ({navigation,route}) => {
+let error_color = '#B0EBBD';
+const ResetAccount = ({ navigation, route }) => {
   const { datas } = route?.params || {};
-  const[ forgotAccount,{}]= useLazyForgotAccountQuery()
+  const [forgotAccount, { }] = useLazyForgotAccountQuery()
 
   const [shakeAnimation] = useState(new Animated.Value(0));
 
-  const user= useSelector((state)=>state.user.userInfo)
-    const [getEmailConfirm,{isSuccess,isLoading,data,isError}]= useGetEmailConfirmMutation()
-    const [verify]= useLazyVerifyResetCodeQuery()
-    const [VerifyResetCode,{data: infodata, isSuccess: verifySuccess,isError:verifyError}] = useLazyVerifyResetCodeQuery()
-  console.log(user,'k');
+  const user = useSelector((state) => state.user.userInfo)
+  const [getEmailConfirm, { isSuccess, isLoading, data, isError }] = useGetEmailConfirmMutation()
+  const [verify] = useLazyVerifyResetCodeQuery()
+  const [VerifyResetCode, { data: infodata, isSuccess: verifySuccess, isError: verifyError }] = useLazyVerifyResetCodeQuery()
+  console.log(user, 'k');
   const [value, setValue] = useState('');
-  const [wrong,setwrong] =useState('')
-  const [error,seterror]=useState(false)
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [wrong, setwrong] = useState('')
+  const [error, seterror] = useState(false)
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -55,17 +55,17 @@ const ResetAccount = ({navigation,route}) => {
   const [timerCount, setTimerCount] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
   console.log(user)
-  
 
-  const incall=()=>{
-   seterror(true)
-   shakeAnimationStart();
+
+  const incall = () => {
+    seterror(true)
+    shakeAnimationStart();
 
   }
   const startTimer = () => {
-     resend()
+    resend()
     if (!timerActive) {
-     
+
 
       setTimerActive(true);
       setTimerCount(60);
@@ -73,7 +73,7 @@ const ResetAccount = ({navigation,route}) => {
       const interval = setInterval(() => {
         setTimerCount((prevCount) => prevCount - 1);
       }, 1000);
-  
+
       // Stop the timer when it reaches 0
       setTimeout(() => {
         clearInterval(interval);
@@ -81,7 +81,7 @@ const ResetAccount = ({navigation,route}) => {
       }, 60000);
     }
   };
-  
+
   const shakeAnimationStart = () => {
     shakeAnimation.setValue(0);
     Animated.sequence([
@@ -105,50 +105,53 @@ const ResetAccount = ({navigation,route}) => {
       }),
     ]).start();
   };
-  
+
   const handleSubmit = async () => {
     console.log(typeof value, value.length);
-   try{
-    const {data}= await VerifyResetCode({
+    try {
+      const { data } = await VerifyResetCode({
         email: datas.email,
         token: value
       })
       console.log(data)
-      if(data.status=='ok'){
+      if (data.status == 'ok') {
         setModal(true);
-    
-      setTimeout(() => {
-        setModal(false);
-        // next? navigation.navigate(next):
-         navigation.navigate('PassReset',{datas:{
-            email:datas.email,
-            token: value
-         }});
-      }, 4000);
-      } else{
-       incall()
-      }
-      
-   }catch(e){
 
-  console.log(e.response.data)
-   }
-    
-    
-     
+        setTimeout(() => {
+          setModal(false);
+          // next? navigation.navigate(next):
+          navigation.navigate('PassReset', {
+            datas: {
+              email: datas.email,
+              token: value
+            }
+          });
+        }, 4000);
+      } else {
+        incall()
       }
-   
-const resend=()=>{
+
+    } catch (e) {
+
+      console.log(e.response.data)
+    }
+
+
+
+  }
+
+  const resend = () => {
     forgotAccount({
-        method: datas.method,
-        email: datas.email
-      })
-}
+      method: datas.method,
+      email: datas.email
+    })
+  }
 
   const useStyles = makeStyles((theme) => ({
-    root: {flex: 1, padding: 10,marginHorizontal:40},
-    title: {textAlign: 'center', fontSize: 30},
-    codeFieldRoot: {marginTop: 20,marginHorizontal:40,
+    root: { flex: 1, padding: 10, marginHorizontal: 40 },
+    title: { textAlign: 'center', fontSize: 30 },
+    codeFieldRoot: {
+      marginTop: 20, marginHorizontal: 40,
       transform: [
         {
           translateX: 1,
@@ -174,7 +177,7 @@ const resend=()=>{
       fontSize: 30,
       color: '#00463C',
       borderWidth: 2,
-      borderColor:  'red',
+      borderColor: 'red',
       textAlign: 'center',
       borderRadius: 15,
       padding: 15,
@@ -190,36 +193,36 @@ const resend=()=>{
   }));
 
 
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
     <>
       <View style={{}}>
-      <Header
+        <Header
           main={'Reset your password'}
           sub={`Please enter the 4 digit code sent`}
-        sub2={`to your ${datas.method}`}
+          sub2={`to your ${datas.method}`}
         />
-      
+
 
         <CodeField
           ref={ref}
           {...props}
           // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
           value={value}
-          onChangeText={setValue  }
+          onChangeText={setValue}
           cellCount={CELL_COUNT}
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({index, symbol, isFocused}) => (
-          
+          renderCell={({ index, symbol, isFocused }) => (
+
             <Animated.Text
-            
+
               key={index}
               style={[
-               styles.cell,
-                isFocused  && styles.focusCell,
+                styles.cell,
+                isFocused && styles.focusCell,
                 {
                   transform: [
                     {
@@ -230,32 +233,32 @@ return (
                     },
                   ],
                 },
-              ]}              onLayout={getCellOnLayoutHandler(index)}>
+              ]} onLayout={getCellOnLayoutHandler(index)}>
               {symbol || (isFocused ? <Cursor /> : null)}
             </Animated.Text>
           )}
         />
-      
-      <Text
-  disabled={timerActive}
-  style={[colors.dg, styles.tc, { fontFamily: FontFamily.sourceSansProSemibold,marginTop:100 }]}
-  onPress={startTimer}
->
-  {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
-</Text>
 
-<Text> </Text>
+        <Text
+          disabled={timerActive}
+          style={[colors.dg, styles.tc, { fontFamily: FontFamily.sourceSansProSemibold, marginTop: 100 }]}
+          onPress={startTimer}
+        >
+          {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
+        </Text>
+
+        <Text> </Text>
         <TouchableOpacity>
           <Button
-                       titleStyle={styles.tbtn}
+            titleStyle={styles.tbtn}
             title="Verify Code"
             onPress={handleSubmit}
             loading={isLoading}
-            buttonStyle={[styles.button,{width:300}]}
+            buttonStyle={[styles.button, { width: 300 }]}
           />
         </TouchableOpacity>
-          
-       
+
+
         <Pop2
           main={'Reset code verified successfully'}
           modal={modalVisible}
@@ -266,4 +269,4 @@ return (
   );
 };
 
-export default  ResetAccount;
+export default ResetAccount;

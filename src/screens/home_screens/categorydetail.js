@@ -1,17 +1,17 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView,SafeAreaView } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView } from 'react-native'
 
 
 const Category_detail = () => {
 
 
-  const { theme} = useTheme();
+  const { theme } = useTheme();
 
-return (
+  return (
     <SafeAreaView>≈
-    <Text style={{color:'red'}}>Fav</Text>
+      <Text style={{ color: 'red' }}>Fav</Text>
     </SafeAreaView>
   )
 }

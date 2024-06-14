@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { StyleSheet, View, Pressable, Text, Image } from "react-native";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
@@ -7,14 +7,14 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/core";
 import { horizontalScale, verticalScale } from "../src/Dimensions";
 const SucessPop = () => {
-    const name = useSelector((state) => state.booking.vendor_name);
-    const navigation =useNavigation()
+  const name = useSelector((state) => state.booking.vendor_name);
+  const navigation = useNavigation()
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={styles.component48}>
       <View style={styles.component48Child} />
-      
+
       <Image
         style={styles.path650Icon}
         resizeMode="contain"
@@ -25,7 +25,7 @@ return (
         style={[styles.youHaveSuccessfully]}
       >{`You have successfully booked 
 an appointment with ${name}.`}</Text>
-<Pressable onPress={()=>navigation.push('main')}  style={styles.backToHomeWrapper}>
+      <Pressable onPress={() => navigation.push('main')} style={styles.backToHomeWrapper}>
         <Text style={styles.backToHome}>Back to Home</Text>
       </Pressable>
     </View>
@@ -49,46 +49,46 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
   },
   backToHome: {
-   textAlignVertical:'center',
-  alignSelf:'center',
+    textAlignVertical: 'center',
+    alignSelf: 'center',
     fontSize: FontSize.size_mini,
     fontWeight: "700",
     fontFamily: FontFamily.sourceSansProBold,
     color: Color.white,
-    
+
   },
   backToHomeWrapper: {
     height: "11.98%",
     width: "53.8%",
-    alignContent:'center',
-   marginTop:40,
-   justifyContent:'center',
-  alignSelf:'center',
+    alignContent: 'center',
+    marginTop: 40,
+    justifyContent: 'center',
+    alignSelf: 'center',
 
     borderRadius: Border.br_4xl,
     backgroundColor: Color.lightgreen,
-  
+
   },
   path650Icon: {
     height: verticalScale(50),
     width: horizontalScale(40),
-    alignSelf:'center',
+    alignSelf: 'center',
 
-    marginTop:verticalScale(30)
-   
+    marginTop: verticalScale(30)
+
   },
   success: {
-  textAlign:'center',
+    textAlign: 'center',
     fontSize: 25,
     lineHeight: 38,
-    marginVertical:verticalScale(50),
+    marginVertical: verticalScale(50),
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
     color: '#00463C',
   },
   youHaveSuccessfully: {
-   
-    textAlign:'center',
+
+    textAlign: 'center',
     fontSize: FontSize.size_base,
     fontFamily: FontFamily.sourceSansProRegular,
     color: Color.lightgreen,
@@ -96,10 +96,10 @@ const useStyles = makeStyles((theme) => ({
   component48: {
     top: '30%',
     width: horizontalScale(342),
-  height: verticalScale(400),
+    height: verticalScale(400),
     position: "absolute",
-    alignSelf:'center',
-    
+    alignSelf: 'center',
+
   },
 }));
 

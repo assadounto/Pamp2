@@ -1,23 +1,23 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React, { useState } from "react";
-import { StyleSheet,Text,View,TextInput,Image,Pressable } from "react-native";
+import { StyleSheet, Text, View, TextInput, Image, Pressable } from "react-native";
 import { FontFamily } from "../src/GlobalStyles";
 import { styles } from "../src/Common_styles";
 import { setPayment } from "../src/redux/user"
 import { colors } from "../src/Common_styles";
-import { Icon,Button ,CheckBox} from "@rneui/base";
+import { Icon, Button, CheckBox } from "@rneui/base";
 import { useDispatch } from "react-redux";
 
-import { CardNumberTextInput,CardDateTextInput } from "./src/index";
+import { CardNumberTextInput, CardDateTextInput } from "./src/index";
 import master from '../assets/group-1902.png'
-const Card =()=>{
-    const dispatch= useDispatch()
-    const [df,setdefault]=useState(false)
-    const [name,setname]=useState('')
-    const [cn,setcn]=useState('')
-    const [ex,setex]=useState('')
-    const [cvc,setcvc]=useState('')
+const Card = () => {
+    const dispatch = useDispatch()
+    const [df, setdefault] = useState(false)
+    const [name, setname] = useState('')
+    const [cn, setcn] = useState('')
+    const [ex, setex] = useState('')
+    const [cvc, setcvc] = useState('')
     const [cardValue, setCardValue] = useState('');
     const [focusCardNum, setFocusCardNum] = useState(false);
 
@@ -26,26 +26,26 @@ const Card =()=>{
     const updateText = (cardNum) => {
         setCardValue(cardNum)
     }
-   const updateCardDate = (cardNum) => {
+    const updateCardDate = (cardNum) => {
         setCardDateValue(cardNum)
     }
-    
 
-    handleSubmit=()=>{
-     
-        
+
+    handleSubmit = () => {
+
+
         dispatch(setPayment({
             name: name,
             expiry: ex,
-           cvc,
-           Number: cn,
-           img: 'master'
+            cvc,
+            Number: cn,
+            img: 'master'
         }))
     }
-    return(
-       
-               
-                <><Text style={{ width: 320, marginBottom: 20, marginHorizontal: 20, textAlign: 'left', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: '#00463C' }}>Securely save your card details to seamlessly make payments.</Text><View style={{ marginHorizontal: 30 }}>
+    return (
+
+
+        <><Text style={{ width: 320, marginBottom: 20, marginHorizontal: 20, textAlign: 'left', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: '#00463C' }}>Securely save your card details to seamlessly make payments.</Text><View style={{ marginHorizontal: 30 }}>
             <Text style={paystyle.text}>Name on card</Text>
 
             <TextInput style={paystyle.input} placeholder='Card holder full name' onChangeText={(value) => setname(value)} />
@@ -55,7 +55,7 @@ const Card =()=>{
                 onFocus={() => setFocusCardNum(true)}
                 onBlur={(e) => {
                     setFocusCardNum(false);
-                } }
+                }}
                 labelStyle={{
                     color: "#00463C",
                     marginLeft: 20
@@ -75,7 +75,7 @@ const Card =()=>{
                 placeholder={"Credit card"}
                 updateTextVal={(text) => {
                     updateText(text);
-                } } />
+                }} />
             <View style={{ display: 'flex', flexDirection: 'row', columnGap: 20 }}>
                 <CardDateTextInput
                     errorColor={"#00463C"}
@@ -87,7 +87,7 @@ const Card =()=>{
                     focus={focusCardDateNum}
                     updateCardDateText={(t) => {
                         updateCardDate(t);
-                    } }
+                    }}
                     onFocus={() => setFocusCardDateNum(true)}
                     labelStyle={{
                         color: '#00463C',
@@ -141,20 +141,21 @@ const Card =()=>{
                     shadowColor: colors.dg2.color, shadowOpacity: 0.5, shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
                 }}
                 onPress={() => handleSubmit()} /></>
-   
+
     )
 }
 
 
 export const useStyles = makeStyles((theme) => ({
-    text: {marginBottom:5, paddingHorizontal: 20,
-        fontFamily:FontFamily.sourceSansProSemibold,fontSize:15,color:'#00463C'
-    },input: {
-        padding:20, height:60,borderRadius:20,borderColor: colors.lg.color,borderWidth:1,marginBottom:15
+    text: {
+        marginBottom: 5, paddingHorizontal: 20,
+        fontFamily: FontFamily.sourceSansProSemibold, fontSize: 15, color: '#00463C'
+    }, input: {
+        padding: 20, height: 60, borderRadius: 20, borderColor: colors.lg.color, borderWidth: 1, marginBottom: 15
     },
-    img:{
-     height:14,
- 
+    img: {
+        height: 14,
+
     }
 }))
 

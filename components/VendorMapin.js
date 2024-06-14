@@ -1,51 +1,51 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import FastImage from "react-native-fast-image";
 import SvgUri from 'react-native-svg-uri';
 import { colors } from "../src/Common_styles";
-const VendorMapPin = ({data}) => {
+const VendorMapPin = ({ data }) => {
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={styles.component38}>
       <View style={styles.component38Child} />
       <FastImage
         style={[styles.component38Item, styles.iconLayout]}
-  
-            source={{
-              uri: data.image,
-              headers: { Authorization: 'someAuthToken' },
-              priority: FastImage.priority.high,
-            }}
-            resizeMode={FastImage.resizeMode.cover} />
+
+        source={{
+          uri: data.image,
+          headers: { Authorization: 'someAuthToken' },
+          priority: FastImage.priority.high,
+        }}
+        resizeMode={FastImage.resizeMode.cover} />
       <Text style={[styles.likkleSalon, styles.likkleSalonPosition]}>
-      {data.name.length > 16 ? `${data.name.substring(0, 14)}...` : data.name} {'  '}{
-        data.badge?
-        <View style={{marginLeft:5}}>
-        <SvgUri
-        
-        source={require('../assets/svgs/verified.svg')}/>
-        </View>: <></>
-      }  
+        {data.name.length > 16 ? `${data.name.substring(0, 14)}...` : data.name} {'  '}{
+          data.badge ?
+            <View style={{ marginLeft: 5 }}>
+              <SvgUri
+
+                source={require('../assets/svgs/verified.svg')} />
+            </View> : <></>
+        }
       </Text>
       <Text
         style={[styles.airportResidentialRoad, styles.kmTypo]}
       >{data.location.length > 20 ? `${data.location.substring(0, 20)}...` : data.location}</Text>
-       
-      
+
+
       <Image
         style={[styles.starIcon, styles.iconLayout]}
         resizeMode="cover"
         source={require("../assets/star2.png")}
       />
-      <Text style={[styles.text, styles.kmPosition]}>{data.sum_rating?.average_rating==0?'0.0': data.sum_rating.average_rating}</Text>
+      <Text style={[styles.text, styles.kmPosition]}>{data.sum_rating?.average_rating == 0 ? '0.0' : data.sum_rating.average_rating}</Text>
       <Text style={[styles.km, styles.kmPosition]}><SvgUri
-      
-      source={require('../assets/svgs/loc.svg')}/>{" "}{data.dist.toFixed(0)}m</Text>
-     
+
+        source={require('../assets/svgs/loc.svg')} />{" "}{data.dist.toFixed(0)}m</Text>
+
     </View>
   );
 };
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   kmPosition: {
     top: "71.11%",
     textAlign: "left",
-  
+
     position: "absolute",
   },
   component38Child: {
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
   airportResidentialRoad: {
     top: "40.04%",
     textAlign: "left",
-    width:180,
+    width: 180,
     color: Color.darkslategray_300,
     left: "44.03%",
     position: "absolute",
@@ -140,11 +140,11 @@ const useStyles = makeStyles((theme) => ({
   path3468Icon: {
     height: "7.51%",
     width: "2.72%",
-   
+
   },
   component38: {
-    bottom:50,
-  alignSelf:'center',
+    bottom: 50,
+    alignSelf: 'center',
     width: '80%',
     height: 135,
     position: "absolute",

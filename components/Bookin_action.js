@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FontFamily } from '../src/GlobalStyles';
@@ -16,9 +16,9 @@ import { useSelector } from 'react-redux';
 
 const Booking_action = ({ info, setblur, rebk, data }) => {
   const actionDictionary = {
-    rebook: ['confirmed',"rebook", 'booked',  'completed', 'unconfirmed','no show'],
-    notes: ['cancelled', 'completed','no show','declined'],
-    cancel: ['cancelled', 'completed','no show','ongoing','declined'],
+    rebook: ['confirmed', "rebook", 'booked', 'completed', 'unconfirmed', 'no show'],
+    notes: ['cancelled', 'completed', 'no show', 'declined'],
+    cancel: ['cancelled', 'completed', 'no show', 'ongoing', 'declined'],
   };
 
   const disabledActions = actionDictionary.rebook.includes(data.status) ? [] : ['rebook'];
@@ -29,8 +29,8 @@ const Booking_action = ({ info, setblur, rebk, data }) => {
   const [notes, setNotes] = useState(false);
 
   const md_style = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={md_style.cont}>
       <View>
         <TouchableOpacity
@@ -65,7 +65,7 @@ return (
           }}>
           <Image
             source={isCancelDisabled ? cancel2 : cancel1}
-            style={{ width: 22, height: 22, alignSelf: 'center',  }}
+            style={{ width: 22, height: 22, alignSelf: 'center', }}
           />
         </TouchableOpacity>
         <Text style={md_style.text}>Cancel</Text>

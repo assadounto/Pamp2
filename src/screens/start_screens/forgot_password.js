@@ -1,47 +1,47 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import Header from './header';
-import {Text, View, TouchableOpacity, TextInput} from 'react-native';
-import {Input, Button} from '@rneui/base';
-import {Formik} from 'formik';
+import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { Input, Button } from '@rneui/base';
+import { Formik } from 'formik';
 
-import { useLazySearchAccountQuery} from '../../redux/authapi';
+import { useLazySearchAccountQuery } from '../../redux/authapi';
 import { verticalScale } from '../../Dimensions';
-const ForgotPassword = ({navigation}) => {
-  const[searchAccount,{isLoading,isSuccess}]=useLazySearchAccountQuery()
-  const [email,setEmail]= useState('')
+const ForgotPassword = ({ navigation }) => {
+  const [searchAccount, { isLoading, isSuccess }] = useLazySearchAccountQuery()
+  const [email, setEmail] = useState('')
   const onSubmit = async () => {
 
-   let {status,data
-}= await searchAccount(email.toLocaleLowerCase())
-console.log(data)
-  status== 'fulfilled'   &&
-     navigation.navigate('ResetPassword',{info: data})
+    let { status, data
+    } = await searchAccount(email.toLocaleLowerCase())
+    console.log(data)
+    status == 'fulfilled' &&
+      navigation.navigate('ResetPassword', { info: data })
   };
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
     <>
 
-      
-          <View style={[styles.input2,{marginTop: verticalScale(60)}]}>
-          <Header  main={'Find Your Pamp Account'} />
-            <TextInput 
-              placeholderTextColor={'#BBB9BC'}
-              placeholder="try@pamp.com"
-              style={[styles.textInput,styles.tc]}
-              onChangeText={setEmail}
-            />
-            <TouchableOpacity style={{marginTop:30}}>
-              <Button
-                title="Search"
-                onPress={ onSubmit}
-                loading={isLoading}
-                buttonStyle={styles.button}
-              />
-            </TouchableOpacity>
-          </View>
+
+      <View style={[styles.input2, { marginTop: verticalScale(60) }]}>
+        <Header main={'Find Your Pamp Account'} />
+        <TextInput
+          placeholderTextColor={'#BBB9BC'}
+          placeholder="try@pamp.com"
+          style={[styles.textInput, styles.tc]}
+          onChangeText={setEmail}
+        />
+        <TouchableOpacity style={{ marginTop: 30 }}>
+          <Button
+            title="Search"
+            onPress={onSubmit}
+            loading={isLoading}
+            buttonStyle={styles.button}
+          />
+        </TouchableOpacity>
+      </View>
     </>
   );
 };

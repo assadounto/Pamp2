@@ -1,4 +1,4 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
@@ -6,13 +6,13 @@ import BHeader from '../../../components/BHeader';
 import { Input, Button } from '@rneui/base';
 import { styles } from '../../Common_styles';
 import axios from 'axios';
-import { verticalScale,horizontalScale,moderateScale } from '../../Dimensions';
+import { verticalScale, horizontalScale, moderateScale } from '../../Dimensions';
 import { backendURL } from '../../services/http';
 import { useSelector } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
 import { useDispatch } from 'react-redux';
 const Change_email = ({ navigation }) => {
-  const user =useSelector((state)=>state.user.userInfo)
+  const user = useSelector((state) => state.user.userInfo)
   const [formData, setFormData] = useState({
     old_email: '',
     new_email: '',
@@ -33,7 +33,7 @@ const Change_email = ({ navigation }) => {
     return emailPattern.test(email);
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     if (!formData.old_email || !formData.new_email || !formData.confirm_email) {
       Alert.alert('Error', 'All fields are required.');
       return;
@@ -54,29 +54,29 @@ const Change_email = ({ navigation }) => {
     }));
     // Form submission successful
     // console.log('Form Values:', formData);
-      const {data}= await axios.get(`${backendURL}/change_email?scope=user&email=${formData.new_email}&id=${user.id}`)
-       if (data==='ok'){
-       //alert('yes')
-       setFormData((prevData) => ({
+    const { data } = await axios.get(`${backendURL}/change_email?scope=user&email=${formData.new_email}&id=${user.id}`)
+    if (data === 'ok') {
+      //alert('yes')
+      setFormData((prevData) => ({
         ...prevData,
         isLoading: false,
       }));
-      
-        navigation.navigate('VerifyEmail',{
-          scope: 'ce',
-        });
-       }
+
+      navigation.navigate('VerifyEmail', {
+        scope: 'ce',
+      });
+    }
   };
 
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
-    <SafeAreaView style={{flex:1}}>
-      <BHeader top={Platform.OS==='ios'?0:20} title={'Change Email'} />
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <BHeader top={Platform.OS === 'ios' ? 0 : 20} title={'Change Email'} />
 
-      <View style={{ alignSelf: 'center',marginTop:40}}>
+      <View style={{ alignSelf: 'center', marginTop: 40 }}>
         <TextInput
-           placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={'#BBB9BC'}
           placeholder="Current Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('old_email', value)}
@@ -84,7 +84,7 @@ return (
         />
 
         <TextInput
-           placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={'#BBB9BC'}
           placeholder="New Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('new_email', value)}
@@ -92,7 +92,7 @@ return (
         />
 
         <TextInput
-           placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={'#BBB9BC'}
           placeholder="Confirm Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('confirm_email', value)}
@@ -102,9 +102,9 @@ return (
         <TouchableOpacity>
           <Button
             title="Save"
-            titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
+            titleStyle={{ fontFamily: FontFamily.sourceSansProBold }}
             onPress={handleSubmit}
-            buttonStyle={[styles.button,{marginTop:20}]}
+            buttonStyle={[styles.button, { marginTop: 20 }]}
             loading={formData.isLoading}
           />
         </TouchableOpacity>

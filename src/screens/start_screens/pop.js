@@ -1,12 +1,12 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React from 'react';
-import {Text, View, SafeAreaView, Image, Modal} from 'react-native';
-import {styles, colors} from '../../Common_styles';
+import { Text, View, SafeAreaView, Image, Modal } from 'react-native';
+import { styles, colors } from '../../Common_styles';
 
-const Pop = ({main, modal}) => {
-  const { theme} = useTheme();
-return (
+const Pop = ({ main, modal }) => {
+  const { theme } = useTheme();
+  return (
     <Modal animationType="slide" transparent={true} visible={modal}>
       <View style={styles.pop2}>
         <Image

@@ -1,4 +1,4 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React from "react"
 import { SafeAreaView } from "react-native"
@@ -7,15 +7,15 @@ import BHeader from "../../../components/BHeader"
 import ReviewCont from "../../../components/ReviewCont"
 import ReviewContainer from "../../../components/ReviewContainer"
 
-const Ratings=({route})=>{
-    const {data}= route.params
+const Ratings = ({ route }) => {
+    const { data } = route.params
     const { theme } = useTheme();
-    return( 
+    return (
         <SafeAreaView>
-               <BHeader title="Rating and reviews" color={'#86D694'}/>
-              <ReviewCont data={data}/>
+            <BHeader title="Rating and reviews" color={'#86D694'} />
+            <ReviewCont data={data} />
         </SafeAreaView>
-       
+
     )
 }
 

@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
@@ -10,12 +10,12 @@ import { useDispatch } from "react-redux";
 import { setNextNav } from "../src/redux/user";
 
 import { useNavigation } from "@react-navigation/core";
-const EmptyAppoiment = ({showBtn, sub="You don't have upcoming schedules.",col,mt}) => {
-  const navigation= useNavigation()
-  const dispatch= useDispatch()
+const EmptyAppoiment = ({ showBtn, sub = "You don't have upcoming schedules.", col, mt }) => {
+  const navigation = useNavigation()
+  const dispatch = useDispatch()
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={styles.component44}>
       <Image
         style={styles.component44Child}
@@ -25,36 +25,36 @@ return (
       <Text style={[styles.noAppointments, styles.youDontHaveTypo]}>
         No appointments
       </Text>
-      <Text style={[styles.youDontHave, styles.youDontHaveTypo,{color: col ?col:colors.dg.color,marginTop:mt?mt:null,fontFamily: FontFamily.sourceSansProRegular},]}>
+      <Text style={[styles.youDontHave, styles.youDontHaveTypo, { color: col ? col : colors.dg.color, marginTop: mt ? mt : null, fontFamily: FontFamily.sourceSansProRegular },]}>
         {sub}
       </Text>
-      {showBtn&& <Button
-           titleStyle={{fontSize:moderateScale(14),fontFamily:FontFamily.sourceSansProBold,color:colors.dg2.color}}
-            title={'Log in or sign up'}
-           
-            // containerStyle={}
-            buttonStyle={{
+      {showBtn && <Button
+        titleStyle={{ fontSize: moderateScale(14), fontFamily: FontFamily.sourceSansProBold, color: colors.dg2.color }}
+        title={'Log in or sign up'}
 
-              width: horizontalScale(184),
-              height: verticalScale(45),
-              //margin: 'auto',
+        // containerStyle={}
+        buttonStyle={{
 
-              marginBottom: 20,
-              marginTop: 20,
-              alignSelf: 'center',
-              borderRadius: 40,
-              borderColor:colors.dg2.color,
-              borderWidth:2,
-              
-              backgroundColor: colors.w.color,
-            }}
-            onPress={()=>{
-              dispatch(setNextNav('Favourites'))
-              navigation.navigate('login')
-            }
-              
-            }
-             />}
+          width: horizontalScale(184),
+          height: verticalScale(45),
+          //margin: 'auto',
+
+          marginBottom: 20,
+          marginTop: 20,
+          alignSelf: 'center',
+          borderRadius: 40,
+          borderColor: colors.dg2.color,
+          borderWidth: 2,
+
+          backgroundColor: colors.w.color,
+        }}
+        onPress={() => {
+          dispatch(setNextNav('Favourites'))
+          navigation.navigate('login')
+        }
+
+        }
+      />}
     </View>
   );
 };
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     height: verticalScale(200),
     width: "60.83%",
 
-alignSelf:'center',
+    alignSelf: 'center',
 
     overflow: "hidden",
     maxHeight: "100%",
@@ -87,12 +87,12 @@ alignSelf:'center',
 
   },
   component44: {
-    
-marginTop: verticalScale(30),
+
+    marginTop: verticalScale(30),
     width: '80%',
-    alignSelf:'center',
+    alignSelf: 'center',
     height: verticalScale(296),
-   
+
   },
 }));
 

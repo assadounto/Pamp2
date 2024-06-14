@@ -1,7 +1,7 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
-import { Image, StyleSheet,FlatList, Text, View, ActivityIndicator, Platform, SafeAreaView } from "react-native";
+import { Image, StyleSheet, FlatList, Text, View, ActivityIndicator, Platform, SafeAreaView } from "react-native";
 import SalonContainer from "../components/SalonContainer";
 import AppointmentsContainer from "../components/AppointmentsContainer";
 import MenuContainer from "../components/MenuContainer";
@@ -14,39 +14,39 @@ import { da } from "date-fns/locale";
 import { useIsFocused } from "@react-navigation/core";
 import { ScrollView } from "react-native-gesture-handler";
 import LoadingSkeleton from "../components/LoadingSketon";
-const Bookings = ({navigation}) => {
-  const user = useSelector((state)=>state.user.userInfo)
+const Bookings = ({ navigation }) => {
+  const user = useSelector((state) => state.user.userInfo)
   const isFocused = useIsFocused();
-  const[loading,setLoading]= React.useState(false)
-  const [bookings,setBookings]=React.useState([])
-  React.useEffect(()=>{
+  const [loading, setLoading] = React.useState(false)
+  const [bookings, setBookings] = React.useState([])
+  React.useEffect(() => {
     if (isFocused) {
-  if(bookings.length===0){
-    get()
-  }
+      if (bookings.length === 0) {
+        get()
+      }
 
     }
-  },[isFocused])
+  }, [isFocused])
 
-  async   function get(){
+  async function get() {
     setLoading(true)
-  if (user?.id){
-    const {data}= await axios.get(`${backendURL}/booking?id=${user.id}`)
-    data && setBookings(data)
-    console.log(data[0])
-    setLoading(false)
-  } 
+    if (user?.id) {
+      const { data } = await axios.get(`${backendURL}/booking?id=${user.id}`)
+      data && setBookings(data)
+      console.log(data[0])
+      setLoading(false)
+    }
   }
 
   const Event = () => {
     if (user?.id) {
       return (
-        loading ? <LoadingSkeleton/> : (bookings.length !== 0 ?
+        loading ? <LoadingSkeleton /> : (bookings.length !== 0 ?
           <>
-            <FlatList 
-            refreshing={false}
-            onRefresh={get}
-              contentContainerStyle={{paddingBottom: 60, paddingTop: 10}}
+            <FlatList
+              refreshing={false}
+              onRefresh={get}
+              contentContainerStyle={{ paddingBottom: 60, paddingTop: 10 }}
               showsVerticalScrollIndicator={false}
               data={bookings}
               renderItem={({ item }) => (
@@ -62,26 +62,26 @@ const Bookings = ({navigation}) => {
     }
     return <>
       <EmptyAppoiment mt={10} sub="Login in or sign up to manage your upcoming and past appointments" col={'#BBB9BC'} showBtn={true} />
-      </>;
+    </>;
   };
-  
+
 
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
 
-    <View style={{marginTop: Platform.OS==='ios'?40:20}}>
-      <Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: Platform.OS==='ios'?10:20,marginBottom:20 }}>Appointments</Text>
-<Event/>   
-</View>
+    <View style={{ marginTop: Platform.OS === 'ios' ? 40 : 20 }}>
+      <Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: Platform.OS === 'ios' ? 10 : 20, marginBottom: 20 }}>Appointments</Text>
+      <Event />
+    </View>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
-  mt_90:{
-   marginTop:130,
-   marginLeft:10
+  mt_90: {
+    marginTop: 130,
+    marginLeft: 10
   },
   mt_84: {
     marginTop: Margin.m_208xs,
@@ -113,14 +113,14 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0,
   },
   appointments: {
-    
+
     fontSize: FontSize.size_5xl,
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
     color: Color.lightgreen,
     textAlign: "left",
   },
-  
+
 }));
 
 export default Bookings;

@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { StyleSheet, View, Image, Pressable, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -9,8 +9,8 @@ const MasterSection = () => {
   const navigation = useNavigation();
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={[styles.groupParent, styles.mt_5]}>
       <Pressable
         style={styles.lineParent}

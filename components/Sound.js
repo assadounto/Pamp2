@@ -1,47 +1,47 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
-import React, { useState,useEffect } from 'react';
+import { makeStyles } from '@rneui/themed';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Sound from 'react-native-sound';
 import dings from '../assets/audio/tap.mp3'
 
 const SoundComponent = ({ soundFile, playSound }) => {
-    Sound.setCategory('Playback');
+  Sound.setCategory('Playback');
 
-    var ding = new Sound(dings, error => {
-      if (error) {
-        console.log('failed to load the sound', error);
-        return;
+  var ding = new Sound(dings, error => {
+    if (error) {
+      console.log('failed to load the sound', error);
+      return;
+    }
+    // if loaded successfully
+    console.log(
+      'duration in seconds: ' +
+      ding.getDuration() +
+      'number of channels: ' +
+      ding.getNumberOfChannels(),
+    );
+  });
+  useEffect(() => {
+    ding.setVolume(1);
+    return () => {
+      ding.release();
+    };
+  }, []);
+
+  const playPause = () => {
+    ding.play(success => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
       }
-      // if loaded successfully
-      console.log(
-        'duration in seconds: ' +
-          ding.getDuration() +
-          'number of channels: ' +
-          ding.getNumberOfChannels(),
-      );
     });
-    useEffect(() => {
-        ding.setVolume(1);
-        return () => {
-          ding.release();
-        };
-      }, []);
-
-      const playPause = () => {
-        ding.play(success => {
-          if (success) {
-            console.log('successfully finished playing');
-          } else {
-            console.log('playback failed due to audio decoding errors');
-          }
-        });
-      };
+  };
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={styles.container}>
-     
+
     </View>
   );
 };

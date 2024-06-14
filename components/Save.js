@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React from 'react';
 import { Button } from '@rneui/base';
 import { StyleSheet, View, Keyboard, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
@@ -24,15 +24,15 @@ const Save = ({ name, handlePress, disabled, loading }) => {
   }, []);
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : null}
       style={styles.container}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100} // Adjust this offset based on your needs
     >
       <View style={styles.safeArea}>
-       
+
         <View style={[styles.buttonContainer, keyboardVisible && styles2.keyboardVisible]}>
           <Button
             disabled={disabled}
@@ -51,8 +51,8 @@ return (
 const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
-    
-  
+
+
   },
   safeArea: {
     flex: 1,
@@ -65,20 +65,20 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     position: 'absolute',
     alignSelf: 'center',
-    width:'100%',
-    paddingVertical:20,
-    display:'flex',
-    alignItems:'center',
+    width: '100%',
+    paddingVertical: 20,
+    display: 'flex',
+    alignItems: 'center',
     backgroundColor: 'white', // Add a white background
   },
 
   keyboardVisible: {
     // Adjust this value based on your needs
-    width:'100%',
-    display:'flex',
-    alignItems:'center',
-    paddingVertical:20,
-   
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    paddingVertical: 20,
+
   },
   title: {
     fontFamily: FontFamily.sourceSansProBold,

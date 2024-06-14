@@ -1,13 +1,13 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Color, Border, FontFamily, FontSize, Margin } from "../GlobalStyles";
 
 const TimeContainer = () => {
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={[styles.rectangleParent, styles.mt81_26, styles.ml4]}>
       <View style={styles.groupChild} />
       <View style={styles.groupItem} />

@@ -1,47 +1,47 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React, { useState } from 'react';
-import { View, Text, Pressable,ScrollView, StyleSheet} from 'react-native';
+import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { Icon } from '@rneui/base';
-import { colors} from '../src/Common_styles';
+import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
 import NoInternetComponent from './NoInternet';
 
-export default function Categories({ data, onSelect}) {
+export default function Categories({ data, onSelect }) {
   const [userOption, setUserOption] = useState();
-   
+
   const selectHandler = (value) => {
     onSelect(value);
     setUserOption(value);
   };
-  if (!data){
-return(
-  <NoInternetComponent />
-)
+  if (!data) {
+    return (
+      <NoInternetComponent />
+    )
   }
   return (
-    <View  style={{marginTop:20,alignSelf:'center',width:'90%', marginLeft:10,display:'flex',flexDirection:'row',flexWrap:'wrap'}}>  
-      {data?.map((item,id) => {
+    <View style={{ marginTop: 20, alignSelf: 'center', width: '90%', marginLeft: 10, display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+      {data?.map((item, id) => {
         const styles = useStyles();
-const { theme} = useTheme();
-return (
-           
+        const { theme } = useTheme();
+        return (
+
           <Pressable
             style={[
               item.value === userOption ? styles.selected : styles.unselected
-            ,{display:'flex',flexDirection:'row'}]}
+              , { display: 'flex', flexDirection: 'row' }]}
             onPress={() => selectHandler(item.value)}>
-              {id==0 &&<Icon
-       style={{}}
-       name= 'star'
-       type="feather"
-      size={15}
-    color={item.value === userOption? 'white' : '#BCC4CC'}
-      onPress={()=> setModalVisible(true)}
-      />}
-            <Text style={[styles.option,   item.value === userOption ? colors.w: colors.dg]}>  {item.value}</Text>
+            {id == 0 && <Icon
+              style={{}}
+              name='star'
+              type="feather"
+              size={15}
+              color={item.value === userOption ? 'white' : '#BCC4CC'}
+              onPress={() => setModalVisible(true)}
+            />}
+            <Text style={[styles.option, item.value === userOption ? colors.w : colors.dg]}>  {item.value}</Text>
           </Pressable>
-       
+
         );
       })}
     </View>
@@ -56,21 +56,21 @@ const useStyles = makeStyles((theme) => ({
   unselected: {
     backgroundColor: 'white',
     borderRadius: 20,
-    height:34,
-    padding:8,
-    marginBottom:15,
-    borderColor:colors.dg2.color,
+    height: 34,
+    padding: 8,
+    marginBottom: 15,
+    borderColor: colors.dg2.color,
     borderWidth: 1,
-    marginLeft:10
+    marginLeft: 10
 
   },
   selected: {
     backgroundColor: colors.dg2.color,
     borderRadius: 20,
     color: 'white',
-    height:34,
-    padding:8,
-    marginBottom:15,
-    marginLeft:10
+    height: 34,
+    padding: 8,
+    marginBottom: 15,
+    marginLeft: 10
   },
 }))

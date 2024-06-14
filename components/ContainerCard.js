@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { useMemo } from "react";
 import {
@@ -46,8 +46,8 @@ const ContainerCard = ({
   }, [propRight]);
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View
       style={[
         styles.path663Parent,

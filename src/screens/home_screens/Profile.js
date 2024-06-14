@@ -1,8 +1,8 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { backendURL } from '../../services/http';
-import { verticalScale,horizontalScale,moderateScale } from '../../Dimensions';
+import { verticalScale, horizontalScale, moderateScale } from '../../Dimensions';
 import {
   View,
   ScrollView,
@@ -14,38 +14,38 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import BHeader from '../../../components/BHeader';
-import {Avatar, Icon, CheckBox, Button} from '@rneui/base';
-import {Image} from 'react-native-animatable';
-import {FontFamily} from '../../GlobalStyles';
+import { Avatar, Icon, CheckBox, Button } from '@rneui/base';
+import { Image } from 'react-native-animatable';
+import { FontFamily } from '../../GlobalStyles';
 import ImagePicker from 'react-native-image-crop-picker';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {colors, styles} from '../../Common_styles';
-import {Text} from 'react-native-animatable';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { colors, styles } from '../../Common_styles';
+import { Text } from 'react-native-animatable';
 import DelPop from './pop';
 import FastImage from 'react-native-fast-image';
 import user, { userLogout } from '../../redux/user';
-import {setImage} from '../../redux/user';
-import {useDispatch, useSelector} from 'react-redux';
+import { setImage } from '../../redux/user';
+import { useDispatch, useSelector } from 'react-redux';
 import Blur from '../start_screens/Blur';
 import axios from 'axios';
-const Profile = ({navigation}) => {
+const Profile = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.userInfo);
-  const userimg = useSelector(state => state.user.image1);  const [modal, setModal] = useState(false);
+  const userimg = useSelector(state => state.user.image1); const [modal, setModal] = useState(false);
   const [reason1, setReason1] = useState(false);
   const [reason2, setReason2] = useState(false);
   const [reason3, setReason3] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
-  const [toph,setpop]=useState(40)
-  const handledelete=async()=>{
+  const [toph, setpop] = useState(40)
+  const handledelete = async () => {
     dispatch(userLogout());
-await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
+    await axios.post(`${backendURL}/delete`, { id: user.id, reason1, reason2, reason3 })
 
   }
   const onPickImage = () => {
-    launchImageLibrary({mediaType: 'photo', crop: true}, response => {
+    launchImageLibrary({ mediaType: 'photo', crop: true }, response => {
       if (response.didCancel) {
         return;
       }
@@ -56,8 +56,8 @@ await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
 
       const source = response.assets[0];
 
-      setSelectedImage(Platform.OS==='android'?'file://'+source:source);
-      dispatch(setImage(Platform.OS==='android'? 'file://'+source.uri: source.uri));
+      setSelectedImage(Platform.OS === 'android' ? 'file://' + source : source);
+      dispatch(setImage(Platform.OS === 'android' ? 'file://' + source.uri : source.uri));
       console.log('source', source.uri);
       onUploadImage(source);
     });
@@ -72,7 +72,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
       name: source.fileName,
     }
     );
-    formData.append('id',user.id)
+    formData.append('id', user.id)
     // dispatch(uploadImage(formData))
     fetch(`${backendURL}/user/image`, {
       method: 'POST',
@@ -81,7 +81,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
       .then(res => res.json())
       .then(res => {
 
-         dispatch(setImage( res.image))
+        dispatch(setImage(res.image))
         console.log('upload succes', res);
         //alert('Upload success!');
       })
@@ -94,11 +94,11 @@ await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
 
   React.useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setpop(Platform.OS==='ios'?verticalScale(320): verticalScale(30))
+      setpop(Platform.OS === 'ios' ? verticalScale(320) : verticalScale(30))
     });
 
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-        setpop(40)
+      setpop(40)
     });
 
     return () => {
@@ -106,32 +106,32 @@ await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
       keyboardDidHideListener.remove();
     };
   }, []);
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
     <><SafeAreaView style={[colors.Pc]}>
-      <BHeader top={Platform.OS==='ios'?0:20} title="Profile" color={colors.dg2.color} />
+      <BHeader top={Platform.OS === 'ios' ? 0 : 20} title="Profile" color={colors.dg2.color} />
 
       <ScrollView
         style={[]}
         contentContainerStyle={[{}]}
-        
+
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <View style={{ alignSelf: 'center', marginTop: 20 }}>
           <TouchableOpacity
             onPress={() => {
               onPickImage();
-            } }>
+            }}>
             <FastImage
-            
-            source={selectedImage || user?.image ? { uri: user?.image,headers: { Authorization: 'someAuthToken' } }  : require('../../../assets/place.png')} 
 
-             style={{borderRadius: 50,width:80,height:80 }
-             
-           }
-         
-          />
+              source={selectedImage || user?.image ? { uri: user?.image, headers: { Authorization: 'someAuthToken' } } : require('../../../assets/place.png')}
+
+              style={{ borderRadius: 50, width: 80, height: 80 }
+
+              }
+
+            />
 
             <View
               style={[
@@ -221,7 +221,7 @@ return (
           </View>
         </View>
         <Pressable onPress={() => setModal(true)}>
-          <View style={[styles.Pmain, styles.flex, styles.Da,{marginBottom:150}]}>
+          <View style={[styles.Pmain, styles.flex, styles.Da, { marginBottom: 150 }]}>
             <Image
               source={require('../../../assets/account.png')}
               style={{ width: 30, height: 25, marginTop: 6 }} />
@@ -237,14 +237,14 @@ return (
       </ScrollView>
 
     </SafeAreaView>
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modal}
-      onRequestClose={() => {
-        setModal(!modal);
-      } }>
-        <View style={[styles.pop, { position:'absolute', alignItems:'center',alignSelf:'center',borderRadius:20,width:'90%',  bottom:toph, backgroundColor: '#ffff' }]}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modal}
+        onRequestClose={() => {
+          setModal(!modal);
+        }}>
+        <View style={[styles.pop, { position: 'absolute', alignItems: 'center', alignSelf: 'center', borderRadius: 20, width: '90%', bottom: toph, backgroundColor: '#ffff' }]}>
           <Pressable
             onPress={() => setModal(!modal)}
             style={{ alignSelf: 'flex-end', marginRight: 20, marginTop: 20 }}>
@@ -300,7 +300,7 @@ return (
               checked={reason1}
               onPress={() => {
                 setReason1(!reason1);
-              } } />
+              }} />
             <CheckBox
               title={<Text style={[colors.dg, { marginLeft: 8 }, styles.bold]}>
                 Couldn't find vendors near me
@@ -313,7 +313,7 @@ return (
               checked={reason2}
               onPress={() => {
                 setReason2(!reason2);
-              } } />
+              }} />
           </View>
 
           <TextInput
@@ -330,7 +330,7 @@ return (
             onChangeText={text => {
               console.log(reason3);
               setReason3(text);
-            } } />
+            }} />
           <Button
             onPress={handledelete}
             title="Confirm"
@@ -343,10 +343,10 @@ return (
             }} />
         </View>
       </Modal>
-      {modal && <Blur/>}
-      </>
+      {modal && <Blur />}
+    </>
 
-    
+
   );
 };
 

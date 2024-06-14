@@ -1,18 +1,18 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 
-import React, {useState,useEffect, useRef} from 'react';
-import {View, Text, Pressable, ScrollView, FlatList,Dimensions,PanResponder, Alert, ActivityIndicator} from 'react-native';
-import {styles, colors} from '../src/Common_styles';
-import {FontFamily} from '../src/GlobalStyles';
-import {Icon} from '@rneui/base';
-import {navigate} from '@react-navigation/routers/lib/typescript/src/CommonActions';
-import {Image} from '@rneui/base';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, Pressable, ScrollView, FlatList, Dimensions, PanResponder, Alert, ActivityIndicator } from 'react-native';
+import { styles, colors } from '../src/Common_styles';
+import { FontFamily } from '../src/GlobalStyles';
+import { Icon } from '@rneui/base';
+import { navigate } from '@react-navigation/routers/lib/typescript/src/CommonActions';
+import { Image } from '@rneui/base';
 import { backendURL } from '../src/services/http';
 import axios from 'axios';
 import { verticalScale } from '../src/Dimensions';
-import {format, addMonths, subMonths} from 'date-fns';
-import {useDispatch} from 'react-redux';
+import { format, addMonths, subMonths } from 'date-fns';
+import { useDispatch } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import LottieView from 'lottie-react-native';
@@ -45,7 +45,7 @@ const defaultLocalizationOptions = {
     'Saturday',
   ],
 };
-let myLocOpts = {dayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']};
+let myLocOpts = { dayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
 let currDate = new Date().getMonth();
 //let currentmonth = defaultLocalizationOptions.monthNames[currDate]
 //console.log(getCalendar(2023, myLocOpts)); // Get a calendar for the year 2 020
@@ -79,10 +79,10 @@ function addDay(date) {
 }
 
 
-export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) {
-  const vendor_id= useSelector((state)=>state.user.userInfo?.id)
-    const windowWidth= Dimensions.get('window').width
-    const desiredWidth= Math.min(52,windowWidth)
+export default function Calender({ onSelect, navigation, rebooked, rebook, vendor }) {
+  const vendor_id = useSelector((state) => state.user.userInfo?.id)
+  const windowWidth = Dimensions.get('window').width
+  const desiredWidth = Math.min(52, windowWidth)
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   //const [currentmonth,set_current_month]=useState(defaultLocalizationOptions.monthNames[currentMonth])
   const [isLoading, setIsLoading] = useState(true); // State to manage loading spinner
@@ -91,21 +91,21 @@ export default function Calender({onSelect, navigation,rebooked,rebook,vendor}) 
     const index = data.findIndex(date => date.aday === day);
     return index !== -1 ? index : data.length;
   };
-  
 
-const weekdays=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
   useFocusEffect(
     React.useCallback(() => {
-    const vendorId = 1;
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    if (data.length===0){
-      getDatesForMonth(year, month, vendor_id);
+      const vendorId = 1;
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      if (data.length === 0) {
+        getDatesForMonth(year, month, vendor_id);
 
-    }
-  }, [])
+      }
+    }, [])
   );
 
 
@@ -138,10 +138,10 @@ const weekdays=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
   const [data, useData] = useState([]);
   const [currentMonthName, setCurrentMonthName] = useState('');
-  const [userOption, setUserOption] = useState({aday:currentDay});
+  const [userOption, setUserOption] = useState({ aday: currentDay });
   const [currentIndex, setcurrentIndex] = useState('');
   const [prev, setPrev] = useState('');
-   const [prevDates,setPrevDates]= useState([])
+  const [prevDates, setPrevDates] = useState([])
 
   const panResponder = useRef(
     PanResponder.create({
@@ -172,9 +172,9 @@ const weekdays=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   };
 
   const fetchDates = async (year, month, vendorId) => {
-    setIsLoading(true); 
+    setIsLoading(true);
     const response = await axios.get(`${backendURL}/dates?year=${year}&month=${month}&vendor_id=${1}`);
-    setIsLoading(false); 
+    setIsLoading(false);
     console.log(response.data)
     return response.data;
   };
@@ -184,29 +184,29 @@ const weekdays=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     const currentDate = new Date();
     const currentDay = currentDate.getDate();
     const weekDay = currentDate.getDay();
-if (currentIndex=='Month'){
-     useData(data)   
-} else{
-  let slicedDates= sliceData(data)
- 
-  setPrevDates(data)
-  setUserOption({aday:currentDay,day:weekdays[weekDay],date:data[0].year  +'-' +monthMap[getMonthName(month)]+'-'+userOption.aday})
+    if (currentIndex == 'Month') {
+      useData(data)
+    } else {
+      let slicedDates = sliceData(data)
 
-  useData(slicedDates);
-}
-console.log(weekdays[weekDay],'jjjjj',weekDay)
-    setCurrentMonthName(data[0].year  +'-' +monthMap[getMonthName(month)]+'-'+userOption.aday);
-  
+      setPrevDates(data)
+      setUserOption({ aday: currentDay, day: weekdays[weekDay], date: data[0].year + '-' + monthMap[getMonthName(month)] + '-' + userOption.aday })
+
+      useData(slicedDates);
+    }
+    console.log(weekdays[weekDay], 'jjjjj', weekDay)
+    setCurrentMonthName(data[0].year + '-' + monthMap[getMonthName(month)] + '-' + userOption.aday);
+
   };
 
- 
+
   //setUserOption(data[1].day)
 
 
-  const sliceData=(data)=>{
+  const sliceData = (data) => {
     const currentDate = new Date();
     const currentDay = currentDate.getDate();
-  
+
     let start;
     let end;
     if (data.length <= 5) {
@@ -222,12 +222,12 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
       start = currentDay - 3;
       end = currentDay + 2;
     }
-  
-  
+
+
     const slicedDates = data.slice(start, end);
     return slicedDates
   }
-  
+
   const handleNextMonth = async () => {
     const currentYear = data[0].year;
     const currentMonth = data[0].month;
@@ -253,20 +253,20 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
   };
 
   const SelectHandler = (value, index) => {
-  
-    
+
+
     ///setTimeout(()=>  refFlatList.scrollToIndex({animated:true,index:currentIndex}),2000)
     setcurrentIndex(index);
-    const date= currentMonthName.split('-')[0]+'-'+currentMonthName.split('-')[1]+'-'+ value.aday
-    
-   
-    onSelect(
-         date
-      );
-      // currentMonthName.split('-')[0]+'-'+currentMonthName.split('-')[1]+'-'+ value.aday
+    const date = currentMonthName.split('-')[0] + '-' + currentMonthName.split('-')[1] + '-' + value.aday
 
-      console.log(currentMonthName.split('-')[0]+'-'+currentMonthName.split('-')[1]+'-'+ value.aday)
-    setUserOption({...value,date});
+
+    onSelect(
+      date
+    );
+    // currentMonthName.split('-')[0]+'-'+currentMonthName.split('-')[1]+'-'+ value.aday
+
+    console.log(currentMonthName.split('-')[0] + '-' + currentMonthName.split('-')[1] + '-' + value.aday)
+    setUserOption({ ...value, date });
     handleDateSelect(value.aday)
     // useData(data.slice(finditem(value.aday) - 2, finditem(value.aday) + 3));
 
@@ -298,46 +298,46 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
   const set_dates = value => {
     if (prev === value) {
       setcurrentIndex('')
-      let  newdata= sliceData(data)
+      let newdata = sliceData(data)
       useData(newdata)
       setPrev('');
       return;
     } else {
       setcurrentIndex('Month')
       setPrev(value);
-     useData(prevDates)
+      useData(prevDates)
     }
   };
 
-  const renderItem = ({item, index}) => {
+  const renderItem = ({ item, index }) => {
     return (
       <Pressable
-      disabled={item.ispast}
+        disabled={item.ispast}
         style={
-          item.ispast ? [ styles.unselected,{
-            borderColor:'#F0F0F0',
+          item.ispast ? [styles.unselected, {
+            borderColor: '#F0F0F0',
 
-            width:  desiredWidth, height: 55, borderRadius: 15
+            width: desiredWidth, height: 55, borderRadius: 15
           }] :
-          item.aday === userOption.aday
-            ? [
+            item.aday === userOption.aday
+              ? [
                 styles.selected,
-                {width:  desiredWidth, height: 55, borderRadius: 15},
+                { width: desiredWidth, height: 55, borderRadius: 15 },
               ]
-            : [
+              : [
                 styles.unselected,
-                {borderRadius: 15, width:  desiredWidth, height: 55},
+                { borderRadius: 15, width: desiredWidth, height: 55 },
               ]
         }
         onPress={() => {
-          SelectHandler({day: item.day, aday: item.aday}, index);
+          SelectHandler({ day: item.day, aday: item.aday }, index);
         }}>
         <Text
           style={[
             styles.option,
             item.aday == userOption.aday ? colors.w : colors.dg,
           ]}>
-         
+
           {item.day}
         </Text>
         <Text
@@ -346,9 +346,9 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
             item.aday == userOption.aday ? colors.w : colors.dg,
           ]}>
           {' '}
-          {item.aday} 
+          {item.aday}
         </Text>
-       
+
       </Pressable>
     );
   };
@@ -356,40 +356,40 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{marginTop: verticalScale(100)}}>
-     <LottieView
-              source={require('../assets/lottie/calender.json')}
-              style={{ width:209, height: 150 }}
-              autoPlay
-              loop={true}
-            />
-            </View>
+        <View style={{ marginTop: verticalScale(100) }}>
+          <LottieView
+            source={require('../assets/lottie/calender.json')}
+            style={{ width: 209, height: 150 }}
+            autoPlay
+            loop={true}
+          />
+        </View>
       </View>
     );
   }
 
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <>
-      <Pressable {...panResponder.panHandlers} onPress={() =>{set_dates('Month')}}>
+      <Pressable {...panResponder.panHandlers} onPress={() => { set_dates('Month') }}>
         <Text
           style={{
-            
+
             marginBottom: 30,
             fontFamily: FontFamily.sourceSansProBold,
             fontSize: 20,
             color: colors.dg.color,
-            textAlign:'center'
+            textAlign: 'center'
           }}>{userOption.aday} {getMonthName(currentMonthName.split('-')[1])}  {currentMonthName.split('-')[0]}
         </Text>
       </Pressable>
 
       {/* <ScrollView horizontal={userOption ==='Month' ?null :true} contentContainerStyle={{ marginLeft: 10,display:'flex',flexDirection:'row',flexWrap:'wrap'}} showsHorizontalScrollIndicator={false}> */}
-     
+
       <View
         style={{
-          
-          height:  data.length>6 ? '45%':undefined,
+
+          height: data.length > 6 ? '45%' : undefined,
           width: '90%',
           alignSelf: 'center',
           justifyContent: 'space-between',
@@ -399,37 +399,37 @@ return (
           shadowOpacity: 0.2,
           shadowRadius: 10,
           elevation: 2,
-          shadowOffset: {width: 5, height: 0},
+          shadowOffset: { width: 5, height: 0 },
           backgroundColor: 'white',
           borderRadius: 20,
-          marginBottom:20
+          marginBottom: 20
         }}>
 
-          { data ?
-  <FlatList
-  data={data}
-  key={Date.now()}
-  renderItem={renderItem}
-  keyExtractor={item => item.aday}
-  numColumns={currentIndex === 'Month' ? 5 : null}
-  horizontal={currentIndex === 'Month' ? false : true}
-  showsHorizontalScrollIndicator={false}
-  showsVerticalScrollIndicator={false}
-/>
-      : <Text></Text>  }
-      {
-        data.length>6 &&
-        <View style={{display:'flex', justifyContent:'center',alignContent:'center',alignItems:'center', flexDirection:'row',height:50,padding:10,}}>
-        <TouchableOpacity style={{marginHorizontal:20,}} onPress={handlePreviousMonth}><Image resizeMode='contain' style={{width:20,height:20}} source={require('../assets/chevronright63.png')}/></TouchableOpacity>
-       <TouchableOpacity onPress={handleNextMonth}><Image resizeMode='contain' style={{width:20,height:20}} source={require('../assets/chevronright64.png')}/></TouchableOpacity>
-        </View>
-      }
-    
-   
-      </View>
-      <Time rebook={rebook} _vendor={vendor} rebooked={rebooked} navigation={navigation} userOption={userOption}/>
+        {data ?
+          <FlatList
+            data={data}
+            key={Date.now()}
+            renderItem={renderItem}
+            keyExtractor={item => item.aday}
+            numColumns={currentIndex === 'Month' ? 5 : null}
+            horizontal={currentIndex === 'Month' ? false : true}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+          />
+          : <Text></Text>}
+        {
+          data.length > 6 &&
+          <View style={{ display: 'flex', justifyContent: 'center', alignContent: 'center', alignItems: 'center', flexDirection: 'row', height: 50, padding: 10, }}>
+            <TouchableOpacity style={{ marginHorizontal: 20, }} onPress={handlePreviousMonth}><Image resizeMode='contain' style={{ width: 20, height: 20 }} source={require('../assets/chevronright63.png')} /></TouchableOpacity>
+            <TouchableOpacity onPress={handleNextMonth}><Image resizeMode='contain' style={{ width: 20, height: 20 }} source={require('../assets/chevronright64.png')} /></TouchableOpacity>
+          </View>
+        }
 
-     
+
+      </View>
+      <Time rebook={rebook} _vendor={vendor} rebooked={rebooked} navigation={navigation} userOption={userOption} />
+
+
     </>
   );
 }

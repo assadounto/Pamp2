@@ -1,65 +1,65 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 
 
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import BHeader from '../../../components/BHeader';
-import {colors, styles} from '../../Common_styles';
-import {View, TextInput, Text, ScrollView,Platform, SafeAreaView,Pressable, StyleSheet,Linking, Alert} from 'react-native';
+import { colors, styles } from '../../Common_styles';
+import { View, TextInput, Text, ScrollView, Platform, SafeAreaView, Pressable, StyleSheet, Linking, Alert } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {Button, color} from '@rneui/base';
+import { Button, color } from '@rneui/base';
 import { SliderBox } from "react-native-image-slider-box";
-import { Icon,ListItem ,Image} from '@rneui/base';
+import { Icon, ListItem, Image } from '@rneui/base';
 import { FontFamily } from '../../GlobalStyles';
-import MapView,{ PROVIDER_GOOGLE,Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Booking_action from '../../../components/Bookin_action';
 import Blur from '../start_screens/Blur';
 import axios from 'axios';
 import FastImage from 'react-native-fast-image';
 import { backendURL } from '../../services/http';
-import { setBooking, setVendor,setvendorid,setvendorimg,setvendorname } from '../../redux/booking';
+import { setBooking, setVendor, setvendorid, setvendorimg, setvendorname } from '../../redux/booking';
 import { useSelector } from 'react-redux';
-import { convertMinutesToHoursAndMinutes,getTotalByKey } from '../../Functions';
+import { convertMinutesToHoursAndMinutes, getTotalByKey } from '../../Functions';
 import CustomImageSlider from '../../../components/CustomSlider';
 import AppJob from '../../../components/AppJob';
 import { da } from 'date-fns/locale';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import Loading from '../../../components/loading';
 
-const Booking_detail = ({route,navigation}) => {
-  const {id}=route.params
+const Booking_detail = ({ route, navigation }) => {
+  const { id } = route.params
 
-  const dispatch= useDispatch()
-  const [info,setInfo]= useState()
-  const user = useSelector((state)=>state.user.userInfo)
+  const dispatch = useDispatch()
+  const [info, setInfo] = useState()
+  const user = useSelector((state) => state.user.userInfo)
   const [noti, shownoti] = React.useState(false);
-  const [data,setdata]=useState(null)
-  const [cancelled,setCancelled]=useState(false)
-  const[blur,setblur]=useState(false)
-  const [fav,setFav]=useState(data?.favorite)
+  const [data, setdata] = useState(null)
+  const [cancelled, setCancelled] = useState(false)
+  const [blur, setblur] = useState(false)
+  const [fav, setFav] = useState(data?.favorite)
 
   id && console.log(id)
-    
-
-  const statuses= ["declined","rebook", "completed","cancelled","confirmed","no show","booked","unconfirmed","pending"]
-
- useEffect(()=>{
-   getData()
- },[])
 
 
- const getData = async () => {
-  try {
-    const response = await axios.get(backendURL + `/booking/info?id=${user.id}&booking_id=${id}`);
-    setdata(response.data ); // Use an empty array as a fallback if the response data is undefined
-    setFav(response.data.favorite)
-    console.log(response.data.amount_paid,'jj');
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-};
-  const bgc={
+  const statuses = ["declined", "rebook", "completed", "cancelled", "confirmed", "no show", "booked", "unconfirmed", "pending"]
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+
+  const getData = async () => {
+    try {
+      const response = await axios.get(backendURL + `/booking/info?id=${user.id}&booking_id=${id}`);
+      setdata(response.data); // Use an empty array as a fallback if the response data is undefined
+      setFav(response.data.favorite)
+      console.log(response.data.amount_paid, 'jj');
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  const bgc = {
     cancelled: '#CD3D49',
     completed: colors.dg2.color,
     confirmed: colors.dg2.color,
@@ -67,13 +67,13 @@ const Booking_detail = ({route,navigation}) => {
     rebook: colors.dg.color,
     "no show": '#CD3D49',
     unconfirmed: colors.dg.color,
-    declined:'#CD3D49',
-    pending:data?.services[0]? data.services[0].color: 'red'
+    declined: '#CD3D49',
+    pending: data?.services[0] ? data.services[0].color : 'red'
 
 
   }
-  
-  const c={
+
+  const c = {
     cancelled: 'white',
     confirmed: 'white',
     completed: 'white',
@@ -86,70 +86,70 @@ const Booking_detail = ({route,navigation}) => {
   }
 
 
-function capitalizeFirstLetter(str) {
-  if (typeof str !== 'string') {
-    throw new Error('Input must be a string');
-  }
-  
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-  
-    const openGoogleMaps = () => {
-      const url = `https://www.google.com/maps/search/?api=1&query=${data.vendor.lat},${data.vendor.lon}`;
-    console.log(fav,'jjjjjjjjjj')
-      Linking.canOpenURL(url)
-        .then(supported => {
-          if (!supported) {
-            console.log('Google Maps is not installed');
-          } else {
-            return Linking.openURL(url);
-          }
-        })
-        .catch(error => console.log('Error opening Google Maps:', error));
-    };
-    
-    const createFav=async()=>{
-      
-      try {
-       const info= await axios.post(`${backendURL}/favorites`,{vendor_id: data.vendor.id,user_id:user.id})
-       info.data.message=='added'? setFav(true): setFav(false)
-      }
-      catch(e){
-        console.log(e)
-      }
+  function capitalizeFirstLetter(str) {
+    if (typeof str !== 'string') {
+      throw new Error('Input must be a string');
     }
-  const rebook=()=>{
+
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  const openGoogleMaps = () => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${data.vendor.lat},${data.vendor.lon}`;
+    console.log(fav, 'jjjjjjjjjj')
+    Linking.canOpenURL(url)
+      .then(supported => {
+        if (!supported) {
+          console.log('Google Maps is not installed');
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch(error => console.log('Error opening Google Maps:', error));
+  };
+
+  const createFav = async () => {
+
+    try {
+      const info = await axios.post(`${backendURL}/favorites`, { vendor_id: data.vendor.id, user_id: user.id })
+      info.data.message == 'added' ? setFav(true) : setFav(false)
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
+  const rebook = () => {
     console.log(data.vendor.cover)
     dispatch(setvendorname(data.vendor.username))
     dispatch(setvendorimg(data.vendor.logo))
     dispatch(setvendorid(data.vendor.id))
     dispatch(setVendor(data.hours))
-    if (data?.status=='confirmed' && data.cancelable){
-      navigation.navigate('SelectDate',{rebooked:true,id:data.id})
+    if (data?.status == 'confirmed' && data.cancelable) {
+      navigation.navigate('SelectDate', { rebooked: true, id: data.id })
     }
-    else if(data?.status=='booked'|| data?.status=='unconfirmed'){
-      dispatch(setBooking({topping2: data.items,name: data.vendor.username}))
-      navigation.navigate('SelectDate',{rebooked:true,id:data.id})
+    else if (data?.status == 'booked' || data?.status == 'unconfirmed') {
+      dispatch(setBooking({ topping2: data.items, name: data.vendor.username }))
+      navigation.navigate('SelectDate', { rebooked: true, id: data.id })
     }
-    else if(data?.status=='rebook'|| data?.status=='unconfirmed'){
-      dispatch(setBooking({topping2: data.items,name: data.vendor.username}))
-      navigation.navigate('SelectDate',{rebooked:true,id:data.id})
+    else if (data?.status == 'rebook' || data?.status == 'unconfirmed') {
+      dispatch(setBooking({ topping2: data.items, name: data.vendor.username }))
+      navigation.navigate('SelectDate', { rebooked: true, id: data.id })
     }
-    else if(data?.status=='completed'){
-      dispatch(setBooking(JSON.stringify({topping2: data.items,name: data.vendor.username})))
-      navigation.navigate('SelectDate',{rebooked:false,id:data.id})
+    else if (data?.status == 'completed') {
+      dispatch(setBooking(JSON.stringify({ topping2: data.items, name: data.vendor.username })))
+      navigation.navigate('SelectDate', { rebooked: false, id: data.id })
     }
     else {
-     Alert.alert('Info','You cannot rebook since its within 48hours to appointment.However you can send notes to vendor requesting a reschedule. If vendor approves, you can rebook')
+      Alert.alert('Info', 'You cannot rebook since its within 48hours to appointment.However you can send notes to vendor requesting a reschedule. If vendor approves, you can rebook')
     }
   }
 
   const copyToClipboard = () => {
     Clipboard.setString(`https://www.google.com/maps/search/?api=1&query=${data.vendor.lat},${data.vendor.lon}`);
     shownoti(true)
-    setTimeout(()=>{
-     shownoti(false)
-    },3000
+    setTimeout(() => {
+      shownoti(false)
+    }, 3000
     )
   };
 
@@ -169,36 +169,36 @@ function capitalizeFirstLetter(str) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', options);
   }
-  
+
   function formatServiceNames(services) {
     const maxLength = 25; // Maximum length of the final formatted string
     const names = services.map(service => service.name);
     let formattedString = names.join(" & ");
-  
+
     if (formattedString.length > maxLength) {
       formattedString = formattedString.substring(0, maxLength - 3) + "...";
     }
-  
+
     return formattedString;
   }
   const styles = useStyles();
   const { theme } = useTheme();
   return (
-   
-   <ScrollView style={{backgroundColor:'#FFFFFF'}}>
-   {
-    data  ? <>
-    
-<CustomImageSlider images={[data?.vendor.cover, ...data?.vendor.otherImages]} />
-<View style={{ position: 'absolute', top: 60, right: 20 }}>
-          <Icon
-            onPress={createFav}
-            name={fav ? 'heart' : 'heart-outline'}
-            type='ionicon'
-            size={30}
 
-            color={'#FFFFFF'} />
-        </View><Pressable onPress={() => navigation.goBack()} style={{ position: 'absolute', top: 60, left: 20 }}>
+    <ScrollView style={{ backgroundColor: '#FFFFFF' }}>
+      {
+        data ? <>
+
+          <CustomImageSlider images={[data?.vendor.cover, ...data?.vendor.otherImages]} />
+          <View style={{ position: 'absolute', top: 60, right: 20 }}>
+            <Icon
+              onPress={createFav}
+              name={fav ? 'heart' : 'heart-outline'}
+              type='ionicon'
+              size={30}
+
+              color={'#FFFFFF'} />
+          </View><Pressable onPress={() => navigation.goBack()} style={{ position: 'absolute', top: 60, left: 20 }}>
             <Icon
               name='chevron-back-outline'
               type='ionicon'
@@ -207,15 +207,15 @@ function capitalizeFirstLetter(str) {
               color={'#FFFFFF'} />
           </Pressable><View>
             <Text style={{ marginTop: 10, color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 20 }}>{formatDate(data.date)}</Text>
-           <View >
-            <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 15 }}> at {formatTime(data.time)}{'  '}
-            <View style={[{
-          marginTop:7,
-              paddingHorizontal: 10, height: 20, borderRadius: 20,
-              alignContent: 'center', justifyContent: 'center'
-            }, statuses.includes(data.status) ? { backgroundColor: bgc[data.status] } : { backgroundColor: info?.color }]}>
-              <Text style={[{ fontSize: 11, textAlign: 'center', fontFamily: FontFamily.sourceSansProSemibold }, statuses.includes(data.status) ? { color: c[data.status] } : { color: 'white' }, styles.sewInTypo]}>{statuses.includes(data.status) ? capitalizeFirstLetter(data.status) : info && capitalizeFirstLetter(info.status)}</Text></View>
-            </Text>
+            <View >
+              <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 15 }}> at {formatTime(data.time)}{'  '}
+                <View style={[{
+                  marginTop: 7,
+                  paddingHorizontal: 10, height: 20, borderRadius: 20,
+                  alignContent: 'center', justifyContent: 'center'
+                }, statuses.includes(data.status) ? { backgroundColor: bgc[data.status] } : { backgroundColor: info?.color }]}>
+                  <Text style={[{ fontSize: 11, textAlign: 'center', fontFamily: FontFamily.sourceSansProSemibold }, statuses.includes(data.status) ? { color: c[data.status] } : { color: 'white' }, styles.sewInTypo]}>{statuses.includes(data.status) ? capitalizeFirstLetter(data.status) : info && capitalizeFirstLetter(info.status)}</Text></View>
+              </Text>
             </View>
           </View><AppJob info={info} vendor={data.vendor} setInfo={setInfo} services={data.services} time={data.time} /><View style={{ marginHorizontal: 20, marginVertical: 30 }}>
             <ListItem
@@ -226,7 +226,7 @@ function capitalizeFirstLetter(str) {
                   {
                     id: data.vendor.id,
                   });
-              } }>
+              }}>
               <FastImage
                 style={{ width: 40, height: 40, borderRadius: 50 }}
 
@@ -254,9 +254,9 @@ function capitalizeFirstLetter(str) {
 
             <View style={{ padding: 20, borderBottomColor: colors.lg.color, borderBottomWidth: 1 }}>
               {data.items.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
-              
 
-return (
+
+                return (
                   <View style={{ marginBottom: 15, display: 'flex', flexDirection: 'row' }}>
                     <View style={{ width: 10, top: 5, marginRight: 10, height: 10, borderRadius: 10, backgroundColor: appointment_color }}></View>
                     {data.items.length != 1 && _index2 + 1 !== data.items.length ?
@@ -275,22 +275,22 @@ return (
             </View>
             <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
               <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>
-           Discount
+                Discount
               </Text>
               <View style={{ position: 'absolute', right: 30, top: 20 }}>
                 <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.lg.color }}>
-                  ¢{data.discount_amount||0}
+                  ¢{data.discount_amount || 0}
                 </Text>
               </View>
 
             </View>
-            <View style={{marginTop:-20, padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
+            <View style={{ marginTop: -20, padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
               <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>
                 Total
               </Text>
               <View style={{ position: 'absolute', right: 30, top: 20 }}>
                 <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.lg.color }}>
-                  ¢{data.total-(data.discount_amount)}
+                  ¢{data.total - (data.discount_amount)}
                 </Text>
               </View>
 
@@ -319,7 +319,7 @@ return (
               onPress={() => {
                 // dispatch(setDefault(pay))
                 copyToClipboard();
-              } }>
+              }}>
               <Icon
                 name="copy-outline"
                 type="ionicon"
@@ -338,7 +338,7 @@ return (
               onPress={() => {
                 // dispatch(setDefault(pay))
                 openGoogleMaps();
-              } }>
+              }}>
               <Icon
                 name="map-pin"
                 type="feather"
@@ -353,48 +353,48 @@ return (
               <ListItem.Chevron color={'#00463C'} size={20} />
             </ListItem>
 
-          </View> 
-    </>
-             
-             : <Loading/>
-   }
-     {
-       noti && 
-       <View style={style2.copy_info}>
-          <Text style={style2.copy_info_text}>Location copied Successfully!</Text>
-      </View>
+          </View>
+        </>
+
+          : <Loading />
       }
- {blur&& <Blur/>} 
-   </ScrollView>
-  ) 
+      {
+        noti &&
+        <View style={style2.copy_info}>
+          <Text style={style2.copy_info_text}>Location copied Successfully!</Text>
+        </View>
+      }
+      {blur && <Blur />}
+    </ScrollView>
+  )
 };
 
 const useStyles = makeStyles((theme) => ({
-    booked:{
-        backgroundColor:colors.dg.color
-    },
-    completed:{
-        backgroundColor:colors.lg.color
-    },
-    cancel:{
-        backgroundColor:'red'
-    },
-
-  copy_info:{
-    width: '90%',
-    position:'absolute',
-    alignSelf:'center',
-    top:"70%",
-    height:32,
-    borderRadius:23,
-    backgroundColor:colors.lg.color
+  booked: {
+    backgroundColor: colors.dg.color
   },
-  copy_info_text:{
-    fontFamily:FontFamily.sourceSansProRegular,
-    fontSize:14,
-    left:20,
-    top:5,
-    color:colors.dg.color
+  completed: {
+    backgroundColor: colors.lg.color
+  },
+  cancel: {
+    backgroundColor: 'red'
+  },
+
+  copy_info: {
+    width: '90%',
+    position: 'absolute',
+    alignSelf: 'center',
+    top: "70%",
+    height: 32,
+    borderRadius: 23,
+    backgroundColor: colors.lg.color
+  },
+  copy_info_text: {
+    fontFamily: FontFamily.sourceSansProRegular,
+    fontSize: 14,
+    left: 20,
+    top: 5,
+    color: colors.dg.color
   }
 }))
 export default Booking_detail;

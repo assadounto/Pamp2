@@ -1,35 +1,35 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
-import {Text, View, SafeAreaView, Image, Modal, TextInput,StyleSheet} from 'react-native';
-import {styles, colors} from '../../Common_styles';
-import {CheckBox, Button} from '@rneui/base';
-import {Border, FontFamily} from '../../GlobalStyles';
+import { Text, View, SafeAreaView, Image, Modal, TextInput, StyleSheet } from 'react-native';
+import { styles, colors } from '../../Common_styles';
+import { CheckBox, Button } from '@rneui/base';
+import { Border, FontFamily } from '../../GlobalStyles';
 import Lottie from 'lottie-react-native';
 import axios from 'axios';
 import Blur from '../start_screens/Blur';
 import Pop from '../start_screens/pop';
-import  { Paystack }  from 'react-native-paystack-webview';
+import { Paystack } from 'react-native-paystack-webview';
 import { useNavigation } from '@react-navigation/core';
 import { useSelector } from 'react-redux';
 import Success from './Sucess';
 import { connect } from 'formik';
 import { watchPosition } from 'react-native-geolocation-service';
 import { backendURL } from '../../services/http';
-const Processing = ({route}) => {
-   const navigation=useNavigation()
-   const user=  useSelector((state)=>state.user.userInfo)
-   const booking= useSelector((state)=>state.booking)
-    const { total,pay_type,amount_paid} = route.params;
-    console.log(pay_type,'hh')
-    const [modalVisible, setModal] = React.useState(false);
-    const [verificationResult, setVerificationResult] = React.useState(null);
-   const [info,setinfo]= useState('Please approve payment and verify')
-   const [success,setSucess]=useState(false)
-   
-   const formatDateForRails = (dateObj) => {
+const Processing = ({ route }) => {
+  const navigation = useNavigation()
+  const user = useSelector((state) => state.user.userInfo)
+  const booking = useSelector((state) => state.booking)
+  const { total, pay_type, amount_paid } = route.params;
+  console.log(pay_type, 'hh')
+  const [modalVisible, setModal] = React.useState(false);
+  const [verificationResult, setVerificationResult] = React.useState(null);
+  const [info, setinfo] = useState('Please approve payment and verify')
+  const [success, setSucess] = useState(false)
+
+  const formatDateForRails = (dateObj) => {
     const { day, month, year } = dateObj;
-    
+
     // Convert month name to a numerical value
     const monthMap = {
       January: "01",
@@ -45,137 +45,137 @@ const Processing = ({route}) => {
       November: "11",
       December: "12"
     };
-    
+
     // Format the date string in 'YYYY-MM-DD' format
     const formattedDate = `${year}-${monthMap[month]}-${day.toString().padStart(2, "0")}`;
-    
+
     return formattedDate;
   };
 
   const formatTimeForRails = (timeString) => {
     const currentDate = new Date();
     const [hours, minutes, period] = timeString.split(/:|\s/); // Split the time string using a regular expression
-  
+
     let hourValue = parseInt(hours, 10);
-  
+
     if (period.toLowerCase() === 'pm' && hourValue !== 12) {
       hourValue += 12; // Convert the hour to 24-hour format for PM times
     } else if (period.toLowerCase() === 'am' && hourValue === 12) {
       hourValue = 0; // Convert 12 AM to 0 (midnight) in 24-hour format
     }
-  
+
     currentDate.setHours(hourValue);
     currentDate.setMinutes(parseInt(minutes, 10));
-  
+
     return currentDate.toISOString().slice(11, 19);
   };
-  
-  
+
+
   // Example usage:
-  
-    const createBooking=async (ref)=>{
-      const {data}= await axios.post(`${backendURL}/booking`,
+
+  const createBooking = async (ref) => {
+    const { data } = await axios.post(`${backendURL}/booking`,
       {
         date: booking.actual_booking.date,
-        time:  formatTimeForRails(booking.actual_booking.time),
+        time: formatTimeForRails(booking.actual_booking.time),
         status: booking.actual_booking.status,
         service_ids: booking.actual_booking.services_id,
         user: booking.actual_booking.user,
         vendor: booking.actual_booking.vendor,
         payment_method: booking.actual_booking.payment_method,
-        total:total,
+        total: total,
         ref: ref,
         others: booking.actual_booking.items,
-        staff:  booking.actual_booking.staff,
+        staff: booking.actual_booking.staff,
         total_min: booking.actual_booking.total_mins,
         coupon_id: booking.actual_booking.coupon_id,
         amount_paid: amount_paid
 
       }
-      )
-    }
-const channels=(name)=>{
-  let channel=[]
-  switch(name){
-     case "Pay with cash":
-        channel.push('mobile_money','card')
-     break;
-     case 'Pay with card':
-      channel.push('card')
-      break;
-     case 'Pay with momo':
-      channel.push('mobile_money')
-      break;
+    )
   }
-  return channel
-}
-
-
-
-
-    const nextpage=(ref)=>{
-      createBooking(ref)
-      navigation.navigate('Success')
+  const channels = (name) => {
+    let channel = []
+    switch (name) {
+      case "Pay with cash":
+        channel.push('mobile_money', 'card')
+        break;
+      case 'Pay with card':
+        channel.push('card')
+        break;
+      case 'Pay with momo':
+        channel.push('mobile_money')
+        break;
     }
-    const { theme} = useTheme();
-const styles = useStyles();
-return (
-        <>
-       
-        {
-          success? <Success /> :
+    return channel
+  }
+
+
+
+
+  const nextpage = (ref) => {
+    createBooking(ref)
+    navigation.navigate('Success')
+  }
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
+    <>
+
+      {
+        success ? <Success /> :
           <SafeAreaView style={styles.cont}>
-          <Paystack 
+            <Paystack
 
-        paystackKey="pk_live_cac01fe0c36e8e38e53f9dcae4a3a405fed0e7d1"
-        amount={amount_paid}
-        currency={'GHS'}
-        channels={channels(pay_type)}
-        billingEmail={user.email}
-        activityIndicatorColor="green"
-        onCancel={(e) => {
-            navigation.navigate('main')
-          // handle response here
-        }}
-        onSuccess={(res) => {
-          // handle response here
-          nextpage(res.data.transactionRef.reference)
-        
-         
-        }}
+              paystackKey="pk_live_cac01fe0c36e8e38e53f9dcae4a3a405fed0e7d1"
+              amount={amount_paid}
+              currency={'GHS'}
+              channels={channels(pay_type)}
+              billingEmail={user.email}
+              activityIndicatorColor="green"
+              onCancel={(e) => {
+                navigation.navigate('main')
+                // handle response here
+              }}
+              onSuccess={(res) => {
+                // handle response here
+                nextpage(res.data.transactionRef.reference)
 
-      
-        autoStart={true}
+
+              }}
+
+
+              autoStart={true}
+            />
+          </SafeAreaView>
+      }
+      <Pop
+        main={'Payment Received. Thank you'}
+        modal={modalVisible}
       />
-       </SafeAreaView>
-        }
-          <Pop
-          main={'Payment Received. Thank you'}
-          modal={modalVisible}
-        />
-    
 
-     
+
+
       {modalVisible && <Blur />}
-      </>
-  
-  
-)
+    </>
+
+
+  )
 
 };
 const useStyles = makeStyles((theme) => ({
-   text: {
-      textAlign:'center',
-      fontFamily:FontFamily.sourceSansProSemibold,
-      fontSize:18,
-      marginBottom:100,
-      width:'80%'
-    },
-    cont:{
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center'
-    }
+  text: {
+    textAlign: 'center',
+    fontFamily: FontFamily.sourceSansProSemibold,
+    fontSize: 18,
+    marginBottom: 100,
+    width: '80%'
+  },
+  cont: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 }))
 export default Processing
 

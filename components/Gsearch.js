@@ -1,7 +1,7 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet, ScrollView,Platform, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, TextInput, StyleSheet, ScrollView, Platform, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Icon } from '@rneui/base';
 import Geolocation from 'react-native-geolocation-service';
 import { useSelector } from 'react-redux';
@@ -12,8 +12,8 @@ import Location_pop from './Location_pop';
 const Gsearch = ({ setLoc, handleS }) => {
   const user = useSelector(state => state.user);
   const refInput = useRef(null);
-  const [prev,setPrev]= useState(user.location.name)
-  const [searchQuery, setSearchQuery] = useState(user.location.name &&user.location.name);
+  const [prev, setPrev] = useState(user.location.name)
+  const [searchQuery, setSearchQuery] = useState(user.location.name && user.location.name);
   const [searchResults, setSearchResults] = useState([]);
   const [start, setStart] = useState(true);
   const [show, setShow] = useState(false);
@@ -24,10 +24,10 @@ const Gsearch = ({ setLoc, handleS }) => {
     },
     name: user.location.name,
   });
-  const [showInfoModal, setShowInfoModal]= useState(false)
-console.log(user.location.name)
+  const [showInfoModal, setShowInfoModal] = useState(false)
+  console.log(user.location.name)
   useEffect(() => {
-    setLoc(selectedLocation.coordinates.lat,selectedLocation.coordinates.lng,selectedLocation.name);
+    setLoc(selectedLocation.coordinates.lat, selectedLocation.coordinates.lng, selectedLocation.name);
 
     if (start) {
       const delaySearch = setTimeout(() => {
@@ -40,7 +40,7 @@ console.log(user.location.name)
 
   const handleSelectLocation = (location) => {
     setSelectedLocation(location);
-    setLoc(location.coordinates.lat,location.coordinates.lng,location.name);
+    setLoc(location.coordinates.lat, location.coordinates.lng, location.name);
   };
 
   const reverseGeocode = async (lat, lng) => {
@@ -70,11 +70,12 @@ console.log(user.location.name)
 
       if (result === RESULTS.DENIED) {
         // Permission hasn't been granted yet, show info modal
-        setShowInfoModal(!showInfoModal)      }
+        setShowInfoModal(!showInfoModal)
+      }
 
-        else if(result === RESULTS.GRANTED){
-          getUserLocation();
-        }
+      else if (result === RESULTS.GRANTED) {
+        getUserLocation();
+      }
     } catch (error) {
       console.error('Error checking location permission:', error);
     }
@@ -98,7 +99,7 @@ console.log(user.location.name)
         maximumAge: 0,
       }
     );
- setShow(false)
+    setShow(false)
   }
 
   const handleSearch = async () => {
@@ -126,14 +127,14 @@ console.log(user.location.name)
 
   const hideSearchResults = () => {
     setShow(false);
-    searchQuery== '' && setSearchQuery(prev)
+    searchQuery == '' && setSearchQuery(prev)
   };
 
 
 
   const s_style = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <><TouchableWithoutFeedback onPress={hideSearchResults}>
       <View>
         <TextInput
@@ -172,7 +173,7 @@ return (
                   setStart(false);
                   setSearchResults([]);
                   setShow(false);
-                } }
+                }}
               >
                 <View style={{ marginLeft: 20 }}>
                   <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProSemibold }}>{result.name}</Text>
@@ -183,82 +184,82 @@ return (
         ) : null}
       </View>
     </TouchableWithoutFeedback>
-    <Location_pop setmodal={setShowInfoModal} modal={showInfoModal} getUserLocation={getUserLocation}/>
+      <Location_pop setmodal={setShowInfoModal} modal={showInfoModal} getUserLocation={getUserLocation} />
 
-  </>
+    </>
   );
 };
 
 
 const useStyles = makeStyles((theme) => ({
-  column:{
-  height:35,
- alignContent:'center',
- justifyContent:'center',
+  column: {
+    height: 35,
+    alignContent: 'center',
+    justifyContent: 'center',
 
 
   }
   ,
   text_input: {
-    
+
     backgroundColor: '#EFEFEF',
     borderRadius: 23,
     borderWidth: 1,
     borderColor: '#EFEFEF',
     height: 63,
-    width:'90%',
-    paddingHorizontal:70,
-    alignSelf:'center',
-    display:'flex',
-    flexDirection:'row',
-    marginTop:20,
+    width: '90%',
+    paddingHorizontal: 70,
+    alignSelf: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 20,
   },
-  icon:{
-    margin:15,
+  icon: {
+    margin: 15,
     position: 'absolute',
-    top:23,
-    left:30
+    top: 23,
+    left: 30
 
   },
-  box:{
+  box: {
 
-    borderColor:'#EFEFEF',
-    borderWidth:2,
-width:'90%',
-height:'30%',
-backgroundColor: colors.w.color,
-padding:10,
-overflow:'scroll',
-borderRadius:10,
-alignSelf:'center',
-marginTop:10
+    borderColor: '#EFEFEF',
+    borderWidth: 2,
+    width: '90%',
+    height: '30%',
+    backgroundColor: colors.w.color,
+    padding: 10,
+    overflow: 'scroll',
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginTop: 10
   },
-  icon2:{
-    marginTop:15,
-    top:23,
-    right:40,
+  icon2: {
+    marginTop: 15,
+    top: 23,
+    right: 40,
     position: 'absolute',
   },
-  text:{
-   width:'70%',
-   marginTop:20
-   
+  text: {
+    width: '70%',
+    marginTop: 20
+
   },
   centeredView: {
-    
-    width:'100%',
-    top:'50%',
+
+    width: '100%',
+    top: '50%',
     marginTop: 82,
-    height:'50%'
-   
+    height: '50%'
+
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
   modalView: {
     margin: 20,
-    backgroundColor:'red',
-    width:'100%',
+    backgroundColor: 'red',
+    width: '100%',
     top: '30%',
     height: '50%',
     backgroundColor: 'white',
@@ -274,13 +275,13 @@ marginTop:10
     shadowRadius: 4,
     elevation: 5,
   },
-  mb_20:{
-    marginBottom:20
+  mb_20: {
+    marginBottom: 20
   },
-  button:{
-    marginVertical:10
+  button: {
+    marginVertical: 10
   }
-  
+
 }))
 
 

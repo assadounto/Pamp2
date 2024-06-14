@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React from "react";
 import { View, Text, Image, Pressable, Linking, Platform } from "react-native";
 import { FontFamily } from "../GlobalStyles";
@@ -13,9 +13,9 @@ const Socials = () => {
   };
 
 
-const { theme} = useTheme();
-return (
-    <View style={{ marginBottom: 30,marginTop:20 }}>
+  const { theme } = useTheme();
+  return (
+    <View style={{ marginBottom: 30, marginTop: 20 }}>
       <Text
         style={{
           color: "#707070",
@@ -29,40 +29,40 @@ return (
       </Text>
 
       {
-        Platform.OS==='android'?
-        <View style={{ display: "flex", flexDirection: "row", alignSelf: "center", gap: 20 }}>
-        <Pressable onPress={() => handleSocialPress("https://www.facebook.com/trypamp")}>
-        <Image source={require('../assets/facebook.png')}/>
-        </Pressable>
-        <Pressable onPress={() => handleSocialPress("https://www.instagram.com/trypamp")}>
-        <Image source={require('../assets/instagram.png')}/>
+        Platform.OS === 'android' ?
+          <View style={{ display: "flex", flexDirection: "row", alignSelf: "center", gap: 20 }}>
+            <Pressable onPress={() => handleSocialPress("https://www.facebook.com/trypamp")}>
+              <Image source={require('../assets/facebook.png')} />
+            </Pressable>
+            <Pressable onPress={() => handleSocialPress("https://www.instagram.com/trypamp")}>
+              <Image source={require('../assets/instagram.png')} />
 
-        </Pressable>
-        <Pressable onPress={() => handleSocialPress("https://twitter.com/trypamp")}>
-        <Image source={require('../assets/twitter.png')}/>
-        </Pressable>
-        <Pressable onPress={() => handleSocialPress("https://www.tiktok.com/@trypampgh")}>
-        <Image source={require('../assets/tiktok.png')}/>
-        </Pressable>
-      </View>:
+            </Pressable>
+            <Pressable onPress={() => handleSocialPress("https://twitter.com/trypamp")}>
+              <Image source={require('../assets/twitter.png')} />
+            </Pressable>
+            <Pressable onPress={() => handleSocialPress("https://www.tiktok.com/@trypampgh")}>
+              <Image source={require('../assets/tiktok.png')} />
+            </Pressable>
+          </View> :
 
 
-      <View style={{ display: "flex", flexDirection: "row", alignSelf: "center", gap: 20 }}>
-        <Pressable onPress={() => handleSocialPress("https://www.facebook.com/trypamp")}>
-        <SvgUri source={require('../assets/svgs/facebook.svg')}/>
-        </Pressable>
-        <Pressable onPress={() => handleSocialPress("https://www.instagram.com/trypamp")}>
-        <SvgUri source={require('../assets/svgs/instagram.svg')}/>
+          <View style={{ display: "flex", flexDirection: "row", alignSelf: "center", gap: 20 }}>
+            <Pressable onPress={() => handleSocialPress("https://www.facebook.com/trypamp")}>
+              <SvgUri source={require('../assets/svgs/facebook.svg')} />
+            </Pressable>
+            <Pressable onPress={() => handleSocialPress("https://www.instagram.com/trypamp")}>
+              <SvgUri source={require('../assets/svgs/instagram.svg')} />
 
-        </Pressable>
-        <Pressable onPress={() => handleSocialPress("https://twitter.com/trypamp")}>
-        <SvgUri source={require('../assets/svgs/twitter.svg')}/>
-        </Pressable>
-        <Pressable onPress={() => handleSocialPress("https://www.tiktok.com/@trypampgh")}>
-        <SvgUri source={require('../assets/svgs/tiktok.svg')}/>
-        </Pressable>
-      </View>
-            }
+            </Pressable>
+            <Pressable onPress={() => handleSocialPress("https://twitter.com/trypamp")}>
+              <SvgUri source={require('../assets/svgs/twitter.svg')} />
+            </Pressable>
+            <Pressable onPress={() => handleSocialPress("https://www.tiktok.com/@trypampgh")}>
+              <SvgUri source={require('../assets/svgs/tiktok.svg')} />
+            </Pressable>
+          </View>
+      }
     </View>
   );
 };

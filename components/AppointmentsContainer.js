@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { nanoid } from "@reduxjs/toolkit";
 import { da } from "date-fns/locale";
 import * as React from "react";
@@ -9,26 +9,26 @@ import FastImage from "react-native-fast-image";
 import AppJob from "./AppJob";
 import { colors } from "../src/Common_styles";
 import ImageCont from "./Image";
-const AppointmentsContainer = ({navigation,data}) => {
-  
-  const [info,setInfo]= React.useState()
+const AppointmentsContainer = ({ navigation, data }) => {
+
+  const [info, setInfo] = React.useState()
   function formatServiceNames(services) {
     const maxLength = 25; // Maximum length of the final formatted string
-    const names = services.filter((serv)=>serv.items_name!='').map(service => service.items_name);
+    const names = services.filter((serv) => serv.items_name != '').map(service => service.items_name);
     let formattedString = names.join(" & ");
- 
+
     if (formattedString.length > maxLength) {
       formattedString = formattedString.substring(0, maxLength - 3) + "...";
     }
-  
+
     return formattedString;
   }
-  
+
   function capitalizeFirstLetter(str) {
     if (typeof str !== 'string') {
       throw new Error('Input must be a string');
     }
-    
+
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   // Example usage:
@@ -56,29 +56,29 @@ const AppointmentsContainer = ({navigation,data}) => {
       updated_at: "2023-06-22T11:55:17.048Z"
     }
   ];
-  
+
   const formattedServices = formatServiceNames(services);
   console.log(formattedServices); // Output: "Dread & Rail"
-  
-
-
-  const statuses= ['declined', "rebook","completed","cancelled","confirmed","no show","booked","unconfirmed","pending"]
 
 
 
-  const bgc={
+  const statuses = ['declined', "rebook", "completed", "cancelled", "confirmed", "no show", "booked", "unconfirmed", "pending"]
+
+
+
+  const bgc = {
     cancelled: '#CD3D49',
     completed: colors.dg2.color,
     confirmed: colors.dg2.color,
     booked: colors.dg.color,
     rebook: colors.dg.color,
-    declined:'#CD3D49',
+    declined: '#CD3D49',
     "no show": '#CD3D49',
     unconfirmed: colors.dg.color,
-    pending: data?.services[0]? data?.services[0].color: 'red'
+    pending: data?.services[0] ? data?.services[0].color : 'red'
   }
-  
-  const c={
+
+  const c = {
     declined: 'white',
     cancelled: 'white',
     confirmed: 'white',
@@ -87,11 +87,11 @@ const AppointmentsContainer = ({navigation,data}) => {
     "no show": 'white',
     pending: 'white',
     unconfirmed: 'white',
-    rebook:'white',
+    rebook: 'white',
   }
 
 
- function formatTime(timeString) {
+  function formatTime(timeString) {
     const date = new Date(timeString);
     const formattedTime = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
     return formattedTime;
@@ -102,7 +102,7 @@ const AppointmentsContainer = ({navigation,data}) => {
     const year = parseInt(dateParts[0]);
     const month = parseInt(dateParts[1]);
     const day = parseInt(dateParts[2]);
-  
+
     const months = [
       "January",
       "February",
@@ -117,32 +117,32 @@ const AppointmentsContainer = ({navigation,data}) => {
       "November",
       "December"
     ];
-  
+
     const formattedDate = `${day} ${months[month - 1]} ${year}`;
     return formattedDate;
   }
   const styles = useStyles();
-const { theme} = useTheme();
-return (
-    <Pressable onPress={()=>navigation.navigate('Booking_detail',{
+  const { theme } = useTheme();
+  return (
+    <Pressable onPress={() => navigation.navigate('Booking_detail', {
       id: data.id
-    })}  style={[styles.path636Parent]}>
-       <AppJob setInfo={setInfo}  vendor={data.vendor} services={data.services} time={data.time}/>
-<ImageCont styles={[styles.groupChild, styles.groupChildPosition]} uri={data.vendor.cover}/>
-         
+    })} style={[styles.path636Parent]}>
+      <AppJob setInfo={setInfo} vendor={data.vendor} services={data.services} time={data.time} />
+      <ImageCont styles={[styles.groupChild, styles.groupChildPosition]} uri={data.vendor.cover} />
 
-            <FastImage
+
+      <FastImage
         style={[styles.groupItem, styles.groupItemPosition]}
-  
-            source={{
-              uri:data.vendor.logo,
-              headers: { Authorization: 'someAuthToken' },
-              priority: FastImage.priority.high,
-            }}
-            resizeMode={FastImage.resizeMode.cover} 
-            />
+
+        source={{
+          uri: data.vendor.logo,
+          headers: { Authorization: 'someAuthToken' },
+          priority: FastImage.priority.high,
+        }}
+        resizeMode={FastImage.resizeMode.cover}
+      />
       <Text style={[styles.likkleSalon, styles.totalFlexBox]}>
-      {data.vendor.username}
+        {data.vendor.username}
       </Text>
       <Text style={[styles.sewIn, styles.sewInTypo]}>{formatServiceNames(data.items)}</Text>
       <Text style={[styles.total, styles.sewInPosition]}>Total</Text>
@@ -151,8 +151,8 @@ return (
       <Text style={[styles.july2022, styles.textTypo]}>{formatDate(data.date)}</Text>
       <View style={[styles.groupInner, styles.lineViewBorder]} />
       <View style={[styles.lineView, styles.lineViewBorder]} />
-      <View style={[styles.bookedWrapper, statuses.includes(data.status) ? {backgroundColor:  bgc[data.status]}: {backgroundColor: info?.color}, styles.groupItemPosition]}>
-        <Text style={[styles.booked, info  ? {color: 'white'} : {color:c[data.status]}, styles.sewInTypo]}>{ statuses.includes(data.status)  ?capitalizeFirstLetter(data.status ): info&& capitalizeFirstLetter(info.status)}</Text>
+      <View style={[styles.bookedWrapper, statuses.includes(data.status) ? { backgroundColor: bgc[data.status] } : { backgroundColor: info?.color }, styles.groupItemPosition]}>
+        <Text style={[styles.booked, info ? { color: 'white' } : { color: c[data.status] }, styles.sewInTypo]}>{statuses.includes(data.status) ? capitalizeFirstLetter(data.status) : info && capitalizeFirstLetter(info.status)}</Text>
       </View>
     </Pressable>
   );
@@ -165,7 +165,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     top: 0,
     position: "absolute",
- 
+
   },
   groupItemPosition: {
     position: "absolute",
@@ -209,9 +209,9 @@ const useStyles = makeStyles((theme) => ({
   },
   groupChild: {
     right: 0,
-    borderTopLeftRadius:20,
-    borderTopRightRadius:20,
-     width:'100%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    width: '100%',
     height: 201,
   },
   groupItem: {
@@ -219,13 +219,13 @@ const useStyles = makeStyles((theme) => ({
     left: 20,
     width: 34,
     height: 34,
-    borderRadius:50,
+    borderRadius: 50,
     top: "50%",
-  
+
   },
   likkleSalon: {
     marginTop: 38.99,
-width:200,
+    width: 200,
     color: Color.darkslategray_200,
     textAlign: "left",
     fontFamily: FontFamily.sourceSansProRegular,
@@ -235,7 +235,7 @@ width:200,
   },
   sewIn: {
     left: 25,
-    width:200,
+    width: 200,
     color: Color.darkslategray_200,
     marginTop: 90.99,
     textAlign: "left",
@@ -284,23 +284,23 @@ width:200,
   },
   booked: {
 
-    borderRadius:20,
-     
+    borderRadius: 20,
+
     fontSize: FontSize.size_2xs,
-   // color: colors.dg.color,
+    // color: colors.dg.color,
     textAlign: "center",
-    
-    
+
+
     fontWeight: "600",
   },
   bookedWrapper: {
 
     right: 29,
-  paddingHorizontal:10,
-    borderRadius:28,
+    paddingHorizontal: 10,
+    borderRadius: 28,
     //backgroundColor: Color.darkslategray_200,
-   
-  
+
+
     height: 21,
     top: "50%",
   },
@@ -308,14 +308,14 @@ width:200,
     elevation: 3,
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    shadowOffset: { width: 0, height: 4 },    height: 424,
+    shadowOffset: { width: 0, height: 4 }, height: 424,
     marginBottom: 20.63,
     alignSelf: "center",
-    backgroundColor:'white',
-    width:'90%',
-  
-    borderRadius:20,
- 
+    backgroundColor: 'white',
+    width: '90%',
+
+    borderRadius: 20,
+
   },
 }));
 

@@ -1,4 +1,4 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 // src/screens/ChatScreen.js
 
@@ -24,7 +24,7 @@ const ChatScreen = ({ route }) => {
             // Check if the message already exists in state
             const messageExists = messages.some((msg) => msg.id === newMessage.id);
             if (!messageExists) {
-                setMessages((prevMessages) => [newMessage,...prevMessages, ]);
+                setMessages((prevMessages) => [newMessage, ...prevMessages,]);
             }
 
             if (!newMessage.read_at && newMessage.sent_by !== 'user') {
@@ -84,33 +84,33 @@ const ChatScreen = ({ route }) => {
             item.sent_by === 'user' ? styles.userMessage : styles.vendorMessage
         ]}>
             <Text style={styles.messageText}>{item.user?.username}: {item.content}</Text>
-            {item.sent_by === 'user' && item.read_at ? <Text style={styles.readReceipt}>✔✔</Text> : item.sent_by==='user' &&  <Text style={styles.readReceipt}>✔</Text>}
+            {item.sent_by === 'user' && item.read_at ? <Text style={styles.readReceipt}>✔✔</Text> : item.sent_by === 'user' && <Text style={styles.readReceipt}>✔</Text>}
         </View>
     );
 
-    if (messages.length===0){
+    if (messages.length === 0) {
         return <Text>
             loading
         </Text>
     }
-    const { theme} = useTheme();
-const styles = useStyles();
-return (
+    const { theme } = useTheme();
+    const styles = useStyles();
+    return (
         <SafeAreaView style={{ flex: 1 }}>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
             >
-             
-                    <FlatList
-                        data={messages}
-                        keyExtractor={(item) => item?.id?.toString()}
-                        renderItem={renderMessageItem}
-                        contentContainerStyle={styles.chatContainer}
-                        ref={flatListRef}
-                        inverted         
-                    />
+
+                <FlatList
+                    data={messages}
+                    keyExtractor={(item) => item?.id?.toString()}
+                    renderItem={renderMessageItem}
+                    contentContainerStyle={styles.chatContainer}
+                    ref={flatListRef}
+                    inverted
+                />
                 <View style={styles.inputContainer}>
                     <TextInput
                         ref={inputRef}

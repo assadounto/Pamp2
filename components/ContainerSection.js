@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { useMemo } from "react";
 import { Image, StyleSheet, View, Text, Pressable } from "react-native";
@@ -18,8 +18,8 @@ const ContainerSection = ({ propMarginTop, onGroupPressablePress }) => {
   }, [propMarginTop]);
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <Pressable
       style={[styles.ellipseParent, styles.mt_110_75, groupPressableStyle]}
       onPress={onGroupPressablePress}

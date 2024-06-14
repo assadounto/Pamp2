@@ -1,8 +1,8 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
-import { Alert, View,TextInput, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
-import { Input, Button,Icon } from '@rneui/base';
+import { Alert, View, TextInput, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
+import { Input, Button, Icon } from '@rneui/base';
 import { colors, styles } from '../../Common_styles';
 import axios from 'axios';
 import { backendURL } from '../../services/http';
@@ -12,9 +12,9 @@ import Pop2 from '../start_screens/pop2';
 import { useSelector } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
 import { verticalScale } from '../../Dimensions';
-const PassReset = ({ navigation,route}) => {
-    const { datas } = route?.params || {};
-  const user =useSelector((state)=>state.user.userInfo)
+const PassReset = ({ navigation, route }) => {
+  const { datas } = route?.params || {};
+  const user = useSelector((state) => state.user.userInfo)
   const [showPassword, setShowPassword] = useState(false);
   const [modalVisible, setModal] = useState(false);
   const [formData, setFormData] = useState({ // Current Password field
@@ -31,9 +31,9 @@ const PassReset = ({ navigation,route}) => {
   };
 
   const handleSubmit = async () => {
-    const {  new_password, confirm_password } = formData;
+    const { new_password, confirm_password } = formData;
 
-    if ( !new_password || !confirm_password) {
+    if (!new_password || !confirm_password) {
       Alert.alert('Error', 'All fields are required.');
       return;
     }
@@ -52,8 +52,9 @@ const PassReset = ({ navigation,route}) => {
 
     try {
       // Assuming you are sending a POST request to change the password
-      const { data } = await axios.post(`${backendURL}/user/password/reset`, {...datas,
-      password:  new_password,
+      const { data } = await axios.post(`${backendURL}/user/password/reset`, {
+        ...datas,
+        password: new_password,
       });
 
       if (data.status === 'ok') {
@@ -66,9 +67,9 @@ const PassReset = ({ navigation,route}) => {
         }));
         setModal(true);
         setTimeout(() => {
-            setModal(false);
-         navigation.navigate('login2')
-          }, 4000);
+          setModal(false);
+          navigation.navigate('login2')
+        }, 4000);
 
         //navigation.navigate('PasswordChangedScreen'); // Navigate to a success screen
       } else {
@@ -91,20 +92,20 @@ const PassReset = ({ navigation,route}) => {
     }
   };
 
-  const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <>
 
-     
 
-      <View style={{ alignSelf: 'center', marginTop:Platform.OS==='ios' ?40:0 }}>
-        
-      <BHeader color={colors.dg.color} title={'Change Password'} />
+
+      <View style={{ alignSelf: 'center', marginTop: Platform.OS === 'ios' ? 40 : 0 }}>
+
+        <BHeader color={colors.dg.color} title={'Change Password'} />
 
         <TextInput
-         placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={'#BBB9BC'}
           placeholder="New Password"
-          style={[styles.textInput,{marginTop:40}]}
+          style={[styles.textInput, { marginTop: 40 }]}
           secureTextEntry={!showPassword}
           rightIcon={
             <Icon
@@ -116,35 +117,35 @@ return (
           }
           onChangeText={(value) => handleChange('new_password', value)}
         />
- 
+
         <TextInput
-         placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={'#BBB9BC'}
           placeholder="Confirm Password"
           style={[styles.textInput]}
           secureTextEntry={!showPassword}
-          
+
           onChangeText={(value) => handleChange('confirm_password', value)}
         />
 
         <TouchableOpacity>
           <Button
-          titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
+            titleStyle={{ fontFamily: FontFamily.sourceSansProBold }}
             title="Change password"
             onPress={handleSubmit}
-            buttonStyle={[styles.button,{marginTop:'30%'}]}
+            buttonStyle={[styles.button, { marginTop: '30%' }]}
 
             loading={formData.isLoading}
           />
         </TouchableOpacity>
       </View>
       <Pop2
-          main={'You have Successfully Changed your Password'}
-          modal={modalVisible}
-        />
-        
+        main={'You have Successfully Changed your Password'}
+        modal={modalVisible}
+      />
 
-     {modalVisible && <Blur />}
-     </>
+
+      {modalVisible && <Blur />}
+    </>
   );
 };
 

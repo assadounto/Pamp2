@@ -1,9 +1,9 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
-import React ,{useMemo, useState}from "react"
-import { View,Text,Pressable,Image,ImageBackground,SafeAreaView ,ActivityIndicator, Platform} from "react-native"
+import React, { useMemo, useState } from "react"
+import { View, Text, Pressable, Image, ImageBackground, SafeAreaView, ActivityIndicator, Platform } from "react-native"
 import MasonryList from '@react-native-seoul/masonry-list';
-import { styles ,colors} from "../../Common_styles";
+import { styles, colors } from "../../Common_styles";
 import { FontFamily } from "../../GlobalStyles";
 import LinearGradient from 'react-native-linear-gradient'
 import { Icon } from "@rneui/base";
@@ -15,37 +15,37 @@ import { backendURL } from "../../services/http";
 import { use } from "../../redux/homeapi";
 import { useFocusEffect } from "@react-navigation/core";
 import { TouchableOpacity } from "react-native-gesture-handler";
-const data=[]
+const data = []
 
-const Favourites=({navigation})=>{
+const Favourites = ({ navigation }) => {
   const { theme } = useTheme();
-  const[loading,setLoading]= React.useState(false)
+  const [loading, setLoading] = React.useState(false)
 
 
-  const user = useSelector((state)=>state.user.userInfo)
-  const [data,setData]=useState([])
+  const user = useSelector((state) => state.user.userInfo)
+  const [data, setData] = useState([])
 
   useFocusEffect(
-  
+
     React.useCallback(() => {
-      if (user?.id){
-        if (data.length===0){
+      if (user?.id) {
+        if (data.length === 0) {
           getFav()
 
         }
-      } 
-    }, [user?.id,data]) // Include user.id in the dependency array
+      }
+    }, [user?.id, data]) // Include user.id in the dependency array
   );
- 
-  const getFav=async ()=>{
+
+  const getFav = async () => {
     try {
       setLoading(true)
-      const {data}= await axios.get(`${backendURL}/favorites?user_id=${user?.id}`)
-   
-     let d= data&& data.map((item,id)=>{
+      const { data } = await axios.get(`${backendURL}/favorites?user_id=${user?.id}`)
+
+      let d = data && data.map((item, id) => {
         return {
           id: id,
-          vendor:item.vendor,
+          vendor: item.vendor,
           cover_image: item.cover_image,
           logo_image: item.logo_image
         }
@@ -53,107 +53,107 @@ const Favourites=({navigation})=>{
       setData(d)
       setLoading(false)
     }
-    catch (e){
-        console.error(e)
+    catch (e) {
+      console.error(e)
     }
   }
 
-    const item = ({item}) => (
-        <TouchableOpacity onPress={()=>navigation.navigate('VendorDetail',
-        {
+  const item = ({ item }) => (
+    <TouchableOpacity onPress={() => navigation.navigate('VendorDetail',
+      {
         id: item.vendor.id,
-        }
-        )} style={{marginLeft:10 ,flex:1}}>
+      }
+    )} style={{ marginLeft: 10, flex: 1 }}>
       <FastImage
-  //imageStyle={{ borderRadius: 20 }}
-  loadingIndicatorSource={require('../assets/edit.png')}
-  source={{ uri: item.cover_image }}
-  key={item.id}
-  style={[{ borderRadius: 20, marginRight: 10, height: 200, marginTop: item.id == 0 ? 60 : 20, flex: 1 }]}
->
-  <Icon
-    onPress={() => console.log(item.id)}
-    style={{ alignSelf: 'flex-end', margin: 10 }}
-    name='heart'
-    type="ionicon"
-    color='white'
-  />
-  <LinearGradient
-    colors={[
-      'rgba(176, 235, 189,0.1)',
-      'rgba(176, 235, 189,0.5)',
-      'rgba(176, 235, 189,0.8)',
-    ]}
-    style={{ height: 60, position: 'relative', top: 95, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, justifyContent: 'center' }}
-  >
-    <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20 }}>
-      <View style={{ borderRadius: 20, width: 27, height: 27, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center' }}>
-        <FastImage
-          style={{
-            borderRadius: 20,
-            height: 22,
-            width: 22,
-          }}
-          source={{
-            uri: item.logo_image,
-            headers: { Authorization: 'someAuthToken' },
-            priority: FastImage.priority.normal,
-          }}
-          resizeMode={FastImage.resizeMode.cover}
-        />
-      </View>
-      <Text
-        style={{
-          margin: 5,
-          marginRight:10,
-          fontFamily: FontFamily.sourceSansProSemibold,
-          fontSize: 12,
-          color: 'white'
-        }}
+        //imageStyle={{ borderRadius: 20 }}
+        loadingIndicatorSource={require('../assets/edit.png')}
+        source={{ uri: item.cover_image }}
+        key={item.id}
+        style={[{ borderRadius: 20, marginRight: 10, height: 200, marginTop: item.id == 0 ? 60 : 20, flex: 1 }]}
       >
-        {item.vendor.username}
-      </Text>
-    </View>
-  </LinearGradient>
-</FastImage>
+        <Icon
+          onPress={() => console.log(item.id)}
+          style={{ alignSelf: 'flex-end', margin: 10 }}
+          name='heart'
+          type="ionicon"
+          color='white'
+        />
+        <LinearGradient
+          colors={[
+            'rgba(176, 235, 189,0.1)',
+            'rgba(176, 235, 189,0.5)',
+            'rgba(176, 235, 189,0.8)',
+          ]}
+          style={{ height: 60, position: 'relative', top: 95, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, justifyContent: 'center' }}
+        >
+          <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20 }}>
+            <View style={{ borderRadius: 20, width: 27, height: 27, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center' }}>
+              <FastImage
+                style={{
+                  borderRadius: 20,
+                  height: 22,
+                  width: 22,
+                }}
+                source={{
+                  uri: item.logo_image,
+                  headers: { Authorization: 'someAuthToken' },
+                  priority: FastImage.priority.normal,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            </View>
+            <Text
+              style={{
+                margin: 5,
+                marginRight: 10,
+                fontFamily: FontFamily.sourceSansProSemibold,
+                fontSize: 12,
+                color: 'white'
+              }}
+            >
+              {item.vendor.username}
+            </Text>
+          </View>
+        </LinearGradient>
+      </FastImage>
 
     </TouchableOpacity>
-      );
-      const Event = () => {
-        if (user?.id) {
+  );
+  const Event = () => {
+    if (user?.id) {
 
-return (
-            loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>: 
-          data.length==0? <Emptyfav 
-          title={"No Favourites"}
-          body={"You don't have any favourites yet"}
-          top={85}
-          />:
-          <MasonryList
-  data={data &&data}
-  keyExtractor={(item)=> item.id}
-  numColumns={2}
-  showsVerticalScrollIndicator={false}
-  renderItem={item}
-  //refreshing={isLoadingNext}
-  onRefresh={() => getFav()}
-  onEndReachedThreshold={0.1}
-  //onEndReached={() => loadNext(ITEM_CNT)}
-/>)
-        }
-        return <>
-          <Emptyfav title={"No Favourites"} mt={10}  col={'#BBB9BC'} body="Login in or sign up to manage your upcoming and past appointments" showBtn={true} />
-          </>;
-      };
+      return (
+        loading ? <ActivityIndicator style={{ alignSelf: 'center', marginTop: '50%' }} size={'small'} /> :
+          data.length == 0 ? <Emptyfav
+            title={"No Favourites"}
+            body={"You don't have any favourites yet"}
+            top={85}
+          /> :
+            <MasonryList
+              data={data && data}
+              keyExtractor={(item) => item.id}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              renderItem={item}
+              //refreshing={isLoadingNext}
+              onRefresh={() => getFav()}
+              onEndReachedThreshold={0.1}
+            //onEndReached={() => loadNext(ITEM_CNT)}
+            />)
+    }
+    return <>
+      <Emptyfav title={"No Favourites"} mt={10} col={'#BBB9BC'} body="Login in or sign up to manage your upcoming and past appointments" showBtn={true} />
+    </>;
+  };
 
-    return(
-      <View style={{flex:1,marginTop:Platform.OS==='android'?20:50}}>
-   
-        <Text style={{marginLeft:30,fontFamily:FontFamily.sourceSansProBold,fontSize:26,color:'#86D694'}}>My Favs</Text>
-       <Event/>
+  return (
+    <View style={{ flex: 1, marginTop: Platform.OS === 'android' ? 20 : 50 }}>
 
-</View>
-    )
+      <Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694' }}>My Favs</Text>
+      <Event />
+
+    </View>
+  )
 }
 
 export default Favourites

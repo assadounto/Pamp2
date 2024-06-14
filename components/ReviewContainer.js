@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { useMemo } from "react";
 import {
@@ -24,8 +24,8 @@ const ReviewContainer = ({ carImageUrl, propMarginTop }) => {
   }, [propMarginTop]);
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={[styles.rectangleParent, styles.mt_219, groupView5Style]}>
       <View style={styles.groupChild} />
       <View style={styles.groupItem} />

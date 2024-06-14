@@ -1,89 +1,91 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
-import { Animated, View, TouchableOpacity,Text,Pressable} from 'react-native';
+import { makeStyles } from '@rneui/themed';
+import { Animated, View, TouchableOpacity, Text, Pressable } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Icon } from '@rneui/base';
 import { ScrollView } from 'react-native-gesture-handler';
 import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
 import { horizontalScale, verticalScale } from '../src/Dimensions';
-function MyTabBar({state, descriptors, navigation}) {
-    return (
-        <View style={{marginBottom:verticalScale(20),marginHorizontal:horizontalScale(20), marginTop:verticalScale(10)}}>
+function MyTabBar({ state, descriptors, navigation }) {
+  return (
+    <View style={{ marginBottom: verticalScale(20), marginHorizontal: horizontalScale(20), marginTop: verticalScale(10) }}>
       <ScrollView
-      showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
 
-      horizontal={true}
+        horizontal={true}
       //style={{height:70,}}
-     
+
       >
         {state.routes.map((route, index) => {
-          const {options} = descriptors[route.key];
-  
+          const { options } = descriptors[route.key];
+
           const label =
             options.tabBarLabel !== undefined
               ? options.tabBarLabel
               : options.title !== undefined
-              ? options.title
-              : route.name;
-  
+                ? options.title
+                : route.name;
+
           const isFocused = state.index === index;
-  
+
           const onPress = () => {
             const event = navigation.emit({
               type: 'tabPress',
               target: route.key,
             });
-  
+
             if (!isFocused && !event.defaultPrevented) {
               navigation.navigate(route.name);
             }
           };
-  
+
           const onLongPress = () => {
             navigation.emit({
               type: 'tabLongPress',
               target: route.key,
             });
           };
-  
-  
 
-const { theme} = useTheme();
-return (
-           
+
+
+          const { theme } = useTheme();
+          return (
+
             <Pressable
-            onPress={onPress}
-                onLongPress={onLongPress}
+              onPress={onPress}
+              onLongPress={onLongPress}
               style={[
-                {flexDirection: 'row'},
+                { flexDirection: 'row' },
                 isFocused
                   ? {
-                      backgroundColor: '#86D694',
-                      borderRadius: 20,
-                     paddingHorizontal:horizontalScale(12),
-                      height:verticalScale(34),
-                      alignSelf: 'center',
-                      alignItems: 'center',
-                      justifyContent: 'space-around',
-                      marginLeft:10
-                    }
-                  : {backgroundColor: 'white',
-                  marginLeft:10,
-                  borderRadius: 20,
-                  paddingHorizontal:12,
-                  height:verticalScale(34),
-                  alignSelf: 'center',
-                  alignItems: 'center',
-                  borderColor:'#B0EBBD',
-    borderWidth: 1,
-                  justifyContent: 'space-around'},
+                    backgroundColor: '#86D694',
+                    borderRadius: 20,
+                    paddingHorizontal: horizontalScale(12),
+                    height: verticalScale(34),
+                    alignSelf: 'center',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    marginLeft: 10
+                  }
+                  : {
+                    backgroundColor: 'white',
+                    marginLeft: 10,
+                    borderRadius: 20,
+                    paddingHorizontal: 12,
+                    height: verticalScale(34),
+                    alignSelf: 'center',
+                    alignItems: 'center',
+                    borderColor: '#B0EBBD',
+                    borderWidth: 1,
+                    justifyContent: 'space-around'
+                  },
               ]}
               key={index}
-             >
+            >
               <TouchableOpacity
                 accessibilityRole="button"
-                accessibilityState={isFocused ? {selected: true} : {}}
+                accessibilityState={isFocused ? { selected: true } : {}}
                 accessibilityLabel={options.tabBarAccessibilityLabel}
                 testID={options.tabBarTestID}
                 onPress={onPress}
@@ -97,9 +99,9 @@ return (
                 ]}
                 activeOpacity={0.8}
                 disabled={isFocused}>
-               
-  
-                {isFocused ?( 
+
+
+                {isFocused ? (
                   <Text
                     style={{
                       color: '#FFFFFF',
@@ -109,23 +111,23 @@ return (
                     }}>
                     {label}
                   </Text>
-                ):<Text
-                style={{
-                  color: colors.dg.color,
-                  marginLeft: 5,
-                  fontSize: 13,
-                  fontFamily: FontFamily.sourceSansProRegular,
-                }}>
-                {label}
-              </Text>}
+                ) : <Text
+                  style={{
+                    color: colors.dg.color,
+                    marginLeft: 5,
+                    fontSize: 13,
+                    fontFamily: FontFamily.sourceSansProRegular,
+                  }}>
+                  {label}
+                </Text>}
               </TouchableOpacity>
             </Pressable>
           );
         })}
-     </ScrollView>
-     </View>
-    );
-  }
+      </ScrollView>
+    </View>
+  );
+}
 
 // ...
 export default MyTabBar

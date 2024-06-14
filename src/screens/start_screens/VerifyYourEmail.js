@@ -1,6 +1,6 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Animated, Easing } from 'react-native';
 import { useResendEmailMutation } from '../../redux/authapi';
 import {
@@ -12,11 +12,11 @@ import {
   Alert,
 } from 'react-native';
 import Header from './header';
-import {styles as styles2, colors} from '../../Common_styles';
-import {Button} from '@rneui/base';
+import { styles as styles2, colors } from '../../Common_styles';
+import { Button } from '@rneui/base';
 import Pop2 from './pop2';
 import Blur from './Blur';
-import {useGetEmailConfirmMutation,useGetPhoneConfirmMutation} from '../../redux/authapi';
+import { useGetEmailConfirmMutation, useGetPhoneConfirmMutation } from '../../redux/authapi';
 import { useSelector } from 'react-redux';
 import {
   CodeField,
@@ -30,20 +30,20 @@ import { updateEmail } from '../../redux/user';
 import { horizontalScale } from '../../Dimensions';
 
 const CELL_COUNT = 4;
-let error_color='#B0EBBD';
-const VerifyEmail = ({navigation,route}) => {
-   const {scope}= route.params? route.params : {}
+let error_color = '#B0EBBD';
+const VerifyEmail = ({ navigation, route }) => {
+  const { scope } = route.params ? route.params : {}
   const [shakeAnimation] = useState(new Animated.Value(0));
-const dispatch=useDispatch()
-  const user= useSelector((state)=>state.user.userInfo)
-    const [getEmailConfirm,{isSuccess,isLoading,data,isError}]= useGetEmailConfirmMutation()
-    const [resendEmail,{isSuccess:email_success}]= useResendEmailMutation()
-    const [getPhoneConfirm]= useGetPhoneConfirmMutation()
- 
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.userInfo)
+  const [getEmailConfirm, { isSuccess, isLoading, data, isError }] = useGetEmailConfirmMutation()
+  const [resendEmail, { isSuccess: email_success }] = useResendEmailMutation()
+  const [getPhoneConfirm] = useGetPhoneConfirmMutation()
+
   const [value, setValue] = useState('');
-  const [wrong,setwrong] =useState('')
-  const [error,seterror]=useState(false)
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [wrong, setwrong] = useState('')
+  const [error, seterror] = useState(false)
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -51,36 +51,36 @@ const dispatch=useDispatch()
   const [modalVisible, setModal] = useState(false);
   const [timerCount, setTimerCount] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
- 
+
   useEffect(() => {
-   
-    isError ? error_color ='red': ''
+
+    isError ? error_color = 'red' : ''
     if (isSuccess) {
       setModal(true);
-      scope!=='ce'&&  getPhoneConfirm({
+      scope !== 'ce' && getPhoneConfirm({
         scope: 'user',
         phone: user.phone,
         id: user.id
       })
       setTimeout(() => {
         setModal(false);
-        
-        scope=='ce'? sendEmail(data.data): navigation.replace('VerifyNumber');
-      }, 4000);
-    } 
-    else  if (!isSuccess){
-     
-      
-    }
-  }, [isSuccess, navigation,handleSubmit]);
 
-  const incall=()=>{
-   seterror(true)
-   shakeAnimationStart();
+        scope == 'ce' ? sendEmail(data.data) : navigation.replace('VerifyNumber');
+      }, 4000);
+    }
+    else if (!isSuccess) {
+
+
+    }
+  }, [isSuccess, navigation, handleSubmit]);
+
+  const incall = () => {
+    seterror(true)
+    shakeAnimationStart();
 
   }
 
-  const sendEmail=(email)=>{
+  const sendEmail = (email) => {
     dispatch(updateEmail(email))
     setTimeout(() => {
       navigation.navigate('main')
@@ -89,7 +89,7 @@ const dispatch=useDispatch()
   const startTimer = () => {
     // resendEmail(user.email)
     if (!timerActive) {
-     
+
 
       setTimerActive(true);
       setTimerCount(60);
@@ -97,7 +97,7 @@ const dispatch=useDispatch()
       const interval = setInterval(() => {
         setTimerCount((prevCount) => prevCount - 1);
       }, 1000);
-  
+
       // Stop the timer when it reaches 0
       setTimeout(() => {
         clearInterval(interval);
@@ -105,7 +105,7 @@ const dispatch=useDispatch()
       }, 60000);
     }
   };
-  
+
   const shakeAnimationStart = () => {
     shakeAnimation.setValue(0);
     Animated.sequence([
@@ -129,16 +129,16 @@ const dispatch=useDispatch()
       }),
     ]).start();
   };
-  
+
   const handleSubmit = async () => {
-   
-    
+
+
     if (value.length < 4) {
       alert('Please enter a valid code');
       return;
     }
 
-    const age= await getEmailConfirm(value).then((data,error)=>{
+    const age = await getEmailConfirm(value).then((data, error) => {
 
       isError && incall()
     });
@@ -146,10 +146,10 @@ const dispatch=useDispatch()
   };
 
 
-  
-  const { theme} = useTheme();
-const styles1 = useStyles();
-return (
+
+  const { theme } = useTheme();
+  const styles1 = useStyles();
+  return (
     <>
       <SafeAreaView style={styles1.root}>
         <Header
@@ -162,19 +162,19 @@ return (
           {...props}
           // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
           value={value}
-          onChangeText={setValue  }
+          onChangeText={setValue}
           cellCount={CELL_COUNT}
           rootStyle={styles1.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({index, symbol, isFocused}) => (
-          
+          renderCell={({ index, symbol, isFocused }) => (
+
             <Animated.Text
-            
+
               key={index}
               style={[
-               styles1.cell,
-                isFocused  && styles1.focusCell,
+                styles1.cell,
+                isFocused && styles1.focusCell,
                 {
                   transform: [
                     {
@@ -185,32 +185,32 @@ return (
                     },
                   ],
                 },
-              ]}              onLayout={getCellOnLayoutHandler(index)}>
+              ]} onLayout={getCellOnLayoutHandler(index)}>
               {symbol || (isFocused ? <Cursor /> : null)}
             </Animated.Text>
           )}
         />
-      
-      <Text
-  disabled={timerActive}
-  style={[colors.dg, styles2.mt100, styles2.tc, { fontFamily: FontFamily.sourceSansProSemibold }]}
-  onPress={startTimer}
->
-  {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
-</Text>
 
-<Text> </Text>
-       
-          <Button
-                       titleStyle={styles2.tbtn}
-            title="Verify Your Email"
-            onPress={handleSubmit}
-            loading={isLoading}
-            buttonStyle={[styles.button,{width:horizontalScale(290)}]}
-          />
-     
-          
-        <Text onPress={()=>navigation.replace('Register')} style={[colors.lg, styles.bold, styles.tc]}>
+        <Text
+          disabled={timerActive}
+          style={[colors.dg, styles2.mt100, styles2.tc, { fontFamily: FontFamily.sourceSansProSemibold }]}
+          onPress={startTimer}
+        >
+          {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
+        </Text>
+
+        <Text> </Text>
+
+        <Button
+          titleStyle={styles2.tbtn}
+          title="Verify Your Email"
+          onPress={handleSubmit}
+          loading={isLoading}
+          buttonStyle={[styles.button, { width: horizontalScale(290) }]}
+        />
+
+
+        <Text onPress={() => navigation.replace('Register')} style={[colors.lg, styles.bold, styles.tc]}>
           Change Email
         </Text>
 

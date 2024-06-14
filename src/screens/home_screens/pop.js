@@ -1,26 +1,26 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React from 'react';
-import {Text, View, SafeAreaView, Image, Modal, TextInput} from 'react-native';
-import {styles, colors} from '../../Common_styles';
-import {CheckBox, Button} from '@rneui/base';
-import {Border} from '../../GlobalStyles';
+import { Text, View, SafeAreaView, Image, Modal, TextInput } from 'react-native';
+import { styles, colors } from '../../Common_styles';
+import { CheckBox, Button } from '@rneui/base';
+import { Border } from '../../GlobalStyles';
 
-const DelPop = ({main, modal}) => {
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
+const DelPop = ({ main, modal }) => {
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
     <Modal animationType="slide" transparent={false} visible={modal}>
-      <View style={[styles.pop, {backgroundColor: 'gray'}]}>
+      <View style={[styles.pop, { backgroundColor: 'gray' }]}>
         <Image
           source={require('../assets/x.png')}
-          style={{alignSelf: 'flex-end',marginRight:20,marginTop:20}}
+          style={{ alignSelf: 'flex-end', marginRight: 20, marginTop: 20 }}
         />
         <View>
-          <Text style={[colors.dgb, styles.fs18, styles.tac,styles.mb20]}>
+          <Text style={[colors.dgb, styles.fs18, styles.tac, styles.mb20]}>
             Are you sure you want to leave Pamp?
           </Text>
-          <Text style={[colors.dgb, styles.fs18, styles.tac,,styles.mb20]}>Tell us why</Text>
+          <Text style={[colors.dgb, styles.fs18, styles.tac, , styles.mb20]}>Tell us why</Text>
           <CheckBox
             title={
               <Text style={[colors.dg, styles.terms]}>
@@ -35,10 +35,10 @@ return (
                 />
               </View>
             }
-            //checked={receivePushNotifications}
-            // onPress={() =>
-            //  // setReceivePushNotifications(!receivePushNotifications)
-            // }
+          //checked={receivePushNotifications}
+          // onPress={() =>
+          //  // setReceivePushNotifications(!receivePushNotifications)
+          // }
           />
           <CheckBox
             title={
@@ -57,15 +57,15 @@ return (
           />
         </View>
         <TextInput
-           placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={'#BBB9BC'}
           style={{
             borderWidth: 1,
             width: '80%',
             borderRadius: 10,
             borderColor: '#BBB9BC',
-            padding:10,
+            padding: 10,
             marginTop: 30,
-            marginBottom:40
+            marginBottom: 40
 
           }}
           placeholder={'other reason'}

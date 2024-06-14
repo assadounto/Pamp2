@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 
 
 
@@ -10,18 +10,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { colors } from '../src/Common_styles';
 import { delete_rating, setCurrentServiceIndex, setServiceStatus } from '../src/redux/user'; // Replace with your actual Redux action creators
 import { add_new_rating } from '../src/redux/user';
-const AppJob = ({ services,time,setInfo,vendor }) => {
+const AppJob = ({ services, time, setInfo, vendor }) => {
   const ratings = useSelector(state => state.user.existing_rating);
   const dispatch = useDispatch();
 
 
 
-  
+
   // Define the target date and time for appointment start
   const appointmentStartTime = new Date(time); // Replace with your desired appointment start time
 
   useEffect(() => {
-//dispatch(delete_rating(vendor.id))
+    //dispatch(delete_rating(vendor.id))
     const updateServiceStatus = () => {
       const currentDate = new Date();
       const minutesPassed = Math.floor((currentDate.getTime() - appointmentStartTime.getTime()) / 60000); // Calculate the minutes passed
@@ -30,8 +30,8 @@ const AppJob = ({ services,time,setInfo,vendor }) => {
       if (minutesPassed < 0) {
         console.log('Appointment not started yet');
       } else if (minutesPassed >= appointmentDuration) {
-        setInfo({color: colors.dg2.color,status: 'completed'})
-   
+        setInfo({ color: colors.dg2.color, status: 'completed' })
+
       } else {
         let serviceIndex = 0;
         let accumulatedTime = 0;
@@ -43,8 +43,8 @@ const AppJob = ({ services,time,setInfo,vendor }) => {
 
         if (serviceIndex > 0) {
           const ongoingService = services[serviceIndex - 1];
-          console.log('Ongoing service:', {color: ongoingService.color,status: 'ongoing'});
-          setInfo({color: ongoingService.color,status: 'ongoing'})
+          console.log('Ongoing service:', { color: ongoingService.color, status: 'ongoing' });
+          setInfo({ color: ongoingService.color, status: 'ongoing' })
         }
       }
     };
@@ -56,7 +56,7 @@ const AppJob = ({ services,time,setInfo,vendor }) => {
 
 
 
-return () => {
+    return () => {
       clearInterval(timer); // Clear the interval when the component unmounts
     };
   }, []);

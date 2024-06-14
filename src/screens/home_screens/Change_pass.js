@@ -1,8 +1,8 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
-import { Alert, View,TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
-import { Input, Button,Icon } from '@rneui/base';
+import { Alert, View, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Input, Button, Icon } from '@rneui/base';
 import { useStyles } from './change_email';
 import axios from 'axios';
 import { backendURL } from '../../services/http';
@@ -12,7 +12,7 @@ import Pop2 from '../start_screens/pop2';
 import { useSelector } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
 const Change_pass = ({ navigation }) => {
-  const user =useSelector((state)=>state.user.userInfo)
+  const user = useSelector((state) => state.user.userInfo)
   const [showPassword, setShowPassword] = useState(false);
   const [modalVisible, setModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -55,7 +55,7 @@ const Change_pass = ({ navigation }) => {
         id: user.id,
         current_password,
         new_password,
-        scope:'inner'
+        scope: 'inner'
       });
 
       if (data === 'ok') {
@@ -68,10 +68,10 @@ const Change_pass = ({ navigation }) => {
         }));
         setModal(true);
         setTimeout(() => {
-            
-            navigation.navigate('main')
-            setModal(false);
-          }, 4000);
+
+          navigation.navigate('main')
+          setModal(false);
+        }, 4000);
 
         //navigation.navigate('PasswordChangedScreen'); // Navigate to a success screen
       } else {
@@ -94,83 +94,83 @@ const Change_pass = ({ navigation }) => {
     }
   };
 
-  const { theme} = useTheme();
-const styles=useStyles()
-return (
+  const { theme } = useTheme();
+  const styles = useStyles()
+  return (
     <>
-    <SafeAreaView style={{ flex: 1 }}>
-     
-      <BHeader top={Platform.OS==='ios'?0:20}  title={'Change Password'} />
+      <SafeAreaView style={{ flex: 1 }}>
 
-      <View style={{ alignSelf: 'center', marginTop: 40 }}>
-        <TextInput
-           placeholderTextColor={'#BBB9BC'}
-          placeholder="Current Password"
-       style={[styles.textInput]}
-          secureTextEntry={!showPassword}
-          rightIcon={
-            <Icon
-              name={showPassword ? 'eye' : 'eye-off'}
-              type="ionicon"
-              onPress={() => setShowPassword(!showPassword)}
-              color="#BBB9BC"
-            />
-          }
-          onChangeText={(value) => handleChange('current_password', value)}
-        />
+        <BHeader top={Platform.OS === 'ios' ? 0 : 20} title={'Change Password'} />
 
-        <TextInput
-           placeholderTextColor={'#BBB9BC'}
-          placeholder="New Password"
-          style={[styles.textInput]}
-          secureTextEntry={!showPassword}
-          rightIcon={
-            <Icon
-              name={showPassword ? 'eye' : 'eye-off'}
-              type="ionicon"
-              onPress={() => setShowPassword(!showPassword)}
-              color="#BBB9BC"
-            />
-          }
-          onChangeText={(value) => handleChange('new_password', value)}
-        />
-
-        <TextInput
-           placeholderTextColor={'#BBB9BC'}
-          placeholder="Confirm Password"
-          style={[styles.textInput]}
-          secureTextEntry={!showPassword}
-          rightIcon={
-            <Icon
-              name={showPassword ? 'eye' : 'eye-off'}
-              type="ionicon"
-              onPress={() => setShowPassword(!showPassword)}
-              color="#BBB9BC"
-            />
-          }
-          onChangeText={(value) => handleChange('confirm_password', value)}
-        />
-
-        <TouchableOpacity>
-          <Button
-          titleStyle={{fontFamily:FontFamily.sourceSansProBold}}
-            title="Change password"
-            onPress={handleSubmit}
-            buttonStyle={[styles.button,{marginTop:20}]}
-
-            loading={formData.isLoading}
+        <View style={{ alignSelf: 'center', marginTop: 40 }}>
+          <TextInput
+            placeholderTextColor={'#BBB9BC'}
+            placeholder="Current Password"
+            style={[styles.textInput]}
+            secureTextEntry={!showPassword}
+            rightIcon={
+              <Icon
+                name={showPassword ? 'eye' : 'eye-off'}
+                type="ionicon"
+                onPress={() => setShowPassword(!showPassword)}
+                color="#BBB9BC"
+              />
+            }
+            onChangeText={(value) => handleChange('current_password', value)}
           />
-        </TouchableOpacity>
-      </View>
-      <Pop2
+
+          <TextInput
+            placeholderTextColor={'#BBB9BC'}
+            placeholder="New Password"
+            style={[styles.textInput]}
+            secureTextEntry={!showPassword}
+            rightIcon={
+              <Icon
+                name={showPassword ? 'eye' : 'eye-off'}
+                type="ionicon"
+                onPress={() => setShowPassword(!showPassword)}
+                color="#BBB9BC"
+              />
+            }
+            onChangeText={(value) => handleChange('new_password', value)}
+          />
+
+          <TextInput
+            placeholderTextColor={'#BBB9BC'}
+            placeholder="Confirm Password"
+            style={[styles.textInput]}
+            secureTextEntry={!showPassword}
+            rightIcon={
+              <Icon
+                name={showPassword ? 'eye' : 'eye-off'}
+                type="ionicon"
+                onPress={() => setShowPassword(!showPassword)}
+                color="#BBB9BC"
+              />
+            }
+            onChangeText={(value) => handleChange('confirm_password', value)}
+          />
+
+          <TouchableOpacity>
+            <Button
+              titleStyle={{ fontFamily: FontFamily.sourceSansProBold }}
+              title="Change password"
+              onPress={handleSubmit}
+              buttonStyle={[styles.button, { marginTop: 20 }]}
+
+              loading={formData.isLoading}
+            />
+          </TouchableOpacity>
+        </View>
+        <Pop2
           main={'You have Successfully Changed your Password'}
           modal={modalVisible}
         />
-        
-    </SafeAreaView>
 
-     {modalVisible && <Blur />}
-     </>
+      </SafeAreaView>
+
+      {modalVisible && <Blur />}
+    </>
   );
 };
 

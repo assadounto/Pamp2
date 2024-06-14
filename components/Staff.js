@@ -1,8 +1,8 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React, { useState } from 'react';
-import { View, Text, Pressable,ScrollView,Image, StyleSheet} from 'react-native';
-import { styles ,colors} from '../src/Common_styles';
+import { View, Text, Pressable, ScrollView, Image, StyleSheet } from 'react-native';
+import { styles, colors } from '../src/Common_styles';
 import FastImage from 'react-native-fast-image';
 export default function Staff({ data, onSelect }) {
   const [userOption, setUserOption] = useState('');
@@ -23,33 +23,35 @@ export default function Staff({ data, onSelect }) {
   const s_style = useStyles();
   return (
     <ScrollView horizontal={true} contentContainerStyle={{ marginLeft: 10 }} showsHorizontalScrollIndicator={false}>
-          {data.map((item) => {
-              
-const { theme} = useTheme();
-return (
+      {data.map((item) => {
 
-                  <View style={{display:'flex',flexDirection:'column',marginRight:20}}>
-                      <Pressable
-                          style={item.name === userOption ? { borderWidth: 5, borderRadius: 50, borderColor: colors.dg2.color ,marginBottom:10} : { borderWidth: 5,  borderColor: '#ffffff',borderRadius: 50 ,marginBottom:10}}
-                          onPress={() => selectHandler(item.name)}>
-                              <FastImage
-                              source={{uri: item.image, headers: { Authorization: 'someAuthToken' },
-                              priority: FastImage.priority.normal,}}
-                              style={s_style.image} 
-                              />
-                      </Pressable>
-                      <Text style={{textAlign:'center',color:colors.dg.color}}
-                      > {item.name}</Text></View>
+        const { theme } = useTheme();
+        return (
 
-              );
-          })}
-      </ScrollView>
+          <View style={{ display: 'flex', flexDirection: 'column', marginRight: 20 }}>
+            <Pressable
+              style={item.name === userOption ? { borderWidth: 5, borderRadius: 50, borderColor: colors.dg2.color, marginBottom: 10 } : { borderWidth: 5, borderColor: '#ffffff', borderRadius: 50, marginBottom: 10 }}
+              onPress={() => selectHandler(item.name)}>
+              <FastImage
+                source={{
+                  uri: item.image, headers: { Authorization: 'someAuthToken' },
+                  priority: FastImage.priority.normal,
+                }}
+                style={s_style.image}
+              />
+            </Pressable>
+            <Text style={{ textAlign: 'center', color: colors.dg.color }}
+            > {item.name}</Text></View>
+
+        );
+      })}
+    </ScrollView>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
 
- image: { width: 90, height: 90, borderRadius: 50 }
+  image: { width: 90, height: 90, borderRadius: 50 }
 }))
 
 

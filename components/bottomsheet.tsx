@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React, { useCallback, useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -33,21 +33,21 @@ const Bottom = forwardRef((props, ref) => {
 
   // renders
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <BottomSheetModalProvider>
-  
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-        >
-          <View style={styles.contentContainer}>
-            <Gsearch setLoc={handleSearch} handleS={handleSearch} />
-          </View>
-        </BottomSheetModal>
- 
+
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+      >
+        <View style={styles.contentContainer}>
+          <Gsearch setLoc={handleSearch} handleS={handleSearch} />
+        </View>
+      </BottomSheetModal>
+
     </BottomSheetModalProvider>
   );
 });
@@ -56,14 +56,14 @@ const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     padding: 24,
-  
+
   },
   contentContainer: {
     flex: 1,
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
     backgroundColor: '#EFEFEF',
-        padding: 16,
+    padding: 16,
   },
 }));
 

@@ -1,6 +1,6 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Animated, Easing } from 'react-native';
 import {
@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import Phone_pop from '../../../components/PhoneInput';
 import Header from './header';
-import {styles, colors} from '../../Common_styles';
-import {Button} from '@rneui/base';
+import { styles, colors } from '../../Common_styles';
+import { Button } from '@rneui/base';
 import Pop2 from './pop2';
 import Blur from './Blur';
 import { useVerifyPhoneMutation } from '../../redux/authapi';
@@ -26,13 +26,15 @@ import {
 } from 'react-native-confirmation-code-field';
 
 export const useStyles = makeStyles((theme) => ({
-  root: {flex: 1, padding: 20,marginHorizontal:41},
-  title: {textAlign: 'center', fontSize: 30},
-  codeFieldRoot: {marginTop: 20,transform: [
-        {
-          translateX: 1,
-        },
-      ],},
+  root: { flex: 1, padding: 20, marginHorizontal: 41 },
+  title: { textAlign: 'center', fontSize: 30 },
+  codeFieldRoot: {
+    marginTop: 20, transform: [
+      {
+        translateX: 1,
+      },
+    ],
+  },
   cell: {
     width: 65,
     height: 66,
@@ -46,17 +48,17 @@ export const useStyles = makeStyles((theme) => ({
     padding: 15,
   },
   wrong: {
-      width: 65,
-      height: 66,
-      lineHeight: 38,
-      fontSize: 30,
-      color: '#00463C',
-      borderWidth: 2,
-      borderColor:  'red',
-      textAlign: 'center',
-      borderRadius: 15,
-      padding: 15,
-    },
+    width: 65,
+    height: 66,
+    lineHeight: 38,
+    fontSize: 30,
+    color: '#00463C',
+    borderWidth: 2,
+    borderColor: 'red',
+    textAlign: 'center',
+    borderRadius: 15,
+    padding: 15,
+  },
   focusCell: {
     borderColor: '#000',
   },
@@ -77,20 +79,20 @@ export const useStyles = makeStyles((theme) => ({
 
 const CELL_COUNT = 4;
 
-const VerifyNumber = ({navigation}) => {
-    const [shakeAnimation] = useState(new Animated.Value(0));
-    const [visible,setVisible]=useState(false)
+const VerifyNumber = ({ navigation }) => {
+  const [shakeAnimation] = useState(new Animated.Value(0));
+  const [visible, setVisible] = useState(false)
 
-    const user= useSelector((state)=>state.user.userInfo)
-    console.log(user,'ddd')
-   const [timerCount, setTimerCount] = useState(60);
+  const user = useSelector((state) => state.user.userInfo)
+  console.log(user, 'ddd')
+  const [timerCount, setTimerCount] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
-  const [getPhoneConfirm]= useGetPhoneConfirmMutation()
-  const [verifyPhone,{isSuccess,isLoading,data,isError}]= useVerifyPhoneMutation()
+  const [getPhoneConfirm] = useGetPhoneConfirmMutation()
+  const [verifyPhone, { isSuccess, isLoading, data, isError }] = useVerifyPhoneMutation()
   const [value, setValue] = useState('');
-  const [wrong,setwrong] =useState('')
-  const [finish,setfinish]=useState(false)
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const [wrong, setwrong] = useState('')
+  const [finish, setfinish] = useState(false)
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -98,7 +100,7 @@ const VerifyNumber = ({navigation}) => {
   const [modalVisible, setModal] = useState(false);
   React.useEffect(() => {
     if (!timerActive) {
-    
+
 
       setTimerActive(true);
       setTimerCount(60);
@@ -106,7 +108,7 @@ const VerifyNumber = ({navigation}) => {
       const interval = setInterval(() => {
         setTimerCount((prevCount) => prevCount - 1);
       }, 1000);
-  
+
       // Stop the timer when it reaches 0
       setTimeout(() => {
         clearInterval(interval);
@@ -119,13 +121,13 @@ const VerifyNumber = ({navigation}) => {
         setModal(false);
         navigation.replace('noti');
       }, 4000);
-    } 
-    else  if (!isSuccess){
-     
-      
     }
-  }, [isSuccess, navigation,handleSubmit]);
-  const incall=()=>{
+    else if (!isSuccess) {
+
+
+    }
+  }, [isSuccess, navigation, handleSubmit]);
+  const incall = () => {
     shakeAnimationStart()
 
   }
@@ -158,44 +160,44 @@ const VerifyNumber = ({navigation}) => {
 
   const startTimer = () => {
     getPhoneConfirm({
-        scope: 'user',
-        phone: user.phone,
-        id: user.id
-      })
-   if (!timerActive) {
-    
+      scope: 'user',
+      phone: user.phone,
+      id: user.id
+    })
+    if (!timerActive) {
 
-     setTimerActive(true);
-     setTimerCount(60);
-     // Start the timer countdown
-     const interval = setInterval(() => {
-       setTimerCount((prevCount) => prevCount - 1);
-     }, 1000);
- 
-     // Stop the timer when it reaches 0
-     setTimeout(() => {
-       clearInterval(interval);
-       setTimerActive(false);
-     }, 60000);
-   }
- };
+
+      setTimerActive(true);
+      setTimerCount(60);
+      // Start the timer countdown
+      const interval = setInterval(() => {
+        setTimerCount((prevCount) => prevCount - 1);
+      }, 1000);
+
+      // Stop the timer when it reaches 0
+      setTimeout(() => {
+        clearInterval(interval);
+        setTimerActive(false);
+      }, 60000);
+    }
+  };
 
 
   const handleSubmit = async () => {
-   
-    
+
+
     if (value.length < 4) {
       alert('Please enter a valid code');
       return;
     }
-    const phone = await verifyPhone(value).then(()=>{
+    const phone = await verifyPhone(value).then(() => {
       isError && incall()
     });
 
   };
-  const { theme} = useTheme();
-const styles1 = useStyles();
-return (
+  const { theme } = useTheme();
+  const styles1 = useStyles();
+  return (
     <>
       <SafeAreaView style={[styles1.root]}>
         <Header
@@ -213,10 +215,10 @@ return (
           rootStyle={styles1.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({index, symbol, isFocused}) => (
+          renderCell={({ index, symbol, isFocused }) => (
             <Animated.Text
               key={index}
-              style={[styles1.cell, isFocused && styles1.focusCell,{
+              style={[styles1.cell, isFocused && styles1.focusCell, {
                 transform: [
                   {
                     translateX: shakeAnimation.interpolate({
@@ -224,7 +226,7 @@ return (
                       outputRange: [-10, 10],
                     }),
                   },
-                ], 
+                ],
               }]}
               onLayout={getCellOnLayoutHandler(index)}>
               {symbol || (isFocused ? <Cursor /> : null)}
@@ -232,30 +234,30 @@ return (
           )}
         />
         <Text
-         disabled={timerActive}
+          disabled={timerActive}
           style={[colors.dg, styles.mt100, styles.tc]}
           onPress={startTimer}>
-         {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
+          {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
         </Text>
 
         <Text> </Text>
 
-          <Button
-                       titleStyle={styles.tbtn}
-            title="Verify Phone Number"
-            onPress={() => {
-              handleSubmit()
-            }}
-            loading={isLoading}
-            buttonStyle={[styles1.button,{width:'100%'}]}
-          />
-  
+        <Button
+          titleStyle={styles.tbtn}
+          title="Verify Phone Number"
+          onPress={() => {
+            handleSubmit()
+          }}
+          loading={isLoading}
+          buttonStyle={[styles1.button, { width: '100%' }]}
+        />
 
-        <Text onPress={()=>setVisible(true)} style={[colors.lg, styles.bold, styles.tc,{marginTop:20,}]}>
+
+        <Text onPress={() => setVisible(true)} style={[colors.lg, styles.bold, styles.tc, { marginTop: 20, }]}>
           Change Phone Number
         </Text>
 
-        <Text onPress={()=>  navigation.replace('noti')} style={[colors.lg, styles.bold, styles.tc,{marginTop:40,color: colors.dg.color}]}>
+        <Text onPress={() => navigation.replace('noti')} style={[colors.lg, styles.bold, styles.tc, { marginTop: 40, color: colors.dg.color }]}>
           Verify later
         </Text>
         <Pop2
@@ -263,7 +265,7 @@ return (
           modal={modalVisible}
         />
       </SafeAreaView>
-      <Phone_pop modal={visible} id={user?.id} setcancel={setVisible}/>
+      <Phone_pop modal={visible} id={user?.id} setcancel={setVisible} />
       {modalVisible && <Blur />}
       {visible && <Blur />}
     </>

@@ -1,21 +1,21 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React from 'react';
-import { View, ImageBackground,Image, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
+import { View, ImageBackground, Image, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import { FontFamily } from '../../GlobalStyles';
 import { moderateScale } from '../../Dimensions';
 import { setFirst } from '../../redux/user';
 import { useDispatch } from 'react-redux';
 const Getting_started = ({ navigation }) => {
-  const dispatch=useDispatch()
-  const handleSubmit=()=>{
-dispatch(setFirst(false))
+  const dispatch = useDispatch()
+  const handleSubmit = () => {
+    dispatch(setFirst(false))
 
-  navigation.replace('main')
+    navigation.replace('main')
   }
-  const { theme} = useTheme();
-const styles = useStyles();
-return (
+  const { theme } = useTheme();
+  const styles = useStyles();
+  return (
     <View style={styles.container}>
       <ImageBackground
         source={require('../assets/Group2.png')}
@@ -27,7 +27,7 @@ return (
         />
         <View style={styles.c2}>
           <Image
-          resizeMode='contain'
+            resizeMode='contain'
             source={require('../assets/Group3.png')}
             style={styles.c4}
           />
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
   c2: {
     width: screenWidth * 0.8,
- 
+
     backgroundColor: '#FFFFFF',
     position: 'absolute',
     alignSelf: 'center',

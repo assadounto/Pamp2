@@ -1,18 +1,18 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Text} from 'react-native';
-import {Header} from '@rneui/base';
+import { Text } from 'react-native';
+import { Header } from '@rneui/base';
 
 
 
-const THeader = ({title}) => {
-  const {Fonts, Colors, Common} = useTheme();
+const THeader = ({ title }) => {
+  const { Fonts, Colors, Common } = useTheme();
 
 
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <Header
       containerStyle={[
         {

@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 
 import React, { useState, useEffect } from "react";
 import { StyleSheet, FlatList, Alert } from "react-native";
@@ -19,25 +19,25 @@ const ReviewCont = ({ data }) => {
   const [reviewData, setReviewData] = useState(null);
   useEffect(() => {
     if (data) {
-      console.log(data,'d')
+      console.log(data, 'd')
       const ratingsSummary = generateRatingsSummary(data);
       setReviewData(ratingsSummary);
     }
   }, [data]);
 
-  const ratings =(input)=> 
-  Object.keys(input)
-  .filter(key => key !== 'total_ratings') // exclude 'total_ratings' key
-  .map(key => {
-    return {
-      rating: parseInt(key),
-      value: input[key]
-    };
-  }).sort((a, b) => b.rating - a.rating);
+  const ratings = (input) =>
+    Object.keys(input)
+      .filter(key => key !== 'total_ratings') // exclude 'total_ratings' key
+      .map(key => {
+        return {
+          rating: parseInt(key),
+          value: input[key]
+        };
+      }).sort((a, b) => b.rating - a.rating);
 
 
   function generateRatingsSummary(ratings) {
-    
+
     // Initial template
     let summary = {
       total_ratings: ratings.length,
@@ -93,11 +93,11 @@ const ReviewCont = ({ data }) => {
           <Text style={styles.based}>based on {reviewData?.total_ratings} reviews</Text>
         </View>
         <View style={styles.child1}>
-       
+
           {reviewData && ratings(reviewData.ratings).map((rate) => {
-           
-const { theme} = useTheme();
-return (
+
+            const { theme } = useTheme();
+            return (
               <View
                 key={rate.rating}
                 style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
@@ -120,7 +120,7 @@ return (
           })}
         </View>
       </View>
-      <Text style={{fontFamily:FontFamily.sourceSansProSemibold,fontSize:24,color:colors.dg.color,left:20,marginTop:30}}>Reviews</Text>
+      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 24, color: colors.dg.color, left: 20, marginTop: 30 }}>Reviews</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => <NotificationReviewCard item={item} />}
@@ -130,7 +130,7 @@ return (
               style={styles.component44Child}
               resizeMode="cover"
               source={require("../assets/group-2142.png")}
-             />
+            />
             <Text style={[styles.noAppointments]}>No reviews yet</Text>
           </>
         }
@@ -142,61 +142,61 @@ return (
 export default ReviewCont;
 
 const useStyles = makeStyles((theme) => ({
-  noAppointments:{
-    marginTop:30,
-    color:colors.dg.color,
-   textAlign:'center',
+  noAppointments: {
+    marginTop: 30,
+    color: colors.dg.color,
+    textAlign: 'center',
     fontFamily: FontFamily.sourceSansProRegular,
-    fontSize:20
-    
+    fontSize: 20
+
   },
-  t1:{
-    color:'#00463C',
+  t1: {
+    color: '#00463C',
     fontFamily: FontFamily.sourceSansProBold,
-    fontSize:15,
+    fontSize: 15,
 
   },
-    based:{
-      marginTop:10,
-       color:'#BBB9BC',
-       fontFamily: FontFamily.sourceSansProSemibold,
-       fontSize:14
+  based: {
+    marginTop: 10,
+    color: '#BBB9BC',
+    fontFamily: FontFamily.sourceSansProSemibold,
+    fontSize: 14
 
-    },
-    rating:{
-        fontFamily:FontFamily.sourceSansProBold,
-        fontSize:39,
-        color:'#00463C'
-    },
-    child1:{
-        alignItems:'center',
-        flex:1,
-       
-    },
-    border:{
-        borderRightWidth:1,
-        borderRightColor:'#B0EBBD',
-    },
-   cont:{
-    paddingHorizontal:20,
-    paddingVertical:40,
-    display:'flex',
-    flexDirection:'row',
+  },
+  rating: {
+    fontFamily: FontFamily.sourceSansProBold,
+    fontSize: 39,
+    color: '#00463C'
+  },
+  child1: {
+    alignItems: 'center',
+    flex: 1,
+
+  },
+  border: {
+    borderRightWidth: 1,
+    borderRightColor: '#B0EBBD',
+  },
+  cont: {
+    paddingHorizontal: 20,
+    paddingVertical: 40,
+    display: 'flex',
+    flexDirection: 'row',
     width: '90%',
-    height:188,
+    height: 188,
     alignSelf: 'center',
     justifyContent: 'space-between',
     shadowColor: '#707070',
     shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 2,
-    shadowOffset: {width: 5, height: 0},
+    shadowOffset: { width: 5, height: 0 },
     backgroundColor: 'white',
     borderRadius: 20,
-    marginBottom:20
-   } ,
-   component44Child: {
- alignSelf:'center',
- marginTop:30
+    marginBottom: 20
+  },
+  component44Child: {
+    alignSelf: 'center',
+    marginTop: 30
   },
 }))

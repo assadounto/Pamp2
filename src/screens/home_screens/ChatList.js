@@ -1,4 +1,4 @@
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 // ChatListScreen.js
 import React, { useEffect, useState } from 'react';
@@ -34,9 +34,9 @@ const ChatListScreen = ({ navigation, route }) => {
         </TouchableOpacity>
     );
 
-    const { theme} = useTheme();
+    const { theme } = useTheme();
 
-return (
+    return (
         <SafeAreaView style={{ flex: 1, padding: 20 }}>
             <FlatList
                 data={chatPartners}

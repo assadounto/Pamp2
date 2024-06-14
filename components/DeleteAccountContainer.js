@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/base';
+import { makeStyles } from '@rneui/themed';
 import * as React from "react";
 import { useMemo } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
@@ -18,8 +18,8 @@ const DeleteAccountContainer = ({ propMarginTop }) => {
   }, [propMarginTop]);
 
   const styles = useStyles();
-const { theme} = useTheme();
-return (
+  const { theme } = useTheme();
+  return (
     <View style={[styles.rectangleParent, styles.mt47_23, groupView2Style]}>
       <View style={styles.groupChild} />
       <Text style={[styles.deleteAccount, styles.groupItemPosition]}>

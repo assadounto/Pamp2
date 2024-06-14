@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from 'react';
 import {Text, View, SafeAreaView, Image, Modal, TextInput,StyleSheet,Pressable} from 'react-native';
 import MapView,{ PROVIDER_GOOGLE,Marker } from 'react-native-maps';
@@ -6,13 +8,15 @@ import { Icon } from '@rneui/base';
 import VendorMapPin from '../../../components/VendorMapin';
 const Mapview = ({route,navigation}) => {
   const {data} =route.params
-  const styles = StyleSheet.create({
+  const useStyles = makeStyles((theme) => ({
     map: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: 'green',
     },
-  });
-  return (
+  }));
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <><MapView
       initialRegion={{
         latitude: data.lat? parseFloat(data.lat):5.614818,

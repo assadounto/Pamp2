@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from "react";
 import { SafeAreaView ,View,Text,Pressable, Alert} from "react-native";
 import BHeader from "../../../components/BHeader";
@@ -286,7 +288,8 @@ const createBooking=async (ref)=>{
 }
 const active_user = useSelector((state) => state.user.userInfo);
 console.log(active_user==true)
-  
+  const { theme } = useTheme();
+
   const payment_method =useSelector((state)=>state.user.payment_methods.default)
     return(
  
@@ -381,7 +384,8 @@ console.log(active_user==true)
                   <View style={{ padding: 20, borderTopColor: colors.lg.color, borderTopWidth: 0.5, borderBottomColor: colors.lg.color, borderBottomWidth: 0.5 }}>
                     {booking && booking_detail.topping2.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
 
-                      return (
+                  
+return (
                         <View style={{ marginBottom: 10, display: 'flex', flexDirection: 'row' }}>
                           <View style={{ width: 10, top: 5, marginRight: 10, height: 10, borderRadius: 10, backgroundColor: appointment_color }}></View>
                           {a.length != 1 && _index2 + 1 !== booking_detail.topping2.length ?

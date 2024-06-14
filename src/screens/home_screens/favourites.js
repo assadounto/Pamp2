@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React ,{useMemo, useState}from "react"
 import { View,Text,Pressable,Image,ImageBackground,SafeAreaView ,ActivityIndicator, Platform} from "react-native"
 import MasonryList from '@react-native-seoul/masonry-list';
@@ -16,7 +18,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const data=[]
 
 const Favourites=({navigation})=>{
+  const { theme } = useTheme();
   const[loading,setLoading]= React.useState(false)
+
 
   const user = useSelector((state)=>state.user.userInfo)
   const [data,setData]=useState([])
@@ -117,7 +121,8 @@ const Favourites=({navigation})=>{
       );
       const Event = () => {
         if (user?.id) {
-          return (
+
+return (
             loading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}}  size={'small'}/>: 
           data.length==0? <Emptyfav 
           title={"No Favourites"}

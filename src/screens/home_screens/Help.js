@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from "react";
 import { View,Linking } from "react-native";
 import BHeader from "../../../components/BHeader";
@@ -8,7 +10,7 @@ import { colors } from "../../Common_styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Help =()=>{
-
+  const { theme } = useTheme();
     return(
         <SafeAreaView  style={{flex:1,backgroundColor:'white'}} >
 
@@ -42,8 +44,8 @@ const Help =()=>{
 
 export default Help
 
-const styles2= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     title:{
       fontFamily: FontFamily.sourceSansProBold
     }
-  })
+  }))

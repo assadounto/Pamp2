@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import * as React from "react";
 import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -16,7 +18,9 @@ const DiscountFullInfo = ({route}) => {
     return formattedDate;
   }
 const {coupon}=route.params?route.params:{}
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <ScrollView contentContainerStyle={styles.discountFullInfo}>
       <Image resizeMode="contain" source={require('../../../assets/sunset.png')} style={styles.image}/>
      <Text style={styles.title}>GHC{coupon.amount} discount for 1 appointment</Text>
@@ -53,7 +57,7 @@ const {coupon}=route.params?route.params:{}
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     btn_text:{
         fontFamily: FontFamily.sourceSansProSemibold,
         fontSize: 15,
@@ -113,6 +117,6 @@ backgroundColor:'white'
     alignItems:'center',
     backgroundColor:"#DAECD2" ,
   },
-});
+}));
 
 export default DiscountFullInfo;

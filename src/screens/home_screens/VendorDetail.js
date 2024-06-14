@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState, useEffect, Fragment } from 'react'
 import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList,SafeAreaView,Dimensions, Modal,Share, Alert, Platform} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
@@ -174,8 +176,8 @@ const VendorDetail = ({navigation,route}) => {
   );
   console.log()
 
- 
-  
+  const { theme } = useTheme();
+  const styles = useStyles();
   ///const {data,isLoading}=useFetchVendorQuery(id)
    useEffect(()=>{
     
@@ -565,7 +567,9 @@ const VendorDetail = ({navigation,route}) => {
                 onPress={() => handleOnChange2(index)} />
                 </View>
               {parentState[index] === true && items.map(({ name2, time, id, price, check }, _index2) => {
-                return (
+               
+
+return (
                   <View   key={id} style={{ marginLeft: 30}}>
                     <CheckBox
                       key={id}
@@ -629,7 +633,7 @@ const VendorDetail = ({navigation,route}) => {
   )
 }
 
-const styles2= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   cont:{
     height:430,
     width: '100%',
@@ -637,5 +641,5 @@ const styles2= StyleSheet.create({
 
   }
 
-})
+}))
 export default VendorDetail 

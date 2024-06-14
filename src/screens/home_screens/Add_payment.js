@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from "react";
 import { SafeAreaView ,ScrollView, View,Text,Pressable,TextInput, StyleSheet,Image} from "react-native";
 import { useDispatch } from "react-redux";

@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from 'react';
 import {View, ImageBackground, Text, StyleSheet,Alert, Pressable,Share, TouchableOpacity} from 'react-native';
 import BHeader from '../../../components/BHeader';
@@ -47,7 +49,9 @@ return
       Alert.alert("Error",error.message);
     }
   };
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <View style={styles.container}>
      
       <ImageBackground
@@ -95,7 +99,7 @@ return
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -215,5 +219,5 @@ const styles = StyleSheet.create({
   }
   ,cptext:{fontFamily:FontFamily.sourceSansProRegular,
   color:colors.dgb.color}
-});
+}));
 export default Invite;

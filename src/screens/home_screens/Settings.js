@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -101,7 +103,8 @@ const menuThree = [
   },
 ];
 const Settings = ({navigation}) => {
-
+  const { theme } = useTheme();
+  const styles2 = useStyles();
   const [log,setLog]=useState(false)
 const user= useSelector(state=>state.user.userInfo)
    
@@ -341,7 +344,8 @@ const [modal,setmodal]=useState(false)
           },
         ]}>
         {menuThree.map((item, index) => {
-              return (
+   
+return (
                 <ListItem
                 key={index}
                   containerStyle={[{backgroundColor: '#F9F9F9'}]}
@@ -403,8 +407,8 @@ const [modal,setmodal]=useState(false)
 
 export default Settings;
 
-const styles2= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   title:{
     fontFamily: FontFamily.sourceSansProSemibold
   }
-})
+}))

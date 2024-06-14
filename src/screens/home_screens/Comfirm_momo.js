@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal, TextInput,StyleSheet} from 'react-native';
 import {styles, colors} from '../../Common_styles';
@@ -115,12 +117,14 @@ const channels=(name)=>{
       createBooking(ref)
       navigation.navigate('Success')
     }
-    return (
+    const { theme} = useTheme();
+const styles = useStyles();
+return (
         <>
        
         {
           success? <Success /> :
-          <SafeAreaView style={styles2.cont}>
+          <SafeAreaView style={styles.cont}>
           <Paystack 
 
         paystackKey="pk_live_cac01fe0c36e8e38e53f9dcae4a3a405fed0e7d1"
@@ -159,7 +163,7 @@ const channels=(name)=>{
 )
 
 };
-const styles2 = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
    text: {
       textAlign:'center',
       fontFamily:FontFamily.sourceSansProSemibold,
@@ -172,6 +176,6 @@ const styles2 = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center'
     }
-})
+}))
 export default Processing
 

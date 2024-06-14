@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Calender from "../../../components/Calender";
@@ -18,6 +20,7 @@ let monthNames =[
     "July", "August", "September", "October", "November", "December"
   ]
 const SelectDate=({navigation,route})=>{
+  const { theme } = useTheme();
   const {rebooked,id,vendor,noti_id}= route.params
   let date = new Date()
     const formatDateForRails = (dateObj) => {

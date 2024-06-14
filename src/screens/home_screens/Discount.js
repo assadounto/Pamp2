@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView,FlatList,Platform, Image, Modal,Keyboard,StyleSheet, TextInput, Alert, ScrollView} from 'react-native';
 import { styles,colors } from '../../Common_styles';
@@ -55,7 +57,9 @@ const Discount = ({navigation}) => {
    
     
   
-    return (
+    const { theme} = useTheme();
+const pop= useStyles();
+return (
       <>
 
           <BHeader top={Platform.OS==='ios'?60:20} color={colors.dg2.color} />
@@ -95,7 +99,7 @@ const Discount = ({navigation}) => {
       </>
     );
   };
-const pop=StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     hour:{
       textAlign:'right'
     },
@@ -195,6 +199,6 @@ const pop=StyleSheet.create({
     }
 
 
-})
+}))
 export default Discount;
 

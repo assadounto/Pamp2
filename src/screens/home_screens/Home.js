@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, {Fragment, useEffect, useState} from 'react';
 import {View, Text,} from 'react-native-animatable';
 import {Input, Icon,TouchableOpacity} from '@rneui/base';
@@ -374,7 +376,9 @@ const [error,setError]= React.useState()
     </Pressable>
   );
   
-  return (
+  const { theme} = useTheme();
+
+return (
     <>
    
 {

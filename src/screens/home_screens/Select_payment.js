@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from "react";
 import { SafeAreaView ,View,Text,Pressable, Platform} from "react-native";
 import BHeader from "../../../components/BHeader";
@@ -37,7 +39,7 @@ const [loading,setLoading]=useState(false)
 
 //    console.log(data.payment_method,'PaymentMethod')
 //   }
-
+  const { theme } = useTheme();
 
     const dispatch=useDispatch()
     const default_method= useSelector((state)=>state.user.payment_methods.default)
@@ -116,6 +118,7 @@ return
         )}
    </>
   }
+
     return(
 
       <><BHeader top={Platform.OS==='ios'?60:20} title={'Payment methods'} color={colors.dg2.color} /><ScrollView

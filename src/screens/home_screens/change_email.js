@@ -1,9 +1,12 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import BHeader from '../../../components/BHeader';
 import { Input, Button } from '@rneui/base';
 import { styles } from '../../Common_styles';
 import axios from 'axios';
+import { verticalScale,horizontalScale,moderateScale } from '../../Dimensions';
 import { backendURL } from '../../services/http';
 import { useSelector } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
@@ -65,7 +68,9 @@ const Change_email = ({ navigation }) => {
        }
   };
 
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <SafeAreaView style={{flex:1}}>
       <BHeader top={Platform.OS==='ios'?0:20} title={'Change Email'} />
 
@@ -107,5 +112,33 @@ const Change_email = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+export const useStyles = makeStyles((theme) => ({
+  button: {
+    width: horizontalScale(330),
+    height: verticalScale(71),
+    backgroundColor: '#86D694',
+    borderWidth: horizontalScale(1),
+    borderColor: '#86D694',
+    marginBottom: verticalScale(10),
+    alignSelf: 'center',
+    borderRadius: horizontalScale(23),
+  },
+  textInput: {
+    marginBottom: verticalScale(20),
+    paddingHorizontal: horizontalScale(20),
+    fontSize: moderateScale(14),
+    width: horizontalScale(330),
+    height: verticalScale(63),
+    margin: 0,
+
+    alignSelf: 'center',
+    backgroundColor: '#FAFAFA',
+    borderRadius: horizontalScale(23),
+    borderWidth: 1,
+    borderColor: '#FAFAFA',
+    fontFamily: FontFamily.sourceSansProRegular
+  },
+}))
 
 export default Change_email;

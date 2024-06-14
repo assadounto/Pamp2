@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 // src/screens/ChatScreen.js
 
 import React, { useEffect, useState, useRef } from 'react';
@@ -91,7 +93,9 @@ const ChatScreen = ({ route }) => {
             loading
         </Text>
     }
-    return (
+    const { theme} = useTheme();
+const styles = useStyles();
+return (
         <SafeAreaView style={{ flex: 1 }}>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
@@ -122,7 +126,7 @@ const ChatScreen = ({ route }) => {
     );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     chatContainer: {
         paddingVertical: 10,
         paddingHorizontal: 20,
@@ -168,6 +172,6 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginRight: 10,
     },
-});
+}));
 
 export default ChatScreen;

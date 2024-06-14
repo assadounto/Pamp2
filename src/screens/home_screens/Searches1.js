@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView,StyleSheet,Image ,Pressable,FlatList, Alert, Platform} from 'react-native'
 import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
@@ -89,7 +91,9 @@ const data1 =[
 
 ]
 
-  return (
+  const { theme} = useTheme();
+
+return (
      <>
  <SafeAreaView>
       <Input

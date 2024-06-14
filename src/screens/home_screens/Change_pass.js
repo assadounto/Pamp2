@@ -1,7 +1,9 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import { Alert, View,TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Input, Button,Icon } from '@rneui/base';
-import { styles } from '../../Common_styles';
+import { useStyles } from './change_email';
 import axios from 'axios';
 import { backendURL } from '../../services/http';
 import BHeader from '../../../components/BHeader';
@@ -92,7 +94,9 @@ const Change_pass = ({ navigation }) => {
     }
   };
 
-  return (
+  const { theme} = useTheme();
+const styles=useStyles()
+return (
     <>
     <SafeAreaView style={{ flex: 1 }}>
      

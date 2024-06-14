@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 
 
 import React, { useEffect, useState } from 'react';
@@ -179,7 +181,8 @@ function capitalizeFirstLetter(str) {
   
     return formattedString;
   }
-
+  const styles = useStyles();
+  const { theme } = useTheme();
   return (
    
    <ScrollView style={{backgroundColor:'#FFFFFF'}}>
@@ -251,7 +254,9 @@ function capitalizeFirstLetter(str) {
 
             <View style={{ padding: 20, borderBottomColor: colors.lg.color, borderBottomWidth: 1 }}>
               {data.items.filter(({ total }) => total != 0).map(({ name, items_name, appointment_color, total, time, services }, _index2) => {
-                return (
+              
+
+return (
                   <View style={{ marginBottom: 15, display: 'flex', flexDirection: 'row' }}>
                     <View style={{ width: 10, top: 5, marginRight: 10, height: 10, borderRadius: 10, backgroundColor: appointment_color }}></View>
                     {data.items.length != 1 && _index2 + 1 !== data.items.length ?
@@ -364,7 +369,7 @@ function capitalizeFirstLetter(str) {
   ) 
 };
 
-const style2=StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     booked:{
         backgroundColor:colors.dg.color
     },
@@ -391,6 +396,6 @@ const style2=StyleSheet.create({
     top:5,
     color:colors.dg.color
   }
-})
+}))
 export default Booking_detail;
 

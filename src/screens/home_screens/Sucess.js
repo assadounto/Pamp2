@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from 'react';
 import {Text, View, SafeAreaView, Image, Modal, TextInput,ImageBackground, Pressable} from 'react-native';
 import {styles, colors} from '../../Common_styles';
@@ -8,7 +10,9 @@ import { useNavigation } from '@react-navigation/core';
 import SucessPop from '../../../components/SuccessPop';
 const Success = () => {
   const navigation=useNavigation()
-  return (
+  const { theme} = useTheme();
+
+return (
     
         <><ImageBackground style={{ width: '100%', height: '100%', }} source={require('../../../assets/success.png')} /><SucessPop /></>
  

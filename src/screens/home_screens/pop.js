@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from 'react';
 import {Text, View, SafeAreaView, Image, Modal, TextInput} from 'react-native';
 import {styles, colors} from '../../Common_styles';
@@ -5,7 +7,9 @@ import {CheckBox, Button} from '@rneui/base';
 import {Border} from '../../GlobalStyles';
 
 const DelPop = ({main, modal}) => {
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <Modal animationType="slide" transparent={false} visible={modal}>
       <View style={[styles.pop, {backgroundColor: 'gray'}]}>
         <Image

@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import BHeader from '../../../components/BHeader';
 import { colors, styles } from '../../Common_styles';
@@ -60,7 +62,9 @@ setLoading(true)
       });
   };
 
-  return (
+  const { theme} = useTheme();
+
+return (
     <><SafeAreaView style={[styles.EP]}>
       <BHeader title="Edit info" color={colors.dg2.color} />
       <KeyboardAvoidingView

@@ -32,7 +32,7 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
          setblur(false);
        }, 3000);
     }
-  const styles = useStyles();
+  const pop = useStyles();
 return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={[pop.pop]}>

@@ -224,7 +224,7 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
   const openingTime = vendor ? vendor.opening_time : null;
   const closingTime = vendor ? vendor.closing_time : null;
   const timeSlots = openingTime && closingTime ? isDateToday(userOption.date)? generateTimeSlots(openingTime, closingTime) :generateTimeSlots2(openingTime, closingTime) : [];
-  const styles = useStyles();
+  
 return (
     <ScrollView 
     showsHorizontalScrollIndicator={false}

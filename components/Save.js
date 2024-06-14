@@ -26,17 +26,17 @@ const Save = ({ name, handlePress, disabled, loading }) => {
 return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : null}
-      style={styles2.container}
+      style={styles.container}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100} // Adjust this offset based on your needs
     >
-      <View style={styles2.safeArea}>
+      <View style={styles.safeArea}>
        
-        <View style={[styles2.buttonContainer, keyboardVisible && styles2.keyboardVisible]}>
+        <View style={[styles.buttonContainer, keyboardVisible && styles2.keyboardVisible]}>
           <Button
             disabled={disabled}
-            titleStyle={styles2.title}
+            titleStyle={styles.title}
             title={name}
-            buttonStyle={styles2.button}
+            buttonStyle={styles.button}
             onPress={handlePress}
             loading={loading}
           />

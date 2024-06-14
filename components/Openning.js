@@ -16,7 +16,7 @@ const Opening = ({ data, modal, setModal }) => {
     // Convert the sortedOpeningHours to JSON
     return sortedOpeningHours;
   }
-  const styles = useStyles();
+  const md_style = useStyles();
 return (
     <>
       <Modal  animationType="slide" transparent={true} visible={modal}>

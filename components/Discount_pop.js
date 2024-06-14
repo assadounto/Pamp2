@@ -58,7 +58,7 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
           keyboardDidHideListener.remove();
         };
       }, []);
-  const styles = useStyles();
+  const styles = pop();
 return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={[pop.pop,{top:poph}]}>
@@ -103,7 +103,7 @@ return (
       </Modal><Pop2 modal={notify} main={'Discount code successfully applied'}/></>
   );
 };
-const useStyles = makeStyles((theme) => ({
+const pop = makeStyles((theme) => ({
     hour:{
       textAlign:'right'
     },

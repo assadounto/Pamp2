@@ -19,10 +19,11 @@ export default function Staff({ data, onSelect }) {
       setPrev(value);
     }
   };
+  const s_style = useStyles();
   return (
     <ScrollView horizontal={true} contentContainerStyle={{ marginLeft: 10 }} showsHorizontalScrollIndicator={false}>
           {data.map((item) => {
-              const styles = useStyles();
+              
 return (
 
                   <View style={{display:'flex',flexDirection:'column',marginRight:20}}>

@@ -84,7 +84,7 @@ const postVendorUserId = async (vendorId) => {
   }
 
 const Item =({image,badge,logo,name,items,location,dist,id,ratings})=>(
-    <View style={[styles2.cont,{shadowColor: '#707070',
+    <View style={[styles.cont,{shadowColor: '#707070',
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 2,

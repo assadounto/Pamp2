@@ -43,7 +43,7 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
           keyboardDidHideListener.remove();
         };
       }, []);
-  const styles = useStyles();
+    const pop = useStyles();
 return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={{

@@ -72,7 +72,7 @@ const ReviewCont = ({ data }) => {
     // Return the summary
     return summary;
   }
-
+  const styles = useStyles();
   return (
     <>
       <View style={styles.cont}>
@@ -94,7 +94,7 @@ const ReviewCont = ({ data }) => {
         <View style={styles.child1}>
        
           {reviewData && ratings(reviewData.ratings).map((rate) => {
-            const styles = useStyles();
+           
 return (
               <View
                 key={rate.rating}

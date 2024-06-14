@@ -366,7 +366,7 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
       </View>
     );
   }
-  const styles = useStyles();
+
 return (
     <>
       <Pressable {...panResponder.panHandlers} onPress={() =>{set_dates('Month')}}>

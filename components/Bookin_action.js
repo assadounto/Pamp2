@@ -27,7 +27,7 @@ const Booking_action = ({ info, setblur, rebk, data }) => {
   const [cancel_modal, setCancel] = useState(false);
   const [notes, setNotes] = useState(false);
 
-  const styles = useStyles();
+  const md_style = useStyles();
 return (
     <View style={md_style.cont}>
       <View>

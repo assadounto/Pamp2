@@ -130,7 +130,7 @@ console.log(user.location.name)
 
 
 
-  const styles = useStyles();
+  const s_style = useStyles();
 return (
     <><TouchableWithoutFeedback onPress={hideSearchResults}>
       <View>

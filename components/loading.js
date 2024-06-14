@@ -6,6 +6,7 @@ import { Image } from "react-native-animatable";
 import { StyleSheet,View } from "react-native";
 
 const Loading=({type})=>{
+  const styles=useStyles()
     return(
         <View style={styles.container}>
    

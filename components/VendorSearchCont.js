@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import { Icon,Input } from '@rneui/base'
 import { FontFamily } from '../GlobalStyles'
@@ -190,6 +191,7 @@ style={{
   );
 
    const styles = useStyles();
+const { theme} = useTheme();
 return (
     <>
     {datas && datas.length!==0 ?

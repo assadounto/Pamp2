@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React from 'react';
 import { Button } from '@rneui/base';
@@ -23,6 +24,7 @@ const Save = ({ name, handlePress, disabled, loading }) => {
   }, []);
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : null}

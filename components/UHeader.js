@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
@@ -15,6 +16,7 @@ const UHeader = ({ navigation,newnoti }) => {
   const userimg = useSelector(state => state.user.image1);
 
 
+const { theme} = useTheme();
 return (
     <View
       style={{

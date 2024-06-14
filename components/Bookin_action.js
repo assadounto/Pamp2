@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
@@ -28,6 +29,7 @@ const Booking_action = ({ info, setblur, rebk, data }) => {
   const [notes, setNotes] = useState(false);
 
   const md_style = useStyles();
+const { theme} = useTheme();
 return (
     <View style={md_style.cont}>
       <View>

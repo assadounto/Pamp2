@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const folderPath = './components'; // Adjust this path to your components folder
+const folderPath = './screens'; /// Adjust this path to your components folder
 const importStatement = "import { useTheme } from '@rneui/themed';"; // Adjust as needed
 
 fs.readdirSync(folderPath).forEach(file => {

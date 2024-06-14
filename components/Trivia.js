@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
@@ -94,6 +95,7 @@ const shuffleArray = (array) => {
     };
   
     const styles = useStyles();
+const { theme} = useTheme();
 return (
       <View style={styles.container}>
         <Animated.View style={[styles.innerContainer, { opacity: fadeAnim }]}>

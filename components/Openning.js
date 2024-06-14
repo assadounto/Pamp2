@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React from 'react';
 import { Text, View,Alert, StyleSheet, SafeAreaView, Image, Modal, Pressable, FlatList } from 'react-native';
@@ -17,6 +18,7 @@ const Opening = ({ data, modal, setModal }) => {
     return sortedOpeningHours;
   }
   const md_style = useStyles();
+const { theme} = useTheme();
 return (
     <>
       <Modal  animationType="slide" transparent={true} visible={modal}>

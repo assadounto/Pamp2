@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -10,6 +11,7 @@ const THeader = ({title}) => {
   const {Fonts, Colors, Common} = useTheme();
 
 
+const { theme} = useTheme();
 return (
     <Header
       containerStyle={[

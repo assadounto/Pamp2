@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, StyleSheet, ScrollView,Platform, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
@@ -131,6 +132,7 @@ console.log(user.location.name)
 
 
   const s_style = useStyles();
+const { theme} = useTheme();
 return (
     <><TouchableWithoutFeedback onPress={hideSearchResults}>
       <View>

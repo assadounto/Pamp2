@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
@@ -17,6 +18,7 @@ const BookContainer = ({ propMarginTop, onGroupPressablePress }) => {
   }, [propMarginTop]);
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <Pressable
       style={[styles.rectangleParent, styles.mt_81_75, groupPressable1Style]}

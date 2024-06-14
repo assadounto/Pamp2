@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, {  useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
@@ -24,6 +25,7 @@ const Dropdown = ({ label,onselect ,setOption}) => {
   };
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <TouchableOpacity
       style={styles.button}

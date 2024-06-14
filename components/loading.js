@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React from "react";
 import { verticalScale } from "../src/Dimensions";

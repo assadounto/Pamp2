@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 
 import React, { useState, useEffect } from "react";
@@ -95,6 +96,7 @@ const ReviewCont = ({ data }) => {
        
           {reviewData && ratings(reviewData.ratings).map((rate) => {
            
+const { theme} = useTheme();
 return (
               <View
                 key={rate.rating}

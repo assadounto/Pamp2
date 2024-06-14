@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
@@ -17,6 +18,7 @@ const SearchBottom = () => {
 
   // renders
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={styles.container}>
       <BottomSheet

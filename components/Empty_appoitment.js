@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -13,6 +14,7 @@ const EmptyAppoiment = ({showBtn, sub="You don't have upcoming schedules.",col,m
   const navigation= useNavigation()
   const dispatch= useDispatch()
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={styles.component44}>
       <Image

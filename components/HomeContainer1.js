@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Image, Text, Pressable } from "react-native";
@@ -8,6 +9,7 @@ const HomeContainer1 = () => {
   const navigation = useNavigation();
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={[styles.menu, styles.mt21_229999999999997]}>
       <View style={styles.menuChild} />

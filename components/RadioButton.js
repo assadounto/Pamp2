@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { View, Text, Pressable,ScrollView} from 'react-native';
@@ -14,6 +15,7 @@ export default function RadioButton({ data, onSelect,horizontal }) {
     <ScrollView  horizontal={horizontal||true} contentContainerStyle={{marginLeft:10}} showsHorizontalScrollIndicator={false}>  
       {data.map((item) => {
         const styles = useStyles();
+const { theme} = useTheme();
 return (
            
           <Pressable

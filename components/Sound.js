@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState,useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -37,6 +38,7 @@ const SoundComponent = ({ soundFile, playSound }) => {
         });
       };
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={styles.container}>
      

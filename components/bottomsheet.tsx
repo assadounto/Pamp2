@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useCallback, useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
 import { View, StyleSheet, Button } from 'react-native';
@@ -32,6 +33,7 @@ const Bottom = forwardRef((props, ref) => {
 
   // renders
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <BottomSheetModalProvider>
   

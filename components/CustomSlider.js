@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
@@ -12,6 +13,7 @@ const CustomImageSlider = ({ images, border }) => {
   const swiperHeight = windowHeight * 0.5; // Set the swiper height to 50% of the window height
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <Swiper
       loadMinimalLoader

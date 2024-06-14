@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
@@ -42,7 +43,8 @@ const NoInternetComponent = ({retry}) => {
 
  
 
-  const styles = useStyles();
+
+const { theme} = useTheme();
 return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
      

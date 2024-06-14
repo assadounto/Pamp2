@@ -1,3 +1,5 @@
+import { useTheme } from '@rneui/themed';
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -6,7 +8,9 @@ import { Margin, Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 const TurnOnNotifications = () => {
   const navigation = useNavigation();
 
-  return (
+  const styles = useStyles();
+const { theme} = useTheme();
+return (
     <View style={styles.turnOnNotifications}>
       <Image
         style={[styles.turnOnNotificationsChild, styles.mt_47, styles.ml145]}
@@ -162,7 +166,7 @@ const TurnOnNotifications = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   mt_47: {
     marginTop: Margin.m_188xs,
   },
@@ -441,6 +445,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-});
+}));
 
 export default TurnOnNotifications;

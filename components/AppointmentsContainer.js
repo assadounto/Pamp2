@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import { nanoid } from "@reduxjs/toolkit";
 import { da } from "date-fns/locale";
@@ -121,6 +122,7 @@ const AppointmentsContainer = ({navigation,data}) => {
     return formattedDate;
   }
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <Pressable onPress={()=>navigation.navigate('Booking_detail',{
       id: data.id

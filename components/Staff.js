@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { View, Text, Pressable,ScrollView,Image, StyleSheet} from 'react-native';
@@ -24,6 +25,7 @@ export default function Staff({ data, onSelect }) {
     <ScrollView horizontal={true} contentContainerStyle={{ marginLeft: 10 }} showsHorizontalScrollIndicator={false}>
           {data.map((item) => {
               
+const { theme} = useTheme();
 return (
 
                   <View style={{display:'flex',flexDirection:'column',marginRight:20}}>

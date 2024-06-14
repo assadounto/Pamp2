@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { View, Text, Pressable,ScrollView, StyleSheet} from 'react-native';
@@ -22,6 +23,7 @@ return(
     <View  style={{marginTop:20,alignSelf:'center',width:'90%', marginLeft:10,display:'flex',flexDirection:'row',flexWrap:'wrap'}}>  
       {data?.map((item,id) => {
         const styles = useStyles();
+const { theme} = useTheme();
 return (
            
           <Pressable

@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles} from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput,Keyboard} from 'react-native';
@@ -53,6 +54,7 @@ const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
    
     }
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={[styles.pop,{top: poph}]}>

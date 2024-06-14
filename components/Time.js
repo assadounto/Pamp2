@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { View, Text, Image, FlatList,ScrollView, Pressable } from 'react-native';
@@ -225,6 +226,7 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
   const closingTime = vendor ? vendor.closing_time : null;
   const timeSlots = openingTime && closingTime ? isDateToday(userOption.date)? generateTimeSlots(openingTime, closingTime) :generateTimeSlots2(openingTime, closingTime) : [];
   
+const { theme} = useTheme();
 return (
     <ScrollView 
     showsHorizontalScrollIndicator={false}

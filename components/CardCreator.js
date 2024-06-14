@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Image, Pressable, Text } from "react-native";
@@ -8,6 +9,7 @@ const CardCreator = () => {
   const navigation = useNavigation();
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={[styles.groupParent, styles.mt29_259999999999998]}>
       <Pressable

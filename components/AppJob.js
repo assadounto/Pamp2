@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 
 
@@ -51,6 +52,8 @@ const AppJob = ({ services,time,setInfo,vendor }) => {
     updateServiceStatus();
 
     const timer = setInterval(updateServiceStatus, 60000); // Check and update the service status every 1 minute (60000 milliseconds)
+
+
 
 
 return () => {

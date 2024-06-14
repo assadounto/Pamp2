@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import { View } from "react-native-animatable";
 import { ScrollView } from "react-native-gesture-handler";

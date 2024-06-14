@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -13,6 +14,7 @@ const Emptyfav = ({title,body,top=verticalScale(80),showBtn,col,mt}) => {
   const navigation= useNavigation()
   const dispatch= useDispatch()
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={[styles.component45,{top:top}]}>
       <Image

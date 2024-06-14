@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, Easing } from 'react-native';
@@ -22,6 +23,7 @@ const GradientLoader = () => {
   }, [translateX]);
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={styles.loadWrapper}>
       <Animated.View style={[styles.activity, { transform: [{ translateX }] }]} />

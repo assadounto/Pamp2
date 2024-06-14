@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,StyleSheet, Linking} from 'react-native';
@@ -33,6 +34,7 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
        }, 3000);
     }
   const pop = useStyles();
+const { theme} = useTheme();
 return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={[pop.pop]}>

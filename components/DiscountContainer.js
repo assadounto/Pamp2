@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
@@ -18,6 +19,7 @@ const DiscountContainer = ({ propMarginTop, propMarginLeft }) => {
   }, [propMarginTop, propMarginLeft]);
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View
       style={[styles.giftParent, styles.mt79, styles.ml44, groupView4Style]}

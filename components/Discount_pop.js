@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,Keyboard,StyleSheet, TextInput, Alert} from 'react-native';
@@ -59,6 +60,7 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
         };
       }, []);
   const styles = pop();
+const { theme} = useTheme();
 return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={[pop.pop,{top:poph}]}>

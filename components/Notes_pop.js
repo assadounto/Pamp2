@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput,Keyboard} from 'react-native';
@@ -44,6 +45,7 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
         };
       }, []);
     const pop = useStyles();
+const { theme} = useTheme();
 return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={{

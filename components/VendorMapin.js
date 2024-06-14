@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
@@ -7,6 +8,7 @@ import SvgUri from 'react-native-svg-uri';
 import { colors } from "../src/Common_styles";
 const VendorMapPin = ({data}) => {
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={styles.component38}>
       <View style={styles.component38Child} />

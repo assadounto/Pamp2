@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import { Animated, View, TouchableOpacity,Text,Pressable} from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -48,6 +49,7 @@ function MyTabBar({state, descriptors, navigation}) {
   
   
 
+const { theme} = useTheme();
 return (
            
             <Pressable

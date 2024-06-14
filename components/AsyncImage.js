@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 /* @flow */
 
@@ -66,6 +67,7 @@ export default class AsyncImage extends Component {
     } = this.state
 
     const styles = useStyles();
+const { theme} = useTheme();
 return (
       <View
         style={style}>

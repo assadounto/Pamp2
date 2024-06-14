@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -8,6 +9,7 @@ import { horizontalScale } from "../src/Dimensions";
 
 const NotificationReviewCard = ({item}) => {
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={styles.ellipseParent}>
       <View style={{position:'absolute',right:10,transform: [{ scaleX: -1 }]}}>

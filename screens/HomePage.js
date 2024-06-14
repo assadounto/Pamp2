@@ -1,3 +1,5 @@
+import { useTheme } from '@rneui/themed';
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Pressable, Image, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +9,9 @@ import { Margin, FontSize, FontFamily, Border, Color } from "../GlobalStyles";
 const HomePage = () => {
   const navigation = useNavigation();
 
-  return (
+  const styles = useStyles();
+const { theme} = useTheme();
+return (
     <View style={styles.homePage}>
       <Pressable
         style={[styles.homePageChild, styles.ml36]}
@@ -129,7 +133,7 @@ const HomePage = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   ml36: {
     marginLeft: Margin.m_60xl,
   },
@@ -361,6 +365,6 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: Color.white,
   },
-});
+}));
 
 export default HomePage;

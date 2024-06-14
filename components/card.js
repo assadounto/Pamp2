@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from "react";
 import { StyleSheet,Text,View,TextInput,Image,Pressable } from "react-native";

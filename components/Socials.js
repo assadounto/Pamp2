@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React from "react";
 import { View, Text, Image, Pressable, Linking, Platform } from "react-native";
@@ -12,6 +13,7 @@ const Socials = () => {
   };
 
 
+const { theme} = useTheme();
 return (
     <View style={{ marginBottom: 30,marginTop:20 }}>
       <Text

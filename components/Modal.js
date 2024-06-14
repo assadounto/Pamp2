@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import { Background } from '@react-navigation/elements';
 import React from 'react';
@@ -10,6 +11,7 @@ const data =['MTN','VODAFONE','AIRTELTIGO']
 
 const Modal_Pop = ({main, modal,onchange,setOption}) => {
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
 

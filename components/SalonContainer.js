@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
@@ -8,6 +9,7 @@ const SalonContainer = () => {
   const navigation = useNavigation();
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <Pressable
       style={[styles.path636Parent, styles.mt28_630000000000003, styles.mr22]}

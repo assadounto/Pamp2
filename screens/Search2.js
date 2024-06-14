@@ -1,3 +1,5 @@
+import { useTheme } from '@rneui/themed';
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Text,ActivityIndicator, Pressable, Image,TextInput, SafeAreaView,Modal,TouchableOpacity, Alert } from "react-native";
 import { Styles } from "react-native-google-places-autocomplete";
@@ -105,7 +107,8 @@ setLoc({
     }
   }
   const [imageLoading, setImageLoading] = React.useState(false);
-
+const s_style=useStyles()
+  const { theme } = useTheme();
   return(
     <SafeAreaView>
       <TouchableOpacity
@@ -174,7 +177,7 @@ flexDirection:'row'}}>
 export default Search2;
 
 
-const s_style= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   text_cont:{
     justifyContent:'center',
     alignItems:'center',
@@ -257,5 +260,5 @@ const s_style= StyleSheet.create({
     marginBottom:20
   }
   
-})
+}))
 

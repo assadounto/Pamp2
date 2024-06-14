@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
@@ -12,6 +13,7 @@ const ImageCont = ({ styles,show, uri,smallStyle }) => {
   };
 
 
+const { theme} = useTheme();
 return (
     <>
     

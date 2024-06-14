@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
@@ -18,6 +19,7 @@ const BookingsSection = ({ propMarginTop, propMarginRight }) => {
   }, [propMarginTop, propMarginRight]);
 
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View
       style={[

@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { Text,Alert, View,Pressable, SafeAreaView,ImageBackground, Modal, StyleSheet} from 'react-native';
@@ -60,6 +61,7 @@ const Location_pop = ({ setmodal,getUserLocation, scope, modal }) => {
 
   const navigation = useNavigation();
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <Modal  onRequestClose={()=>setmodal(!modal)} animationType="slide" transparent={true} visible={modal}>
     <View style={styles.container}>

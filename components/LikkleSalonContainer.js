@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -5,6 +6,7 @@ import { Color, FontFamily, FontSize, Border, Margin } from "../GlobalStyles";
 
 const LikkleSalonContainer = () => {
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View
       style={[

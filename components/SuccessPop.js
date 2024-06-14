@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Pressable, Text, Image } from "react-native";
@@ -9,6 +10,7 @@ const SucessPop = () => {
     const name = useSelector((state) => state.booking.vendor_name);
     const navigation =useNavigation()
   const styles = useStyles();
+const { theme} = useTheme();
 return (
     <View style={styles.component48}>
       <View style={styles.component48Child} />

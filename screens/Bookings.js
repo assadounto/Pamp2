@@ -1,3 +1,5 @@
+import { useTheme } from '@rneui/themed';
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet,FlatList, Text, View, ActivityIndicator, Platform, SafeAreaView } from "react-native";
 import SalonContainer from "../components/SalonContainer";
@@ -65,7 +67,9 @@ const Bookings = ({navigation}) => {
   
 
 
-  return (
+  const styles = useStyles();
+const { theme} = useTheme();
+return (
 
     <View style={{marginTop: Platform.OS==='ios'?40:20}}>
       <Text style={{ marginLeft: 30, fontFamily: FontFamily.sourceSansProBold, fontSize: 26, color: '#86D694', marginTop: Platform.OS==='ios'?10:20,marginBottom:20 }}>Appointments</Text>
@@ -74,7 +78,7 @@ const Bookings = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   mt_90:{
    marginTop:130,
    marginLeft:10
@@ -117,6 +121,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   
-});
+}));
 
 export default Bookings;

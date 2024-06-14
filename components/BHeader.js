@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -10,6 +11,7 @@ import { FontFamily } from '../GlobalStyles';
 const BHeader = ({title, subtitle, back,bg, color,setDateVisible,close,top}) => {
   const navigation=useNavigation()
 
+const { theme} = useTheme();
 return (
     <View style={[color, {  marginBottom: 20 ,marginTop:top||10}]}>
      

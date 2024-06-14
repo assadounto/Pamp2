@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 
 import React, {useState,useEffect, useRef} from 'react';
@@ -367,6 +368,7 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
     );
   }
 
+const { theme} = useTheme();
 return (
     <>
       <Pressable {...panResponder.panHandlers} onPress={() =>{set_dates('Month')}}>

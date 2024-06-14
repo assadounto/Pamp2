@@ -1,3 +1,4 @@
+import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/base';
 // InternetContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
@@ -19,6 +20,7 @@ export const InternetProvider = ({ children }) => {
   }, []);
 
 
+const { theme} = useTheme();
 return (
     <InternetContext.Provider value={isInternetConnected}>
       {children}

@@ -44,7 +44,11 @@ const initialState = {
    rating:[],
 
   payment_methods:{
-    default:null,
+    default: {
+      id: 3,
+      name: 'Pay with momo',
+      img: 'momo'
+  },
     methods: [
       {   id:1,
         name: 'Pay with cash',

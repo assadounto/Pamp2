@@ -19,8 +19,10 @@ const Bookings = ({navigation}) => {
   const [bookings,setBookings]=React.useState([])
   React.useEffect(()=>{
     if (isFocused) {
-  
-  get()
+  if(bookings.length===0){
+    get()
+  }
+
     }
   },[isFocused])
 
@@ -40,6 +42,8 @@ const Bookings = ({navigation}) => {
         loading ? <LoadingSkeleton/> : (bookings.length !== 0 ?
           <>
             <FlatList 
+            refreshing={false}
+            onRefresh={get}
               contentContainerStyle={{paddingBottom: 60, paddingTop: 10}}
               showsVerticalScrollIndicator={false}
               data={bookings}

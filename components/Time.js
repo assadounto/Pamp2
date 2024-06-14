@@ -227,14 +227,14 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
     <ScrollView 
     showsHorizontalScrollIndicator={false}
     showsVerticalScrollIndicator={false}
-     //contentContainerStyle={{ marginBottom: 700 }}
+     contentContainerStyle={{ paddingBottom: 200 }}
      >
       {isVendorOpen() ? (
         <>
           <Text style={{ marginVertical: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color, marginLeft: 30 }}>Time</Text>
          
          { timeSlots.length==0 ?
-          <Emptyfav top={30} title={"Vendor not accepting bookings at this time"} />
+          <Emptyfav top={30} title={"The vendor is currently unavailable for bookings at this time of day. Please consider booking for tomorrow or another available day."} />
           :<View  style={{
                  marginBottom: 300,
                  marginVertical: 15,
@@ -278,7 +278,7 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
                     style={{ width: 30, marginVertical: 10 }}
                     name={'chevron-forward'}
                     type="ionicon"
-                    onPress={() => setShowPassword(!showPassword)}
+                  
                     color={colors.dg.color}
                   />
                 </View>

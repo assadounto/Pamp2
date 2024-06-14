@@ -39,6 +39,8 @@ import PassReset from '../screens/start_screens/PaswordReset';
 import { TransitionPresets} from '@react-navigation/stack';
 import Getting_started from '../screens/start_screens/Getting_started';
 import Location_pop from '../../components/Location_pop';
+import ChatScreen from '../screens/home_screens/ChatScreen';
+import ChatListScreen from '../screens/home_screens/ChatList';
 const Stack = createStackNavigator();
 
 const forFade2 = ({ current }) => ({
@@ -96,7 +98,8 @@ const ApplicationNavigator = () => {
         <Stack.Screen name="Searches1" options={{ cardStyleInterpolator: forFade2 }} component={Searches1} /> 
         <Stack.Screen name="VendorDetail"  options={{ cardStyleInterpolator: forFade2 }}  component={VendorDetail} /> 
         <Stack.Screen name="SelectDate" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={SelectDate} /> 
-        <Stack.Screen name="All_notifications" options={{ cardStyleInterpolator: forFade2}}  component={Notifications} /> 
+        <Stack.Screen name="All_notifications" options={{ cardStyleInterpolator: forFade2}}  component={ChatListScreen} /> 
+        <Stack.Screen name="Chat" options={{ cardStyleInterpolator: forFade2 }} component={ChatScreen} /> 
         <Stack.Screen name='Mapview'  options={{ cardStyleInterpolator: forFade2 }}  component={Mapview}/> 
         <Stack.Screen name={'Confirm'} options={{ cardStyleInterpolator: forFade2 }} component={Confirm_payment}/> 
         <Stack.Screen name={'Success'}  options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Success}/> 

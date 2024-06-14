@@ -7,6 +7,11 @@ import TriviaGame from './Trivia';
 import LottieView from 'lottie-react-native';
 import { verticalScale } from '../src/Dimensions';
 import { colors } from '../src/Common_styles';
+import { FontFamily } from '../GlobalStyles';
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: true,
+};
 const NoInternetComponent = ({retry}) => {
   const [isConnected, setIsConnected] = useState(false); // Initially assume no internet
   const [showComponent, setShowComponent] = useState(true); // Initially show the component
@@ -37,17 +42,18 @@ const NoInternetComponent = ({retry}) => {
  
 
   return (
-    <View style={{ flex: 1,backgroundColor:'red', justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
      
         <View>
         <View style={{marginTop:verticalScale(50)}}>
       <LottieView
               source={require('../assets/lottie/nointernet.json')}
-              style={{ width:209, height: 150,marginTop:verticalScale(-20) }}
+              style={{alignSelf:'center', width:209, height: 150,marginTop:verticalScale(-20) }}
               autoPlay
               loop={true}
             />
       </View>
+      <Text style={{marginVertical:10,fontFamily:FontFamily.sourceSansProRegular,textAlign:'center',color:colors.dg.color,}}>{"Internet Disconnected.\n Please check internet connectivity and try again."}</Text>
           <Button  buttonStyle={{borderRadius:20,backgroundColor:colors.dg2.color,marginBottom:10}} title="Retry" onPress={handleRetry} />
           <Button buttonStyle={{borderRadius:20,backgroundColor:colors.dg2.color}} title="Play Trivia" onPress={handlePlayTrivia} />
         </View>

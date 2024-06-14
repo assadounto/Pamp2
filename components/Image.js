@@ -18,7 +18,7 @@ const ImageCont = ({ styles,show, uri,smallStyle }) => {
         source={{
           uri: uri,
           headers: { Authorization: 'someAuthToken' },
-          priority: FastImage.priority.high,
+          priority: FastImage.priority.normal,
         }}
         resizeMode={FastImage.resizeMode.cover}
        

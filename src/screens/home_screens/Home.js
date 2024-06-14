@@ -348,10 +348,6 @@ const [error,setError]= React.useState()
       if (data) {
         setImageLoading(false)
         navigation.navigate('Searches1', { location: userstate.location, category: title, data });
-      } else {
-        setImageLoading(false)
-        // Handle the case when data is empty or falsy
-        Alert.alert('Error', 'Failed to fetch data. Please try again.');
       }
     } catch (error) {
       setImageLoading(false)
@@ -359,6 +355,9 @@ const [error,setError]= React.useState()
       Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
     }
   };
+
+
+
   const [imageLoading, setImageLoading] = useState(false);
   const location= useSelector(state=>state.user)
   const item = ({item}) => (
@@ -374,7 +373,7 @@ const [error,setError]= React.useState()
     {imageLoading&& <ActivityIndicator color={colors.dg2.color} style={{position:"absolute", alignSelf:'center',top:'50%'}} size={'small'}/>}
     </Pressable>
   );
- 
+  
   return (
     <>
    
@@ -445,7 +444,9 @@ catch{
   useFocusEffect(
   
     React.useCallback(() => {
-      get()
+      if(datas.length===0){
+        get()
+      }
 
     }, []) // Include user.id in the dependency array
   );
@@ -508,8 +509,10 @@ const Top=({scope})=>{
   useFocusEffect(
   
     React.useCallback(() => {
+    if(datas.length===0){
       get()
-    }, []) // Include user.id in the dependency array
+    }
+    }, [datas]) // Include user.id in the dependency array
   );
   
 
@@ -572,8 +575,10 @@ const Others=({scope})=>{
   useFocusEffect(
   
     React.useCallback(() => {
-      get()
-    }, []) // Include user.id in the dependency array
+      if(datas.length===0){
+        get()
+      }
+    }, [datas]) // Include user.id in the dependency array
   );
   
 

@@ -16,6 +16,7 @@ import { backendURL } from '../../services/http';
 import { useFocusEffect,} from '@react-navigation/core';
 import axios from 'axios';
 import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions';
+import Loading from '../../../components/loading';
 
 const Notifications = () => {
   const user = useSelector(state => state.user.userInfo);
@@ -78,6 +79,10 @@ const Notifications = () => {
     }
   };
 
+
+  if (isLoading){
+return(<Loading type={'bell'} />)
+  }
   const navigation = useNavigation();
   
   return (
@@ -97,6 +102,7 @@ const Notifications = () => {
       </Pressable>
       </View>
         <FlatList
+        
         contentContainerStyle={{paddingBottom:100}}
           data={data?.notifications}
           renderItem={renderNotificationComponent}

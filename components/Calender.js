@@ -99,7 +99,10 @@ const weekdays=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
-    getDatesForMonth(year, month, vendor_id);
+    if (data.length===0){
+      getDatesForMonth(year, month, vendor_id);
+
+    }
   }, [])
   );
 
@@ -170,6 +173,7 @@ const weekdays=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     setIsLoading(true); 
     const response = await axios.get(`${backendURL}/dates?year=${year}&month=${month}&vendor_id=${1}`);
     setIsLoading(false); 
+    console.log(response.data)
     return response.data;
   };
 
@@ -247,10 +251,13 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
   };
 
   const SelectHandler = (value, index) => {
+  
+    
     ///setTimeout(()=>  refFlatList.scrollToIndex({animated:true,index:currentIndex}),2000)
     setcurrentIndex(index);
     const date= currentMonthName.split('-')[0]+'-'+currentMonthName.split('-')[1]+'-'+ value.aday
-    console.log(value)
+    
+   
     onSelect(
          date
       );
@@ -303,7 +310,13 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
   const renderItem = ({item, index}) => {
     return (
       <Pressable
+      disabled={item.ispast}
         style={
+          item.ispast ? [ styles.unselected,{
+            borderColor:'#F0F0F0',
+
+            width:  desiredWidth, height: 55, borderRadius: 15
+          }] :
           item.aday === userOption.aday
             ? [
                 styles.selected,
@@ -346,7 +359,7 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
               source={require('../assets/lottie/calender.json')}
               style={{ width:209, height: 150 }}
               autoPlay
-              loop={false}
+              loop={true}
             />
             </View>
       </View>
@@ -399,7 +412,7 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
   showsHorizontalScrollIndicator={false}
   showsVerticalScrollIndicator={false}
 />
-      : <Text>hjhbvhjavbxjhavxbhjavxbja</Text>  }
+      : <Text></Text>  }
       {
         data.length>6 &&
         <View style={{display:'flex', justifyContent:'center',alignContent:'center',alignItems:'center', flexDirection:'row',height:50,padding:10,}}>

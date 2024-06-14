@@ -228,7 +228,7 @@ const [modal,setmodal]=useState(false)
        key={index}
          containerStyle={[{ backgroundColor: '#F9F9F9' }]}
          onPress={() => {
-          
+             
              navigation.navigate(item.route);
            
 

@@ -18,8 +18,9 @@ const VendorMapPin = ({data}) => {
             }}
             resizeMode={FastImage.resizeMode.cover} />
       <Text style={[styles.likkleSalon, styles.likkleSalonPosition]}>
-      {data.name.length > 16 ? `${data.name.substring(0, 14)}...` : data.name}{
-        data.badge?<View style={{marginLeft:5}}>
+      {data.name.length > 16 ? `${data.name.substring(0, 14)}...` : data.name} {'  '}{
+        data.badge?
+        <View style={{marginLeft:5}}>
         <SvgUri
         
         source={require('../assets/svgs/verified.svg')}/>
@@ -28,7 +29,7 @@ const VendorMapPin = ({data}) => {
       </Text>
       <Text
         style={[styles.airportResidentialRoad, styles.kmTypo]}
-      >{data.location}</Text>
+      >{data.location.length > 20 ? `${data.location.substring(0, 20)}...` : data.location}</Text>
        
       
       <Image
@@ -138,10 +139,9 @@ const styles = StyleSheet.create({
    
   },
   component38: {
-    top: '70%',
-    left: 30,
-    width: 318,
-    right:30,
+    bottom:50,
+  alignSelf:'center',
+    width: '80%',
     height: 135,
     position: "absolute",
   },

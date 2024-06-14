@@ -25,9 +25,12 @@ const Favourites=({navigation})=>{
   
     React.useCallback(() => {
       if (user?.id){
-        getFav()
+        if (data.length===0){
+          getFav()
+
+        }
       } 
-    }, [user?.id]) // Include user.id in the dependency array
+    }, [user?.id,data]) // Include user.id in the dependency array
   );
  
   const getFav=async ()=>{

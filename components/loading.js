@@ -4,15 +4,15 @@ import LottieView from 'lottie-react-native';
 import { Image } from "react-native-animatable";
 import { StyleSheet,View } from "react-native";
 
-const Loading=()=>{
+const Loading=({type})=>{
     return(
         <View style={styles.container}>
    
       <LottieView
-              source={require('../assets/lottie/loading.json')}
-              style={{ width:209, height: 150,marginTop:verticalScale(-20) }}
+              source={type ==='bell'? require('../assets/lottie/bell.json'):require('../assets/lottie/loading.json')}
+              style={{ width:150, height: 100,marginTop:verticalScale(-20) }}
               autoPlay
-              loop={false}
+              loop={true}
             />
           </View>
     )

@@ -92,3 +92,4 @@ alignSelf:'center',
 });
 
 export default Emptyfav;
+

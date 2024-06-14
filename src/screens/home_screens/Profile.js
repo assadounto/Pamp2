@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { backendURL } from '../../services/http';
+import { verticalScale } from '../../Dimensions';
 import {
   View,
   ScrollView,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   Pressable,
   Modal,
+  Keyboard,
   TextInput,
   Platform,
 } from 'react-native';
@@ -34,7 +36,7 @@ const Profile = ({navigation}) => {
   const [reason2, setReason2] = useState(false);
   const [reason3, setReason3] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
-    
+  const [toph,setpop]=useState(40)
   const handledelete=async()=>{
     dispatch(userLogout());
 await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
@@ -87,6 +89,21 @@ await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
       });
   };
 
+
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setpop(Platform.OS==='ios'?verticalScale(320): verticalScale(30))
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+        setpop(40)
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   return (
     <><SafeAreaView style={[colors.Pc]}>
       <BHeader top={Platform.OS==='ios'?0:20} title="Profile" color={colors.dg2.color} />
@@ -223,7 +240,7 @@ await axios.post(`${backendURL}/delete`,{id:user.id,reason1,reason2,reason3})
       onRequestClose={() => {
         setModal(!modal);
       } }>
-        <View style={[styles.pop, { position:'absolute', alignItems:'center',alignSelf:'center',borderRadius:20,width:'90%', bottom:30, backgroundColor: '#ffff' }]}>
+        <View style={[styles.pop, { position:'absolute', alignItems:'center',alignSelf:'center',borderRadius:20,width:'90%',  bottom:toph, backgroundColor: '#ffff' }]}>
           <Pressable
             onPress={() => setModal(!modal)}
             style={{ alignSelf: 'flex-end', marginRight: 20, marginTop: 20 }}>

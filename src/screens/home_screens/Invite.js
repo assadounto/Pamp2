@@ -10,6 +10,10 @@ const Invite = ({navigation}) => {
   const [noti, shownoti] = React.useState(false);
   const user= useSelector(state=>state.user.userInfo)
   const copyToClipboard = () => {
+    if (!user.ref_code){
+      Alert.alert('No referral code', 'If for some reason your referral code is blank, signout and signin again to fix it. Otherwise contact pamp support')
+      return
+          }
     Clipboard.setString(user.ref_code);
     shownoti(true)
     setTimeout(()=>{
@@ -21,6 +25,10 @@ const Invite = ({navigation}) => {
 
 
   const onShare = async () => {
+    if (!user.ref_code){
+Alert.alert('No referral code', 'If for some reason your referral code is blank, signout and signin again to fix it. Otherwise contact pamp support')
+return
+    }
     try {
       const result = await Share.share({
         message:

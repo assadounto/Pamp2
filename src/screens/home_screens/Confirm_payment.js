@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { SafeAreaView ,View,Text,Pressable} from "react-native";
+import { SafeAreaView ,View,Text,Pressable, Alert} from "react-native";
 import BHeader from "../../../components/BHeader";
 import { FontFamily } from "../../GlobalStyles";
 import { colors } from "../../Common_styles";
 import { Icon,Button,ListItem } from "@rneui/base";
 import { Image } from "react-native-animatable";
 import { ScrollView } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import source from '../../../assets/pay-with-cash.png'
 import source2 from '../../../assets/group-1902.png'
 import momo from '../../../assets/momo.png'
@@ -16,7 +16,6 @@ import airtel from '../../../assets/airtel.png'
 
 import axios from "axios";
 import { set_actual_booking } from "../../redux/booking";
-import { useDispatch } from "react-redux";
 import FastImage from "react-native-fast-image";
 import { useFocusEffect } from '@react-navigation/native';
 import { backendURL } from '../../services/http';
@@ -27,6 +26,7 @@ import { useGetCouponQuery } from "../../redux/authapi";
 import { da } from "date-fns/locale";
 import AuthNavigator from "../../Navigation/AuthNavigator";
 import { horizontalScale } from "../../Dimensions";
+import { setDefault } from "../../redux/user";
 
 const co=[
   'red',
@@ -44,8 +44,12 @@ const payment_methods=
 const Confirm_payment=({navigation,route})=>{
   const user =  useSelector((state)=>state.user.userInfo)
   const booking= useSelector((state)=> state.booking)
+  const [data,setData]= useState({})
 const [isLoading,setLoading]=useState(false)
+const [isLoading2,setLoading2]=useState(false)
+ const [flag,setFlag]= useState(0)
 const [coupon_id,setC]=useState()
+
   const {data:coupon_info,refetch}= useGetCouponQuery({id:user?.id,vendor_id: booking.vendor_id})
   
  // const { completed, items ,time} = route.params || {};
@@ -54,15 +58,30 @@ const [coupon_id,setC]=useState()
   const payment_pref=useSelector((state)=>state.user.vPM)
   let pay_data=pay_data_ && pay_data_
    const booking_detail= booking.booking? JSON.parse( booking.booking):[]
- const data={}
+
    useFocusEffect(
   
     React.useCallback(() => {
       refetch()
+    
+      get()
+    
+       // }
       // data && setC(info)
     }, []) // Include user.id in the dependency array
   );
+
+
+
+  async function get(){
+    setLoading2(true)
+    const{ data }=await axios.get(`${backendURL}/details?id=${booking?.vendor_id}`)
+    setLoading2(false)
+    setData(data.payment_method)
   
+    }
+
+
 
   function formatDate(dateString) {
     const dateParts = dateString.split("-");
@@ -92,6 +111,12 @@ const [coupon_id,setC]=useState()
    const a=booking_detail.topping2.filter(({total})=>total!=0)
   const HandleSubmit=async()=>{
     
+    if(!payment_method?.name){
+      Alert.alert('Caution', 'Please select a payment method')
+      return
+
+    }
+
    if (getTotalByKey(booking_detail.topping2, 'total')- (coupon_info?.amount? coupon_info?.amount:0) <=0){
     setLoading(true)
     await createBooking()
@@ -100,7 +125,7 @@ const [coupon_id,setC]=useState()
    else{
     gather_actual()
     let total=  getTotalByKey(booking_detail.topping2,'total')
-    let pay_type =pay_data.name
+    let pay_type =pay_data?.name
       
 
   
@@ -295,7 +320,7 @@ console.log(active_user==true)
                     <ListItem.Chevron color={'#00463C'} size={30} />
                   </ListItem>
 
-                  : <Pressable onPress={() => navigation.navigate('Select_payment')} style={{ display: 'flex', flexDirection: 'row', height: 63, width: '90%', alignSelf: 'center', paddingTop: 20, paddingHorizontal: 20, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, elevation: 4, shadowOffset: { width: 5, height: 0 }, backgroundColor: 'white', borderRadius: 20 }}>
+                  : <Pressable onPress={() => navigation.navigate('Select_payment',{ data: payment_pref })} style={{ display: 'flex', flexDirection: 'row', height: 63, width: '90%', alignSelf: 'center', paddingTop: 20, paddingHorizontal: 20, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, elevation: 4, shadowOffset: { width: 5, height: 0 }, backgroundColor: 'white', borderRadius: 20 }}>
                     <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color }}>Select</Text>
                    <View style={{position:'absolute',right:20,top:20}}>
 
@@ -316,7 +341,7 @@ console.log(active_user==true)
                       name="alert-circle-outline"
                       type="ionicon"
                       size={25} />
-                    <Text style={{ width: '80%', marginLeft: 20, flexWrap: 'wrap', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: colors.dg.color }}>You will be required to pay with Mobile Money, Debit or Credit card to use the 'Pay with cash' option, Vendors charge a deposit of 20% ahead, the rest will be collected in-store. you'll lose your deposit in case of a late cancellation or no-show.</Text>
+                    <Text style={{ width: '80%', marginLeft: 20, flexWrap: 'wrap', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: colors.dg.color }}>A 20% deposit is required via mobile money, debit, or credit card. The remaining balance will be paid in-store. Please note that the deposit is non-refundable for late cancellations or no-shows.</Text>
                   </View>}
                 <View style={{ marginBottom: 150, marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: 'white', borderRadius: 20, width: '90%', alignSelf: 'center' }}>
                   <View style={{ padding: 20, display: 'flex', flexDirection: 'row', marginLeft: 15 }}>

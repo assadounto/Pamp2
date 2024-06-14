@@ -153,7 +153,7 @@ setLoc({
  
 }}/> 
 { userstate.recent_view.search&&
-  <View style={{marginHorizontal:30}}>
+  <View style={{marginHorizontal:30,marginVertical:120}}>
   <Text style={s_style.recent_view}>Recent Searches</Text>
  <View style={{display:'flex',
 flexDirection:'row'}}>

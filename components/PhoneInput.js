@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput,Keyboard, Alert} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
@@ -58,7 +59,8 @@ catch(e){
           keyboardDidHideListener.remove();
         };
       }, []);
-  return (
+  const styles = useStyles();
+return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={{
         width: '95%',
@@ -88,7 +90,7 @@ catch(e){
       </Modal></>
   );
 };
-const pop=StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   
     h1:{
         fontFamily:FontFamily.sourceSansProSemibold,
@@ -134,6 +136,6 @@ marginHorizontal:20,
      marginVertical:30
     }
 
-})
+}))
 export default Phone_pop;
 

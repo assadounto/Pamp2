@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -15,7 +16,8 @@ const SearchBottom = () => {
   }, []);
 
   // renders
-  return (
+  const styles = useStyles();
+return (
     <View style={styles.container}>
       <BottomSheet
         ref={bottomSheetRef}
@@ -31,7 +33,7 @@ const SearchBottom = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     padding: 24,
@@ -41,6 +43,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-});
+}));
 
 export default SearchBottom;

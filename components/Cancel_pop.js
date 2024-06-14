@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,StyleSheet, Linking} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
@@ -31,7 +32,8 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
          setblur(false);
        }, 3000);
     }
-  return (
+  const styles = useStyles();
+return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={[pop.pop]}>
             
@@ -53,7 +55,7 @@ const Cancel_pop = ({cancel, setcancel, modal,setblur,data}) => {
       </Modal><Pop2 main={'You have successfully cancelled your appointment'} modal={notify_cancel}/></>
   );r
 };
-const pop=StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     pop:{
         position:'absolute',
         backgroundColor: '#fff',
@@ -84,6 +86,6 @@ const pop=StyleSheet.create({
     h4:{
         color: colors.dg2.color
     }
-})
+}))
 export default Cancel_pop;
 

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 
 import React, {useState,useEffect, useRef} from 'react';
 import {View, Text, Pressable, ScrollView, FlatList,Dimensions,PanResponder, Alert, ActivityIndicator} from 'react-native';
@@ -365,7 +366,8 @@ console.log(weekdays[weekDay],'jjjjj',weekDay)
       </View>
     );
   }
-  return (
+  const styles = useStyles();
+return (
     <>
       <Pressable {...panResponder.panHandlers} onPress={() =>{set_dates('Month')}}>
         <Text

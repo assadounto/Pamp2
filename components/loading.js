@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from "react";
 import { verticalScale } from "../src/Dimensions";
 import LottieView from 'lottie-react-native';
@@ -21,7 +22,7 @@ const Loading=({type})=>{
 export default Loading
 
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     container: {
         marginTop:'70%',
 
@@ -32,4 +33,4 @@ const styles = StyleSheet.create({
       width: 300,
       height: 400,
     },
-  });
+  }));

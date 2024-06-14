@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
 import { Image, StyleSheet, View, Text } from "react-native";
@@ -16,7 +17,8 @@ const BookingsSection = ({ propMarginTop, propMarginRight }) => {
     };
   }, [propMarginTop, propMarginRight]);
 
-  return (
+  const styles = useStyles();
+return (
     <View
       style={[
         styles.path628Parent,
@@ -65,7 +67,7 @@ const BookingsSection = ({ propMarginTop, propMarginRight }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   parentPosition: {
     height: 24,
     marginTop: -21,
@@ -185,6 +187,6 @@ const styles = StyleSheet.create({
     width: 419,
     height: 110,
   },
-});
+}));
 
 export default BookingsSection;

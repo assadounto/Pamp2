@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from "react";
 import { View, Text, Image, Pressable, Linking, Platform } from "react-native";
 import { FontFamily } from "../GlobalStyles";
@@ -10,7 +11,8 @@ const Socials = () => {
     );
   };
 
-  return (
+
+return (
     <View style={{ marginBottom: 30,marginTop:20 }}>
       <Text
         style={{

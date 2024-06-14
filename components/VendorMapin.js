@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Image, Text } from "react-native";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
@@ -5,7 +6,8 @@ import FastImage from "react-native-fast-image";
 import SvgUri from 'react-native-svg-uri';
 import { colors } from "../src/Common_styles";
 const VendorMapPin = ({data}) => {
-  return (
+  const styles = useStyles();
+return (
     <View style={styles.component38}>
       <View style={styles.component38Child} />
       <FastImage
@@ -46,7 +48,7 @@ const VendorMapPin = ({data}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   iconLayout: {
     maxHeight: "100%",
     overflow: "hidden",
@@ -145,6 +147,6 @@ const styles = StyleSheet.create({
     height: 135,
     position: "absolute",
   },
-});
+}));
 
 export default VendorMapPin;

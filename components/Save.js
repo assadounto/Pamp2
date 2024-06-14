@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from 'react';
 import { Button } from '@rneui/base';
 import { StyleSheet, View, Keyboard, SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
@@ -21,7 +22,8 @@ const Save = ({ name, handlePress, disabled, loading }) => {
     };
   }, []);
 
-  return (
+  const styles = useStyles();
+return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : null}
       style={styles2.container}
@@ -44,7 +46,7 @@ const Save = ({ name, handlePress, disabled, loading }) => {
   );
 };
 
-const styles2 = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     
@@ -90,6 +92,6 @@ const styles2 = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: { width: 5, height: 0 },
   },
-});
+}));
 
 export default Save;

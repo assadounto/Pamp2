@@ -1,9 +1,11 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Color, Border, FontFamily, FontSize } from "../GlobalStyles";
 
 const TermsOfServiceContainer = () => {
-  return (
+  const styles = useStyles();
+return (
     <View style={[styles.rectangleParent, styles.mt_80_77000000000001]}>
       <View
         style={[styles.groupChild, styles.groupPosition, styles.groupPosition1]}
@@ -57,7 +59,7 @@ const TermsOfServiceContainer = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupPosition: {
     height: 57,
     left: 0,
@@ -151,6 +153,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: Border.br_xs,
   },
-});
+}));
 
 export default TermsOfServiceContainer;

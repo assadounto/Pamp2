@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { View, Text, Image, FlatList,ScrollView, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -223,7 +224,8 @@ const Time = ({ navigation, userOption,rebooked,rebook}) => {
   const openingTime = vendor ? vendor.opening_time : null;
   const closingTime = vendor ? vendor.closing_time : null;
   const timeSlots = openingTime && closingTime ? isDateToday(userOption.date)? generateTimeSlots(openingTime, closingTime) :generateTimeSlots2(openingTime, closingTime) : [];
-  return (
+  const styles = useStyles();
+return (
     <ScrollView 
     showsHorizontalScrollIndicator={false}
     showsVerticalScrollIndicator={false}

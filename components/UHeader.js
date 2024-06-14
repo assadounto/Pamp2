@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from 'react';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +14,8 @@ const UHeader = ({ navigation,newnoti }) => {
   const user = useSelector(state => state.user.userInfo);
   const userimg = useSelector(state => state.user.image1);
 
-  return (
+
+return (
     <View
       style={{
         backgroundColor: 'white',

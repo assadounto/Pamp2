@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { FontFamily, FontSize, Color } from "../GlobalStyles";
@@ -6,7 +7,8 @@ import { colors } from "../src/Common_styles";
 import { horizontalScale } from "../src/Dimensions";
 
 const NotificationReviewCard = ({item}) => {
-  return (
+  const styles = useStyles();
+return (
     <View style={styles.ellipseParent}>
       <View style={{position:'absolute',right:10,transform: [{ scaleX: -1 }]}}>
       <AirbnbRating
@@ -36,7 +38,7 @@ const NotificationReviewCard = ({item}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   july2022Typo: {
     fontFamily: FontFamily.sourceSansProRegular,
     textAlign: "left",
@@ -82,6 +84,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 20,
   },
-});
+}));
 
 export default NotificationReviewCard;

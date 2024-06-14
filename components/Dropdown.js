@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, {  useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Icon} from '@rneui/base';
@@ -22,7 +23,8 @@ const Dropdown = ({ label,onselect ,setOption}) => {
     }
   };
 
-  return (
+  const styles = useStyles();
+return (
     <TouchableOpacity
       style={styles.button}
       onPress={toggleDropdown}
@@ -34,7 +36,7 @@ const Dropdown = ({ label,onselect ,setOption}) => {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -59,6 +61,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     top: 50,
   },
-});
+}));
 
 export default Dropdown;

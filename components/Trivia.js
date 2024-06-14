@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { colors } from '../src/Common_styles';
@@ -92,7 +93,8 @@ const shuffleArray = (array) => {
       );
     };
   
-    return (
+    const styles = useStyles();
+return (
       <View style={styles.container}>
         <Animated.View style={[styles.innerContainer, { opacity: fadeAnim }]}>
           {!gameOver ? renderQuestion() : renderGameOver()}
@@ -101,7 +103,7 @@ const shuffleArray = (array) => {
     );
   };
   
-  const styles = StyleSheet.create({
+  const useStyles = makeStyles((theme) => ({
     container: {
         marginVertical: 20,
       flex: 1,
@@ -165,6 +167,6 @@ const shuffleArray = (array) => {
       marginBottom: 10,
       color: colors.w.color,
     },
-  });
+  }));
   
   export default TriviaGame;

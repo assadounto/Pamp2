@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import { nanoid } from "@reduxjs/toolkit";
 import { da } from "date-fns/locale";
 import * as React from "react";
@@ -119,7 +120,8 @@ const AppointmentsContainer = ({navigation,data}) => {
     const formattedDate = `${day} ${months[month - 1]} ${year}`;
     return formattedDate;
   }
-  return (
+  const styles = useStyles();
+return (
     <Pressable onPress={()=>navigation.navigate('Booking_detail',{
       id: data.id
     })}  style={[styles.path636Parent]}>
@@ -154,7 +156,7 @@ const AppointmentsContainer = ({navigation,data}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupChildPosition: {
     overflow: "hidden",
     maxWidth: "100%",
@@ -313,7 +315,7 @@ width:200,
     borderRadius:20,
  
   },
-});
+}));
 
 export default AppointmentsContainer;
 

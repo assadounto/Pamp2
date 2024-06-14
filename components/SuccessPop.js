@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Pressable, Text, Image } from "react-native";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
@@ -7,7 +8,8 @@ import { horizontalScale, verticalScale } from "../src/Dimensions";
 const SucessPop = () => {
     const name = useSelector((state) => state.booking.vendor_name);
     const navigation =useNavigation()
-  return (
+  const styles = useStyles();
+return (
     <View style={styles.component48}>
       <View style={styles.component48Child} />
       
@@ -28,7 +30,7 @@ an appointment with ${name}.`}</Text>
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   successFlexBox: {
     textAlign: "center",
     position: "absolute",
@@ -97,6 +99,6 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     
   },
-});
+}));
 
 export default SucessPop;

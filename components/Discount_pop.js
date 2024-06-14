@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,Keyboard,StyleSheet, TextInput, Alert} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
@@ -57,7 +58,8 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
           keyboardDidHideListener.remove();
         };
       }, []);
-  return (
+  const styles = useStyles();
+return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={[pop.pop,{top:poph}]}>
          <View style={pop.notes}>
@@ -101,7 +103,7 @@ const Discount_pop = ({setmodal,vendor, modal,setblur,id}) => {
       </Modal><Pop2 modal={notify} main={'Discount code successfully applied'}/></>
   );
 };
-const pop=StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     hour:{
       textAlign:'right'
     },
@@ -200,6 +202,6 @@ const pop=StyleSheet.create({
     }
 
 
-})
+}))
 export default Discount_pop;
 

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { FontFamily } from '../src/GlobalStyles';
@@ -26,7 +27,8 @@ const Booking_action = ({ info, setblur, rebk, data }) => {
   const [cancel_modal, setCancel] = useState(false);
   const [notes, setNotes] = useState(false);
 
-  return (
+  const styles = useStyles();
+return (
     <View style={md_style.cont}>
       <View>
         <TouchableOpacity
@@ -75,7 +77,7 @@ const Booking_action = ({ info, setblur, rebk, data }) => {
 
 export default Booking_action;
 
-const md_style = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   action: {
     borderColor: colors.lg.color,
     borderWidth: 1,
@@ -105,4 +107,4 @@ const md_style = StyleSheet.create({
     fontFamily: FontFamily.sourceSansProSemibold,
     color: colors.dg.color,
   },
-});
+}));

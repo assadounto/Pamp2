@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import { Background } from '@react-navigation/elements';
 import React from 'react';
 import {Text, View,StyleSheet, SafeAreaView, Image, Modal,Pressable,FlatList} from 'react-native';
@@ -8,7 +9,8 @@ import { styles,colors } from '../src/Common_styles';
 const data =['MTN','VODAFONE','AIRTELTIGO']
 
 const Modal_Pop = ({main, modal,onchange,setOption}) => {
-  return (
+  const styles = useStyles();
+return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
 
 <View style={[styles.pop2,{ padding:0,height:200,bottom:110}]}>
@@ -37,7 +39,7 @@ const Modal_Pop = ({main, modal,onchange,setOption}) => {
 };
 
 export default Modal_Pop;
-const md_style= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     momo_cont: {
         width:'90%',
       
@@ -55,4 +57,4 @@ const md_style= StyleSheet.create({
         color:"#00463C"
 
     }
-})
+}))

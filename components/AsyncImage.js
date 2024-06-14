@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 /* @flow */
 
 import React, { // eslint-disable-line no-unused-vars
@@ -64,7 +65,8 @@ export default class AsyncImage extends Component {
       placeholderScale
     } = this.state
 
-    return (
+    const styles = useStyles();
+return (
       <View
         style={style}>
 

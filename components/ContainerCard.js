@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
 import {
@@ -43,7 +44,8 @@ const ContainerCard = ({
     };
   }, [propRight]);
 
-  return (
+  const styles = useStyles();
+return (
     <View
       style={[
         styles.path663Parent,
@@ -86,7 +88,7 @@ const ContainerCard = ({
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupItemPosition: {
     top: 15,
     position: "absolute",
@@ -163,6 +165,6 @@ const styles = StyleSheet.create({
     height: 138,
     alignSelf: "flex-end",
   },
-});
+}));
 
 export default ContainerCard;

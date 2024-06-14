@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import Swiper from 'react-native-swiper';
@@ -10,7 +11,8 @@ const windowHeight = Dimensions.get('window').height;
 const CustomImageSlider = ({ images, border }) => {
   const swiperHeight = windowHeight * 0.5; // Set the swiper height to 50% of the window height
 
-  return (
+  const styles = useStyles();
+return (
     <Swiper
       loadMinimalLoader
       containerStyle={[styles.swiperContainer, { height: swiperHeight }]}
@@ -36,7 +38,7 @@ const CustomImageSlider = ({ images, border }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   swiperContainer: {
     borderBottomLeftRadius: 20,
   },
@@ -63,5 +65,5 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
   },
-});
+}));
 export default CustomImageSlider

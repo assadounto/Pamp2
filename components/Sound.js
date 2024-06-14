@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState,useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Sound from 'react-native-sound';
@@ -35,19 +36,20 @@ const SoundComponent = ({ soundFile, playSound }) => {
           }
         });
       };
-  return (
+  const styles = useStyles();
+return (
     <View style={styles.container}>
      
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-});
+}));
 
 export default SoundComponent;

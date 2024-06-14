@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput,Keyboard} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
@@ -42,7 +43,8 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
           keyboardDidHideListener.remove();
         };
       }, []);
-  return (
+  const styles = useStyles();
+return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
           <View style={{
         width: '95%',
@@ -72,7 +74,7 @@ const Notes_pop = ({setcancel, modal,setblur,id}) => {
       </Modal><Pop2 main={'Note successfully sent'} modal={notify_cancel}/></>
   );
 };
-const pop=StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   
     h1:{
         fontFamily:FontFamily.sourceSansProSemibold,
@@ -111,6 +113,6 @@ const pop=StyleSheet.create({
      marginVertical:30
     }
 
-})
+}))
 export default Notes_pop;
 

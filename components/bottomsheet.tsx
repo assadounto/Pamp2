@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useCallback, useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
 import { View, StyleSheet, Button } from 'react-native';
 import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -30,7 +31,8 @@ const Bottom = forwardRef((props, ref) => {
   }));
 
   // renders
-  return (
+  const styles = useStyles();
+return (
     <BottomSheetModalProvider>
   
         <BottomSheetModal
@@ -48,7 +50,7 @@ const Bottom = forwardRef((props, ref) => {
   );
 });
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     padding: 24,
@@ -61,6 +63,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#EFEFEF',
         padding: 16,
   },
-});
+}));
 
 export default Bottom;

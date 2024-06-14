@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { View, Text, Pressable,ScrollView, StyleSheet} from 'react-native';
 import { Icon } from '@rneui/base';
@@ -20,7 +21,8 @@ return(
   return (
     <View  style={{marginTop:20,alignSelf:'center',width:'90%', marginLeft:10,display:'flex',flexDirection:'row',flexWrap:'wrap'}}>  
       {data?.map((item,id) => {
-        return (
+        const styles = useStyles();
+return (
            
           <Pressable
             style={[
@@ -43,7 +45,7 @@ return(
     </View>
   );
 }
-const styles=StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   option: {
     fontSize: 13,
     fontFamily: FontFamily.sourceSansProRegular,
@@ -69,4 +71,4 @@ const styles=StyleSheet.create({
     marginBottom:15,
     marginLeft:10
   },
-})
+}))

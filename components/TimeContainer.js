@@ -1,9 +1,11 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { Color, Border, FontFamily, FontSize, Margin } from "../GlobalStyles";
 
 const TimeContainer = () => {
-  return (
+  const styles = useStyles();
+return (
     <View style={[styles.rectangleParent, styles.mt81_26, styles.ml4]}>
       <View style={styles.groupChild} />
       <View style={styles.groupItem} />
@@ -108,7 +110,7 @@ const TimeContainer = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupChildLayout: {
     height: 85,
     backgroundColor: Color.white,
@@ -314,6 +316,6 @@ const styles = StyleSheet.create({
     width: 362,
     height: 561,
   },
-});
+}));
 
 export default TimeContainer;

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from "react";
 import { CheckBox,Text,Image } from "@rneui/base";
 import { View } from "react-native-animatable";

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from 'react';
 import { Text, View,Alert, StyleSheet, SafeAreaView, Image, Modal, Pressable, FlatList } from 'react-native';
 import { FontFamily } from '../src/GlobalStyles';
@@ -15,7 +16,8 @@ const Opening = ({ data, modal, setModal }) => {
     // Convert the sortedOpeningHours to JSON
     return sortedOpeningHours;
   }
-  return (
+  const styles = useStyles();
+return (
     <>
       <Modal  animationType="slide" transparent={true} visible={modal}>
        <View style={{         alignSelf: 'center',  position:'absolute',bottom:30,      width: '95%',}} >
@@ -74,7 +76,7 @@ const Opening = ({ data, modal, setModal }) => {
 
 export default Opening;
 
-const md_style = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   momo_cont: {
     borderRadius:20,
     width: '90%',
@@ -104,4 +106,4 @@ const md_style = StyleSheet.create({
     fontSize: 16,
     color: '#00463C',
   }
-});
+}));

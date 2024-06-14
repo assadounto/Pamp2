@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
@@ -11,7 +12,8 @@ import { setNextNav } from "../src/redux/user";
 const Emptyfav = ({title,body,top=verticalScale(80),showBtn,col,mt}) => {
   const navigation= useNavigation()
   const dispatch= useDispatch()
-  return (
+  const styles = useStyles();
+return (
     <View style={[styles.component45,{top:top}]}>
       <Image
         style={styles.component45Child}
@@ -55,7 +57,7 @@ const Emptyfav = ({title,body,top=verticalScale(80),showBtn,col,mt}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   youDontHaveTypo: {
     textAlign: "center",
     color: colors.dg.color,
@@ -89,7 +91,7 @@ alignSelf:'center',
     width: '80%',    height: 294,
     alignSelf:'center'
   },
-});
+}));
 
 export default Emptyfav;
 

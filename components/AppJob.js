@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 
 
 
@@ -51,7 +52,8 @@ const AppJob = ({ services,time,setInfo,vendor }) => {
 
     const timer = setInterval(updateServiceStatus, 60000); // Check and update the service status every 1 minute (60000 milliseconds)
 
-    return () => {
+    const styles = useStyles();
+return () => {
       clearInterval(timer); // Clear the interval when the component unmounts
     };
   }, []);

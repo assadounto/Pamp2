@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Text, View} from 'react-native';
@@ -8,7 +9,8 @@ import { FontFamily } from '../GlobalStyles';
 
 const BHeader = ({title, subtitle, back,bg, color,setDateVisible,close,top}) => {
   const navigation=useNavigation()
-  return (
+  const styles = useStyles();
+return (
     <View style={[color, {  marginBottom: 20 ,marginTop:top||10}]}>
      
    

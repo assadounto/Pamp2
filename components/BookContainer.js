@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
@@ -15,7 +16,8 @@ const BookContainer = ({ propMarginTop, onGroupPressablePress }) => {
     };
   }, [propMarginTop]);
 
-  return (
+  const styles = useStyles();
+return (
     <Pressable
       style={[styles.rectangleParent, styles.mt_81_75, groupPressable1Style]}
       onPress={onGroupPressablePress}
@@ -28,7 +30,7 @@ const BookContainer = ({ propMarginTop, onGroupPressablePress }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupChildBg: {
     backgroundColor: Color.lightgreen,
     borderRadius: Border.br_5xl,
@@ -63,6 +65,6 @@ const styles = StyleSheet.create({
     height: 55,
     alignSelf: "center",
   },
-});
+}));
 
 export default BookContainer;

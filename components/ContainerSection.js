@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
 import { Image, StyleSheet, View, Text, Pressable } from "react-native";
@@ -15,7 +16,8 @@ const ContainerSection = ({ propMarginTop, onGroupPressablePress }) => {
     };
   }, [propMarginTop]);
 
-  return (
+  const styles = useStyles();
+return (
     <Pressable
       style={[styles.ellipseParent, styles.mt_110_75, groupPressableStyle]}
       onPress={onGroupPressablePress}
@@ -38,7 +40,7 @@ const ContainerSection = ({ propMarginTop, onGroupPressablePress }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupItemPosition: {
     borderRadius: Border.br_6xl,
     bottom: 0,
@@ -97,6 +99,6 @@ const styles = StyleSheet.create({
     height: 111,
     alignSelf: "center",
   },
-});
+}));
 
 export default ContainerSection;

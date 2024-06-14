@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Image, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -6,7 +7,8 @@ import { Color, Border, FontSize, FontFamily } from "../GlobalStyles";
 const CardForm = () => {
   const navigation = useNavigation();
 
-  return (
+  const styles = useStyles();
+return (
     <Pressable
       style={[styles.groupParent, styles.mt0_259999999999998]}
       onPress={() => navigation.navigate("AddPaymentMetod1")}
@@ -34,7 +36,7 @@ const CardForm = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupBorder: {
     height: 2,
     borderTopWidth: 1,
@@ -104,6 +106,6 @@ const styles = StyleSheet.create({
     width: 414,
     height: 83,
   },
-});
+}));
 
 export default CardForm;

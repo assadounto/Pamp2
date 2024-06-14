@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import { Animated, View, TouchableOpacity,Text,Pressable} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Icon } from '@rneui/base';
@@ -46,7 +47,8 @@ function MyTabBar({state, descriptors, navigation}) {
           };
   
   
-          return (
+
+return (
            
             <Pressable
             onPress={onPress}

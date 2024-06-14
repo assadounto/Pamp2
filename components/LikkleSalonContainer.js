@@ -1,9 +1,11 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Color, FontFamily, FontSize, Border, Margin } from "../GlobalStyles";
 
 const LikkleSalonContainer = () => {
-  return (
+  const styles = useStyles();
+return (
     <View
       style={[
         styles.rectangleParent,
@@ -60,7 +62,7 @@ const LikkleSalonContainer = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   starIconPosition: {
     left: 0,
     position: "absolute",
@@ -147,6 +149,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     bottom: 0,
   },
-});
+}));
 
 export default LikkleSalonContainer;

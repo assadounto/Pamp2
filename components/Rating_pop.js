@@ -1,3 +1,4 @@
+import { makeStyles} from '@rneui/base';
 import React, { useState } from 'react';
 import {Text, View, SafeAreaView, Image, Modal,StyleSheet, TextInput,Keyboard} from 'react-native';
 import { styles,colors } from '../src/Common_styles';
@@ -51,10 +52,11 @@ const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
    }
    
     }
-  return (
+  const styles = useStyles();
+return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
-          <View style={[pop.pop,{top: poph}]}>
-         <View style={pop.notes}>
+          <View style={[styles.pop,{top: poph}]}>
+         <View style={styles.notes}>
             <Icon 
             onPress={handlepressCancel}
             name='close-outline'
@@ -64,7 +66,7 @@ const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
             />
 
          </View>
-         <Text style={pop.rate}>Rate your experience with {vendor[1]} </Text>
+         <Text style={styles.rate}>Rate your experience with {vendor[1]} </Text>
          <StarRating
           starSize={50}
           starStyle={{marginRight:0}}
@@ -72,7 +74,7 @@ const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
         rating={rating}
         onChange={setRating}
       />
-        <TextInput  placeholder='leave note..' onChangeText={setText}    multiline={true} style={pop.input}/>
+        <TextInput  placeholder='leave note..' onChangeText={setText}    multiline={true} style={styles.input}/>
           <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='Send'>
 
                   </Button>
@@ -80,7 +82,7 @@ const Rating_pop = ({setmodal,vendor, modal,setInfoModal}) => {
       </Modal></>
   );
 };
-const pop=StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     rate:{
     fontFamily: FontFamily.sourceSansProSemibold,
     color: '#00463C',
@@ -132,6 +134,6 @@ const pop=StyleSheet.create({
      marginVertical:30
     }
 
-})
+}))
 export default Rating_pop;
 

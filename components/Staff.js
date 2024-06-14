@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { View, Text, Pressable,ScrollView,Image, StyleSheet} from 'react-native';
 import { styles ,colors} from '../src/Common_styles';
@@ -21,7 +22,8 @@ export default function Staff({ data, onSelect }) {
   return (
     <ScrollView horizontal={true} contentContainerStyle={{ marginLeft: 10 }} showsHorizontalScrollIndicator={false}>
           {data.map((item) => {
-              return (
+              const styles = useStyles();
+return (
 
                   <View style={{display:'flex',flexDirection:'column',marginRight:20}}>
                       <Pressable
@@ -42,9 +44,9 @@ export default function Staff({ data, onSelect }) {
   );
 }
 
-const s_style= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
 
  image: { width: 90, height: 90, borderRadius: 50 }
-})
+}))
 
 

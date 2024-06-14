@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Image, Pressable, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -6,7 +7,8 @@ import { Color, FontFamily, FontSize } from "../GlobalStyles";
 const MasterSection = () => {
   const navigation = useNavigation();
 
-  return (
+  const styles = useStyles();
+return (
     <View style={[styles.groupParent, styles.mt_5]}>
       <Pressable
         style={styles.lineParent}
@@ -50,7 +52,7 @@ const MasterSection = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupBorder: {
     height: 2,
     borderTopWidth: 1,
@@ -153,6 +155,6 @@ const styles = StyleSheet.create({
     width: 414,
     height: 83,
   },
-});
+}));
 
 export default MasterSection;

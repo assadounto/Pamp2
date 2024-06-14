@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -10,7 +11,8 @@ const ImageCont = ({ styles,show, uri,smallStyle }) => {
     setImageLoading(false);
   };
 
-  return (
+
+return (
     <>
     
       <FastImage
@@ -27,13 +29,6 @@ const ImageCont = ({ styles,show, uri,smallStyle }) => {
   );
 };
 
-const styles2 = StyleSheet.create({
-  loadingIndicator: {
-    position:'absolute',
-    top: '50%',
-    left: '45%',
-    zIndex: 1,
-  },
-});
+
 
 export default ImageCont;

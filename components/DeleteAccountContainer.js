@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
@@ -15,7 +16,8 @@ const DeleteAccountContainer = ({ propMarginTop }) => {
     };
   }, [propMarginTop]);
 
-  return (
+  const styles = useStyles();
+return (
     <View style={[styles.rectangleParent, styles.mt47_23, groupView2Style]}>
       <View style={styles.groupChild} />
       <Text style={[styles.deleteAccount, styles.groupItemPosition]}>
@@ -30,7 +32,7 @@ const DeleteAccountContainer = ({ propMarginTop }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupItemPosition: {
     top: "50%",
     position: "absolute",
@@ -66,6 +68,6 @@ const styles = StyleSheet.create({
     width: 372,
     height: 74,
   },
-});
+}));
 
 export default DeleteAccountContainer;

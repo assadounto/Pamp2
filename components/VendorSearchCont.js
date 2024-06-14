@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import { Icon,Input } from '@rneui/base'
 import { FontFamily } from '../GlobalStyles'
 import { View, Text, ScrollView,StyleSheet,Image  ,Pressable,FlatList, Alert} from 'react-native'
@@ -188,7 +189,8 @@ style={{
   </View>
   );
 
-   return (
+   const styles = useStyles();
+return (
     <>
     {datas && datas.length!==0 ?
             <>
@@ -213,7 +215,7 @@ style={{
 
 export default VendorSearchCon
 
-const styles2= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     cont:{
       height:400,
       backgroundColor:'white',
@@ -223,4 +225,4 @@ marginHorizontal:20,
       borderRadius:20
     }
   
-  })
+  }))

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
 import {
@@ -21,7 +22,8 @@ const ReviewContainer = ({ carImageUrl, propMarginTop }) => {
     };
   }, [propMarginTop]);
 
-  return (
+  const styles = useStyles();
+return (
     <View style={[styles.rectangleParent, styles.mt_219, groupView5Style]}>
       <View style={styles.groupChild} />
       <View style={styles.groupItem} />
@@ -50,7 +52,7 @@ const ReviewContainer = ({ carImageUrl, propMarginTop }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   leavePosition: {
     left: "50%",
     top: "50%",
@@ -144,6 +146,6 @@ const styles = StyleSheet.create({
     height: 166,
     alignSelf: "center",
   },
-});
+}));
 
 export default ReviewContainer;

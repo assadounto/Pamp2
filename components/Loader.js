@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, Easing } from 'react-native';
 
@@ -20,14 +21,15 @@ const GradientLoader = () => {
     };
   }, [translateX]);
 
-  return (
+  const styles = useStyles();
+return (
     <View style={styles.loadWrapper}>
       <Animated.View style={[styles.activity, { transform: [{ translateX }] }]} />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   loadWrapper: {
     position: 'relative',
     height: '100%',
@@ -50,6 +52,6 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderRightWidth: 0,
   },
-});
+}));
 
 export default GradientLoader;

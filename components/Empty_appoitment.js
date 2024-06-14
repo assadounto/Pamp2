@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
@@ -11,7 +12,8 @@ import { useNavigation } from "@react-navigation/core";
 const EmptyAppoiment = ({showBtn, sub="You don't have upcoming schedules.",col,mt}) => {
   const navigation= useNavigation()
   const dispatch= useDispatch()
-  return (
+  const styles = useStyles();
+return (
     <View style={styles.component44}>
       <Image
         style={styles.component44Child}
@@ -55,7 +57,7 @@ const EmptyAppoiment = ({showBtn, sub="You don't have upcoming schedules.",col,m
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   youDontHaveTypo: {
     textAlign: "center",
     color: colors.dg.color
@@ -90,6 +92,6 @@ marginTop: verticalScale(30),
     height: verticalScale(296),
    
   },
-});
+}));
 
 export default EmptyAppoiment;

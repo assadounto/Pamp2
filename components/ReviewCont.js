@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 
 import React, { useState, useEffect } from "react";
 import { StyleSheet, FlatList, Alert } from "react-native";
@@ -93,7 +94,8 @@ const ReviewCont = ({ data }) => {
         <View style={styles.child1}>
        
           {reviewData && ratings(reviewData.ratings).map((rate) => {
-            return (
+            const styles = useStyles();
+return (
               <View
                 key={rate.rating}
                 style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
@@ -137,7 +139,7 @@ const ReviewCont = ({ data }) => {
 
 export default ReviewCont;
 
-const styles= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   noAppointments:{
     marginTop:30,
     color:colors.dg.color,
@@ -195,4 +197,4 @@ const styles= StyleSheet.create({
  alignSelf:'center',
  marginTop:30
   },
-})
+}))

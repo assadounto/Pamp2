@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from "react";
 import { StyleSheet,Text,View,TextInput,Image,Pressable } from "react-native";
 import { FontFamily } from "../src/GlobalStyles";
@@ -144,7 +145,7 @@ const Card =()=>{
 }
 
 
-export const paystyle=StyleSheet.create({
+export const useStyles = makeStyles((theme) => ({
     text: {marginBottom:5, paddingHorizontal: 20,
         fontFamily:FontFamily.sourceSansProSemibold,fontSize:15,color:'#00463C'
     },input: {
@@ -154,6 +155,6 @@ export const paystyle=StyleSheet.create({
      height:14,
  
     }
-})
+}))
 
 export default Card

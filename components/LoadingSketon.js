@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import { View } from "react-native-animatable";
 import { ScrollView } from "react-native-gesture-handler";
 import { SkeletonGroup, Skeleton } from 'react-native-skeleton-loaders'

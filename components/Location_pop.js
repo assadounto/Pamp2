@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState } from 'react';
 import { Text,Alert, View,Pressable, SafeAreaView,ImageBackground, Modal, StyleSheet} from 'react-native';
 import {  colors } from '../src/Common_styles';
@@ -58,7 +59,8 @@ const Location_pop = ({ setmodal,getUserLocation, scope, modal }) => {
   };
 
   const navigation = useNavigation();
-  return (
+  const styles = useStyles();
+return (
     <Modal  onRequestClose={()=>setmodal(!modal)} animationType="slide" transparent={true} visible={modal}>
     <View style={styles.container}>
       <ImageBackground
@@ -101,7 +103,7 @@ const Location_pop = ({ setmodal,getUserLocation, scope, modal }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     height:'80%',
@@ -170,7 +172,7 @@ paddingBottom:20,
 
     color: '#00463C',
   },
-});
+}));
 
 export default Location_pop ;
 

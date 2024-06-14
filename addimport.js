@@ -1,9 +1,8 @@
-// addImports.js
 const fs = require('fs');
 const path = require('path');
 
-const folderPath = './src/components'; // Adjust this path to your components folder
-const importStatement = "import { ComponentName } from './ComponentPath';"; // Adjust as needed
+const folderPath = './components'; // Adjust this path to your components folder
+const importStatement = "import { makeStyles } from '@rneui/base';"; // Adjust as needed
 
 fs.readdirSync(folderPath).forEach(file => {
     const filePath = path.join(folderPath, file);
@@ -12,14 +11,56 @@ fs.readdirSync(folderPath).forEach(file => {
     if (file.endsWith('.js') || file.endsWith('.jsx') || file.endsWith('.ts') || file.endsWith('.tsx')) {
         try {
             let data = fs.readFileSync(filePath, 'utf8');
+            let modified = false;
+
             // Check if the import statement already exists to avoid duplicates
             if (!data.includes(importStatement)) {
                 // Insert import statement at the top
                 data = `${importStatement}\n${data}`;
-                fs.writeFileSync(filePath, data, 'utf8');
-                console.log(`Import added to ${file}`);
+                modified = true;
+            }
+
+            // Check if `const styles = useStyles();` is already present
+            if (!data.includes('const styles = useStyles();')) {
+                // Find the last occurrence of `return (` to insert `const styles = useStyles();` before it
+                const returnIndex = data.lastIndexOf('return (');
+                if (returnIndex !== -1) {
+                    const stylesLine = 'const styles = useStyles();';
+                    data = `${data.slice(0, returnIndex)}${stylesLine}\n${data.slice(returnIndex)}`;
+                    modified = true;
+                } else {
+                    console.log(`No return statement found in ${file}`);
+                }
+            }
+
+            // Replace any `const anyName = StyleSheet.create({` with `const useStyles = makeStyles((theme) => ({`
+            const styleSheetRegex = /const\s+\w+\s*=\s*StyleSheet\.create\(\{/;
+            if (styleSheetRegex.test(data) && !data.includes('const useStyles = makeStyles((theme) => ({')) {
+                data = data.replace(styleSheetRegex, 'const useStyles = makeStyles((theme) => ({');
+                modified = true;
             } else {
-                console.log(`Import already exists in ${file}`);
+                console.log(`No StyleSheet.create found or already updated in ${file}`);
+            }
+
+            // Replace the last occurrence of `})` or `});` with `}));`
+            // const closingBraceIndex = data.lastIndexOf('})');
+            // if (closingBraceIndex !== -1 && !data.includes('}));')) {
+            //     data = `${data.slice(0, closingBraceIndex)}}));${data.slice(closingBraceIndex + 2)}`;
+            //     modified = true;
+            // } else if (data.lastIndexOf('});') !== -1 && !data.includes('}));')) {
+            //     const closingSemicolonIndex = data.lastIndexOf('});');
+            //     data = `${data.slice(0, closingSemicolonIndex)}}));${data.slice(closingSemicolonIndex + 3)}`;
+            //     modified = true;
+            // } else {
+            //     console.log(`No closing braces found or already updated in ${file}`);
+            // }
+
+            // Write modified data back to file if any changes were made
+            if (modified) {
+                fs.writeFileSync(filePath, data, 'utf8');
+                console.log(`Imports and styles updated in ${file}`);
+            } else {
+                console.log(`No changes needed in ${file}`);
             }
         } catch (err) {
             console.error(`Error reading or writing ${file}: ${err.message}`);
@@ -27,4 +68,4 @@ fs.readdirSync(folderPath).forEach(file => {
     }
 });
 
-console.log('Import addition process completed.');
+console.log('Import addition and styles update process completed.');

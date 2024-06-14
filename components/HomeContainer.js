@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Image, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -6,7 +7,8 @@ import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 const HomeContainer = () => {
   const navigation = useNavigation();
 
-  return (
+  const styles = useStyles();
+return (
     <Pressable
       style={[styles.menu, styles.mt2_6300000000000026]}
       onPress={() => navigation.navigate("Settings")}
@@ -58,7 +60,7 @@ const HomeContainer = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   homePosition: {
     height: 24,
     marginTop: -21,
@@ -190,6 +192,6 @@ const styles = StyleSheet.create({
     width: 434,
     height: 110,
   },
-});
+}));
 
 export default HomeContainer;

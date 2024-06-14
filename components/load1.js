@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React from "react"
 import ContentLoader, { Rect, Circle, Path } from "react-content-loader/native"
 

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -6,7 +7,8 @@ import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 const SalonContainer = () => {
   const navigation = useNavigation();
 
-  return (
+  const styles = useStyles();
+return (
     <Pressable
       style={[styles.path636Parent, styles.mt28_630000000000003, styles.mr22]}
       onPress={() => navigation.navigate("BookingDetails")}
@@ -58,7 +60,7 @@ const SalonContainer = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   groupChildPosition: {
     overflow: "hidden",
     maxWidth: "100%",
@@ -185,6 +187,6 @@ const styles = StyleSheet.create({
     width: 369,
     height: 424,
   },
-});
+}));
 
 export default SalonContainer;

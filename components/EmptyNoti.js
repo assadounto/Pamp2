@@ -1,9 +1,11 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
 
 const EmptyStateNoti = () => {
-  return (
+  const styles = useStyles();
+return (
     <View style={styles.groupParent}>
       <Image
         style={styles.componentChild}
@@ -20,7 +22,7 @@ const EmptyStateNoti = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   youDontHaveTypo: {
     textAlign: "center",
     color: Color.darkslategray_300,
@@ -52,6 +54,6 @@ const styles = StyleSheet.create({
     height: 296,
     position: "absolute",
   },
-});
+}));
 
 export default EmptyStateNoti;

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import { Image } from "@rneui/base";
 import React from "react";
 import { Text, View } from "react-native-animatable";

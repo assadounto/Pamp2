@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { StyleSheet, View, Image, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -6,7 +7,8 @@ import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 const MenuContainer = () => {
   const navigation = useNavigation();
 
-  return (
+  const styles = useStyles();
+return (
     <View style={[styles.menu, styles.mt_228_37, styles.mr_20]}>
       <View style={styles.menuChild} />
       <Image
@@ -59,7 +61,7 @@ const MenuContainer = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   homePosition: {
     height: 24,
     marginTop: -21,
@@ -189,6 +191,6 @@ const styles = StyleSheet.create({
     width: 434,
     height: 110,
   },
-});
+}));
 
 export default MenuContainer;

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, StyleSheet, ScrollView,Platform, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Icon } from '@rneui/base';
@@ -129,7 +130,8 @@ console.log(user.location.name)
 
 
 
-  return (
+  const styles = useStyles();
+return (
     <><TouchableWithoutFeedback onPress={hideSearchResults}>
       <View>
         <TextInput
@@ -186,7 +188,7 @@ console.log(user.location.name)
 };
 
 
-const s_style= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   column:{
   height:35,
  alignContent:'center',
@@ -277,7 +279,7 @@ marginTop:10
     marginVertical:10
   }
   
-})
+}))
 
 
 export default Gsearch;

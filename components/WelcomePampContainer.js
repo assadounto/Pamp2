@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -19,7 +20,8 @@ const WelcomePampContainer = ({
     };
   }, [theBestPlaceToReachServicMarginTop, theBestPlaceToReachServicMarginLeft]);
 
-  return (
+  const styles = useStyles();
+return (
     <View
       style={[styles.mailParent, styles.mt46, styles.ml44, groupView3Style]}
     >
@@ -47,7 +49,7 @@ const WelcomePampContainer = ({
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   textTypo: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontWeight: "600",
@@ -100,6 +102,6 @@ const styles = StyleSheet.create({
     width: 298,
     height: 86,
   },
-});
+}));
 
 export default WelcomePampContainer;

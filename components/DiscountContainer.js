@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/base';
 import * as React from "react";
 import { useMemo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -16,7 +17,8 @@ const DiscountContainer = ({ propMarginTop, propMarginLeft }) => {
     };
   }, [propMarginTop, propMarginLeft]);
 
-  return (
+  const styles = useStyles();
+return (
     <View
       style={[styles.giftParent, styles.mt79, styles.ml44, groupView4Style]}
     >
@@ -44,7 +46,7 @@ const DiscountContainer = ({ propMarginTop, propMarginLeft }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   giftIconPosition: {
     left: 0,
     position: "absolute",
@@ -104,6 +106,6 @@ const styles = StyleSheet.create({
     width: 307,
     height: 86,
   },
-});
+}));
 
 export default DiscountContainer;

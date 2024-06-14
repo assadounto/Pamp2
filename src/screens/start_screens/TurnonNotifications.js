@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, {useState} from 'react';
 import {View, ImageBackground,PermissionsAndroid ,Platform, Text, StyleSheet, Pressable,ActivityIndicator, Alert} from 'react-native';
 import {FontFamily} from '../../../GlobalStyles';
@@ -111,7 +113,9 @@ const Turnon = ({navigation}) => {
     } else {
       login(user);    }
   };
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <View style={styles.container}>
       <ImageBackground
         source={require('../assets/Group2.png')}
@@ -157,7 +161,7 @@ const Turnon = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -225,5 +229,5 @@ paddingBottom:20,
 
     color: '#00463C',
   },
-});
+}));
 export default Turnon;

@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, {useState, useEffect} from 'react';
 import { Animated, Easing } from 'react-native';
 import { useResendEmailMutation } from '../../redux/authapi';
@@ -10,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import Header from './header';
-import {styles, colors} from '../../Common_styles';
+import {styles as styles2, colors} from '../../Common_styles';
 import {Button} from '@rneui/base';
 import Pop2 from './pop2';
 import Blur from './Blur';
@@ -142,47 +144,12 @@ const dispatch=useDispatch()
     });
 
   };
-  const styles1 = StyleSheet.create({
-    root: {flex: 1, padding: 10,marginHorizontal:40},
-    title: {textAlign: 'center', fontSize: 30},
-    codeFieldRoot: {marginTop: 20,
-      transform: [
-        {
-          translateX: 1,
-        },
-      ],
-    },
-    cell: {
-      width: 65,
-      height: 66,
-      lineHeight: 38,
-      fontSize: 30,
-      color: '#00463C',
-      borderWidth: 2,
-      borderColor: '#B0EBBD',
-      textAlign: 'center',
-      borderRadius: 15,
-      padding: 15,
-    },
-    wrong: {
-      width: 65,
-      height: 66,
-      lineHeight: 38,
-      fontSize: 30,
-      color: '#00463C',
-      borderWidth: 2,
-      borderColor:  'red',
-      textAlign: 'center',
-      borderRadius: 15,
-      padding: 15,
-    },
-    focusCell: {
-      borderColor: '#00463C',
-    },
-  });
+
 
   
-  return (
+  const { theme} = useTheme();
+const styles1 = useStyles();
+return (
     <>
       <SafeAreaView style={styles1.root}>
         <Header
@@ -226,7 +193,7 @@ const dispatch=useDispatch()
       
       <Text
   disabled={timerActive}
-  style={[colors.dg, styles.mt100, styles.tc, { fontFamily: FontFamily.sourceSansProSemibold }]}
+  style={[colors.dg, styles2.mt100, styles2.tc, { fontFamily: FontFamily.sourceSansProSemibold }]}
   onPress={startTimer}
 >
   {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
@@ -235,7 +202,7 @@ const dispatch=useDispatch()
 <Text> </Text>
        
           <Button
-                       titleStyle={styles.tbtn}
+                       titleStyle={styles2.tbtn}
             title="Verify Your Email"
             onPress={handleSubmit}
             loading={isLoading}
@@ -256,5 +223,45 @@ const dispatch=useDispatch()
     </>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  root: { flex: 1, padding: 10, marginHorizontal: 40 },
+  title: { textAlign: 'center', fontSize: 30 },
+  codeFieldRoot: {
+    marginTop: 20,
+    transform: [
+      {
+        translateX: 1,
+      },
+    ],
+  },
+  cell: {
+    width: 65,
+    height: 66,
+    lineHeight: 38,
+    fontSize: 30,
+    color: '#00463C',
+    borderWidth: 2,
+    borderColor: '#B0EBBD',
+    textAlign: 'center',
+    borderRadius: 15,
+    padding: 15,
+  },
+  wrong: {
+    width: 65,
+    height: 66,
+    lineHeight: 38,
+    fontSize: 30,
+    color: '#00463C',
+    borderWidth: 2,
+    borderColor: 'red',
+    textAlign: 'center',
+    borderRadius: 15,
+    padding: 15,
+  },
+  focusCell: {
+    borderColor: '#00463C',
+  },
+}));
 
 export default VerifyEmail;

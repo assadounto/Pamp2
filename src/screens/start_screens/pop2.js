@@ -1,10 +1,14 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from 'react';
 import {Text, View, SafeAreaView, Image, Modal} from 'react-native';
-import {styles, colors} from '../../Common_styles';
+import { colors} from '../../Common_styles';
 import LottieView from 'lottie-react-native';
-import { verticalScale } from '../../Dimensions';
+import { verticalScale,horizontalScale } from '../../Dimensions';
 const Pop2 = ({main, modal}) => {
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <Modal animationType='fade' transparent={true} visible={modal}>
       <View style={styles.pop2}>
       <LottieView
@@ -18,5 +22,25 @@ const Pop2 = ({main, modal}) => {
     </Modal>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  pop2: {
+    position: 'absolute',
+    bottom: verticalScale(40),
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: horizontalScale(20),
+    alignSelf: 'center',
+    padding: horizontalScale(40),
+    alignContent: 'center',
+
+    width: '95%',
+    height: verticalScale(250),
+  },
+
+
+
+}))
 
 export default Pop2;

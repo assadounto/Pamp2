@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from 'react';
 import { View, ImageBackground,Image, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
 import { FontFamily } from '../../GlobalStyles';
@@ -11,7 +13,9 @@ dispatch(setFirst(false))
 
   navigation.replace('main')
   }
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <View style={styles.container}>
       <ImageBackground
         source={require('../assets/Group2.png')}
@@ -46,7 +50,7 @@ dispatch(setFirst(false))
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -109,6 +113,6 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.sourceSansProBold,
     textAlign: 'center',
   },
-});
+}));
 
 export default Getting_started;

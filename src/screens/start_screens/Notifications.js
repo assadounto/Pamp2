@@ -1,10 +1,14 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from 'react';
 import {View, ImageBackground, Text, StyleSheet, Pressable} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
 const Getting_started = ({navigation}) => {
  
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <View style={styles.container}>
       <ImageBackground
         source={require('../assets/Group2.png')}
@@ -33,7 +37,7 @@ const Getting_started = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -86,5 +90,5 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     padding: 10,
   },
-});
+}));
 export default Getting_started;

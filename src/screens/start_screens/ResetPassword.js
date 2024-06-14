@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, {useState, useEffect} from 'react';
 import BHeader from '../../../components/BHeader';
 import {Text, View, TouchableOpacity, Image, StyleSheet, Platform} from 'react-native';
@@ -52,7 +54,9 @@ const {info} = route.params
 
     }})  
   }
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <>
     <View style={{marginTop:Platform.OS==='ios'? 40:0}}>
     <BHeader
@@ -90,14 +94,24 @@ const {info} = route.params
             <Button
                 title="Send"
                 onPress={handlePress}
-                buttonStyle={[styles2.button,{marginTop:80}]}
+                buttonStyle={[styles.button,{marginTop:80}]}
                />
             </View>
     </>
   );
 };
 export default ResetPassword;
-const styles= StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
+  button: {
+    width: horizontalScale(330),
+    height: verticalScale(71),
+    backgroundColor: '#86D694',
+    borderWidth: horizontalScale(1),
+    borderColor: '#86D694',
+    marginBottom: verticalScale(10),
+    alignSelf: 'center',
+    borderRadius: horizontalScale(23),
+  },
   cont:{
     
     width:'90%',
@@ -115,4 +129,4 @@ const styles= StyleSheet.create({
   mt50:{
     marginTop:50
   }
-})
+}))

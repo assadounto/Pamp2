@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, {useState} from 'react';
 import { useSelector } from 'react-redux';
 import { Animated, Easing } from 'react-native';
@@ -23,7 +25,7 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-export const styles1 = StyleSheet.create({
+export const useStyles = makeStyles((theme) => ({
   root: {flex: 1, padding: 20,marginHorizontal:41},
   title: {textAlign: 'center', fontSize: 30},
   codeFieldRoot: {marginTop: 20,transform: [
@@ -58,10 +60,20 @@ export const styles1 = StyleSheet.create({
   focusCell: {
     borderColor: '#000',
   },
+  button: {
+    width: horizontalScale(330),
+    height: verticalScale(71),
+    backgroundColor: '#86D694',
+    borderWidth: horizontalScale(1),
+    borderColor: '#86D694',
+    marginBottom: verticalScale(10),
+    alignSelf: 'center',
+    borderRadius: horizontalScale(23),
+  },
   dim: {
     backgroundColor: '#463C3C',
   },
-});
+}));
 
 const CELL_COUNT = 4;
 
@@ -181,7 +193,9 @@ const VerifyNumber = ({navigation}) => {
     });
 
   };
-  return (
+  const { theme} = useTheme();
+const styles1 = useStyles();
+return (
     <>
       <SafeAreaView style={[styles1.root]}>
         <Header
@@ -233,7 +247,7 @@ const VerifyNumber = ({navigation}) => {
               handleSubmit()
             }}
             loading={isLoading}
-            buttonStyle={[styles.button,{width:'100%'}]}
+            buttonStyle={[styles1.button,{width:'100%'}]}
           />
   
 

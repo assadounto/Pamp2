@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const folderPath = './screens'; // Adjust this path to your components folder
+const folderPath = './src/screens/start_screens'; // Adjust this path to your components folder
 const importStatement = "import { makeStyles } from '@rneui/base';"; // Adjust as needed
 
 fs.readdirSync(folderPath).forEach(file => {

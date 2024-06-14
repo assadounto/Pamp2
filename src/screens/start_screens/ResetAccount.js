@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, {useState, useEffect} from 'react';
 import { Animated, Easing } from 'react-native';
 import { useResendEmailMutation, useVerifyPhoneMutation } from '../../redux/authapi';
@@ -143,7 +145,7 @@ const resend=()=>{
       })
 }
 
-  const styles1 = StyleSheet.create({
+  const useStyles = makeStyles((theme) => ({
     root: {flex: 1, padding: 10,marginHorizontal:40},
     title: {textAlign: 'center', fontSize: 30},
     codeFieldRoot: {marginTop: 20,marginHorizontal:40,
@@ -180,10 +182,17 @@ const resend=()=>{
     focusCell: {
       borderColor: '#00463C',
     },
-  });
+    tc: {
+      alignSelf: 'center',
+      flexWrap: 'wrap',
+      fontFamily: FontFamily.sourceSansProRegular
+    },
+  }));
 
 
-  return (
+  const { theme} = useTheme();
+const styles = useStyles();
+return (
     <>
       <View style={{}}>
       <Header
@@ -200,7 +209,7 @@ const resend=()=>{
           value={value}
           onChangeText={setValue  }
           cellCount={CELL_COUNT}
-          rootStyle={styles1.codeFieldRoot}
+          rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           renderCell={({index, symbol, isFocused}) => (
@@ -209,8 +218,8 @@ const resend=()=>{
             
               key={index}
               style={[
-               styles1.cell,
-                isFocused  && styles1.focusCell,
+               styles.cell,
+                isFocused  && styles.focusCell,
                 {
                   transform: [
                     {
@@ -229,7 +238,7 @@ const resend=()=>{
       
       <Text
   disabled={timerActive}
-  style={[colors.dg, styles.mt100, styles.tc, { fontFamily: FontFamily.sourceSansProSemibold }]}
+  style={[colors.dg, styles.tc, { fontFamily: FontFamily.sourceSansProSemibold,marginTop:100 }]}
   onPress={startTimer}
 >
   {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}

@@ -1,3 +1,5 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import { Alert, View,TextInput, TouchableOpacity, SafeAreaView, Platform } from 'react-native';
 import { Input, Button,Icon } from '@rneui/base';
@@ -89,7 +91,8 @@ const PassReset = ({ navigation,route}) => {
     }
   };
 
-  return (
+  const { theme} = useTheme();
+return (
     <>
 
      

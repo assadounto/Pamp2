@@ -1,9 +1,13 @@
+import { makeStyles } from '@rneui/base';
+import { useTheme } from '@rneui/themed';
 import React from 'react';
 import {Text, View} from 'react-native';
 import {styles, colors} from '../../Common_styles';
 
 const Blur = () => {
-  return (
+  const { theme} = useTheme();
+
+return (
     <View
       style={{
         width: '100%',

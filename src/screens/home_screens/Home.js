@@ -1,13 +1,13 @@
 import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState,useRef } from 'react';
 import { View, Text, } from 'react-native-animatable';
-import { Input, Icon, TouchableOpacity } from '@rneui/base';
+import { Input, Icon,  } from '@rneui/base';
 import { styles, colors } from '../../Common_styles';
 import UHeader from '../../../components/UHeader';
 import { useInternet } from '../../../components/Internetcontext';
 import { useGetcategoriesQuery } from '../../redux/authapi';
-import { Pressable, FlatList, Image, Platform, Alert } from 'react-native';
+import { Pressable, FlatList, Image, Platform, Alert, TouchableOpacity, Animated } from 'react-native';
 import RadioButton from '../../../components/RadioButton';
 import Geolocation from 'react-native-geolocation-service';
 import { useSelector, useDispatch } from 'react-redux';
@@ -47,6 +47,8 @@ import LoadingSkeleton from '../../../components/LoadingSketon';
 import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions';
 import Location_pop from '../../../components/Location_pop';
 import NoInternetComponent from '../../../components/NoInternet';
+import HideOnScroll from '../../../components/HideOnScroll';
+import SearchBar from '../../../components/searchbar';
 const Tab = createMaterialTopTabNavigator();
 
 const Home = ({ navigation }) => {
@@ -272,27 +274,24 @@ const Home = ({ navigation }) => {
 
 
   }
-
-
+  const [showTouchable, setShowTouchable] = useState(true);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  
+  const { theme } = useTheme();
   return (
     <Fragment >
       <UHeader newnoti={unread} navigation={navigation} />
-
-      <Pressable onPress={() => navigation.navigate("Search")}>
-        <Image
-
-          source={img}
-          style={{ width: horizontalScale(330), borderRadius: 20, height: verticalScale(60), paddingTop: verticalScale(8), alignSelf: 'center', marginBottom: 15 }}
-
-        />
-      </Pressable>
-
+      <HideOnScroll scrollY={scrollY}>      
+         <SearchBar theme={theme}/>
+      </HideOnScroll>
       <Tab.Navigator
-        sceneContainerStyle={{ backgroundColor: 'white' }}
+        sceneContainerStyle={{ backgroundColor: theme.colors.background}}
         tabBar={props => <MyTabBar {...props} />}>
-        <Tab.Screen name="Popular" component={Popular} />
+        <Tab.Screen name="Popular">
+          {(props) => <Popular {...props} scrollY={scrollY}/>}
+        </Tab.Screen>
         <Tab.Screen name="Recently viewed" component={Recent} />
-        <Tab.Screen name="Top Rated Vendors" component={Top} />
+        <Tab.Screen name="Top Rated" component={Top} />
         {user?.role == 'admin' ? <Tab.Screen name="Extra Vendors" component={Others} /> : <></>}
       </Tab.Navigator>
       <Location_pop setmodal={setShowInfoModal} modal={showInfoModal} getUserLocation={getUserLocation} />
@@ -300,17 +299,13 @@ const Home = ({ navigation }) => {
   );
 };
 
-const Popular = ({ navigation }) => {
+const Popular = ({ navigation, scrollY  }) => {
   const isInternetConnected = useInternet();
   const dispatch = useDispatch()
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState()
   const userstate = useSelector((state) => state.user)
-
   console.log(userstate.userInfo)
-
-
-
   const { data, isLoading, refetch, isError } = useGetcategoriesQuery('Popular')
   useFocusEffect(
 
@@ -339,9 +334,6 @@ const Popular = ({ navigation }) => {
     }
 
   }
-
-
-
   const handleSearch = async (id, title) => {
     setImageLoading(true)
     try {
@@ -357,22 +349,17 @@ const Popular = ({ navigation }) => {
       Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
     }
   };
-
-
-
   const [imageLoading, setImageLoading] = useState(false);
   const location = useSelector(state => state.user)
   const item = ({ item }) => (
-    <Pressable key={item.id} onPress={() => handleSearch(item.id, item.name)} style={{ paddingTop: 13, paddingHorizontal: 6, borderRadius: 20, marginTop: verticalScale(20), backgroundColor: 'white', width: '90%', alignSelf: 'center', shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4 }} >
-
-
+    <Pressable key={item.id} onPress={() => handleSearch(item.id, item.name)} style={{ paddingTop: 13, paddingHorizontal: 6, borderRadius: 20, marginTop: verticalScale(20), backgroundColor: theme.colors.card, width: '90%', alignSelf: 'center', shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4 }} >
 
       <ImageCont uri={item.photo_url} styles={{ width: '95%', alignSelf: 'center', height: verticalScale(300), borderRadius: 20 }} />
 
 
 
-      <Text style={[colors.dg, { marginLeft: 20, marginTop: verticalScale(15), fontFamily: FontFamily.sourceSansProSemibold, fontSize: moderateScale(24), marginBottom: verticalScale(20) }]}>{item.name}</Text>
-      {imageLoading && <ActivityIndicator color={colors.dg2.color} style={{ position: "absolute", alignSelf: 'center', top: '50%' }} size={'small'} />}
+      <Text style={[ { marginLeft: 20,color: theme.colors.dg,  marginTop: verticalScale(15), fontFamily: FontFamily.sourceSansProSemibold, fontSize: moderateScale(24), marginBottom: verticalScale(20) }]}>{item.name}</Text>
+      {imageLoading && <ActivityIndicator color={theme.colors.lg} style={{ position: "absolute", alignSelf: 'center', top: '50%' }} size={'small'} />}
     </Pressable>
   );
 
@@ -384,12 +371,11 @@ const Popular = ({ navigation }) => {
       {
         isLoading ? <LoadingSkeleton />
           :
-          <FlatList contentContainerStyle={{ paddingBottom: 30 }}
+          <Animated.FlatList contentContainerStyle={{ paddingBottom: 30 }}
             showsVerticalScrollIndicator={false}
             data={data}
             renderItem={item}
-
-
+           
             refreshing={false}
             keyExtractor={item => item.id}
             ListEmptyComponent={<NoInternetComponent retry={() => refetch()} />}

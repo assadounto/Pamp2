@@ -6,14 +6,15 @@ import { View } from "react-native-animatable";
 import { styles, colors } from "../src/Common_styles";
 import { setuser } from "../src/redux/user";
 import { verticalScale, horizontalScale, moderateScale } from "../src/Dimensions";
-const CheckBoxComponent = ({ onPress, state, title, containerWidth = horizontalScale(200), mark, height = verticalScale(33), width = horizontalScale(33), color = colors.lg.color }) => {
+const CheckBoxComponent = ({ onPress, state, card=true, title, containerWidth = horizontalScale(200), mark, height = verticalScale(33), width = horizontalScale(33), color = colors.lg.color }) => {
+  const {theme}=useTheme()
   return (
     <View
       style={{ width: containerWidth }}
     >
       <CheckBox
         title={title}
-
+       containerStyle={{backgroundColor:card? theme.colors.card:theme.colors.background}}
         textStyle={{ marginLeft: horizontalScale(10), fontWeight: 'normal', fontSize: moderateScale(15), color: color }}
         uncheckedIcon={<Image
           resizeMode='contain'

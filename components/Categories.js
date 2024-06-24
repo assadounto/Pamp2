@@ -39,7 +39,7 @@ export default function Categories({ data, onSelect }) {
               color={item.value === userOption ? 'white' : '#BCC4CC'}
               onPress={() => setModalVisible(true)}
             />}
-            <Text style={[styles.option, item.value === userOption ? colors.w : colors.dg]}>  {item.value}</Text>
+            <Text style={[styles.option, item.value === userOption ? colors.w : theme.mode == 'dark' ? colors.w : colors.dg]}>  {item.value}</Text>
           </Pressable>
 
         );
@@ -54,18 +54,18 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   unselected: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.background,
     borderRadius: 20,
     height: 34,
     padding: 8,
     marginBottom: 15,
-    borderColor: colors.dg2.color,
+    borderColor: theme.colors.lgb,
     borderWidth: 1,
     marginLeft: 10
 
   },
   selected: {
-    backgroundColor: colors.dg2.color,
+    backgroundColor: theme.colors.lgb,
     borderRadius: 20,
     color: 'white',
     height: 34,

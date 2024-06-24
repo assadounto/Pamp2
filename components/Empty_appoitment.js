@@ -25,11 +25,11 @@ const EmptyAppoiment = ({ showBtn, sub = "You don't have upcoming schedules.", c
       <Text style={[styles.noAppointments, styles.youDontHaveTypo]}>
         No appointments
       </Text>
-      <Text style={[styles.youDontHave, styles.youDontHaveTypo, { color: col ? col : colors.dg.color, marginTop: mt ? mt : null, fontFamily: FontFamily.sourceSansProRegular },]}>
+      <Text style={[styles.youDontHave, styles.youDontHaveTypo, { color: col ? col : theme.colors.dg, marginTop: mt ? mt : null, fontFamily: FontFamily.sourceSansProRegular },]}>
         {sub}
       </Text>
       {showBtn && <Button
-        titleStyle={{ fontSize: moderateScale(14), fontFamily: FontFamily.sourceSansProBold, color: colors.dg2.color }}
+        titleStyle={{ fontSize: moderateScale(14), fontFamily: FontFamily.sourceSansProBold, color: theme.colors.lg }}
         title={'Log in or sign up'}
 
         // containerStyle={}
@@ -43,10 +43,10 @@ const EmptyAppoiment = ({ showBtn, sub = "You don't have upcoming schedules.", c
           marginTop: 20,
           alignSelf: 'center',
           borderRadius: 40,
-          borderColor: colors.dg2.color,
+          borderColor: theme.colors.lgb,
           borderWidth: 2,
 
-          backgroundColor: colors.w.color,
+          backgroundColor: theme.colors.background,
         }}
         onPress={() => {
           dispatch(setNextNav('Favourites'))
@@ -62,7 +62,7 @@ const EmptyAppoiment = ({ showBtn, sub = "You don't have upcoming schedules.", c
 const useStyles = makeStyles((theme) => ({
   youDontHaveTypo: {
     textAlign: "center",
-    color: colors.dg.color
+    color: theme.colors.dg
 
   },
   component44Child: {

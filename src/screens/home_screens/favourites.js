@@ -34,7 +34,7 @@ const Favourites = ({ navigation }) => {
 
         }
       }
-    }, [user?.id, data]) // Include user.id in the dependency array
+    }, [user?.id]) // Include user.id in the dependency array
   );
 
   const getFav = async () => {

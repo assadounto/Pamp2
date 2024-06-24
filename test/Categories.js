@@ -59,13 +59,13 @@ const useStyles = makeStyles((theme) => ({
     height: 34,
     padding: 8,
     marginBottom: 15,
-    borderColor: colors.dg2.color,
+    borderColor: theme.colors.lgb,
     borderWidth: 1,
     marginLeft: 10
 
   },
   selected: {
-    backgroundColor: colors.dg2.color,
+    backgroundColor: theme.colors.lgb,
     borderRadius: 20,
     color: 'white',
     height: 34,

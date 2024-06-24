@@ -62,11 +62,11 @@ const Discount = ({ navigation }) => {
   return (
     <>
 
-      <BHeader top={Platform.OS === 'ios' ? 60 : 20} color={colors.dg2.color} />
+      <BHeader top={Platform.OS === 'ios' ? 60 : 20} color={theme.colors.lg} />
       <View style={pop.pop}>
         <Text style={pop.rate}>Enter Promo Code</Text>
         <TextInput
-          placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={theme.colors.placeholder}
           placeholder="Promo Code"
           onChangeText={setText}
           style={pop.input}
@@ -120,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
     height: 2
   },
   dis: {
-    color: '#00463C',
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: 18
   },
@@ -140,13 +140,13 @@ const useStyles = makeStyles((theme) => ({
   },
   rate: {
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: '#00463C',
+    color: theme.colors.dg,
     fontSize: 24,
     marginBottom: 20
   },
   pop: {
     width: '95%',
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.background,
     alignItems: 'center',
     borderRadius: 20,
     alignSelf: 'center',
@@ -171,7 +171,7 @@ const useStyles = makeStyles((theme) => ({
 
   },
   h4: {
-    color: colors.lg.color
+    color: theme.colors.lg
   },
   notes:
   {

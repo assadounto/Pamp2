@@ -25,7 +25,7 @@ const Add_payment = ({ navigation }) => {
             <BHeader title={'Add Payment method'} />
             <RadioButton data={data} onSelect={(val) => setpayment(val)} />
             <ScrollView
-                contentContainerStyle={{ backgroundColor: 'white' }}
+                contentContainerStyle={{ backgroundColor: theme.colors.background }}
             >
 
 

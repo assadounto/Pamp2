@@ -17,7 +17,7 @@ const Pop2 = ({ main, modal }) => {
           autoPlay
           loop={false}
         />
-        <Text style={[colors.dgb, { marginTop: verticalScale(-40) }, styles.fs18, styles.tac]}>{main}</Text>
+        <Text style={[ {color: theme.colors.lg,  marginTop: verticalScale(-40) }, styles.fs18, styles.tac]}>{main}</Text>
       </View>
     </Modal>
   );
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   pop2: {
     position: 'absolute',
     bottom: verticalScale(40),
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.card,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: horizontalScale(20),

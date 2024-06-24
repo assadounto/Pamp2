@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 18,
     width: horizontalScale(150),
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: colors.dg.color,
+    color: theme.colors.dg,
     textAlign: "left",
     left: 53,
 
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   july2022: {
 
     fontSize: 10,
-    color: colors.dg2.color
+    color: theme.colors.lg
 
   },
   likkleSalonIs: {

@@ -16,9 +16,11 @@ import axios from 'axios';
 
 import Header from './header';
 import PhoneInput from 'react-native-phone-number-input';
-import { horizontalScale, verticalScale } from '../../Dimensions';
+import { horizontalScale, verticalScale, moderateScale } from '../../Dimensions';
 import { FontFamily } from '../../GlobalStyles';
 const Register = ({ navigation }) => {
+  const { theme } = useTheme();
+  const styles = useStyles();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
@@ -60,8 +62,7 @@ const Register = ({ navigation }) => {
     }
   }
 
-  const { theme } = useTheme();
-  const styles = useStyles();
+
   return (
     <>
       <Header
@@ -126,7 +127,7 @@ const Register = ({ navigation }) => {
               <View>
                 <TextInput
 
-                  placeholderTextColor={'#BBB9BC'}
+                  placeholderTextColor={theme.colors.placeholder}
                   placeholder="First Name"
                   style={[styles.textInput]}
                   onChangeText={handleChange('username')}
@@ -137,7 +138,7 @@ const Register = ({ navigation }) => {
 
                 <TextInput
                   placeholder="Last Name"
-                  placeholderTextColor={'#BBB9BC'}
+                  placeholderTextColor={theme.colors.placeholder}
                   style={[styles.textInput]}
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
@@ -148,7 +149,7 @@ const Register = ({ navigation }) => {
 
 
                 <TextInput
-                  placeholderTextColor={'#BBB9BC'}
+                  placeholderTextColor={theme.colors.placeholder}
                   placeholder="Email"
                   style={[styles.textInput]}
                   onChangeText={handleChange('email')}
@@ -159,7 +160,7 @@ const Register = ({ navigation }) => {
                 />
                 <View>
                   <TextInput
-                    placeholderTextColor={'#BBB9BC'}
+                    placeholderTextColor={theme.colors.placeholder}
                     placeholder="Password"
                     style={[styles.textInput]}
                     onChangeText={handleChange('password')}
@@ -170,14 +171,14 @@ const Register = ({ navigation }) => {
 
                   />
                   <PhoneInput
-                    placeholderTextColor={'#BBB9BC'}
+                    placeholderTextColor={theme.colors.placeholder}
 
-                    textContainerStyle={{ marginHorizontal: 10, backgroundColor: '#FAFAFA', }}
+                    textContainerStyle={{ marginHorizontal: 10, backgroundColor: theme.colors.slate, }}
                     //ref={phoneInput}
                     //defaultValue={value}
                     containerStyle={[Platform.OS === 'ios' ? styles.textInput : { borderRadius: 20, backgroundColor: '#EFEFEF', alignSelf: 'center', marginBottom: verticalScale(22), height: verticalScale(75) }]}
                     defaultCode="GH"
-                    codeTextStyle={{ color: colors.dg2.color, fontWeight: 'bold', fontFamily: FontFamily.sourceSansProBold }}
+                    codeTextStyle={{ color: theme.colors.lg, fontWeight: 'bold', fontFamily: FontFamily.sourceSansProBold }}
                     layout="second"
                     //onChangeText={}
 
@@ -199,6 +200,7 @@ const Register = ({ navigation }) => {
               </View>
               <View style={styles.t6}>
                 <CheckBox
+                containerStyle={{backgroundColor:theme.colors.background}}
                   uncheckedIcon={<Image
                     resizeMode='contain'
                     style={{ width: 22, height: 22 }}
@@ -212,16 +214,16 @@ const Register = ({ navigation }) => {
                     />
                   }
                   title={
-                    <Text style={[colors.dg, styles.terms]}>
+                    <Text style={[{color:theme.colors.dg}, styles.terms]}>
                       I agree to the{' '}
-                      <Text onPress={() => Linking.openURL("https://www.trypamp.com/privacy-policy")} style={[colors.lg, styles.bold]}>
+                      <Text onPress={() => Linking.openURL("https://www.trypamp.com/privacy-policy")} style={[{color:theme.colors.lg}, styles.bold]}>
                         Privacy Policy
                       </Text>{' '}
                       and{' '}
-                      <Text onPress={() => Linking.openURL("https://www.trypamp.com/terms-of-use")} style={[colors.lg, styles.bold]}>
+                      <Text onPress={() => Linking.openURL("https://www.trypamp.com/terms-of-use")} style={[{ color: theme.colors.lg }, styles.bold]}>
                         Terms of Use
                       </Text>{' '}
-                      <Text onPress={() => Linking.openURL("https://www.trypamp.com/terms-of-service")} style={[colors.lg, styles.bold]}>
+                      <Text onPress={() => Linking.openURL("https://www.trypamp.com/terms-of-service")} style={[{ color: theme.colors.lg }, styles.bold]}>
                         Terms of Service
                       </Text>
                     </Text>
@@ -233,8 +235,10 @@ const Register = ({ navigation }) => {
               </View>
               <View style={styles.t6}>
                 <CheckBox
+                  containerStyle={{ backgroundColor: theme.colors.background }}
+
                   title={
-                    <Text style={[colors.dg, styles.terms]}>
+                    <Text style={[{ color: theme.colors.dg }, styles.terms]}>
                       {" I agree to receive marketing notifications with offers and  news"}
                     </Text>
                   }
@@ -282,7 +286,7 @@ const Register = ({ navigation }) => {
 
 export default Register;
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   container: {
     alignItems: 'center',
   },
@@ -306,17 +310,17 @@ const useStyles = makeStyles((theme) => ({
     width: horizontalScale(330),
     height: verticalScale(63),
     margin: 0,
-
+    color: theme.colors.dg,
     alignSelf: 'center',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: theme.colors.slate,
     borderRadius: horizontalScale(23),
     borderWidth: 1,
-    borderColor: '#FAFAFA',
+    borderColor: theme.colors.slate,
     fontFamily: FontFamily.sourceSansProRegular
   },
   t1: {
     fontSize: moderateScale(26),
-    color: '#00463C',
+    color: theme.colors.dg,
     marginBottom: 10,
     fontFamily: FontFamily.sourceSansProBold,
   },
@@ -333,7 +337,7 @@ const useStyles = makeStyles((theme) => ({
   },
   t3: {
     fontSize: moderateScale(15),
-    color: '#00463C',
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProRegular,
     marginTop: verticalScale(-20),
     alignSelf: 'center',
@@ -353,8 +357,8 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   t6: {
-
-    marginTop: -20,
+    backgroundColor: theme.colors.background,
+    marginTop: -17,
     width: '85%'
 
 
@@ -493,14 +497,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: verticalScale(30),
   },
   Pcont: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: theme.colors.slate,
     marginTop: verticalScale(30),
   },
 
   P1: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: moderateScale(18),
-    color: '#00463C'
+    color: theme.colors.dg
   },
   P2: {
     fontFamily: FontFamily.sourceSansProRegular,
@@ -515,20 +519,20 @@ const useStyles = makeStyles((theme) => ({
     height: verticalScale(60),
   },
   EP: {
-    backgroundColor: '#ffff',
+    backgroundColor: theme.colors.background,
     width: '90%',
     alignSelf: 'center',
   },
   EI: {
     width: '90%',
     alignSelf: 'center',
-    borderColor: '#86D694',
+    borderColor: theme.colors.linkBorder,
     paddingHorizontal: horizontalScale(10),
     borderWidth: horizontalScale(1),
     borderRadius: horizontalScale(10),
     marginBottom: verticalScale(20),
     height: verticalScale(42),
-    color: "#86D694"
+    color: theme.colors.dg
   },
   St1: {
     fontFamily: FontFamily.sourceSansProBold,
@@ -544,19 +548,19 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   unselected: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.card,
     borderRadius: horizontalScale(20),
     height: verticalScale(34),
     padding: horizontalScale(8),
     marginBottom: verticalScale(30),
-    borderColor: '#B0EBBD',
+    borderColor: theme.colors.lg,
     borderWidth: 1,
     marginHorizontal: horizontalScale(7)
 
   },
 
   selected: {
-    backgroundColor: '#86D694',
+    backgroundColor: theme.colors.lgb,
     borderRadius: horizontalScale(20),
     color: 'white',
     height: verticalScale(34),

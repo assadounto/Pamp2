@@ -24,7 +24,7 @@ const ReviewCont = ({ data }) => {
       setReviewData(ratingsSummary);
     }
   }, [data]);
-
+  const { theme } = useTheme();
   const ratings = (input) =>
     Object.keys(input)
       .filter(key => key !== 'total_ratings') // exclude 'total_ratings' key
@@ -96,7 +96,7 @@ const ReviewCont = ({ data }) => {
 
           {reviewData && ratings(reviewData.ratings).map((rate) => {
 
-            const { theme } = useTheme();
+            
             return (
               <View
                 key={rate.rating}
@@ -120,7 +120,7 @@ const ReviewCont = ({ data }) => {
           })}
         </View>
       </View>
-      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 24, color: colors.dg.color, left: 20, marginTop: 30 }}>Reviews</Text>
+      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 24, color: theme.colors.dg, left: 20, marginTop: 30 }}>Reviews</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => <NotificationReviewCard item={item} />}
@@ -144,14 +144,14 @@ export default ReviewCont;
 const useStyles = makeStyles((theme) => ({
   noAppointments: {
     marginTop: 30,
-    color: colors.dg.color,
+    color: theme.colors.dg,
     textAlign: 'center',
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: 20
 
   },
   t1: {
-    color: '#00463C',
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProBold,
     fontSize: 15,
 
@@ -166,7 +166,7 @@ const useStyles = makeStyles((theme) => ({
   rating: {
     fontFamily: FontFamily.sourceSansProBold,
     fontSize: 39,
-    color: '#00463C'
+    color: theme.colors.dg
   },
   child1: {
     alignItems: 'center',
@@ -191,7 +191,7 @@ const useStyles = makeStyles((theme) => ({
     shadowRadius: 10,
     elevation: 2,
     shadowOffset: { width: 5, height: 0 },
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.card,
     borderRadius: 20,
     marginBottom: 20
   },

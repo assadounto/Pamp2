@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
   likkleSalonPosition: {
     textAlign: "left",
-    color: colors.dg.color,
+    color: theme.colors.dg,
     left: "44.03%",
     position: "absolute",
   },
@@ -128,14 +128,14 @@ const useStyles = makeStyles((theme) => ({
     left: "50.63%",
     fontSize: FontSize.size_sm,
 
-    color: colors.dg.color,
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProBold,
   },
   km: {
     left: "67.92%",
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: FontSize.size_smi,
-    color: colors.dg.color,
+    color: theme.colors.dg,
   },
   path3468Icon: {
     height: "7.51%",

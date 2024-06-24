@@ -1,7 +1,7 @@
-import {color, Text} from '@rneui/base';
-import {StyleSheet} from 'react-native';
-import {FontFamily} from './GlobalStyles';
-import { verticalScale,horizontalScale,moderateScale } from './Dimensions';
+import { color, Text } from '@rneui/base';
+import { StyleSheet } from 'react-native';
+import { FontFamily } from './GlobalStyles';
+import { verticalScale, horizontalScale, moderateScale } from './Dimensions';
 export const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -20,42 +20,40 @@ export const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
   },
   textInput: {
-    marginBottom:verticalScale(20),
-    paddingHorizontal:horizontalScale(20),
-    fontSize:moderateScale(14),
+    marginBottom: verticalScale(20),
+    paddingHorizontal: horizontalScale(20),
+    fontSize: moderateScale(14),
     width: horizontalScale(330),
     height: verticalScale(63),
-    margin:0,
-    
-    alignSelf:'center',
-    backgroundColor: '#FAFAFA',
+    margin: 0,
+
+    alignSelf: 'center',
     borderRadius: horizontalScale(23),
     borderWidth: 1,
-    borderColor: '#FAFAFA',
     fontFamily: FontFamily.sourceSansProRegular
   },
   t1: {
     fontSize: moderateScale(26),
     color: '#00463C',
-    marginBottom:10,
+    marginBottom: 10,
     fontFamily: FontFamily.sourceSansProBold,
   },
-  tbtn:{
-    fontFamily:FontFamily.sourceSansProBold
+  tbtn: {
+    fontFamily: FontFamily.sourceSansProBold
   },
   t2: {
     fontSize: moderateScale(16),
     color: '#BBB9BC',
-    textAlign:'center',
-    width:'60%',
-    marginBottom:10,
+    textAlign: 'center',
+    width: '60%',
+    marginBottom: 10,
     fontFamily: FontFamily.sourceSansProRegular,
   },
   t3: {
     fontSize: moderateScale(15),
     color: '#00463C',
     fontFamily: FontFamily.sourceSansProRegular,
-   marginTop:verticalScale(-20),
+    marginTop: verticalScale(-20),
     alignSelf: 'center',
   },
   t4: {
@@ -73,19 +71,19 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   t6: {
-   
-marginTop:-20,
-width:'85%'
 
-   
+    marginTop: -20,
+    width: '85%'
+
+
   },
   m1: {
     margin: horizontalScale(10),
   },
   terms: {
     marginHorizontal: horizontalScale(10),
-    marginTop:verticalScale(10),
-    fontFamily:FontFamily.sourceSansProRegular
+    marginTop: verticalScale(10),
+    fontFamily: FontFamily.sourceSansProRegular
   },
   check: {
     width: horizontalScale(18),
@@ -98,8 +96,8 @@ width:'85%'
     padding: horizontalScale(3),
     backgroundColor: '#B0EBBD',
     borderRadius: horizontalScale(5),
-   alignItems: 'center',
-   ustifyContent: 'center',
+    alignItems: 'center',
+    ustifyContent: 'center',
   },
   button: {
     width: horizontalScale(330),
@@ -123,14 +121,14 @@ width:'85%'
     textAlign: 'center',
   },
   image: {
-  
+
     alignSelf: 'center',
   },
   press: {
     display: 'flex',
     flexDirection: 'row',
     borderColor: '#DEDCDC',
-    backgroundColor:'white',
+    backgroundColor: 'white',
     borderRadius: horizontalScale(23),
     width: horizontalScale(300),
     height: verticalScale(71),
@@ -139,9 +137,9 @@ width:'85%'
   forgot: {
     color: '#BBB9BC',
     fontSize: moderateScale(14),
-    marginTop:verticalScale(17),
+    marginTop: verticalScale(17),
 
-    textAlign:'right'
+    textAlign: 'right'
   },
   bold: {
     fontWeight: 'bold',
@@ -177,20 +175,20 @@ width:'85%'
     borderRadius: horizontalScale(20),
     alignSelf: 'center',
     padding: horizontalScale(10),
-    
+
   },
 
   pop2: {
-    position:'absolute',
-    bottom:verticalScale(40),
+    position: 'absolute',
+    bottom: verticalScale(40),
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     borderRadius: horizontalScale(20),
     alignSelf: 'center',
     padding: horizontalScale(40),
-   alignContent:'center',
-    
+    alignContent: 'center',
+
     width: '95%',
     height: verticalScale(250),
   },
@@ -213,7 +211,7 @@ width:'85%'
     marginBottom: verticalScale(30),
   },
   Pcont: {
-    backgroundColor: '#F9F9F9',
+
     marginTop: verticalScale(30),
   },
 
@@ -241,14 +239,14 @@ width:'85%'
   },
   EI: {
     width: '90%',
-    alignSelf:'center',
+    alignSelf: 'center',
     borderColor: '#86D694',
-    paddingHorizontal:horizontalScale(10),
+    paddingHorizontal: horizontalScale(10),
     borderWidth: horizontalScale(1),
     borderRadius: horizontalScale(10),
     marginBottom: verticalScale(20),
-    height:verticalScale(42),
-    color:"#86D694"
+    height: verticalScale(42),
+    color: "#86D694"
   },
   St1: {
     fontFamily: FontFamily.sourceSansProBold,
@@ -256,7 +254,7 @@ width:'85%'
     color: '#86D694',
     marginTop: verticalScale(60),
     marginLeft: horizontalScale(20),
-    paddingBottom:verticalScale(10)
+    paddingBottom: verticalScale(10)
   },
   option: {
     fontSize: moderateScale(13),
@@ -266,12 +264,12 @@ width:'85%'
   unselected: {
     backgroundColor: 'white',
     borderRadius: horizontalScale(20),
-    height:verticalScale(34),
-    padding:horizontalScale(8),
-    marginBottom:verticalScale(30),
-    borderColor:'#B0EBBD',
+    height: verticalScale(34),
+    padding: horizontalScale(8),
+    marginBottom: verticalScale(30),
+    borderColor: '#B0EBBD',
     borderWidth: 1,
-    marginHorizontal:horizontalScale(7)
+    marginHorizontal: horizontalScale(7)
 
   },
 
@@ -279,10 +277,10 @@ width:'85%'
     backgroundColor: '#86D694',
     borderRadius: horizontalScale(20),
     color: 'white',
-    height:verticalScale(34),
-    padding:horizontalScale(8),
-    marginBottom:verticalScale(20),
-    marginHorizontal:horizontalScale(7)
+    height: verticalScale(34),
+    padding: horizontalScale(8),
+    marginBottom: verticalScale(20),
+    marginHorizontal: horizontalScale(7)
   },
 });
 
@@ -302,10 +300,10 @@ export const colors = StyleSheet.create({
   dg2: {
     color: '#86D694',
   },
-  slate:{
-    color:"#DAECD2"
+  slate: {
+    color: "#DAECD2"
   },
-  faded:{
+  faded: {
     color: '#BBB9BC',
   },
 
@@ -313,6 +311,6 @@ export const colors = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   Pc: {
-    backgroundColor: '#F9F9F9',
+
   },
 });

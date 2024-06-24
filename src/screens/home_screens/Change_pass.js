@@ -104,7 +104,7 @@ const Change_pass = ({ navigation }) => {
 
         <View style={{ alignSelf: 'center', marginTop: 40 }}>
           <TextInput
-            placeholderTextColor={'#BBB9BC'}
+            placeholderTextColor={theme.colors.placeholder}
             placeholder="Current Password"
             style={[styles.textInput]}
             secureTextEntry={!showPassword}
@@ -120,7 +120,7 @@ const Change_pass = ({ navigation }) => {
           />
 
           <TextInput
-            placeholderTextColor={'#BBB9BC'}
+            placeholderTextColor={theme.colors.placeholder}
             placeholder="New Password"
             style={[styles.textInput]}
             secureTextEntry={!showPassword}
@@ -136,7 +136,7 @@ const Change_pass = ({ navigation }) => {
           />
 
           <TextInput
-            placeholderTextColor={'#BBB9BC'}
+            placeholderTextColor={theme.colors.placeholder}
             placeholder="Confirm Password"
             style={[styles.textInput]}
             secureTextEntry={!showPassword}

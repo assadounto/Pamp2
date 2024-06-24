@@ -45,7 +45,7 @@ const Card = () => {
     return (
 
 
-        <><Text style={{ width: 320, marginBottom: 20, marginHorizontal: 20, textAlign: 'left', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: '#00463C' }}>Securely save your card details to seamlessly make payments.</Text><View style={{ marginHorizontal: 30 }}>
+        <><Text style={{ width: 320, marginBottom: 20, marginHorizontal: 20, textAlign: 'left', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: theme.colors.dg }}>Securely save your card details to seamlessly make payments.</Text><View style={{ marginHorizontal: 30 }}>
             <Text style={paystyle.text}>Name on card</Text>
 
             <TextInput style={paystyle.input} placeholder='Card holder full name' onChangeText={(value) => setname(value)} />
@@ -64,11 +64,11 @@ const Card = () => {
                 errorColor={"#00463C"}
                 defaultBorderColor={"#ddd"}
                 inputWrapStyle={{
-                    height: 60, borderRadius: 20, borderColor: colors.lg.color, borderWidth: 1, marginBottom: 15, paddingHorizontal: 10
+                    height: 60, borderRadius: 20, borderColor: theme.colors.lgb, borderWidth: 1, marginBottom: 15, paddingHorizontal: 10
                 }}
                 inputStyle={{
                     //fontFamily: 'GT-medium',
-                    color: '#00463C'
+                    color: theme.colors.dg
                 }}
                 defaultValue={cardValue}
                 focusColor={"blue"}
@@ -90,17 +90,17 @@ const Card = () => {
                     }}
                     onFocus={() => setFocusCardDateNum(true)}
                     labelStyle={{
-                        color: '#00463C',
+                        color: theme.colors.dg,
                         fontWeight: '400'
                     }}
                     inputWrapStyle={{
-                        height: 60, borderRadius: 20, borderColor: colors.lg.color, borderWidth: 1, marginBottom: 15
+                        height: 60, borderRadius: 20, borderColor: theme.colors.lgb, borderWidth: 1, marginBottom: 15
                     }}
                     placeholderTextColor={"#ccc"}
                     value={cardDateValue}
                     defaultValue={cardDateValue}
                     inputStyle={{
-                        color: '#00463C',
+                        color: theme.colors.dg,
                         fontWeight: 'bold',
                     }} />
 
@@ -111,7 +111,7 @@ const Card = () => {
                 </View>
             </View>
             <View style={{ display: 'flex', flexDirection: 'row', marginHorizontal: 10, marginTop: 10 }}>
-                <Text style={{ color: colors.dg.color }}>Pay secure with </Text>
+                <Text style={{ color: theme.colors.dg }}>Pay secure with </Text>
                 {/* <Image style={paystyle.img} source={visa}/> */}
                 <Image source={master} />
             </View>
@@ -122,7 +122,7 @@ const Card = () => {
                             source={require('../assets/check3.png')}
                             style={styles.check} />
                     </View>}
-                    title={<Text style={{ textAlign: 'left', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: '#00463C', marginLeft: 10 }}>
+                    title={<Text style={{ textAlign: 'left', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: theme.colors.dg, marginLeft: 10 }}>
                         Save default
                     </Text>}
                     checked={df}
@@ -137,8 +137,8 @@ const Card = () => {
                     marginTop: 80,
                     alignSelf: 'center',
                     borderRadius: 20,
-                    backgroundColor: colors.dg2.color,
-                    shadowColor: colors.dg2.color, shadowOpacity: 0.5, shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
+                    backgroundColor: theme.colors.lgb,
+                    shadowColor: theme.colors.lg, shadowOpacity: 0.5, shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
                 }}
                 onPress={() => handleSubmit()} /></>
 
@@ -149,9 +149,9 @@ const Card = () => {
 export const useStyles = makeStyles((theme) => ({
     text: {
         marginBottom: 5, paddingHorizontal: 20,
-        fontFamily: FontFamily.sourceSansProSemibold, fontSize: 15, color: '#00463C'
+        fontFamily: FontFamily.sourceSansProSemibold, fontSize: 15, color: theme.colors.dg
     }, input: {
-        padding: 20, height: 60, borderRadius: 20, borderColor: colors.lg.color, borderWidth: 1, marginBottom: 15
+        padding: 20, height: 60, borderRadius: 20, borderColor: theme.colors.lgb, borderWidth: 1, marginBottom: 15
     },
     img: {
         height: 14,

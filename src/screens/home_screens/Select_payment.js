@@ -93,22 +93,22 @@ const Select_payment = ({ navigation, route }) => {
 
   if (!data) {
     return <>
-      <BHeader top={Platform.OS === 'ios' ? 60 : 20} title={'Payment methods'} color={colors.dg2.color} />
-      <Text style={{ textAlign: 'center', marginBottom: 30, color: colors.dg.color, fontFamily: FontFamily.sourceSansProSemibold }}>{"Enjoy convenience and flexibility when booking\n your appointment with the payment options below"}</Text>
+      <BHeader top={Platform.OS === 'ios' ? 60 : 20} title={'Payment methods'} color={theme.colors.lg} />
+      <Text style={{ textAlign: 'center', marginBottom: 30, color: theme.colors.dg, fontFamily: FontFamily.sourceSansProSemibold }}>{"Enjoy convenience and flexibility when booking\n your appointment with the payment options below"}</Text>
       {
         default_methods.map((pay, index) => <View style={{ marginHorizontal: 30, }}>
           <ListItem
-            containerStyle={[{ paddingVertical: 30, borderBottomColor: colors.lg.color, borderBottomWidth: 1, borderTopColor: colors.lg.color, borderTopWidth: 0 }]}
+            containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 30, borderBottomColor: theme.colors.tabColor, borderBottomWidth: 1, borderTopColor: colors.lg.color, borderTopWidth: 0 }]}
           >
             {payment_method[pay.name] == '' ?
               <Image
                 source={source}
                 style={{ width: 40, height: 30, borderRadius: 5, resizeMode: 'contain' }} /> :
-              <Icon style={{ marginLeft: 5 }} name={payment_method[pay.name]} color={colors.dg2.color} type="feather" />}
+              <Icon style={{ marginLeft: 5 }} name={payment_method[pay.name]} color={theme.colors.lg} type="feather" />}
 
 
             <ListItem.Content>
-              <ListItem.Title style={colors.dgb}>
+              <ListItem.Title style={{ color: theme.colors.dg }}>
                 {pay.name && pay.name}
               </ListItem.Title>
             </ListItem.Content>
@@ -121,13 +121,16 @@ const Select_payment = ({ navigation, route }) => {
 
   return (
 
-    <><BHeader top={Platform.OS === 'ios' ? 60 : 20} title={'Payment methods'} color={colors.dg2.color} /><ScrollView
-      contentContainerStyle={{ backgroundColor: 'white', marginTop: Platform.OS === 'ios' ? 40 : 0 }}
+    <><BHeader top={Platform.OS === 'ios' ? 60 : 20} title={'Payment methods'} color={theme.colors.lg} />
+    <ScrollView
+        style={{ backgroundColor: theme.colors.background, }}
+        contentContainerStyle={{ backgroundColor: theme.colors.background, marginTop: Platform.OS === 'ios' ? 40 : 0 }}
     >
       {
         convertToPaymentArray(data).map((pay, index) => <View style={{ marginHorizontal: 30, }}>
           <ListItem
-            containerStyle={[{ paddingVertical: 30, borderBottomColor: index == payment_methods.length - 1 ? colors.lg.color : null, borderBottomWidth: index == payment_methods.length - 1 ? 1 : null, borderTopColor: colors.lg.color, borderTopWidth: 1 }]}
+            style={{ backgroundColor: theme.colors.background, }}
+            containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 30, borderBottomColor: index == payment_methods.length - 1 ? theme.colors.tabColor : null, borderBottomWidth: index == payment_methods.length - 1 ? 1 : null, borderTopColor: theme.colors.tabColor, borderTopWidth: 1 }]}
             onPress={() => {
               dispatch(setDefault(pay));
               navigation.goBack();
@@ -136,15 +139,15 @@ const Select_payment = ({ navigation, route }) => {
               <Image
                 source={source}
                 style={{ width: 40, height: 30, borderRadius: 5, resizeMode: 'contain' }} /> :
-              <Icon style={{ marginLeft: 5 }} name={payment_method[pay.name]} color={colors.dg2.color} type="feather" />}
+              <Icon style={{ marginLeft: 5 }} name={payment_method[pay.name]} color={theme.colors.lg} type="feather" />}
 
 
             <ListItem.Content>
-              <ListItem.Title style={colors.dgb}>
+              <ListItem.Title style={{color:theme.colors.dg}}>
                 {pay.name && pay.name}
               </ListItem.Title>
             </ListItem.Content>
-            {isdefault(pay.name) ? <Image resizeMode="contain" style={{ width: 29, height: 29, }} source={checker} /> : <ListItem.Chevron color={'#00463C'} size={30} />}
+            {isdefault(pay.name) ? <Image resizeMode="contain" style={{ width: 29, height: 29, }} source={checker} /> : <ListItem.Chevron color={theme.colors.dg} size={30} />}
           </ListItem>
 
         </View>
@@ -168,7 +171,7 @@ style={{width:20,height:20}}
        Add new method
       </ListItem.Title>
     </ListItem.Content>
-    <ListItem.Chevron color={'#00463C'} size={30} />
+    <ListItem.Chevron color={theme.colors.dg} size={30} />
   </ListItem>
 
       </View> */}

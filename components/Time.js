@@ -106,7 +106,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
               marginTop: 30,
               fontFamily: FontFamily.sourceSansProBold,
               fontSize: 20,
-              color: colors.dg.color,
+              color: theme.colors.dg,
             }}
           >
             {item}
@@ -120,7 +120,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
               name={'chevron-forward'}
               type="ionicon"
               onPress={() => setShowPassword(!showPassword)}
-              color={colors.dg.color}
+              color={theme.colors.dg}
             />
           </View>
 
@@ -237,7 +237,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
     >
       {isVendorOpen() ? (
         <>
-          <Text style={{ marginVertical: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: colors.dg.color, marginLeft: 30 }}>Time</Text>
+          <Text style={{ marginVertical: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: theme.colors.dg, marginLeft: 30 }}>Time</Text>
 
           {timeSlots.length == 0 ?
             <Emptyfav top={30} title={"The vendor is currently unavailable for bookings at this time of day. Please consider booking for tomorrow or another available day."} />
@@ -249,7 +249,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
               shadowRadius: 10,
               elevation: 2,
               shadowOffset: { width: 5, height: 0 },
-              backgroundColor: 'white',
+              backgroundColor: theme.colors.card,
               borderRadius: 20,
               width: '90%',
               alignSelf: 'center',
@@ -259,7 +259,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
               {timeSlots.map((item, index) => (
                 <Pressable
                   key={item}
-                  style={{}}
+                  style={{borderRadius:20, backgroundColor: theme.colors.card, }}
                   onPress={() => {
 
                     dispatch(set_time(item));
@@ -267,13 +267,13 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
                     rebooked ? rebook(item) : user && user?.id ? navigation.navigate('Confirm') : navigation.replace('login',)
                   }}
                 >
-                  <ListItem style={{ borderBottomColor: index === timeSlots.length - 1 ? 'transparent' : colors.lg.color, borderBottomWidth: index === timeSlots.length - 1 ? 0 : 1 }}>
+                  <ListItem containerStyle={{ borderRadius: 20, backgroundColor: theme.colors.card }} style={{ borderBottomColor: index === timeSlots.length - 1 ? 'transparent' : theme.colors.linkBorder, borderBottomWidth: index === timeSlots.length - 1 ? 0 : 1 }}>
                     <Text
                       style={{
                         marginVertical: 10,
                         fontFamily: FontFamily.sourceSansProBold,
                         fontSize: 20,
-                        color: colors.dg.color,
+                        color: theme.colors.dg,
                       }}
                     >
                       {item}
@@ -285,7 +285,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
                         name={'chevron-forward'}
                         type="ionicon"
 
-                        color={colors.dg.color}
+                        color={theme.colors.dg}
                       />
                     </View>
                   </ListItem>

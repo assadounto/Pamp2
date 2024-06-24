@@ -1,5 +1,5 @@
 import { useTheme } from '@rneui/themed';
-import { makeStyles } from '@rneui/themed';
+import { makeStyles, Badge } from '@rneui/themed';
 import { Animated, View, TouchableOpacity, Text, Pressable } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { Icon } from '@rneui/base';
@@ -7,7 +7,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
 import { horizontalScale, verticalScale } from '../src/Dimensions';
-function MyTabBar({ state, descriptors, navigation }) {
+import MessageIcon from './icons/Message';
+function MyTabBar({ state, descriptors, navigation, width ,badge}) {
   return (
     <View style={{ marginBottom: verticalScale(20), marginHorizontal: horizontalScale(20), marginTop: verticalScale(10) }}>
       <ScrollView
@@ -15,6 +16,7 @@ function MyTabBar({ state, descriptors, navigation }) {
 
         horizontal={true}
       //style={{height:70,}}
+      contentContainerStyle={[width&&{width:'100%', display:'flex',flexDirection:'row'}]}
 
       >
         {state.routes.map((route, index) => {
@@ -55,11 +57,11 @@ function MyTabBar({ state, descriptors, navigation }) {
             <Pressable
               onPress={onPress}
               onLongPress={onLongPress}
-              style={[
-                { flexDirection: 'row' },
+              style={[width&& { flexDirection: 'row', flex: 1, },
+                {  marginTop:10, alignSelf: 'center', width: width && width },
                 isFocused
                   ? {
-                    backgroundColor: '#86D694',
+                    backgroundColor: theme.colors.activeTabBg,
                     borderRadius: 20,
                     paddingHorizontal: horizontalScale(12),
                     height: verticalScale(34),
@@ -69,20 +71,26 @@ function MyTabBar({ state, descriptors, navigation }) {
                     marginLeft: 10
                   }
                   : {
-                    backgroundColor: 'white',
+                    backgroundColor: theme.colors.background,
                     marginLeft: 10,
                     borderRadius: 20,
                     paddingHorizontal: 12,
                     height: verticalScale(34),
                     alignSelf: 'center',
                     alignItems: 'center',
-                    borderColor: '#B0EBBD',
+                    borderColor: theme.colors.tabColor,
                     borderWidth: 1,
                     justifyContent: 'space-around'
                   },
               ]}
               key={index}
             >
+              {label==='Messages'  && badge&& <Badge
+              badgeStyle={{ width: 12, height: 12, borderRadius: 50 }}
+              status="warning"
+
+              containerStyle={{ position: 'absolute',left:10, top: -6}} />}
+             
               <TouchableOpacity
                 accessibilityRole="button"
                 accessibilityState={isFocused ? { selected: true } : {}}
@@ -92,6 +100,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                 onLongPress={onLongPress}
                 style={[
                   {
+                    gap:10,
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -99,8 +108,10 @@ function MyTabBar({ state, descriptors, navigation }) {
                 ]}
                 activeOpacity={0.8}
                 disabled={isFocused}>
+                {
+                  label === 'Messages' && <View style={{}} ><MessageIcon color={theme.colors.dg} /></View>
 
-
+                }
                 {isFocused ? (
                   <Text
                     style={{
@@ -113,7 +124,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                   </Text>
                 ) : <Text
                   style={{
-                    color: colors.dg.color,
+                    color: theme.colors.dg,
                     marginLeft: 5,
                     fontSize: 13,
                     fontFamily: FontFamily.sourceSansProRegular,

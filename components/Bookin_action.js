@@ -81,7 +81,7 @@ export default Booking_action;
 
 const useStyles = makeStyles((theme) => ({
   action: {
-    borderColor: colors.lg.color,
+    borderColor: theme.colors.lgb,
     borderWidth: 1,
     width: 64,
     height: 64,
@@ -107,6 +107,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     fontSize: 18,
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: colors.dg.color,
+    color: theme.colors.dg,
   },
 }));

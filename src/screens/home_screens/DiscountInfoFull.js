@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   btn_text: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: 15,
-    color: colors.dg.color
+    color: theme.colors.dg
   },
   btn: {
     marginTop: 30,
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 25,
     width: 184,
     height: 52,
-    backgroundColor: 'white'
+    backgroundColor: theme.colors.card
   },
   cont_text: {
     color: "#A8B8A1",
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
 
   },
   sub: {
-    color: colors.dg.color,
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: 14
 
@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: colors.dg.color,
+    color: theme.colors.dg,
     fontSize: 21,
     marginTop: 30
   },

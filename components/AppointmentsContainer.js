@@ -60,7 +60,7 @@ const AppointmentsContainer = ({ navigation, data }) => {
   const formattedServices = formatServiceNames(services);
   console.log(formattedServices); // Output: "Dread & Rail"
 
-
+  const { theme } = useTheme();
 
   const statuses = ['declined', "rebook", "completed", "cancelled", "confirmed", "no show", "booked", "unconfirmed", "pending"]
 
@@ -68,13 +68,13 @@ const AppointmentsContainer = ({ navigation, data }) => {
 
   const bgc = {
     cancelled: '#CD3D49',
-    completed: colors.dg2.color,
-    confirmed: colors.dg2.color,
-    booked: colors.dg.color,
-    rebook: colors.dg.color,
+    completed: theme.colors.lgb,
+    confirmed: theme.colors.lgb,
+    booked: theme.colors.dgb,
+    rebook: theme.colors.dg,
     declined: '#CD3D49',
     "no show": '#CD3D49',
-    unconfirmed: colors.dg.color,
+    unconfirmed: theme.colors.dg,
     pending: data?.services[0] ? data?.services[0].color : 'red'
   }
 
@@ -122,7 +122,7 @@ const AppointmentsContainer = ({ navigation, data }) => {
     return formattedDate;
   }
   const styles = useStyles();
-  const { theme } = useTheme();
+
   return (
     <Pressable onPress={() => navigation.navigate('Booking_detail', {
       id: data.id
@@ -181,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sewInPosition: {
     left: 25,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
   },
   sewInPosition1: {
     marginTop: 90.99,
@@ -226,7 +226,7 @@ const useStyles = makeStyles((theme) => ({
   likkleSalon: {
     marginTop: 38.99,
     width: 200,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     textAlign: "left",
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: FontSize.size_mid,
@@ -236,7 +236,7 @@ const useStyles = makeStyles((theme) => ({
   sewIn: {
     left: 25,
     width: 200,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     marginTop: 90.99,
     textAlign: "left",
     fontSize: FontSize.size_mid,
@@ -253,7 +253,7 @@ const useStyles = makeStyles((theme) => ({
   },
   am10am: {
     right: 28,
-    color: Color.lightgreen,
+    color: theme.colors.lg,
     fontFamily: FontFamily.sourceSansProRegular,
   },
   text: {
@@ -261,14 +261,14 @@ const useStyles = makeStyles((theme) => ({
     bottom: 30,
     fontWeight: "700",
     fontFamily: FontFamily.sourceSansProBold,
-    color: Color.lightgreen,
+    color: theme.colors.lg,
   },
   july2022: {
     marginTop: 0.99,
     fontFamily: FontFamily.sourceSansProSemibold,
     fontWeight: "600",
     left: 25,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     top: "50%",
   },
   groupInner: {
@@ -287,7 +287,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 20,
 
     fontSize: FontSize.size_2xs,
-    // color: colors.dg.color,
+    // color: theme.colors.dg,
     textAlign: "center",
 
 
@@ -311,7 +311,7 @@ const useStyles = makeStyles((theme) => ({
     shadowOffset: { width: 0, height: 4 }, height: 424,
     marginBottom: 20.63,
     alignSelf: "center",
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.card,
     width: '90%',
 
     borderRadius: 20,

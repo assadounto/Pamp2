@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
   },
   sewInPosition: {
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     textAlign: "left",
     left: "50%",
     position: "absolute",
@@ -143,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: FontSize.size_xl,
     fontWeight: "700",
     fontFamily: FontFamily.sourceSansProBold,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     marginLeft: -105.5,
   },
   sewIn: {
@@ -152,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: FontSize.size_base,
     fontFamily: FontFamily.sourceSansProSemibold,
     fontWeight: "600",
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     top: "50%",
   },
   next14Days: {

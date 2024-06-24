@@ -26,7 +26,7 @@ const Opening = ({ data, modal, setModal }) => {
           <View style={[{
             alignItems: 'center',
 
-            backgroundColor: 'white',
+            backgroundColor: theme.colors.card,
 
             height: 54,
             borderRadius: 18,
@@ -61,7 +61,7 @@ const Opening = ({ data, modal, setModal }) => {
             style={{
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: 'white',
+              backgroundColor: theme.colors.card,
               marginTop: 10,
               height: 54,
               borderRadius: 18,
@@ -98,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   text: {
 
     fontSize: 16,
-    color: '#00463C',
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProBold,
   },
   closed: {
@@ -108,6 +108,6 @@ const useStyles = makeStyles((theme) => ({
   text2: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: 16,
-    color: '#00463C',
+    color: theme.colors.dg,
   }
 }));

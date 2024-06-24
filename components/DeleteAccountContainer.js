@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: FontSize.size_sm,
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     textAlign: "left",
   },
   groupItem: {

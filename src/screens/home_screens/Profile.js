@@ -30,6 +30,8 @@ import { setImage } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import Blur from '../start_screens/Blur';
 import axios from 'axios';
+import EditIcon from '../../../components/icons/Edit';
+import Bin from '../../../components/icons/Bin';
 const Profile = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.userInfo);
@@ -109,8 +111,8 @@ const Profile = ({ navigation }) => {
   const { theme } = useTheme();
   const styles = useStyles();
   return (
-    <><SafeAreaView style={[colors.Pc]}>
-      <BHeader top={Platform.OS === 'ios' ? 0 : 20} title="Profile" color={colors.dg2.color} />
+    <><SafeAreaView style={{ backgroundColor: theme.colors.background }}>
+      <BHeader top={Platform.OS === 'ios' ? 0 : 20} title="Profile" color={theme.colors.lg} />
 
       <ScrollView
         style={[]}
@@ -136,7 +138,7 @@ const Profile = ({ navigation }) => {
             <View
               style={[
                 {
-                  backgroundColor: colors.lg.color,
+                  backgroundColor: theme.colors.lgb,
                   position: 'absolute',
                   bottom: 0,
                   right: 0,
@@ -155,19 +157,19 @@ const Profile = ({ navigation }) => {
         <View style={[styles.Pcont]}>
           <View style={[styles.Pmain]}>
             <Pressable onPress={() => navigation.replace('edit_profile')}>
-              <Icon
-                name="edit-2"
-                type="feather"
+             <EditIcon
                 size={18}
                 style={{
                   alignSelf: 'flex-end',
-                  marginTop: 12,
+                  marginTop: 15,
                   borderRadius: 50,
                   borderWidth: 1,
-                  borderColor: colors.lg.color,
+                  borderColor: theme.colors.lgb,
                   padding: 5,
-                  color: colors.dg2.color,
-                }} />
+                  color: theme.colors.lg,
+                }}
+             />
+             
             </Pressable>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>First name</Text>
@@ -221,16 +223,19 @@ const Profile = ({ navigation }) => {
           </View>
         </View>
         <Pressable onPress={() => setModal(true)}>
-          <View style={[styles.Pmain, styles.flex, styles.Da, { marginBottom: 150 }]}>
-            <Image
-              source={require('../../../assets/account.png')}
-              style={{ width: 30, height: 25, marginTop: 6 }} />
+          <View style={[styles.Pmain, styles.flex, styles.Da, {alignItems:'center', marginBottom: 150 }]}>
+            <Bin
+              style={{ width: 30, height: 25,}}
+              color={'#CD3D49'}
+            />
+           
             <Text
               style={[
-                { textAlignVertical: 'center', marginTop: 5, marginLeft: 18 },
-                styles.P1,
+                { color: '#CD3D49', textAlignVertical: 'center', marginTop: 5, marginLeft: 18 },
+                
               ]}>
               Delete account
+              
             </Text>
           </View>
         </Pressable>
@@ -385,7 +390,7 @@ const useStyles = makeStyles((theme) => ({
   },
   t1: {
     fontSize: moderateScale(26),
-    color: '#00463C',
+    color: theme.colors.dg,
     marginBottom: 10,
     fontFamily: FontFamily.sourceSansProBold,
   },
@@ -402,7 +407,7 @@ const useStyles = makeStyles((theme) => ({
   },
   t3: {
     fontSize: moderateScale(15),
-    color: '#00463C',
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProRegular,
     marginTop: verticalScale(-20),
     alignSelf: 'center',
@@ -461,7 +466,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: horizontalScale(23),
   },
   scroll: {
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.background,
   },
   input: {
     marginTop: verticalScale(20),
@@ -554,22 +559,22 @@ const useStyles = makeStyles((theme) => ({
     fontSize: moderateScale(25),
   },
   Pmain: {
-    borderRadius: horizontalScale(40),
+    borderRadius: horizontalScale(20),
     paddingHorizontal: horizontalScale(30),
-    backgroundColor: '#ffff',
+    backgroundColor: theme.colors.slate,
     width: '90%',
     alignSelf: 'center',
     marginBottom: verticalScale(30),
   },
   Pcont: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: theme.colors.background,
     marginTop: verticalScale(30),
   },
 
   P1: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: moderateScale(18),
-    color: '#00463C'
+    color: theme.colors.dg
   },
   P2: {
     fontFamily: FontFamily.sourceSansProRegular,

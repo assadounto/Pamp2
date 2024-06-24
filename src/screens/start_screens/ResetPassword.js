@@ -1,6 +1,7 @@
 import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React, { useState, useEffect } from 'react';
+import { horizontalScale,verticalScale,moderateScale } from '../../Dimensions';
 import BHeader from '../../../components/BHeader';
 import { Text, View, TouchableOpacity, Image, StyleSheet, Platform } from 'react-native';
 import { Input, Button, CheckBox, ListItem, Icon } from '@rneui/base';
@@ -62,10 +63,10 @@ const ResetPassword = ({ route, navigation }) => {
     <>
       <View style={{ marginTop: Platform.OS === 'ios' ? 40 : 0 }}>
         <BHeader
-          color={colors.dg.color}
+          color={theme.colors.dg}
           title={'How do you want to reset password?'}
         />
-        <Text style={{ paddingHorizontal: 50, marginTop: -20, color: colors.dg.color, fontFamily: FontFamily.sourceSansProRegular, fontSize: 14 }}>{"We found the following information associated with your account"}</Text>
+        <Text style={{ paddingHorizontal: 50, marginTop: -20, color: theme.colors.dg, fontFamily: FontFamily.sourceSansProRegular, fontSize: 14 }}>{"We found the following information associated with your account"}</Text>
       </View>
 
       <View style={styles.mt50}>
@@ -73,7 +74,7 @@ const ResetPassword = ({ route, navigation }) => {
           containerStyle={[styles.cont]}
         >
 
-          <CheckBoxComponent containerWidth={50} onPress={handleEmailCheckboxChange} state={email} />
+          <CheckBoxComponent card={false} containerWidth={50} onPress={handleEmailCheckboxChange} state={email} />
           <ListItem.Content>
             <ListItem.Title style={colors.dg2}>Email a confirmation code to
             </ListItem.Title>
@@ -85,7 +86,7 @@ const ResetPassword = ({ route, navigation }) => {
             containerStyle={[styles.cont, styles.none]}
           >
 
-            <CheckBoxComponent containerWidth={50} onPress={handlePhoneCheckboxChange} state={phone} />
+            <CheckBoxComponent card={false} containerWidth={50} onPress={handlePhoneCheckboxChange} state={phone} />
             <ListItem.Content>
               <ListItem.Title style={colors.dg2}>Text a confirmation code to
               </ListItem.Title>
@@ -115,10 +116,10 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: horizontalScale(23),
   },
   cont: {
-
+    backgroundColor: theme.colors.background,
     width: '90%',
     alignSelf: 'center',
-    borderColor: '#B0EBBD',
+    borderColor: theme.colors.linkBorder,
     borderBottomWidth: 1,
     borderTopWidth: 1
   },

@@ -34,7 +34,7 @@ const Modal_Pop = ({ main, modal, onchange, setOption }) => {
 
             <Pressable style={{
                 alignItems: 'center', position: 'absolute', bottom: 40,
-                justifyContent: 'center', backgroundColor: 'white', marginTop: 10, height: 54,
+                justifyContent: 'center', backgroundColor: theme.colors.card, marginTop: 10, height: 54,
                 borderRadius: 18, width: '95%', alignSelf: 'center'
             }} onPress={() => onchange(false)}><Text style={md_style.text}>BACK</Text></Pressable>
         </Modal>

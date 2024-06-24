@@ -268,7 +268,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "600",
   },
   hiJessi: {
-    color: Color.lightgreen,
+    color: theme.colors.lg,
   },
   homePageItem: {
     borderRadius: 9,
@@ -302,7 +302,7 @@ const useStyles = makeStyles((theme) => ({
   hairSalon: {
     bottom: 29,
     left: 30,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     position: "absolute",
   },
   rectangleParent: {
@@ -335,7 +335,7 @@ const useStyles = makeStyles((theme) => ({
   },
   recentlyViewed: {
     left: 13,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
   },
   recentlyViewedWrapper: {
     left: 93,

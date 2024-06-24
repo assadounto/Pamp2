@@ -70,13 +70,13 @@ const Discount_pop = ({ setmodal, vendor, modal, setblur, id }) => {
                         name='close-outline'
                         type='ionicon'
                         size={40}
-                        color={'#00463C'}
+                        color={theme.colors.dg}
                     />
 
                 </View>
                 <Text style={pop.rate}>Enter Promo Code</Text>
 
-                <TextInput placeholderTextColor={'#BBB9BC'} placeholder='Promo Code' onChangeText={setText} style={[pop.input]} />
+                <TextInput placeholderTextColor={theme.colors.placeholder} placeholder='Promo Code' onChangeText={setText} style={[pop.input]} />
                 <Text style={pop.text2}>The discount will be applied to your next appointment.</Text>
                 {
                     data && data.map((coupon) => {
@@ -97,7 +97,7 @@ const Discount_pop = ({ setmodal, vendor, modal, setblur, id }) => {
                 <View style={{ position: 'absolute', bottom: 20 }}>
                     <Button
                         onPress={handlePressOK}
-                        buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }}
+                        buttonStyle={{ borderRadius: 40, backgroundColor: theme.colors.lgb, width: 120, height: 40 }}
                         title='apply'
                     />
                 </View>
@@ -126,7 +126,7 @@ const pop = makeStyles((theme) => ({
         height: 2
     },
     dis: {
-        color: '#00463C',
+        color: theme.colors.dg,
         fontFamily: FontFamily.sourceSansProSemibold,
         fontSize: 18
     },
@@ -145,7 +145,7 @@ const pop = makeStyles((theme) => ({
     },
     rate: {
         fontFamily: FontFamily.sourceSansProSemibold,
-        color: '#00463C',
+        color: theme.colors.dg,
         fontSize: 24,
         marginBottom: 20
     },
@@ -176,7 +176,7 @@ const pop = makeStyles((theme) => ({
 
     },
     h4: {
-        color: colors.lg.color
+        color: theme.colors.lg
     },
     notes:
     {

@@ -19,6 +19,7 @@ import LottieView from 'lottie-react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import Time from './Time';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { useStyles } from '../src/screens/start_screens/Create_account';
 const DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 const defaultLocalizationOptions = {
   monthNames: [
@@ -80,6 +81,7 @@ function addDay(date) {
 
 
 export default function Calender({ onSelect, navigation, rebooked, rebook, vendor }) {
+  const styles=useStyles()
   const vendor_id = useSelector((state) => state.user.userInfo?.id)
   const windowWidth = Dimensions.get('window').width
   const desiredWidth = Math.min(52, windowWidth)
@@ -335,7 +337,7 @@ export default function Calender({ onSelect, navigation, rebooked, rebook, vendo
         <Text
           style={[
             styles.option,
-            item.aday == userOption.aday ? colors.w : colors.dg,
+            item.aday == userOption.aday ? colors.w : theme.mode == 'dark' ? colors.w:colors.dg,
           ]}>
 
           {item.day}
@@ -343,7 +345,7 @@ export default function Calender({ onSelect, navigation, rebooked, rebook, vendo
         <Text
           style={[
             styles.option,
-            item.aday == userOption.aday ? colors.w : colors.dg,
+            item.aday == userOption.aday ? colors.w : theme.mode == 'dark' ? colors.w : colors.dg,
           ]}>
           {' '}
           {item.aday}
@@ -378,8 +380,9 @@ export default function Calender({ onSelect, navigation, rebooked, rebook, vendo
             marginBottom: 30,
             fontFamily: FontFamily.sourceSansProBold,
             fontSize: 20,
-            color: colors.dg.color,
-            textAlign: 'center'
+            marginLeft:30,
+            color: theme.colors.dg,
+          
           }}>{userOption.aday} {getMonthName(currentMonthName.split('-')[1])}  {currentMonthName.split('-')[0]}
         </Text>
       </Pressable>
@@ -400,7 +403,7 @@ export default function Calender({ onSelect, navigation, rebooked, rebook, vendo
           shadowRadius: 10,
           elevation: 2,
           shadowOffset: { width: 5, height: 0 },
-          backgroundColor: 'white',
+          backgroundColor: theme.colors.card,
           borderRadius: 20,
           marginBottom: 20
         }}>

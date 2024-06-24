@@ -2,18 +2,18 @@ import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React from 'react';
 import { Text, View, SafeAreaView } from 'react-native';
-import { styles, colors } from '../../Common_styles';
-import { styles1 } from './VerifyNumber';
+import {  colors } from '../../Common_styles';
+import { useStyles } from './Login';
 import { FontFamily } from '../../GlobalStyles';
 const Header = ({ main, sub, sub2, modalVisible }) => {
   const { theme } = useTheme();
-  const styles = useStyles();
+const styles=useStyles()
   return (
-    <SafeAreaView style={[styles.head, modalVisible && styles1.dim]}>
+    <SafeAreaView style={[styles.head]}>
       <View>
-        <Text style={[colors.dgb, styles.fs25, { fontFamily: FontFamily.sourceSansProBold }]}>{main}</Text>
-        <Text style={[colors.faded, styles.tc]}>{sub}</Text>
-        <Text style={[colors.faded, styles.tc]}>{sub2}</Text>
+        <Text style={[ styles.fs25, { color:theme.colors.dg, fontFamily: FontFamily.sourceSansProBold }]}>{main}</Text>
+        <Text style={[{color: theme.colors.dg}, styles.tc]}>{sub}</Text>
+        <Text style={[{ color: theme.colors.dg }, styles.tc]}>{sub2}</Text>
       </View>
     </SafeAreaView>
   );

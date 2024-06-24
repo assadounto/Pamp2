@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: FontSize.size_5xs,
     fontWeight: "700",
     fontFamily: FontFamily.sourceSansProBold,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     textAlign: "left",
   },
   rectangleParent: {

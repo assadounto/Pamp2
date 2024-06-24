@@ -60,7 +60,7 @@ const Phone_pop = ({ setcancel, modal, setblur, id, data, login, googledata }) =
       keyboardDidHideListener.remove();
     };
   }, []);
-  const styles = useStyles();
+  const pop = useStyles();
   const { theme } = useTheme();
   return (
     <><Modal animationType="slide" transparent={true} visible={modal}>
@@ -79,13 +79,13 @@ const Phone_pop = ({ setcancel, modal, setblur, id, data, login, googledata }) =
             name='close-outline'
             type='ionicon'
             size={40}
-            color={'#00463C'}
+            color={theme.colors.dg}
           />
 
         </View>
         <Text style={pop.text}>Add your phone number</Text>
-        <TextInput placeholderTextColor={'#BBB9BC'} placeholder='eg +233241234567' onChangeText={setText} style={pop.input} />
-        <Button loading={loading} titleStyle={{ fontFamily: FontFamily.sourceSansProBold }} onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='Add'>
+        <TextInput placeholderTextColor={theme.colors.placeholder} placeholder='eg +233241234567' onChangeText={setText} style={pop.input} />
+        <Button loading={loading} titleStyle={{ fontFamily: FontFamily.sourceSansProBold }} onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: theme.colors.lgb, width: 120, height: 40 }} title='Add'>
 
         </Button>
       </View>
@@ -113,13 +113,13 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     fontFamily: FontFamily.sourceSansProRegular,
-    color: colors.dg.color,
+    color: theme.colors.dg,
     alignSelf: 'flex-start',
     marginHorizontal: 20,
     fontSize: 18,
   },
   h4: {
-    color: colors.lg.color
+    color: theme.colors.lg
   },
   notes:
   {

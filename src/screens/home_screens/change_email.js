@@ -76,7 +76,7 @@ const Change_email = ({ navigation }) => {
 
       <View style={{ alignSelf: 'center', marginTop: 40 }}>
         <TextInput
-          placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={theme.colors.placeholder}
           placeholder="Current Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('old_email', value)}
@@ -84,7 +84,7 @@ const Change_email = ({ navigation }) => {
         />
 
         <TextInput
-          placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={theme.colors.placeholder}
           placeholder="New Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('new_email', value)}
@@ -92,7 +92,7 @@ const Change_email = ({ navigation }) => {
         />
 
         <TextInput
-          placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={theme.colors.placeholder}
           placeholder="Confirm Email Address"
           style={[styles.textInput]}
           onChangeText={(value) => handleChange('confirm_email', value)}
@@ -133,10 +133,10 @@ export const useStyles = makeStyles((theme) => ({
     margin: 0,
 
     alignSelf: 'center',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: theme.colors.slate,
     borderRadius: horizontalScale(23),
     borderWidth: 1,
-    borderColor: '#FAFAFA',
+    borderColor: theme.colors.slate,
     fontFamily: FontFamily.sourceSansProRegular
   },
 }))

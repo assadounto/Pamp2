@@ -6,7 +6,7 @@ import LikkleSalonContainer from '../../../components/LikkleSalonContainer'
 import { Icon, Input } from '@rneui/base'
 import { colors } from '../../Common_styles'
 import { FontFamily } from '../../GlobalStyles'
-import { styles } from '../../Common_styles'
+import { useStyles } from '../start_screens/Create_account';
 import RadioButton from '../../../components/RadioButton'
 import MyTabBar from '../../../components/Topnav'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -16,7 +16,9 @@ import { connect } from 'formik'
 import { useRoute } from '@react-navigation/core'
 import { ScreenProps } from 'react-native-screens'
 import { SafeAreaView } from 'react-native'
+import SafeAreaTop from '../../../components/SafeAreaTop';
 const Searches1 = ({ navigation, route }) => {
+  const styles=useStyles()
   const thedata = (dat) => {
     let info = []
     dat.map((vendor) => {
@@ -95,26 +97,27 @@ const Searches1 = ({ navigation, route }) => {
 
   return (
     <>
-      <SafeAreaView>
+     <SafeAreaTop >
         <Input
           placeholder="Search for a service"
-          inputContainerStyle={[styles.textInput, styles.tc, { alignContent: 'center', marginTop: Platform.OS === 'ios' ? 10 : 30, width: '90%', }]}
+          inputContainerStyle={[styles.textInput, styles.tc, {marginBottom:0, alignContent: 'center', marginTop: Platform.OS === 'ios' ? 10 : 30, width: '90%', }]}
           leftIcon={<Icon onPress={() => navigation.navigate('main')} name="chevron-back" type="ionicon" color={'#BCC4CC'} size={30} />}
           onFocus={() => navigation.navigate('Search')}
 
           value={location.name} />
-      </SafeAreaView>
-      <Tab.Navigator
+        <Item data={rec_vendors} navigation={navigation} category={category} />
+      </SafeAreaTop>
+      {/* <Tab.Navigator
         style={{ marginTop: -30 }}
         screenOptions={screenOptions}
-        sceneContainerStyle={{ backgroundColor: 'white', marginBottom: 50 }}
+        sceneContainerStyle={{ backgroundColor: theme.colors.background, marginBottom: 50 }}
         tabBar={props => <MyTabBar {...props} />}>
         <Tab.Screen name="Recommended"  >{(props) => <Item {...props} data={rec_vendors} category={category} />}</Tab.Screen>
         <Tab.Screen name="Nearest" >{(props) => <Item {...props} data={near_vendors} category={category} />}</Tab.Screen>
         <Tab.Screen name="Newest"  >{(props) => <Item {...props} data={new_vendors} category={category} />}</Tab.Screen>
 
 
-      </Tab.Navigator>
+      </Tab.Navigator> */}
 
     </>
 

@@ -39,8 +39,8 @@ const Momo = ({ navigation, select }) => {
                     marginTop: 80,
                     alignSelf: 'center',
                     borderRadius: 20,
-                    backgroundColor: colors.dg2.color,
-                    shadowColor: colors.dg2.color, shadowOpacity: 0.5, shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
+                    backgroundColor: theme.colors.lgb,
+                    shadowColor: theme.colors.lgb, shadowOpacity: 0.5, shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
                 }}
                 onPress={handleSubmitmomo} />
         </>

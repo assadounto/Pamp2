@@ -6,10 +6,11 @@ import { Text, View } from "react-native-animatable";
 import { FontFamily } from "../GlobalStyles";
 
 const Closed = ({ name }) => {
+    const {theme}= useTheme()
     return (
         <><Text
             style={{
-                color: '#00463C', fontSize: 20,
+                color: theme.colors.dg, fontSize: 20,
                 fontFamily: 'Source Sans Pro',
                 fontWeight: '700',
                 marginLeft: 30,
@@ -26,7 +27,7 @@ const Closed = ({ name }) => {
             shadowRadius: 10,
             elevation: 2,
             shadowOffset: { width: 5, height: 0 },
-            backgroundColor: 'white',
+            backgroundColor: theme.colors.card,
 
         }}
 

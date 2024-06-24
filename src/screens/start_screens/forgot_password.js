@@ -5,9 +5,9 @@ import Header from './header';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Input, Button } from '@rneui/base';
 import { Formik } from 'formik';
-
+import { FontFamily } from '../../GlobalStyles';
 import { useLazySearchAccountQuery } from '../../redux/authapi';
-import { verticalScale } from '../../Dimensions';
+import { verticalScale,moderateScale ,horizontalScale} from '../../Dimensions';
 const ForgotPassword = ({ navigation }) => {
   const [searchAccount, { isLoading, isSuccess }] = useLazySearchAccountQuery()
   const [email, setEmail] = useState('')
@@ -28,7 +28,7 @@ const ForgotPassword = ({ navigation }) => {
       <View style={[styles.input2, { marginTop: verticalScale(60) }]}>
         <Header main={'Find Your Pamp Account'} />
         <TextInput
-          placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={theme.colors.placeholder}
           placeholder="try@pamp.com"
           style={[styles.textInput, styles.tc]}
           onChangeText={setEmail}
@@ -70,17 +70,17 @@ const useStyles = makeStyles((theme) => ({
     width: horizontalScale(330),
     height: verticalScale(63),
     margin: 0,
-
+    color: theme.colors.dg,
     alignSelf: 'center',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: theme.colors.slate,
     borderRadius: horizontalScale(23),
     borderWidth: 1,
-    borderColor: '#FAFAFA',
+    borderColor: theme.colors.slate,
     fontFamily: FontFamily.sourceSansProRegular
   },
   t1: {
     fontSize: moderateScale(26),
-    color: '#00463C',
+    color: theme.colors.dg,
     marginBottom: 10,
     fontFamily: FontFamily.sourceSansProBold,
   },
@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
   },
   t3: {
     fontSize: moderateScale(15),
-    color: '#00463C',
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProRegular,
     marginTop: verticalScale(-20),
     alignSelf: 'center',
@@ -257,14 +257,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: verticalScale(30),
   },
   Pcont: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: theme.colors.slate,
     marginTop: verticalScale(30),
   },
 
   P1: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: moderateScale(18),
-    color: '#00463C'
+    color: theme.colors.dg
   },
   P2: {
     fontFamily: FontFamily.sourceSansProRegular,

@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
   termsTypo: {
     textAlign: "left",
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProSemibold,
     fontWeight: "600",
     fontSize: FontSize.size_sm,

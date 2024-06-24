@@ -12,12 +12,12 @@ import {
   Linking, ActivityIndicator
 } from 'react-native';
 import { Image } from 'react-native';
-
+import SafeAreaTop from '../../../components/SafeAreaTop';
 import { showBottom } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import THeader from '../../../components/THeader';
-import { Avatar, Icon, ListItem } from '@rneui/base';
+import { Avatar, Icon, ListItem, color } from '@rneui/base';
 import SwitchToggle from 'react-native-switch-toggle';
 import { Text } from 'react-native-animatable';
 import { colors, styles } from '../../Common_styles';
@@ -29,7 +29,9 @@ import Discount_pop from '../../../components/Discount_pop';
 import Blur from '../start_screens/Blur';
 import Socials from '../../../components/Socials';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import FastImage from 'react-native-fast-image';
 import { request, check, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
+import Demo from '../../../components/Demo';
 
 
 
@@ -108,7 +110,7 @@ const Settings = ({ navigation }) => {
   const [log, setLog] = useState(false)
   const user = useSelector(state => state.user.userInfo)
 
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const dispatch = useDispatch();
 
@@ -144,6 +146,7 @@ const Settings = ({ navigation }) => {
     } else if (authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
       console.log('User has provisional notification permissions.');
     } else {
+      setIsEnabled(false)
       console.log('User has notification permissions disabled');
     }
   }
@@ -174,7 +177,7 @@ const Settings = ({ navigation }) => {
   const [modal, setmodal] = useState(false)
   return (
 
-    <SafeAreaView>
+<SafeAreaTop >
 
       <Text style={[styles.St1, Platform.OS === 'android' ? { marginVertical: 0, } : { marginTop: 20 }]}>Settings</Text>
 
@@ -193,21 +196,33 @@ const Settings = ({ navigation }) => {
               {
                 borderRadius: 15,
                 padding: 6,
-                backgroundColor: '#F9F9F9',
+                backgroundColor: theme.colors.slate,
 
                 marginTop: 20,
               },
             ]}>
             <ListItem
-              containerStyle={[{ borderRadius: 15, backgroundColor: '#F9F9F9' }]}
+              containerStyle={[{ borderRadius: 15, backgroundColor: theme.colors.slate }]}
               onPress={() => {
                 navigation.navigate('Profile');
               }}>
-              <Icon name="user" type="feather" color={colors.lg.color} />
+              <FastImage
+                source={
+                  user?.id && user?.image
+                    ? { uri: user.image, headers: { Authorization: 'someAuthToken' }, priority: FastImage.priority.high }
+
+                    : require('../../../assets/place.png')
+                }
+                style={{
+                  borderRadius: 50,
+                  width: 25,
+                  height: 25,
+                }}
+              />
               <ListItem.Content>
                 <ListItem.Title style={[colors.dgb, styles2.title]}>Profile </ListItem.Title>
               </ListItem.Content>
-              <ListItem.Chevron color={colors.dg.color} size={25} />
+              <ListItem.Chevron color={theme.colors.dg} size={25} />
             </ListItem>
           </View> : <></>
 
@@ -220,7 +235,7 @@ const Settings = ({ navigation }) => {
               {
                 borderRadius: 15,
                 padding: 6,
-                backgroundColor: '#F9F9F9',
+                backgroundColor: theme.colors.slate,
 
                 marginTop: 50,
               },
@@ -229,7 +244,7 @@ const Settings = ({ navigation }) => {
               return (
                 <ListItem
                   key={index}
-                  containerStyle={[{ backgroundColor: '#F9F9F9' }]}
+                  containerStyle={[{ backgroundColor: theme.colors.slate }]}
                   onPress={() => {
 
                     navigation.navigate(item.route);
@@ -246,7 +261,7 @@ const Settings = ({ navigation }) => {
                       {item.title}{' '}
                     </ListItem.Title>
                   </ListItem.Content>
-                  <ListItem.Chevron color={colors.dg.color} size={25} />
+                  <ListItem.Chevron color={theme.colors.dg} size={25} />
                 </ListItem>
               );
             })}
@@ -260,7 +275,7 @@ const Settings = ({ navigation }) => {
             {
               borderRadius: 15,
               padding: 6,
-              backgroundColor: '#F9F9F9',
+              backgroundColor: theme.colors.slate,
               marginTop: 50,
             },
           ]}>
@@ -272,7 +287,7 @@ const Settings = ({ navigation }) => {
               shouldRenderToggle && (
                 <ListItem
                   key={index}
-                  containerStyle={[{ backgroundColor: '#F9F9F9' }]}
+                  containerStyle={[{ backgroundColor: theme.colors.slate }]}
                   onPress={() => {
                     item.icon === 'bell'
                       ? toggleSwitch()
@@ -308,14 +323,14 @@ const Settings = ({ navigation }) => {
                           width: 55,
                           height: 30,
                           borderWidth: 1.5,
-                          borderColor: colors.lg.color,
+                          borderColor: theme.colors.lgb,
                           borderRadius: 25,
                           padding: 5,
-                          backgroundColor: 'white',
+                          backgroundColor: theme.colors.background,
                         }}
                         circleStyle={{
                           borderWidth: 1.5,
-                          borderColor: colors.lg.color,
+                          borderColor: theme.colors.lgb,
                           width: 20,
                           height: 20,
                           borderRadius: 20,
@@ -323,7 +338,7 @@ const Settings = ({ navigation }) => {
                       />
                     </Pressable>
                   ) : (
-                    <ListItem.Chevron color={colors.dg.color} size={25} />
+                    <ListItem.Chevron color={theme.colors.dg} size={25} />
                   )}
                 </ListItem>
               )
@@ -339,7 +354,7 @@ const Settings = ({ navigation }) => {
             {
               borderRadius: 15,
               padding: 6,
-              backgroundColor: '#F9F9F9',
+              backgroundColor: theme.colors.slate,
               marginTop: 50,
             },
           ]}>
@@ -348,7 +363,7 @@ const Settings = ({ navigation }) => {
             return (
               <ListItem
                 key={index}
-                containerStyle={[{ backgroundColor: '#F9F9F9' }]}
+                containerStyle={[{ backgroundColor: theme.colors.slate }]}
                 onPress={() => {
                   Linking.openURL(item.route)
                 }}>
@@ -360,7 +375,7 @@ const Settings = ({ navigation }) => {
                     {item.title}{' '}
                   </ListItem.Title>
                 </ListItem.Content>
-                <ListItem.Chevron color={colors.dg.color} size={25} />
+                <ListItem.Chevron color={theme.colors.dg} size={25} />
               </ListItem>
             );
           })}
@@ -370,7 +385,7 @@ const Settings = ({ navigation }) => {
           style={[
             {
               borderRadius: 15,
-              backgroundColor: '#F9F9F9',
+              backgroundColor: theme.colors.slate,
               marginVertical: 50,
             },
           ]}>
@@ -381,19 +396,20 @@ const Settings = ({ navigation }) => {
                 borderRadius: 15,
 
                 borderRadius: 15,
-                backgroundColor: '#F9F9F9',
+                backgroundColor: theme.colors.slate,
               },
             ]}
             onPress={handleSignOut}>
             <Icon name="log-out" type="feather" color={'#CD3D49'} />
             <ListItem.Content>
-              <ListItem.Title style={[{ fontFamily: FontFamily.sourceSansProSemibold }, colors.dgb]}>Logout </ListItem.Title>
+              <ListItem.Title style={[{ fontFamily: FontFamily.sourceSansProSemibold,color:theme.colors.dg }]}>Logout </ListItem.Title>
             </ListItem.Content>
-            <ListItem.Chevron color={colors.dg.color} size={25} />
+            <ListItem.Chevron color={theme.colors.dg} size={25} />
           </ListItem>
         </View>}
         <View style={{ marginBottom: 100 }}>
           <Socials />
+          <Demo />
         </View>
 
       </ScrollView>
@@ -401,7 +417,7 @@ const Settings = ({ navigation }) => {
       {modal && <Blur />}
 
       {log && <ActivityIndicator style={{ position: 'absolute', alignSelf: 'center', top: '50%' }} size={'small'} />}
-    </SafeAreaView>
+    </SafeAreaTop>
 
   );
 };
@@ -410,6 +426,7 @@ export default Settings;
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    fontFamily: FontFamily.sourceSansProSemibold
+    fontFamily: FontFamily.sourceSansProSemibold,
+    color: theme.colors.dg
   }
 }))

@@ -1,6 +1,7 @@
 import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/themed';
 import * as React from "react";
+import Filter from '../components/icons/Filter';
 import { StyleSheet, View, Text, ActivityIndicator, Pressable, Image, TextInput, SafeAreaView, Modal, TouchableOpacity, Alert } from "react-native";
 import { Styles } from "react-native-google-places-autocomplete";
 import { useNavigation } from "@react-navigation/native";
@@ -27,6 +28,7 @@ import axios from "axios";
 import { backendURL } from "../src/services/http";
 import { da } from "date-fns/locale";
 import Bottom from "../components/bottomsheet";
+import SafeAreaTop from '../components/SafeAreaTop';
 
 
 const initData = [
@@ -110,7 +112,9 @@ const Search2 = () => {
   const s_style = useStyles()
   const { theme } = useTheme();
   return (
-    <SafeAreaView>
+    <SafeAreaTop>
+
+   
       <TouchableOpacity
         onPress={handleContainerPress}
         activeOpacity={1} // To prevent highlighting when pressed
@@ -126,15 +130,17 @@ const Search2 = () => {
 
         <TextInput
           ref={inputRef}
-          style={{ flex: 1 }}
+          style={{ flex: 1 ,color:theme.colors.dg}}
 
           autoFocus={true}
           placeholder='Search for a service or venue'
           onChangeText={setQuery}
+          placeholderTextColor={theme.colors.placeholder}
           keyboardType="web-search"
           onSubmitEditing={handleSearch}
         />
-        {imageLoading && <ActivityIndicator color={colors.dg2.color} style={{ position: "absolute", right: 20, alignSelf: 'center', }} size={'small'} />}
+        <Filter style={s_style.activityIndicator} size={25}
+          color='#BCC4CC' />
 
       </TouchableOpacity>
       <Gsearch handleS={handleSearch} setLoc={setNewLocation} />
@@ -166,20 +172,25 @@ const Search2 = () => {
               <Image source={require('../assets/search1.png')} />
             </TouchableOpacity>
             <View style={s_style.text_cont}>
-              <Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 17 }}>{userstate.recent_view.search}</Text>
+              <Text style={{color:theme.colors.dg, fontFamily: FontFamily.sourceSansProRegular, fontSize: 17 }}>{userstate.recent_view.search}</Text>
             </View>
           </View>
 
         </View>
       }
 
-    </SafeAreaView>
+    </SafeAreaTop>
   )
 }
 export default Search2;
 
 
 const useStyles = makeStyles((theme) => ({
+  activityIndicator:{
+    position: "absolute", right: 20,
+    alignSelf:'center',
+   
+  },
   text_cont: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -191,22 +202,23 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: 56,
     height: 56, borderRadius: 20,
-    backgroundColor: colors.dg2.color
+    backgroundColor: theme.colors.lgb
   },
   recent_view: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: 26,
-    color: colors.dg2.color,
+    color: theme.colors.lg,
     marginVertical: 30
   },
   text_input: {
 
-    backgroundColor: '#EFEFEF',
+    backgroundColor: theme.colors.slate,
     borderRadius: 23,
     borderWidth: 1,
-    borderColor: '#EFEFEF',
+    borderColor: theme.colors.slate,
     height: 63,
     width: '90%',
+    color: theme.colors.dg,
     paddingHorizontal: 10,
     alignSelf: 'center',
     display: 'flex',
@@ -245,7 +257,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     top: '30%',
     height: '50%',
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.card,
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',

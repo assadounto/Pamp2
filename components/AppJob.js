@@ -2,10 +2,8 @@ import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/themed';
 
 
-
-
-
 import React, { useEffect } from 'react';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { colors } from '../src/Common_styles';
 import { delete_rating, setCurrentServiceIndex, setServiceStatus } from '../src/redux/user'; // Replace with your actual Redux action creators
@@ -14,7 +12,7 @@ const AppJob = ({ services, time, setInfo, vendor }) => {
   const ratings = useSelector(state => state.user.existing_rating);
   const dispatch = useDispatch();
 
-
+const {theme}= useTheme()
 
 
   // Define the target date and time for appointment start
@@ -30,7 +28,7 @@ const AppJob = ({ services, time, setInfo, vendor }) => {
       if (minutesPassed < 0) {
         console.log('Appointment not started yet');
       } else if (minutesPassed >= appointmentDuration) {
-        setInfo({ color: colors.dg2.color, status: 'completed' })
+        setInfo({ color: theme.colors.lg, status: 'completed' })
 
       } else {
         let serviceIndex = 0;

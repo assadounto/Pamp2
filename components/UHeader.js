@@ -20,7 +20,7 @@ const UHeader = ({ navigation, newnoti }) => {
   return (
     <View
       style={{
-        backgroundColor: 'white',
+        backgroundColor: theme.colors.background,
         marginBottom: verticalScale(20),
         marginLeft: horizontalScale(20),
         marginTop: Platform.OS === 'ios' ? verticalScale(45) : 10,
@@ -55,7 +55,7 @@ const UHeader = ({ navigation, newnoti }) => {
           style={{
             fontSize: moderateScale(24),
             fontFamily: FontFamily.sourceSansProSemibold,
-            color: colors.dg2.color,
+            color: theme.colors.lg,
             marginLeft: 10,
             width: horizontalScale(150)
           }}
@@ -63,11 +63,11 @@ const UHeader = ({ navigation, newnoti }) => {
           Hi, {user?.username}
         </Text> : <></>}{
           user?.id ?
-            <TouchableOpacity onPress={() => { navigation.navigate('All_notifications') }} style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingHorizontal: 30 }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('All_notifications',{newnoti}) }} style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingHorizontal: 30 }}>
               {
                 newnoti ?
                   <View style={{ top: 5 }}>
-                    <Icon onPress={() => { navigation.navigate('All_notifications') }} name="bell" type="feather" color={colors.lg.color} />
+                    <Icon onPress={() => { navigation.navigate('All_notifications',{newnoti}) }} name="bell" type="feather" color={colors.lg.color} />
                     <Badge
                       badgeStyle={{ width: 12, height: 12, borderRadius: 50 }}
                       status="warning"

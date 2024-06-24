@@ -30,8 +30,9 @@ import CustomImageSlider from '../../../components/CustomSlider'
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry'
 import { da } from 'date-fns/locale'
 import { setVPM } from '../../redux/user'
-import SvgUri from 'react-native-svg-uri';
+import VerifiedIcon from '../../../components/icons/Verified';
 import { useFocusEffect } from '@react-navigation/native';
+import SendIcon from '../../../components/icons/Send';
 
 const getFormattedPrice = (price) => `$${price.toFixed(2)}`;
 const windowHeight = Dimensions.get('window').height;
@@ -385,7 +386,7 @@ const VendorDetail = ({ navigation, route }) => {
     <>{checkedState ? <><ScrollView showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
       containerStyle={{
-        backgroundColor: colors.w.color,
+        backgroundColor: theme.colors.background,
         // flex:1
       }}
     >
@@ -445,7 +446,7 @@ const VendorDetail = ({ navigation, route }) => {
         position: 'absolute',
         right: 30,
         top: swiperHeight - 20, /* Changed from top: 400 to top: '50%' */
-        backgroundColor: 'white',
+        backgroundColor: theme.colors.card,
         display: 'flex',
         flexDirection: 'row',
         width: 74,
@@ -466,21 +467,21 @@ const VendorDetail = ({ navigation, route }) => {
 
           name='star'
           type='ionicons'
-          color={colors.lg.color} />
-        <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color }}>
+          color={theme.colors.lg} />
+        <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: theme.colors.dg }}>
           {data1.sum_rating?.average_rating == 0 ? '0.0' : data1.sum_rating.average_rating}
         </Text>
       </Pressable>
 
       <View style={{ position: 'relative', marginTop: -10, marginBottom: 80, }}>
         <View style={{ left: 20, display: 'flex', flexDirection: 'row' }}>
-          <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: colors.dg.color, maxWidth: 200 }}>{data1.name}</Text>
+          <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: theme.colors.dg, maxWidth: 200 }}>{data1.name}</Text>
           {
-            data1.badge ? <View style={{ marginTop: 8, marginLeft: 5 }}>
-              <SvgUri
-
-                source={require('../../../assets/svgs/verified.svg')} />
-            </View> : <Fragment />
+            data1.badge && <View style={{ marginTop: 5, marginLeft: 5 }}>
+              
+                 <VerifiedIcon color={theme.colors.lg} />
+         
+            </View>
           }
           <TouchableOpacity onPress={() => setModal(true)} style={{ paddingHorizontal: 5, marginLeft: 5, marginTop: 7, height: 20, backgroundColor: checkVendorStatus(data1.hours) == 'Open' ? '#86D694' : '#CD3D49', borderRadius: 20 }}>{checkVendorStatus(data1.hours) === 'Open' ? (
             <Text style={{ marginHorizontal: 5, color: 'white' }} >open</Text>
@@ -488,13 +489,11 @@ const VendorDetail = ({ navigation, route }) => {
             <Text style={{ color: 'white', marginHorizontal: 5, fontFamily: FontFamily.sourceSansProSemibold }}>closed</Text>
           )}</TouchableOpacity>
           <View style={{ position: 'absolute', top: 0, right: 60 }}>
-
-            <Icon
+            <SendIcon
+              color={theme.colors.dg}
               onPress={handleShare}
-              name='paper-plane-outline'
-              type='ionicon'
-              color={'#00463C'}
             />
+           
           </View>
         </View>
 
@@ -505,40 +504,39 @@ const VendorDetail = ({ navigation, route }) => {
               <Pressable
                 key={item.id}
                 style={{
-                  backgroundColor: 'white',
-                  borderRadius: 20,
+                  backgroundColor: theme.colors.card,                  borderRadius: 20,
                   height: 30,
                   padding: 5,
                   paddingHorizontal: 17,
                   marginBottom: 15,
-                  borderColor: '#B0EBBD',
+                  borderColor: theme.colors.tabColor,
                   borderWidth: 1,
                   marginRight: 10
                 }}
               >
-                <Text style={[styles.option, colors.dg]}> {item.value}</Text>
+                <Text style={[styles.option, { color: theme.colors.dg }]}>{item.value}</Text>
               </Pressable>
 
             )
           })}
         </ScrollView>
-        <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: '#00463C', marginBottom: 15, marginRight: 20 }}> {data1.location}</Text>
+        <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: theme.colors.dg, marginBottom: 15, marginRight: 20 }}> {data1.location}</Text>
         <View style={{ left: 20, display: 'flex', flexDirection: 'row' }}>
           <Icon name='map-pin' type='feather' color={colors.lg.color} />
-          <Text style={{ color: colors.lg.color, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {parseInt(data1.dist / 1000)}km - <Text onPress={() => navigation.navigate('Mapview', {
+          <Text style={{ color: theme.colors.lg, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {parseInt(data1.dist / 1000)}km - <Text onPress={() => navigation.navigate('Mapview', {
             data: data1
-          })} style={{ color: colors.dg2.color }}>Show on map</Text></Text>
+          })} style={{ color: theme.colors.lg }}>Show on map</Text></Text>
         </View>
-        <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProRegular, color: colors.dg.color, fontSize: 15, marginBottom: 20, marginTop: 20, paddingRight: 60 }}> {data1.desc}</Text>
-        <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: '#00463C', marginBottom: 15 }}> Services</Text>
+        <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProRegular, color: theme.colors.dg, fontSize: 15, marginBottom: 20, marginTop: 20, paddingRight: 60 }}> {data1.desc}</Text>
+        <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: theme.colors.dg, marginBottom: 15 }}> Services</Text>
         {checkedState.topping2.map(({ name, items, total, time, services, items_name }, index) => {
           return (
-            <View key={name} style={[styles.t6, { width: '100%', borderBottomColor: colors.lg.color, borderBottomWidth: 1, marginBottom: 20, left: 20 }]}>
+            <View key={name} style={[styles.t6, { width: '100%', borderBottomColor: theme.colors.tabColor, borderBottomWidth: 1, marginBottom: 20, left: 20 }]}>
               <View style={{ left: -15 }}>
                 <CheckBox
-
+                  containerStyle={{ backgroundColor: theme.colors.background }}
                   title={<>
-                    <View><Text style={[colors.dg, { marginTop: 0, fontFamily: FontFamily.sourceSansProBold, fontSize: 18, width: 200, marginLeft: 10 }]}>
+                    <View><Text style={[ { color:theme.colors.dg, marginTop: 0, fontFamily: FontFamily.sourceSansProBold, fontSize: 18, width: 200, marginLeft: 10 }]}>
                       {name}
                     </Text>
                       {time != 0 &&
@@ -547,7 +545,7 @@ const VendorDetail = ({ navigation, route }) => {
                         </Text>}
                     </View>
                     {total > 0 &&
-                      <Text style={[colors.dg, { fontFamily: FontFamily.sourceSansProBold, fontSize: 19, top: -9, marginLeft: 'auto', right: 20 }]}>
+                      <Text style={[ { color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, fontSize: 19, top: -9, marginLeft: 'auto', right: 20 }]}>
                         {'\u20B5'} {total}
                       </Text>}
                   </>}
@@ -573,8 +571,9 @@ const VendorDetail = ({ navigation, route }) => {
                   <View key={id} style={{ marginLeft: 30 }}>
                     <CheckBox
                       key={id}
+                      containerStyle={{backgroundColor:theme.colors.background}}
                       title={<>
-                        <Text numberOfLines={2} ellipsizeMode="tail" style={[colors.dg, { maxWidth: 200, marginLeft: 10 }]}>
+                        <Text numberOfLines={2} ellipsizeMode="tail" style={[ { color:theme.colors.dg, maxWidth: 200, marginLeft: 10 }]}>
                           {name2}
                         </Text>
 
@@ -583,13 +582,13 @@ const VendorDetail = ({ navigation, route }) => {
                         <Text style={[{ fontSize: 10, color: '#BBB9BC', }]}>
                           {' '}{convertMinutesToHoursAndMinutes(time)}
                         </Text>
-                        <Text style={[colors.dg, { fontFamily: FontFamily.sourceSansProBold, right: 40, marginLeft: 'auto' }]}>
+                        <Text style={[ { color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, right: 40, marginLeft: 'auto' }]}>
                           {'\u20B5'} {price}
                         </Text></>}
-                      checkedIcon={<View style={[{ backgroundColor: colors.lg.color, width: 15, height: 15, borderRadius: 5 }]}>
+                      checkedIcon={<View style={[{ backgroundColor: theme.colors.lgb, width: 15, height: 15, borderRadius: 5 }]}>
 
                       </View>}
-                      uncheckedIcon={<View style={[{ width: 15, height: 15, borderRadius: 5, borderColor: colors.lg.color, borderWidth: 1 }]}>
+                      uncheckedIcon={<View style={[{ width: 15, height: 15, borderRadius: 5, borderColor: theme.colors.lgb, borderWidth: 1 }]}>
 
                       </View>}
                       checked={check}
@@ -600,7 +599,7 @@ const VendorDetail = ({ navigation, route }) => {
             </View>
           )
         })}
-        {data1.staff.length != 0 && <><Text style={{ left: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 26, color: colors.dg.color }}>Book with staff</Text><Text style={{ left: 20, color: '#BBB9BC', marginBottom: 20 }}>optional</Text><View style={{ marginLeft: '3%', marginBottom: 30 }}>
+        {data1.staff.length != 0 && <><Text style={{ left: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 26, color: theme.colors.dg }}>Book with staff</Text><Text style={{ left: 20, color: '#BBB9BC', marginBottom: 20 }}>optional</Text><View style={{ marginLeft: '3%', marginBottom: 30 }}>
           <Staff data={data1.staff} onSelect={(value) => setStaff(value)} />
         </View></>}
       </View>
@@ -608,7 +607,7 @@ const VendorDetail = ({ navigation, route }) => {
 
     </ScrollView>
       <Opening key={data1.id} data={data1.hours} modal={modal} setModal={setModal} />
-      <View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: '#ffff', height: 200, width: '100%', marginBottom: 0 }}>
+      <View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: theme.colors.background, height: 200, width: '100%', marginBottom: 0 }}>
         <Button
           titleStyle={{ fontFamily: FontFamily.sourceSansProBold }}
           title={'Book'}
@@ -621,8 +620,8 @@ const VendorDetail = ({ navigation, route }) => {
             marginTop: 10,
             alignSelf: 'center',
             borderRadius: 25,
-            backgroundColor: colors.dg2.color,
-            shadowColor: colors.dg2.color, shadowOpacity: 0., shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
+            backgroundColor: theme.colors.lgb,
+            shadowColor: theme.colors.lgb, shadowOpacity: 0., shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
           }}
           onPress={handleBookingSubmit} />
       </View>

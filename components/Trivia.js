@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
     width: '90%',
     borderRadius: 20,
     padding: 20,
-    backgroundColor: colors.dg.color,
+    backgroundColor: theme.colors.dg,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -122,12 +122,12 @@ const useStyles = makeStyles((theme) => ({
   question: {
     fontSize: 20,
     marginVertical: verticalScale(10),
-    color: colors.w.color,
+    color: theme.colors.white,
     fontFamily: FontFamily.sourceSansProSemibold,
     textAlign: 'center',
   },
   optionButton: {
-    backgroundColor: colors.dg2.color,
+    backgroundColor: theme.colors.lgb,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
@@ -143,16 +143,16 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: FontFamily.sourceSansProSemibold,
     marginVertical: verticalScale(20),
     textAlign: 'center',
-    color: colors.dg2.color
+    color: theme.colors.lg
   },
   scoreText: {
     fontSize: 18,
     marginBottom: 20,
     textAlign: 'center',
-    color: colors.dg2.color
+    color: theme.colors.lg
   },
   playAgainButton: {
-    backgroundColor: colors.dg2.color,
+    backgroundColor: theme.colors.lgb,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
@@ -167,7 +167,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 10,
-    color: colors.w.color,
+    color: theme.colors.white,
   },
 }));
 

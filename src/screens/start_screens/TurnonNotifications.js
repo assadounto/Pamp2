@@ -133,7 +133,7 @@ const Turnon = ({ navigation }) => {
                 fontSize: 31,
                 alignSelf: 'center',
                 marginTop: 40,
-                color: '#00463C',
+                color: theme.colors.dg,
               },
             ]}>
             Turn on notifications
@@ -201,7 +201,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     width: horizontalScale(220),
     textAlign: 'center',
-    color: '#00463C',
+    color: theme.colors.dg,
     padding: 10,
     fontSize: moderateScale(15),
   },
@@ -228,7 +228,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: moderateScale(20),
     fontFamily: FontFamily.sourceSansProRegular,
 
-    color: '#00463C',
+    color: theme.colors.dg,
   },
 }));
 export default Turnon;

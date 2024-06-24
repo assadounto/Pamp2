@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.card,
   },
   buttonContainer: {
     position: 'absolute',
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     paddingVertical: 20,
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'white', // Add a white background
+    backgroundColor: theme.colors.card, // Add a white background
   },
 
   keyboardVisible: {
@@ -88,8 +88,8 @@ const useStyles = makeStyles((theme) => ({
     width: 184,
     height: 54,
     borderRadius: 25,
-    backgroundColor: colors.dg2.color,
-    shadowColor: colors.dg2.color,
+    backgroundColor: theme.colors.lgb,
+    shadowColor: theme.colors.lgb,
     shadowOpacity: 0,
     shadowRadius: 5,
     shadowOffset: { width: 5, height: 0 },

@@ -75,13 +75,13 @@ const useStyles = makeStyles((theme) => ({
   },
   textFlexBox: {
     textAlign: "left",
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
   },
   kmTypo: {
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: FontSize.size_3xs,
     textAlign: "left",
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
   },
   kmPosition: {
     left: "50%",

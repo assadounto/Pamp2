@@ -63,13 +63,13 @@ const Notes_pop = ({ setcancel, modal, setblur, id }) => {
                         name='close-outline'
                         type='ionicon'
                         size={40}
-                        color={'#00463C'}
+                        color={theme.colors.dg}
                     />
 
                 </View>
 
                 <TextInput placeholder='leave note..' onChangeText={setText} multiline={true} style={pop.input} />
-                <Button titleStyle={{ fontFamily: FontFamily.sourceSansProBold }} onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='Send'>
+                <Button titleStyle={{ fontFamily: FontFamily.sourceSansProBold }} onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: theme.colors.lgb, width: 120, height: 40 }} title='Send'>
 
                 </Button>
             </View>
@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     h4: {
-        color: colors.lg.color
+        color: theme.colors.lg
     },
     notes:
     {

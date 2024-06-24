@@ -53,13 +53,15 @@ function App() {
   };
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+     
       <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Navigator_index />
         </GestureHandlerRootView>
+        </ThemeProvider>
       </PersistGate>
-      </ThemeProvider>
+    
     </Provider>
   );
 }

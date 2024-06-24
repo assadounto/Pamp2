@@ -48,7 +48,7 @@ const Cancel_pop = ({ cancel, setcancel, modal, setblur, data }) => {
                     <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: '#CD3D49', width: 120, height: 40 }} title='Yes'>
 
                     </Button>
-                    <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: colors.dg2.color, width: 120, height: 40 }} title='No'>
+                    <Button onPress={handlepressCancel} buttonStyle={{ borderRadius: 40, backgroundColor: theme.colors.lgb, width: 120, height: 40 }} title='No'>
 
                     </Button>
                 </View>
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     h4: {
-        color: colors.dg2.color
+        color: theme.colors.lg
     }
 }))
 export default Cancel_pop;

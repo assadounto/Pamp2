@@ -57,7 +57,7 @@ const DelPop = ({ main, modal }) => {
           />
         </View>
         <TextInput
-          placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={theme.colors.placeholder}
           style={{
             borderWidth: 1,
             width: '80%',

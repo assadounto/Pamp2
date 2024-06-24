@@ -16,10 +16,10 @@ const BHeader = ({ title, subtitle, back, bg, color, setDateVisible, close, top 
     <View style={[color, { marginBottom: 20, marginTop: top || 10 }]}>
 
 
-      <Text style={[styles.f1, { textAlign: 'center', fontFamily: FontFamily.sourceSansProSemibold, marginHorizontal: 30 }, color ? { color } : colors.dg]}>{title}</Text>
-      {subtitle ? <Text style={{ textAlign: 'center', fontFamily: FontFamily.sourceSansProRegular, fontSize: 14, color: colors.dg.color }}>{subtitle}</Text> : null}
+      <Text style={[styles.f1, { textAlign: 'center', fontFamily: FontFamily.sourceSansProSemibold, marginHorizontal: 30 }, color ? { color } : {color:theme.colors.dg}]}>{title}</Text>
+      {subtitle ? <Text style={{ textAlign: 'center', fontFamily: FontFamily.sourceSansProRegular, fontSize: 14, color: theme.colors.dg }}>{subtitle}</Text> : null}
       <View style={{ position: 'absolute', left: 20 }}>
-        <Icon name="chevron-back" size={30} type="ionicon" onPress={() => { close ? setDateVisible(false) : navigation.goBack() }} />
+        <Icon name="chevron-back" color={theme.colors.black} size={30} type="ionicon" onPress={() => { close ? setDateVisible(false) : navigation.goBack() }} />
       </View>
     </View>
 

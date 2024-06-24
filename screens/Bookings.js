@@ -117,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: FontSize.size_5xl,
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: Color.lightgreen,
+    color: theme.colors.lg,
     textAlign: "left",
   },
 

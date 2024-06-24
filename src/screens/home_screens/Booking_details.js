@@ -38,6 +38,7 @@ const Booking_detail = ({ route, navigation }) => {
   const [cancelled, setCancelled] = useState(false)
   const [blur, setblur] = useState(false)
   const [fav, setFav] = useState(data?.favorite)
+  const { theme } = useTheme();
 
   id && console.log(id)
 
@@ -61,12 +62,12 @@ const Booking_detail = ({ route, navigation }) => {
   };
   const bgc = {
     cancelled: '#CD3D49',
-    completed: colors.dg2.color,
-    confirmed: colors.dg2.color,
-    booked: colors.dg.color,
-    rebook: colors.dg.color,
+    completed: theme.colors.lgb,
+    confirmed: theme.colors.lgb,
+    booked: theme.colors.dgb,
+    rebook: theme.colors.dgb,
     "no show": '#CD3D49',
-    unconfirmed: colors.dg.color,
+    unconfirmed: theme.colors.dgb,
     declined: '#CD3D49',
     pending: data?.services[0] ? data.services[0].color : 'red'
 
@@ -182,10 +183,9 @@ const Booking_detail = ({ route, navigation }) => {
     return formattedString;
   }
   const styles = useStyles();
-  const { theme } = useTheme();
   return (
 
-    <ScrollView style={{ backgroundColor: '#FFFFFF' }}>
+    <ScrollView style={{ backgroundColor: theme.colors.background }}>
       {
         data ? <>
 
@@ -206,9 +206,9 @@ const Booking_detail = ({ route, navigation }) => {
 
               color={'#FFFFFF'} />
           </Pressable><View>
-            <Text style={{ marginTop: 10, color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 20 }}>{formatDate(data.date)}</Text>
+            <Text style={{ marginTop: 10, color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 20 }}>{formatDate(data.date)}</Text>
             <View >
-              <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 15 }}> at {formatTime(data.time)}{'  '}
+              <Text style={{ color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, fontSize: 27, marginHorizontal: 15 }}> at {formatTime(data.time)}{'  '}
                 <View style={[{
                   marginTop: 7,
                   paddingHorizontal: 10, height: 20, borderRadius: 20,
@@ -219,7 +219,7 @@ const Booking_detail = ({ route, navigation }) => {
             </View>
           </View><AppJob info={info} vendor={data.vendor} setInfo={setInfo} services={data.services} time={data.time} /><View style={{ marginHorizontal: 20, marginVertical: 30 }}>
             <ListItem
-              containerStyle={[{ paddingVertical: 20, borderBottomColor: colors.lg.color, borderTopColor: colors.lg.color, borderBottomWidth: 0.5, borderTopWidth: 0.5 }]}
+              containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 20, borderBottomColor: theme.colors.tabColor, borderTopColor: theme.colors.tabColor, borderBottomWidth: 0.5, borderTopWidth: 0.5 }]}
               onPress={() => {
                 //dispatch(setDefault(pay))
                 navigation.navigate('VendorDetail',
@@ -239,17 +239,17 @@ const Booking_detail = ({ route, navigation }) => {
 
 
               <ListItem.Content>
-                <ListItem.Title style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color }}>
+                <ListItem.Title style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: theme.colors.dg }}>
                   {data.vendor.username}
                 </ListItem.Title>
-                <ListItem.Title style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: colors.dg.color }}>
+                <ListItem.Title style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: theme.colors.dg }}>
                   {data.vendor.name}
                 </ListItem.Title>
               </ListItem.Content>
-              <ListItem.Chevron color={'#00463C'} size={30} />
+              <ListItem.Chevron color={theme.colors.dg} size={30} />
             </ListItem>
 
-          </View><Booking_action info={info} rebk={rebook} data={data} setblur={setblur} setCancelled={setCancelled} /><View style={{ marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: 'white', borderRadius: 20, width: '90%', alignSelf: 'center' }}>
+          </View><Booking_action info={info} rebk={rebook} data={data} setblur={setblur} setCancelled={setCancelled} /><View style={{ marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: theme.colors.card, borderRadius: 20, width: '90%', alignSelf: 'center' }}>
 
 
             <View style={{ padding: 20, borderBottomColor: colors.lg.color, borderBottomWidth: 1 }}>
@@ -263,33 +263,33 @@ const Booking_detail = ({ route, navigation }) => {
                       <View style={{ position: 'absolute', left: 5, top: 15, height: 45, width: 0.6, backgroundColor: '#BBB9BC' }}></View> : null}
                     <View style={{ width: '70%' }}>
 
-                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>{name} - <Text style={{ color: '#BBB9BC', fontSize: 13, marginTop: -17 }}>{items_name}</Text></Text>
+                      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: theme.colors.dg }}>{name} - <Text style={{ color: '#BBB9BC', fontSize: 13, marginTop: -17 }}>{items_name}</Text></Text>
                       <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: '#BBB9BC' }}> {convertMinutesToHoursAndMinutes(time)}</Text>
 
                     </View>
-                    <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.dg.color, position: 'absolute', right: 9 }}>¢{total}</Text>
+                    <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: theme.colors.dg, position: 'absolute', right: 9 }}>¢{total}</Text>
                   </View>
                 );
               })}
 
             </View>
             <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
-              <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>
+              <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: theme.colors.dg }}>
                 Discount
               </Text>
               <View style={{ position: 'absolute', right: 30, top: 20 }}>
-                <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.lg.color }}>
+                <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: theme.colors.lg }}>
                   ¢{data.discount_amount || 0}
                 </Text>
               </View>
 
             </View>
             <View style={{ marginTop: -20, padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
-              <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: colors.dg.color }}>
+              <Text style={{ left: 30, position: 'absolute', top: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: theme.colors.dg }}>
                 Total
               </Text>
               <View style={{ position: 'absolute', right: 30, top: 20 }}>
-                <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: colors.lg.color }}>
+                <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 18, color: theme.colors.lg }}>
                   ¢{data.total - (data.discount_amount)}
                 </Text>
               </View>
@@ -298,11 +298,11 @@ const Booking_detail = ({ route, navigation }) => {
             {data.payment_method == 'Pay with cash' &&
               <View style={{ display: 'flex', flexDirection: 'row' }}>
 
-                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, left: 30, marginBottom: 20, flex: 1 }}>
+                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: theme.colors.dg, left: 30, marginBottom: 20, flex: 1 }}>
                   Initial deposit
                 </Text>
-                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: colors.dg.color, flex: 1, textAlign: 'right', marginRight: 30 }}>¢{data.amount_paid}</Text></View>}
-          </View><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Location</Text>
+                <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: theme.colors.dg, flex: 1, textAlign: 'right', marginRight: 30 }}>¢{data.amount_paid}</Text></View>}
+          </View><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: theme.colors.dg, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Location</Text>
           <MapView
             initialRegion={{
               latitude: data.vendor.lat ? parseFloat(data.vendor.lat) : 5.614818,
@@ -312,10 +312,10 @@ const Booking_detail = ({ route, navigation }) => {
             }}
             style={{ width: '90%', height: 300, alignSelf: 'center', borderRadius: 20 }}
             provider={PROVIDER_GOOGLE}
-          ></MapView><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Address</Text><Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 20, color: colors.dg.color, marginHorizontal: 30, marginBottom: 14 }}>{data.vendor.name}</Text><View style={{ marginTop: 30, marginBottom: 50, width: '90%', alignSelf: 'center' }}>
+          ></MapView><Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: theme.colors.dg, marginTop: 55, marginHorizontal: 30, marginBottom: 14 }}>Address</Text><Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 20, color: theme.colors.dg, marginHorizontal: 30, marginBottom: 14 }}>{data.vendor.name}</Text><View style={{ marginTop: 30, marginBottom: 50, width: '90%', alignSelf: 'center' }}>
 
             <ListItem
-              containerStyle={[{ paddingVertical: 20, borderTopColor: colors.lg.color, borderBottomColor: colors.lg.color, borderBottomWidth: 1, borderTopWidth: 1 }]}
+              containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 20, borderTopColor: theme.colors.tabColor, borderBottomColor: theme.colors.tabColor, borderBottomWidth: 1, borderTopWidth: 1 }]}
               onPress={() => {
                 // dispatch(setDefault(pay))
                 copyToClipboard();
@@ -327,14 +327,14 @@ const Booking_detail = ({ route, navigation }) => {
                 color={colors.lg.color} />
 
               <ListItem.Content>
-                <ListItem.Title style={colors.dgb}>
+                <ListItem.Title style={{ color: theme.colors.dg }}>
                   Copy address
                 </ListItem.Title>
               </ListItem.Content>
-              <ListItem.Chevron color={'#00463C'} size={20} />
+              <ListItem.Chevron color={theme.colors.dg} size={20} />
             </ListItem>
             <ListItem
-              containerStyle={[{ paddingVertical: 20, borderBottomColor: colors.lg.color, borderBottomWidth: 1 }]}
+              containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 20, borderBottomColor: theme.colors.tabColor, borderBottomWidth: 1 }]}
               onPress={() => {
                 // dispatch(setDefault(pay))
                 openGoogleMaps();
@@ -346,11 +346,11 @@ const Booking_detail = ({ route, navigation }) => {
                 color={colors.lg.color} />
 
               <ListItem.Content>
-                <ListItem.Title style={colors.dgb}>
+                <ListItem.Title style={{color:theme.colors.dg}}>
                   Get directions
                 </ListItem.Title>
               </ListItem.Content>
-              <ListItem.Chevron color={'#00463C'} size={20} />
+              <ListItem.Chevron color={theme.colors.dg} size={20} />
             </ListItem>
 
           </View>
@@ -371,10 +371,10 @@ const Booking_detail = ({ route, navigation }) => {
 
 const useStyles = makeStyles((theme) => ({
   booked: {
-    backgroundColor: colors.dg.color
+    backgroundColor: theme.colors.dg
   },
   completed: {
-    backgroundColor: colors.lg.color
+    backgroundColor: theme.colors.lgb
   },
   cancel: {
     backgroundColor: 'red'
@@ -387,14 +387,14 @@ const useStyles = makeStyles((theme) => ({
     top: "70%",
     height: 32,
     borderRadius: 23,
-    backgroundColor: colors.lg.color
+    backgroundColor: theme.colors.lgb
   },
   copy_info_text: {
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: 14,
     left: 20,
     top: 5,
-    color: colors.dg.color
+    color: theme.colors.dg
   }
 }))
 export default Booking_detail;

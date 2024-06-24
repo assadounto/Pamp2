@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
   c2: {
     width: '80%',
 
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.card,
     position: 'absolute',
     alignSelf: 'center',
     bottom: 30,
@@ -184,7 +184,7 @@ const useStyles = makeStyles((theme) => ({
   },
   code: {
 
-    color: colors.dg.color
+    color: theme.colors.dg
   },
   copy_info: {
     width: '90%',
@@ -197,7 +197,7 @@ const useStyles = makeStyles((theme) => ({
   },
   italic: {
     textAlign: 'center',
-    color: colors.dg.color
+    color: theme.colors.dg
 
   },
   bold: {
@@ -215,11 +215,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     left: 20,
     top: 5,
-    color: colors.dg.color
+    color: theme.colors.dg
   }
   , cptext: {
     fontFamily: FontFamily.sourceSansProRegular,
-    color: colors.dgb.color
+    color: theme.colors.dg
   }
 }));
 export default Invite;

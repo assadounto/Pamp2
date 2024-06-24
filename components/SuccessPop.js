@@ -84,14 +84,14 @@ const useStyles = makeStyles((theme) => ({
     marginVertical: verticalScale(50),
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: '#00463C',
+    color: theme.colors.dg,
   },
   youHaveSuccessfully: {
 
     textAlign: 'center',
     fontSize: FontSize.size_base,
     fontFamily: FontFamily.sourceSansProRegular,
-    color: Color.lightgreen,
+    color: theme.colors.lg,
   },
   component48: {
     top: '30%',

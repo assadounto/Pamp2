@@ -13,7 +13,9 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/user';
 import Pop2 from '../start_screens/pop2';
 import Blur from '../start_screens/Blur';
+import { useStyles } from '../start_screens/Create_account';
 const Edit_profile = ({ navigation }) => {
+  const styles= useStyles()
   const user = useSelector(state => state.user.userInfo)
   const [name, setName] = useState(user.name);
   const [username, setUsername] = useState(user.username);
@@ -66,7 +68,7 @@ const Edit_profile = ({ navigation }) => {
 
   return (
     <><SafeAreaView style={[styles.EP]}>
-      <BHeader title="Edit info" color={colors.dg2.color} />
+      <BHeader title="Edit info" color={theme.colors.lg} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"} // Adjust behavior for iOS and Android
       >
@@ -74,38 +76,38 @@ const Edit_profile = ({ navigation }) => {
           // contentContainerStyle= {{ flex: 1 }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}>
-          <View style={{ flex: 1, marginBottom: 120 }}>
+          <View style={{ flex: 1,  marginBottom: 120 }}>
             <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>First name</Text>
             <TextInput
 
               style={[styles.EI]}
               value={username}
-              placeholderTextColor={'#BBB9BC'}
+              placeholderTextColor={theme.colors.placeholder}
               onChangeText={setUsername} />
             <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Last name</Text>
             <TextInput
               style={[styles.EI]}
               value={name}
-              placeholderTextColor={'#BBB9BC'}
+              placeholderTextColor={theme.colors.placeholder}
               onChangeText={setName} />
             <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Phone number</Text>
             <TextInput
               style={[styles.EI]}
               value={phone}
-              placeholderTextColor={'#BBB9BC'}
+              placeholderTextColor={theme.colors.placeholder}
               onChangeText={setPhone} />
             <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Email Address</Text>
             <TextInput
               style={[styles.EI]}
               value={email}
-              placeholderTextColor={'#BBB9BC'}
+              placeholderTextColor={theme.colors.placeholder}
               onChangeText={setEmail}
               disabled={isEmailDisabled} // Disable email input
             />
             <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Date of birth</Text>
             <TextInput
               placeholder={'dd/mm/yyyy'}
-              placeholderTextColor={'#BBB9BC'}
+              placeholderTextColor={theme.colors.placeholder}
               style={[styles.EI]}
               value={dateOfBirth}
               onChangeText={setDateOfBirth} />
@@ -113,7 +115,7 @@ const Edit_profile = ({ navigation }) => {
             <TextInput
               style={[styles.EI]}
               value={gender}
-              placeholderTextColor={'#BBB9BC'}
+              placeholderTextColor={theme.colors.placeholder}
               onChangeText={setGender} />
             <Text style={[styles.P1, { paddingHorizontal: 40, marginBottom: 10 }]}>Address</Text>
             <TextInput

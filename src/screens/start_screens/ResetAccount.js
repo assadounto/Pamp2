@@ -12,6 +12,7 @@ import {
   View,
   Alert,
 } from 'react-native';
+import { horizontalScale ,verticalScale,moderateScale} from '../../Dimensions';
 import Header from './header';
 import { styles, colors } from '../../Common_styles';
 import { Button } from '@rneui/base';
@@ -158,12 +159,23 @@ const ResetAccount = ({ navigation, route }) => {
         },
       ],
     },
+
+    button: {
+      width: horizontalScale(330),
+      height: verticalScale(71),
+      backgroundColor: '#86D694',
+      borderWidth: horizontalScale(1),
+      borderColor: '#86D694',
+      marginBottom: verticalScale(10),
+      alignSelf: 'center',
+      borderRadius: horizontalScale(23),
+    },
     cell: {
       width: 65,
       height: 66,
       lineHeight: 38,
       fontSize: 30,
-      color: '#00463C',
+      color: theme.colors.dg,
       borderWidth: 2,
       borderColor: '#B0EBBD',
       textAlign: 'center',
@@ -175,7 +187,7 @@ const ResetAccount = ({ navigation, route }) => {
       height: 66,
       lineHeight: 38,
       fontSize: 30,
-      color: '#00463C',
+      color: theme.colors.dg,
       borderWidth: 2,
       borderColor: 'red',
       textAlign: 'center',
@@ -241,7 +253,7 @@ const ResetAccount = ({ navigation, route }) => {
 
         <Text
           disabled={timerActive}
-          style={[colors.dg, styles.tc, { fontFamily: FontFamily.sourceSansProSemibold, marginTop: 100 }]}
+          style={[ styles.tc, { color: theme.colors.dg, fontFamily: FontFamily.sourceSansProSemibold, marginTop: 100 }]}
           onPress={startTimer}
         >
           {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}

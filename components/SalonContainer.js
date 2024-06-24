@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sewInPosition: {
     left: 25,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
   },
   sewInPosition1: {
     marginTop: 90.99,
@@ -126,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
   likkleSalon: {
     marginTop: 38.99,
     marginLeft: -126.5,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     textAlign: "left",
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: FontSize.size_base,
@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
   },
   am10am: {
     right: 28,
-    color: Color.lightgreen,
+    color: theme.colors.lg,
     fontFamily: FontFamily.sourceSansProRegular,
   },
   text: {
@@ -150,7 +150,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 30,
     fontWeight: "700",
     fontFamily: FontFamily.sourceSansProBold,
-    color: Color.lightgreen,
+    color: theme.colors.lg,
   },
   july2022: {
     marginTop: 0.99,

@@ -81,7 +81,7 @@ const Location_pop = ({ setmodal, getUserLocation, scope, modal }) => {
                   fontSize: 31,
                   alignSelf: 'center',
                   marginTop: 40,
-                  color: '#00463C',
+                  color: theme.colors.dg,
                 },
               ]}>
               Turn on location
@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     width: horizontalScale(220),
     textAlign: 'center',
-    color: '#00463C',
+    color: theme.colors.dg,
     padding: 10,
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: moderateScale(15),
@@ -172,7 +172,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: moderateScale(20),
     fontFamily: FontFamily.sourceSansProRegular,
 
-    color: '#00463C',
+    color: theme.colors.dg,
   },
 }));
 

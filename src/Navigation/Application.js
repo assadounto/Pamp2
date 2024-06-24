@@ -6,7 +6,7 @@ import Profile from '../screens/home_screens/Profile';
 import Edit_profile from '../screens/home_screens/edit_profile';
 import MainNavigator from './Main';
 import {useSelector} from 'react-redux';
-
+import { useTheme } from '@rneui/themed';
 import Change_email from '../screens/home_screens/change_email';
 import Search2 from '../../screens/Search2';
 import Searches1 from '../screens/home_screens/Searches1';
@@ -41,6 +41,7 @@ import Getting_started from '../screens/start_screens/Getting_started';
 import Location_pop from '../../components/Location_pop';
 import ChatScreen from '../screens/home_screens/ChatScreen';
 import ChatListScreen from '../screens/home_screens/ChatList';
+import NotiMessage from '../screens/home_screens/NotiMessage';
 const Stack = createStackNavigator();
 
 const forFade2 = ({ current }) => ({
@@ -68,38 +69,49 @@ const forFade = ({ current, next }) => {
   };
 };
 const ApplicationNavigator = () => {
+  const { theme } = useTheme();
   const {first_time} = useSelector(state => state.user);
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={{
+        colors: {
+          primary: theme.colors.background,
+          background: theme.colors.background,
+          card: theme.colors.background,
+          text: theme.colors.black,
+        
+        },
+        dark: theme.mode === 'dark',
+      }}
+    >
       <StatusBar />
       <Stack.Navigator
       
         screenOptions={{
           headerShown: false,
           cardStyle: {
-            backgroundColor: '#fff',
+            background: theme.colors.background,
 
           },
         }}>
 {  first_time?      <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="Getting_started" component={Getting_started} />:
 <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="main2" component={MainNavigator} />
-}     
-<Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="main" component={MainNavigator} />   
-
+}       
+        <Stack.Screen options={{ cardStyleInterpolator: forFade2 }}  name="main" component={MainNavigator} />   
         <Stack.Screen name="Profile" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Profile} />
         <Stack.Screen name="edit_profile"  options={{ cardStyleInterpolator: forFade2 }}   component={Edit_profile} />
         <Stack.Screen name="change_email"  options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={Change_email} /> 
         <Stack.Screen name="change_pass" options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Change_pass} /> 
         <Stack.Screen 
-             options={{presentation:'modal'}}
+          options={{ ...TransitionPresets.ModalSlideFromBottomIOS }}
           name="Search" component={Search2} 
        /> 
              <Stack.Screen name="location" options={{ cardStyleInterpolator: forFade2 }} component={Location_pop} /> 
         <Stack.Screen name="Searches1" options={{ cardStyleInterpolator: forFade2 }} component={Searches1} /> 
         <Stack.Screen name="VendorDetail"  options={{ cardStyleInterpolator: forFade2 }}  component={VendorDetail} /> 
         <Stack.Screen name="SelectDate" options={{    ...TransitionPresets.ScaleFromCenterAndroid}} component={SelectDate} /> 
-        <Stack.Screen name="All_notifications" options={{ cardStyleInterpolator: forFade2}}  component={ChatListScreen} /> 
-        <Stack.Screen name="Chat" options={{ cardStyleInterpolator: forFade2 }} component={ChatScreen} /> 
+        <Stack.Screen name="All_notifications" options={{ cardStyleInterpolator: forFade2}}  component={NotiMessage} /> 
+        <Stack.Screen name="Chat" options={{ presentation:'modal'}} component={ChatScreen} /> 
         <Stack.Screen name='Mapview'  options={{ cardStyleInterpolator: forFade2 }}  component={Mapview}/> 
         <Stack.Screen name={'Confirm'} options={{ cardStyleInterpolator: forFade2 }} component={Confirm_payment}/> 
         <Stack.Screen name={'Success'}  options={{    ...TransitionPresets.ScaleFromCenterAndroid}}  component={Success}/> 

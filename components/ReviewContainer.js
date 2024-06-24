@@ -124,7 +124,7 @@ const useStyles = makeStyles((theme) => ({
   },
   youCompletedAContainer: {
     top: 19,
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     marginLeft: -111,
     fontFamily: FontFamily.sourceSansProSemibold,
     fontWeight: "600",

@@ -57,9 +57,9 @@ const NoInternetComponent = ({ retry }) => {
             loop={true}
           />
         </View>
-        <Text style={{ marginVertical: 10, fontFamily: FontFamily.sourceSansProRegular, textAlign: 'center', color: colors.dg.color, }}>{"Internet Disconnected.\n Please check internet connectivity and try again."}</Text>
-        <Button buttonStyle={{ borderRadius: 20, backgroundColor: colors.dg2.color, marginBottom: 10 }} title="Retry" onPress={handleRetry} />
-        <Button buttonStyle={{ borderRadius: 20, backgroundColor: colors.dg2.color }} title="Play Trivia" onPress={handlePlayTrivia} />
+        <Text style={{ marginVertical: 10, fontFamily: FontFamily.sourceSansProRegular, textAlign: 'center', color: theme.colors.dg, }}>{"Internet Disconnected.\n Please check internet connectivity and try again."}</Text>
+        <Button buttonStyle={{ borderRadius: 20, backgroundColor: theme.colors.lgb, marginBottom: 10 }} title="Retry" onPress={handleRetry} />
+        <Button buttonStyle={{ borderRadius: 20, backgroundColor: theme.colors.lgb }} title="Play Trivia" onPress={handlePlayTrivia} />
       </View>
 
       {playTrivia && <TriviaGame />}

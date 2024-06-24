@@ -125,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
   },
   amTypo1: {
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProBold,
     textAlign: "left",
     fontWeight: "700",
@@ -269,7 +269,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 24,
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
-    color: Color.lightgreen,
+    color: theme.colors.lg,
   },
   path659Icon: {
     maxWidth: "100%",

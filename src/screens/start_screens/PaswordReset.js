@@ -11,7 +11,8 @@ import Blur from '../start_screens/Blur';
 import Pop2 from '../start_screens/pop2';
 import { useSelector } from 'react-redux';
 import { FontFamily } from '../../GlobalStyles';
-import { verticalScale } from '../../Dimensions';
+import { verticalScale,horizontalScale } from '../../Dimensions';
+import { useStyles } from './Create_account';
 const PassReset = ({ navigation, route }) => {
   const { datas } = route?.params || {};
   const user = useSelector((state) => state.user.userInfo)
@@ -22,7 +23,7 @@ const PassReset = ({ navigation, route }) => {
     confirm_password: '', // Confirm Password field (changed from confirm_email)
     isLoading: false,
   });
-
+const styles= useStyles()
   const handleChange = (name, value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -68,7 +69,7 @@ const PassReset = ({ navigation, route }) => {
         setModal(true);
         setTimeout(() => {
           setModal(false);
-          navigation.navigate('login2')
+          navigation.navigate('login')
         }, 4000);
 
         //navigation.navigate('PasswordChangedScreen'); // Navigate to a success screen
@@ -100,10 +101,10 @@ const PassReset = ({ navigation, route }) => {
 
       <View style={{ alignSelf: 'center', marginTop: Platform.OS === 'ios' ? 40 : 0 }}>
 
-        <BHeader color={colors.dg.color} title={'Change Password'} />
+        <BHeader color={theme.colors.dg} title={'Change Password'} />
 
         <TextInput
-          placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={theme.colors.placeholder}
           placeholder="New Password"
           style={[styles.textInput, { marginTop: 40 }]}
           secureTextEntry={!showPassword}
@@ -119,7 +120,7 @@ const PassReset = ({ navigation, route }) => {
         />
 
         <TextInput
-          placeholderTextColor={'#BBB9BC'}
+          placeholderTextColor={theme.colors.placeholder}
           placeholder="Confirm Password"
           style={[styles.textInput]}
           secureTextEntry={!showPassword}

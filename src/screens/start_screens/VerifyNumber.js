@@ -3,6 +3,7 @@ import { useTheme } from '@rneui/themed';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Animated, Easing } from 'react-native';
+import { horizontalScale,verticalScale,moderateScale } from '../../Dimensions';
 import {
   SafeAreaView,
   Text,
@@ -40,7 +41,7 @@ export const useStyles = makeStyles((theme) => ({
     height: 66,
     lineHeight: 38,
     fontSize: 30,
-    color: '#00463C',
+    color: theme.colors.dg,
     borderWidth: 2,
     borderColor: '#B0EBBD',
     textAlign: 'center',
@@ -52,7 +53,7 @@ export const useStyles = makeStyles((theme) => ({
     height: 66,
     lineHeight: 38,
     fontSize: 30,
-    color: '#00463C',
+    color: theme.colors.dg,
     borderWidth: 2,
     borderColor: 'red',
     textAlign: 'center',
@@ -257,7 +258,7 @@ const VerifyNumber = ({ navigation }) => {
           Change Phone Number
         </Text>
 
-        <Text onPress={() => navigation.replace('noti')} style={[colors.lg, styles.bold, styles.tc, { marginTop: 40, color: colors.dg.color }]}>
+        <Text onPress={() => navigation.replace('noti')} style={[colors.lg, styles.bold, styles.tc, { marginTop: 40, color: theme.colors.dg }]}>
           Verify later
         </Text>
         <Pop2

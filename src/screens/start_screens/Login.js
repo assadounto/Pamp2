@@ -281,12 +281,12 @@ const Login = ({ navigation }) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Adjust behavior based on platform
         style={{ flex: 1 }}
       >
-        <View style={[{ alignItems: 'center', backgroundColor: 'white', flex: 1 }]}>
+        <View style={[{ alignItems: 'center', backgroundColor: theme.colors.card, flex: 1 }]}>
           <Pressable style={styles.x} onPress={() => navigation.goBack()}>
             <Icon
               type='ionicon'
               name='close-outline'
-              color={colors.dg.color}
+              color={theme.colors.dg}
               size={30}
               style={styles.icon}
               resizeMode="cover"
@@ -304,7 +304,7 @@ const Login = ({ navigation }) => {
                   styles.press,
                   {
                     marginTop: verticalScale(20),
-                    borderColor: '#BBB9BC',
+                    borderColor: theme.colors.linkBorder,
                     borderWidth: 1,
                     alignItems: 'center',
                     justifyContent: 'center', // Center vertically
@@ -314,6 +314,7 @@ const Login = ({ navigation }) => {
               >
                 <Icon
                   style={styles.image}
+                  color={theme.colors.black}
                   name='logo-apple'
                   type='ionicon' />
                 <Text style={styles.t5}>Continue with Apple</Text>
@@ -325,7 +326,7 @@ const Login = ({ navigation }) => {
                 {
                   marginTop: verticalScale(10),
 
-                  borderColor: '#BBB9BC',
+                  borderColor: theme.colors.linkBorder,
                   borderWidth: 1,
                   alignItems: 'center',
                   justifyContent: 'center', // Center vertically
@@ -371,12 +372,12 @@ const Login = ({ navigation }) => {
                   <Input
                     placeholder="Email"
                     inputStyle={{
-                      color: colors.dg.color,
+                      color: theme.colors.dg,
                       fontSize: moderateScale(14),
                     }
 
                     }
-                    inputContainerStyle={[styles.textInput, { marginBottom: verticalScale(5), borderColor: colors.dg2.color, backgroundColor: 'white' }]}
+                    inputContainerStyle={[styles.textInput, { marginBottom: verticalScale(5), borderColor: theme.colors.lgb,  }]}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     value={values.email}
@@ -384,12 +385,12 @@ const Login = ({ navigation }) => {
 
                   <Input
                     placeholder="Password"
-                    inputContainerStyle={[styles.textInput, { borderColor: colors.dg2.color, backgroundColor: 'white', marginBottom: 0 }]}
+                    inputContainerStyle={[styles.textInput, { borderColor: theme.colors.lgb, marginBottom: 0 }]}
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}
                     value={values.password}
                     inputStyle={{
-                      color: colors.dg.color,
+                      color: theme.colors.dg,
                       fontSize: moderateScale(14),
                     }}
                     errorMessage={touched.password && errors.password}
@@ -452,7 +453,7 @@ export default Login;
 
 
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
   container: {
     alignItems: 'center',
   },
@@ -476,17 +477,16 @@ const useStyles = makeStyles((theme) => ({
     width: horizontalScale(330),
     height: verticalScale(63),
     margin: 0,
-
     alignSelf: 'center',
-    backgroundColor: '#FAFAFA',
+    backgroundColor: theme.colors.card,
     borderRadius: horizontalScale(23),
     borderWidth: 1,
-    borderColor: '#FAFAFA',
+
     fontFamily: FontFamily.sourceSansProRegular
   },
   t1: {
     fontSize: moderateScale(26),
-    color: '#00463C',
+    color: theme.colors.dg,
     marginBottom: 10,
     fontFamily: FontFamily.sourceSansProBold,
   },
@@ -503,7 +503,7 @@ const useStyles = makeStyles((theme) => ({
   },
   t3: {
     fontSize: moderateScale(15),
-    color: '#00463C',
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProRegular,
     marginTop: verticalScale(-20),
     alignSelf: 'center',
@@ -517,7 +517,7 @@ const useStyles = makeStyles((theme) => ({
   },
   t5: {
     fontSize: moderateScale(14),
-    color: '#000000',
+    color: theme.colors.black,
     fontFamily: FontFamily.sourceSansProRegular,
     marginLeft: horizontalScale(20),
     alignSelf: 'center',
@@ -580,7 +580,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     borderColor: '#DEDCDC',
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.card,
     borderRadius: horizontalScale(23),
     width: horizontalScale(300),
     height: verticalScale(71),
@@ -600,8 +600,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     marginBottom: verticalScale(15),
     marginTop: verticalScale(20),
-    backgroundColor: 'white',
-    marginBottomColor: 'white',
+    backgroundColor: theme.colors.background,
+    marginBottomColor: theme.colors.background,
   },
   fs25: {
     fontSize: moderateScale(26),
@@ -663,14 +663,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: verticalScale(30),
   },
   Pcont: {
-    backgroundColor: '#F9F9F9',
+    backgroundColor: theme.colors.slate,
     marginTop: verticalScale(30),
   },
 
   P1: {
     fontFamily: FontFamily.sourceSansProSemibold,
     fontSize: moderateScale(18),
-    color: '#00463C'
+    color: theme.colors.dg
   },
   P2: {
     fontFamily: FontFamily.sourceSansProRegular,

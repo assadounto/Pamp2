@@ -391,7 +391,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "600",
     fontFamily: FontFamily.sourceSansProSemibold,
     textAlign: "center",
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
   },
   dontMissAppointments: {
     margin: Margin.m_50xs,
@@ -401,7 +401,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 19,
     fontSize: FontSize.size_xl,
     textAlign: "center",
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
   },
   groupChild: {
     right: 15,

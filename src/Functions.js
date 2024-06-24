@@ -233,4 +233,16 @@ export function convertMinutesToHoursAndMinutes(minutes) {
   
     return true;
   };
+
+export function formatToTime(date) {
+  date=new Date(date)
+  // Create a new Date object
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  };
+
+  return date.toLocaleTimeString('en-US', options).toLowerCase();
+}
   

@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textTypo: {
     textAlign: "left",
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: FontSize.size_sm,
     left: "50%",
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   text1Typo: {
     fontSize: FontSize.size_xs,
     textAlign: "left",
-    color: Color.darkslategray_200,
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProRegular,
     bottom: 0,
     position: "absolute",

@@ -37,7 +37,7 @@ import { setRemember, setUser } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { backendURL } from '../../services/http';
-import { loginUser } from '../../redux/user';
+import { loginUser,setuser } from '../../redux/user';
 import { useGetPhoneConfirmMutation } from '../../redux/authapi';
 import Phone_pop from '../../../components/PhoneInput';
 import Blur from './Blur';
@@ -126,7 +126,7 @@ const Login = ({ navigation }) => {
 
 
       else if (data.email_confirmed && !data.phone_confirmed) {
-        dispatch(setUser({ ...values, id: data.user.id }))
+        dispatch(setuser({ ...values, id: data.user.id }))
 
         getPhoneConfirm({
           scope: 'user',
@@ -137,7 +137,7 @@ const Login = ({ navigation }) => {
 
       }
       else if (!data.email_confirmed && data.phone_confirmed) {
-
+        dispatch(setuser({ ...values, id: data.user.id }))
         navigation.replace('VerifyEmail', { next: 'noti' });
       }
       else {
@@ -293,7 +293,7 @@ const Login = ({ navigation }) => {
               source={require('../../../assets/x5.png')}
             />
           </Pressable>
-          <Text style={[styles.t1, { marginTop: verticalScale(40) }]}>Login or sign up</Text>
+          <Text style={[styles.t1, { marginTop: verticalScale(10) }]}>Login or sign up</Text>
           <Text style={styles.t2}>Create an account or log in to book and manage appointments </Text>
           <ScrollView
             showsHorizontalScrollIndicator={false}
@@ -403,7 +403,7 @@ const Login = ({ navigation }) => {
                       color='#BBB9BC' />} />
 
                   <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginHorizontal: 15, marginBottom: verticalScale(10), }}>
-                    <CheckBoxComponent color='#BBB9BC' state={remember.state} height={verticalScale(22)} onPress={() => handleRemember(values)} width={horizontalScale(22)} title={'Remember me'} />
+                    <CheckBoxComponent  color='#BBB9BC' state={remember.state} height={verticalScale(22)} onPress={() => handleRemember(values)} width={horizontalScale(22)} title={'Remember me'} />
 
                     <Text
                       style={[styles.forgot]}
@@ -738,7 +738,7 @@ export const useStyles = makeStyles((theme) => ({
   x: {
     alignSelf: 'flex-end',
     marginRight: horizontalScale(20),
-    marginTop: verticalScale(30)
+    marginTop: verticalScale(15)
 
   }
 }));

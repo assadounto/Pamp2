@@ -62,7 +62,7 @@ const TriviaGame = () => {
 
     const currentQuestion = questions[currentQuestionIndex];
     return (
-      <View>
+      <View >
         <Text style={styles.question}>{currentQuestion.question}</Text>
         <Text style={styles.score}>Score: {score * 5}</Text>
         <Text style={styles.score}>Wrong Strikes: {wrongStrikes}/3</Text>
@@ -112,7 +112,7 @@ const useStyles = makeStyles((theme) => ({
     width: '90%',
     borderRadius: 20,
     padding: 20,
-    backgroundColor: theme.colors.dg,
+    backgroundColor: theme.colors.slate,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -122,12 +122,12 @@ const useStyles = makeStyles((theme) => ({
   question: {
     fontSize: 20,
     marginVertical: verticalScale(10),
-    color: theme.colors.white,
+    color: theme.colors.othergreen,
     fontFamily: FontFamily.sourceSansProSemibold,
     textAlign: 'center',
   },
   optionButton: {
-    backgroundColor: theme.colors.lgb,
+    backgroundColor: theme.colors.background,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   optionText: {
-    color: '#FFF',
+    color: theme.colors.dg,
     fontSize: 16,
   },
   gameOverText: {
@@ -167,7 +167,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 10,
-    color: theme.colors.white,
+    color: theme.colors.dg,
   },
 }));
 

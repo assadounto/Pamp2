@@ -29,6 +29,11 @@ import { da } from "date-fns/locale";
 import AuthNavigator from "../../Navigation/AuthNavigator";
 import { horizontalScale } from "../../Dimensions";
 import { setDefault } from "../../redux/user";
+import CardIcon from '../../../components/icons/Card';
+import Money2Icon from '../../../components/Money2';
+import EditIcon from '../../../components/icons/Edit';
+import VerifiedIcon from '../../../components/icons/Verified';
+import theme from '../../redux/theme';
 
 const co = [
   'red',
@@ -36,31 +41,28 @@ const co = [
   'yellow',
 
 ]
-const payment_methods =
-{
-  'Pay with cash': '',
-  'Pay with momo': 'smartphone',
-  'Pay with card': 'credit-card',
-}
+
 
 const Confirm_payment = ({ navigation, route }) => {
   const user = useSelector((state) => state.user.userInfo)
   const booking = useSelector((state) => state.booking)
   const [data, setData] = useState({})
+  const location = useSelector(state => state.user.location)
+
   const [isLoading, setLoading] = useState(false)
   const [isLoading2, setLoading2] = useState(false)
   const [flag, setFlag] = useState(0)
   const [coupon_id, setC] = useState()
 
-  const { data: coupon_info, refetch } = useGetCouponQuery({ id: user?.id, vendor_id: booking.vendor_id })
-
+  const { data: book_data, refetch } = useGetCouponQuery({ id: user?.id, vendor_id: booking.vendor_id })
+  const { coupon_info, booking_fee }=book_data?book_data:{}
+  console.log(booking_fee, 'kg')
   // const { completed, items ,time} = route.params || {};
   const dispatch = useDispatch()
   const pay_data_ = useSelector((state) => state.user.payment_methods.default)
   const payment_pref = useSelector((state) => state.user.vPM)
   let pay_data = pay_data_ && pay_data_
   const booking_detail = booking.booking ? JSON.parse(booking.booking) : []
-
   useFocusEffect(
 
     React.useCallback(() => {
@@ -192,6 +194,7 @@ const Confirm_payment = ({ navigation, route }) => {
       time: booking.time,
       status: 'booked',
       staff: booking.staff,
+      booking_fee: getfee(),
       payment_method: pay_data.name,
       total: getTotalByKey(booking_detail.topping2, 'total'),
       items: booking_detail.topping2,
@@ -258,6 +261,9 @@ const Confirm_payment = ({ navigation, route }) => {
   };
 
 
+  const getfee=()=>{
+    return   booking_fee? booking_fee:0
+  }
 
   const createBooking = async (ref) => {
 
@@ -272,6 +278,7 @@ const Confirm_payment = ({ navigation, route }) => {
         payment_method: pay_data.name,
         total: getTotalByKey(booking_detail.topping2, 'total'),
         ref: ref,
+        booking_fee: getfee(),
         others: booking_detail.topping2,
         staff: booking.staff,
         total_min: getTotalMin(),
@@ -288,18 +295,25 @@ const Confirm_payment = ({ navigation, route }) => {
   const active_user = useSelector((state) => state.user.userInfo);
   console.log(active_user == true)
   const { theme } = useTheme();
-
+  const payment_methods =
+  {
+    'Pay with cash': <Money2Icon color={theme.colors.lg} />,
+    'Pay with momo': <Icon name='smartphone' color={colors.dg2.color} type="feather" />,
+    'Pay with card': <CardIcon color={theme.colors.lg} />,
+  }
   const payment_method = useSelector((state) => state.user.payment_methods.default)
+  console.log(payment_method, 'yes')
   return (
 
 
     <><SafeAreaView>
+      <BHeader top={Platform.OS === 'ios' ? 0 : 20} color={'#86D694'} title={'Confirm Payment'} />
+
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ backgroundColor: theme.colors.background }}
+        contentContainerStyle={{paddingBottom:150, backgroundColor: theme.colors.background }}
       >
-        <BHeader top={Platform.OS === 'ios' ? 0 : 20} color={'#86D694'} title={'Confirm Payment'} />
         <Text style={{ paddingLeft: 20, width: '90%', alignSelf: 'center', marginVertical: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: theme.colors.dg }}>Payment Method</Text>
         {payment_method ?
 
@@ -309,13 +323,9 @@ const Confirm_payment = ({ navigation, route }) => {
               navigation.navigate('Select_payment', { data: payment_pref });
             }}>
 
-            {payment_methods[payment_method.name] == '' ?
-              <Image
-                source={source}
-                style={{ width: 40, height: 30, borderRadius: 5, resizeMode: 'contain' }} /> :
-              <Icon style={{ marginLeft: 10 }} name={payment_methods[payment_method.name]} color={theme.colors.lgb} type="feather" />}
+            {payment_methods[payment_method.name]}
             <ListItem.Content>
-              <ListItem.Title style={{color:theme.colors.dg}}>
+              <ListItem.Title style={{ color: theme.colors.dg }}>
                 {payment_method.Number && '***'}{payment_method.Number ? payment_method.Number.slice(-5) : payment_method.name}
               </ListItem.Title>
             </ListItem.Content>
@@ -337,47 +347,37 @@ const Confirm_payment = ({ navigation, route }) => {
           </Pressable>}
         {payment_method && payment_method.name == 'Pay with cash' &&
 
-          <View style={{ marginVertical: 20, padding: 10, borderRadius: 10, backgroundColor: '#B0EBBD40', width: '90%', alignSelf: 'center', display: 'flex', flexDirection: 'row' }}>
+          <View style={{ marginVertical: 20, padding: 10, borderRadius: 10, backgroundColor: theme.colors.caution2, width: '90%', alignSelf: 'center', display: 'flex', flexDirection: 'row' }}>
             <Icon
               style={{ marginLeft: 10, marginTop: 10 }}
               name="alert-circle-outline"
               type="ionicon"
+              color={theme.colors.dg}
               size={25} />
             <Text style={{ width: '80%', marginLeft: 20, flexWrap: 'wrap', fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: theme.colors.dg }}>A 20% deposit is required via mobile money, debit, or credit card. The remaining balance will be paid in-store. Please note that the deposit is non-refundable for late cancellations or no-shows.</Text>
           </View>}
-        <View style={{ marginBottom: 150, marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: theme.colors.card, borderRadius: 20, width: '90%', alignSelf: 'center' }}>
+        <View style={{  marginTop: 20, marginVertical: 10, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: theme.colors.card, borderRadius: 20, width: '90%', alignSelf: 'center' }}>
           <View style={{ padding: 20, display: 'flex', flexDirection: 'row', marginLeft: 15 }}>
             <View>
               <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 23, color: theme.colors.dg }}>{booking.date && formatDate(booking.date)}</Text>
-              <View style={{ display: 'flex', flexDirection: 'row' }}>
+              <View style={{ gap: 5, display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
                 <FastImage
-                  style={{ width: 30, height: 30, borderRadius: 40, marginTop: 4, marginRight: 10 }}
+                  style={{ width: 30, height: 30, borderRadius: 40, borderWidth: 3, borderColor: theme.colors.ring, marginTop: 4, }}
                   source={{
                     uri: booking.vendorimg,
                     headers: { Authorization: 'someAuthToken' },
                     priority: FastImage.priority.high,
                   }}
                   resizeMode={FastImage.resizeMode.cover} />
-                <Text style={{ fontFamily: FontFamily.sourceSansProRegular, top: 7, fontSize: 18, color: theme.colors.dg, width: 200 }}>{booking_detail.name}</Text>
+                <Text style={{ fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: theme.colors.dg, maxWidth: 200 }}>{booking_detail.name}</Text>
+                {booking_detail.home && <VerifiedIcon color={theme.colors.lg} />}
               </View>
             </View>
             <Pressable style={{
               position: 'absolute', top: 20,
               right: 30,
             }} onPress={() => navigation.navigate('VendorDetail', { id: booking?.vendor_id, datas: booking.Booking_detail })}>
-              <Icon
-                name="edit-2"
-                type="feather"
-                size={18}
-                color={colors.lg.color}
-
-                style={{
-                  borderRadius: 50,
-                  borderWidth: 1,
-                  borderColor: theme.colors.lgb,
-                  padding: 5,
-                  // color: theme.colors.lg,
-                }} />
+              <EditIcon color={theme.colors.lg} />
             </Pressable>
           </View>
           <View style={{ padding: 20, borderTopColor: theme.colors.tabColor, borderTopWidth: 0.5, borderBottomColor: theme.colors.tabColor, borderBottomWidth: 0.5 }}>
@@ -395,13 +395,13 @@ const Confirm_payment = ({ navigation, route }) => {
                     <Text style={{ marginTop: 10, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: '#BBB9BC' }}>{convertMinutesToHoursAndMinutes(time)}</Text>
 
                   </View>
-                  <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: theme.colors.dg, position: 'absolute', right: 9 }}>¢{total}</Text>
+                  <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: theme.colors.dg, position: 'absolute', right: 9 }}>{location.currency || "₵"}{total}</Text>
                 </View>
               );
             })}
             {booking.staff && <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: '#BBB9BC' }}>Booked with {booking.staff}</Text>}
             <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: theme.colors.lg }}>{booking.time}</Text>
-            <View style={{ marginVertical: 20, padding: 10, borderRadius: 10, backgroundColor: theme.colors.caution, width: '100%', alignSelf: 'center', display: 'flex', flexDirection: 'row' }}>
+            <View style={{ marginVertical: 20, padding: 10, borderRadius: 10, backgroundColor: theme.colors.caution2, width: '100%', alignSelf: 'center', display: 'flex', flexDirection: 'row' }}>
               <Icon
                 style={{ marginLeft: 10, marginTop: 10 }}
                 name="clock"
@@ -411,12 +411,20 @@ const Confirm_payment = ({ navigation, route }) => {
               <Text style={{ height: 40, marginLeft: 10, fontFamily: FontFamily.sourceSansProRegular, fontSize: 15, color: theme.colors.dg }}>{'Reschedule up to 72 hours before\n appointment'}</Text>
             </View>
           </View>
-          <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
+          <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 60 }}>
             <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: theme.colors.dg }}>
               Discount
             </Text>
             <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: theme.colors.lg, position: 'absolute', top: 17, right: 30 }}>
-              ¢{coupon_info?.amount ? coupon_info.amount : 0}
+              {location.currency || "₵"}{coupon_info?.amount ? coupon_info.amount : 0}
+            </Text>
+          </View>
+          <View style={{ padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
+            <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16, color: theme.colors.dg }}>
+              Booking fee
+            </Text>
+            <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: theme.colors.lg, position: 'absolute', top: 17, right: 30 }}>
+              {location.currency || "₵"}{getfee()}
             </Text>
           </View>
           <View style={{ marginTop: -20, padding: 20, display: 'flex', flexDirection: 'row', height: 80 }}>
@@ -424,12 +432,22 @@ const Confirm_payment = ({ navigation, route }) => {
               Total
             </Text>
             <Text style={{ fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: theme.colors.lg, position: 'absolute', top: 17, right: 30 }}>
-              ¢{getTotalByKey(booking_detail.topping2, 'total') - (coupon_info?.amount ? coupon_info.amount : 0) <= 0 ? 0 : getTotalByKey(booking_detail.topping2, 'total') - (coupon_info?.amount ? coupon_info.amount : 0)}
+              {location.currency || "₵"}{getTotalByKey(booking_detail.topping2, 'total') + getfee() - (coupon_info?.amount ? coupon_info.amount : 0) <= 0 ? 0 : getTotalByKey(booking_detail.topping2, 'total') + getfee() - (coupon_info?.amount ? coupon_info.amount : 0)}
             </Text>
           </View>
+
+          
         </View>
-
-
+{
+          coupon_info && coupon_info.coupon_type=='influencer'&&    <ListItem
+          containerStyle={[{marginTop:20,  height: 88, marginBottom: 150, alignSelf: 'center', gap: 10, paddingVertical: 20, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: theme.colors.card, borderRadius: 20, width: '90%', borderRadius: 20 }]}
+         >
+          <Text style={{ marginTop: 10, color: theme.colors.dg, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, marginHorizontal: 20 }}>Booking influenced by<Text style={{color:theme.colors.lg}}>{coupon_info?.other}</Text></Text>
+          <ListItem.Content>
+            <ListItem.Title style={{ marginLeft: -15, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color }}>
+            </ListItem.Title>
+          </ListItem.Content>
+        </ListItem>}
       </ScrollView>
 
     </SafeAreaView><View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: theme.colors.background, height: 200, width: '100%', marginBottom: 0 }}>

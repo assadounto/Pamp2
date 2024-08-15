@@ -1,22 +1,29 @@
 import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/themed';
-import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet, ScrollView, Platform, Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { View, TextInput, ScrollView, Text, TouchableOpacity, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { Icon } from '@rneui/base';
 import Geolocation from 'react-native-geolocation-service';
 import { useSelector } from 'react-redux';
 import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
-import { request, PERMISSIONS, RESULT, RESULTS, check } from "react-native-permissions";
+import { request, check, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Location_pop from './Location_pop';
-const Gsearch = ({ setLoc, handleS }) => {
+import SendIcon from './icons/Send';
+import HomeIcon from './icons/Home';
+import { Platform } from 'react-native';
+import Location2 from './icons/location2';
+
+const Gsearch = ({ setLoc, handleS, show, setShow }) => {
+  const apiKey = "AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0";
+
   const user = useSelector(state => state.user);
   const refInput = useRef(null);
-  const [prev, setPrev] = useState(user.location.name)
-  const [searchQuery, setSearchQuery] = useState(user.location.name && user.location.name);
+  const [prev, setPrev] = useState(user.location.name);
+  const [searchQuery, setSearchQuery] = useState(user.location.name || '');
   const [searchResults, setSearchResults] = useState([]);
   const [start, setStart] = useState(true);
-  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState({
     coordinates: {
       lat: user.location.lat,
@@ -24,8 +31,56 @@ const Gsearch = ({ setLoc, handleS }) => {
     },
     name: user.location.name,
   });
-  const [showInfoModal, setShowInfoModal] = useState(false)
-  console.log(user.location.name)
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
+  const s_style = useStyles();
+  const { theme } = useTheme();
+
+  const requestLo = () => {
+
+    request(Platform.OS === 'ios' ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((result) => {
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          setmodal(!modal)
+          console.log(
+            "This feature is not available (on this device / in this context)"
+          );
+          break;
+        case RESULTS.DENIED:
+          showBlockedModal()
+          console.log(
+            "The permission has not been requested / is denied but requestable"
+          );
+          break;
+        case RESULTS.LIMITED:
+          setmodal(!modal)
+          console.log("The permission is limited: some actions are possible");
+          break;
+        case RESULTS.GRANTED:
+          console.log("The permission is granted");
+          // Permission has been granted - app can request location coordinates
+          getUserLocation();
+          setmodal(!modal)
+          break;
+        case RESULTS.BLOCKED:
+          setmodal(!modal)
+          console.log("The permission is denied and not requestable anymore");
+          break;
+      }
+    })
+  }
+  const showBlockedModal = () => {
+    // Show your blocked modal with more information
+    Alert.alert(
+      'Location Permission Blocked',
+      'Location permission has been blocked. Enable it in settings to use this feature.',
+      [
+        { text: 'OK', onPress: () => setmodal(!modal) },
+      ],
+    );
+  };
+
+
   useEffect(() => {
     setLoc(selectedLocation.coordinates.lat, selectedLocation.coordinates.lng, selectedLocation.name);
 
@@ -38,14 +93,14 @@ const Gsearch = ({ setLoc, handleS }) => {
     }
   }, [searchQuery, start]);
 
-  const handleSelectLocation = (location) => {
+  const handleSelectLocation = useCallback((location) => {
     setSelectedLocation(location);
     setLoc(location.coordinates.lat, location.coordinates.lng, location.name);
-  };
+  }, [setLoc]);
 
-  const reverseGeocode = async (lat, lng) => {
-    const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0';
+  const reverseGeocode = useCallback(async (lat, lng) => {
 
+setLoading(true)
     try {
       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`);
       const data = await response.json();
@@ -54,42 +109,44 @@ const Gsearch = ({ setLoc, handleS }) => {
         const address = data.results[0].formatted_address;
         setSearchQuery(address);
       } else {
+        setLoading(false)
         throw new Error('Unable to retrieve address');
       }
     } catch (error) {
+      setLoading(false)
       console.error(error);
       throw new Error('Error occurred during reverse geocoding');
     }
-  };
+  }, []);
 
-
-
-  const checkAndShowInfoModal = async () => {
+  const checkAndShowInfoModal = useCallback(async () => {
+    setLoading(true)
     try {
-      const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+      const result = Platform.OS === 'android' ? check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION): await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
 
       if (result === RESULTS.DENIED) {
-        // Permission hasn't been granted yet, show info modal
-        setShowInfoModal(!showInfoModal)
-      }
-
-      else if (result === RESULTS.GRANTED) {
+        setShowInfoModal(true);
+      } else if (result === RESULTS.GRANTED) {
         getUserLocation();
       }
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       console.error('Error checking location permission:', error);
     }
-  };
+  }, []);
 
-
-  function getUserLocation() {
+  const getUserLocation = useCallback(() => {
+    setLoading(true)
     Geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
-        reverseGeocode(latitude, longitude);
+        await reverseGeocode(latitude, longitude);
         handleSearch();
+        setLoading(false)
       },
       (error) => {
+        setLoading(false)
         console.error(error);
       },
       {
@@ -99,49 +156,53 @@ const Gsearch = ({ setLoc, handleS }) => {
         maximumAge: 0,
       }
     );
-    setShow(false)
-  }
+    setShow(false);
+  }, [reverseGeocode, handleSearch]);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
+    if (!searchQuery) return;
+
+    setLoading(true);
+
     try {
-      const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0';
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchQuery}&key=${apiKey}`
-      );
+      const response = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchQuery}&key=${apiKey}`);
       const data = await response.json();
-
       const results = data.results || [];
+     
       setSearchResults(results);
+      console.log(searchResults, 'jhs')
     } catch (error) {
       console.error('Error occurred while searching:', error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [searchQuery]);
 
-  const clearSearch = () => {
+  const clearSearch = useCallback(() => {
     setStart(true);
     setShow(true);
     setSearchQuery('');
     setSearchResults([]);
     refInput.current.focus();
-  };
+  }, []);
 
-  const hideSearchResults = () => {
+  const hideSearchResults = useCallback(() => {
     setShow(false);
-    searchQuery == '' && setSearchQuery(prev)
-  };
+    if (!searchQuery) {
+      setSearchQuery(prev);
+    }
+  }, [searchQuery, prev]);
 
-
-
-  const s_style = useStyles();
-  const { theme } = useTheme();
   return (
     <><TouchableWithoutFeedback onPress={hideSearchResults}>
       <View>
         <TextInput
           ref={refInput}
+          onFocus={clearSearch}
           style={s_style.text_input}
-          placeholder={searchQuery}
+          placeholder="Search location"
           value={searchQuery}
+          placeholderTextColor={theme.colors.placeholder}
           onChangeText={setSearchQuery}
           onSubmitEditing={handleSearch}
           keyboardType="web-search" />
@@ -149,37 +210,44 @@ const Gsearch = ({ setLoc, handleS }) => {
           <Icon name="map-pin" type="feather" size={25} color="#BCC4CC" />
         </View>
         <View style={s_style.icon2}>
-          <Icon name="x" type="feather" size={30} color="#BCC4CC" onPress={clearSearch} />
-        </View>
+   {loading ?<ActivityIndicator color={theme.colors.dg} size={'small'}/>    :  <Icon name="x" type="feather" size={30} color="#BCC4CC" onPress={clearSearch} />}
+       </View>
 
         {show ? (
-          <ScrollView showsVerticalScrollIndicator={false} style={s_style.box}>
+          <ScrollView  showsVerticalScrollIndicator={false} style={s_style.box}>
             <TouchableOpacity style={s_style.button} onPress={checkAndShowInfoModal}>
-              <View style={{ display: 'flex', flexDirection: 'row' }}>
-                <Icon name="locate-outline" type="ionicon" />
-                <Text style={{ fontSize: 14, marginTop: 3, color: colors.dg.color, fontFamily: FontFamily.sourceSansProBold }}> Use Current Location</Text>
+              <View style={{ display: 'flex', gap: 20, marginHorizontal: 20, flexDirection: 'row' }}>
+                <Location2 color={theme.colors.othergreen} />
+                <Text style={{ fontSize: 15, marginTop: 3, color: theme.colors.othergreen, fontFamily: FontFamily.sourceSansProBold }}> Use Current Location</Text>
               </View>
             </TouchableOpacity>
-            {searchResults.map((result) => (
+          
+            {
+              searchResults.map((result) => {
+
+            return(
+
               <TouchableOpacity
-                style={s_style.column}
-                key={result.place_id}
-                onPress={() => {
-                  handleSelectLocation({
-                    name: result.name,
-                    coordinates: result.geometry.location,
-                  });
-                  setSearchQuery(result.name);
-                  setStart(false);
-                  setSearchResults([]);
-                  setShow(false);
-                }}
-              >
-                <View style={{ marginLeft: 20 }}>
-                  <Text style={{ color: colors.dg.color, fontFamily: FontFamily.sourceSansProSemibold }}>{result.name}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
+                  style={s_style.button}
+                  key={result.place_id}
+                  onPress={() => {
+                    handleSelectLocation({
+                      name: result.name,
+                      coordinates: result.geometry.location,
+                    });
+                    setSearchQuery(result.formatted_address);
+                    setStart(false);
+                    setSearchResults([]);
+                    setShow(false);
+                  }}
+                >
+                  <View style={{ display: 'flex', gap: 20, marginHorizontal: 20,alignItems:'center', flexDirection: 'row' }}>
+                    <Icon name='map-pin' type='feather' color={theme.colors.othergreen} />
+                    <Text style={{ fontSize: 15,maxWidth:250, marginTop: 3, color: theme.colors.othergreen, fontFamily: FontFamily.sourceSansProBold }}>{result.formatted_address}</Text>
+                  </View>
+                </TouchableOpacity>
+              )})
+            }
           </ScrollView>
         ) : null}
       </View>
@@ -189,6 +257,9 @@ const Gsearch = ({ setLoc, handleS }) => {
     </>
   );
 };
+
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -202,11 +273,10 @@ const useStyles = makeStyles((theme) => ({
   ,
   text_input: {
 
-    backgroundColor: '#EFEFEF',
+    backgroundColor: theme.colors.slate,
     borderRadius: 23,
-    borderWidth: 1,
-    borderColor: '#EFEFEF',
     height: 63,
+    color:theme.colors.dg,
     width: '90%',
     paddingHorizontal: 70,
     alignSelf: 'center',
@@ -223,11 +293,10 @@ const useStyles = makeStyles((theme) => ({
   },
   box: {
 
-    borderColor: '#EFEFEF',
-    borderWidth: 2,
+  
     width: '90%',
-    height: '30%',
-    backgroundColor: colors.w.color,
+    height: '70%',
+
     padding: 10,
     overflow: 'scroll',
     borderRadius: 10,
@@ -253,9 +322,7 @@ const useStyles = makeStyles((theme) => ({
     height: '50%'
 
   },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
+
   modalView: {
     margin: 20,
     backgroundColor: 'red',
@@ -279,7 +346,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20
   },
   button: {
-    marginVertical: 10
+    paddingVertical:20,
+
+    justifyContent:'center',
+    borderBottomColor: theme.colors.tabColor,
+    borderBottomWidth:0.2
   }
 
 }))

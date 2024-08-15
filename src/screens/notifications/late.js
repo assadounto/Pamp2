@@ -14,6 +14,7 @@ import { da } from 'date-fns/locale';
 import { backendURL } from '../../services/http';
 import { formatDateToAgo } from '../../Functions';
 import { useTheme } from '@rneui/themed';
+import MailIcon from '../../../components/icons/Mail';
 const Late = ({ data }) => {
     const { theme } = useTheme()
     const [status, setStat] = useState()
@@ -39,16 +40,16 @@ const Late = ({ data }) => {
 
     }
     return (
-        <><Pressable onPress={() => usecolor('red')} style={{ backgroundColor: 'white', borderRadius: 20, paddingTop: 20, marginHorizontal: 20 }}>
+        <><Pressable onPress={() => usecolor('red')} style={{ backgroundColor: theme.colors.slate, borderRadius: 20, paddingTop: 10,marginTop:20, marginHorizontal: 20 }}>
             <View
                 style={{
-                    marginTop: 20,
+                    marginTop: 10,
                     display: 'flex',
                     flexDirection: 'row',
                     marginLeft: 20,
                     gap: 10
                 }}>
-                <Image source={mail} style={{ marginTop: 10 }} />
+                <MailIcon color={theme.colors.lg} style={{ marginTop: 10 }} />        
                 <View>
                     <View style={{
                         display: 'flex',
@@ -58,7 +59,7 @@ const Late = ({ data }) => {
                             <View style={{ width: 9, height: 9, borderRadius: 50, backgroundColor: color, marginTop: 5 }}></View>
                         }
                         <Text style={[{ color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, fontSize: 17 }]}>{data.title}</Text>
-                        <Text style={{ position: 'absolute', right: 1, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: "#999999" }}>{formatDateToAgo(data.created_at)}</Text>
+                        <Text style={{ position: 'absolute', right: 10, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 10, color: "#999999" }}>{formatDateToAgo(data.created_at)}</Text>
                     </View>
                     <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 13, color: "#999999", width: 300 }}>{status ? status : data.body}</Text>
                     {

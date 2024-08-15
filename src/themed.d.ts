@@ -13,6 +13,14 @@ declare module '@rneui/themed' {
         tabColor:string,
         placeholder: string,
         linkBorder:string,
-        caution: string
+        caution: string,
+        caution2:string,
+        bottomBorder: string
+        backgroundSec:string,
+        othergreen: string,
+        disabled2: string,
+        btnDisabled: string,
+        disabled4:string,
+        ring:string
     }
 }

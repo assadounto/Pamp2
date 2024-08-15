@@ -1,63 +1,71 @@
 import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/themed';
-import React, { useState } from 'react';
-import { Text, View, SafeAreaView, Image, Modal, StyleSheet, TextInput, Keyboard } from 'react-native';
-import { styles, colors } from '../src/Common_styles';
-import { Button, Rating } from '@rneui/base';
+import React, { useState, useEffect, useRef } from 'react';
+import { Text, View, Modal, TextInput, Animated, Keyboard } from 'react-native';
+import { Button } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
 import { Icon } from '@rneui/base';
 import axios from 'axios';
 import { delete_rating } from '../src/redux/user';
 import StarRating from 'react-native-star-rating-widget';
 import { backendURL } from '../src/services/http';
-import Pop2 from '../src/screens/start_screens/pop2';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Rating_pop = ({ setmodal, vendor, modal, setInfoModal }) => {
-  const dispatch = useDispatch()
-  const [poph, setpop] = useState(400)
-  const user = useSelector(state => state.user.userInfo)
-  const [text, setText] = useState('')
+  const dispatch = useDispatch();
+  const [text, setText] = useState('');
+  const [loading,setLoading]=useState(false)
   const [rating, setRating] = useState(0);
-
+  const translateY = useRef(new Animated.Value(0)).current;
+  const user = useSelector((state) => state.user.userInfo)
   const handlepressCancel = () => {
+    setmodal(!modal);
+  };
 
-    setmodal(!modal)
-  }
-  React.useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setpop(200)
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
+      Animated.timing(translateY, {
+        toValue: -e.endCoordinates.height , // Move the modal up by half of the keyboard height
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
     });
 
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setpop(400)
+      Animated.timing(translateY, {
+        toValue: 0, // Move the modal back to its original position
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
     });
 
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-  }, []);
-  const handlePressOK = async () => {
+  }, [translateY]);
 
-    const { data } = await axios.post(`${backendURL}/rating`, { id: user?.id, vendor_id: vendor[0], rating, description: text })
-    console.log(data)
-    if (data == 'created') {
-      dispatch(delete_rating(vendor.id))
-      setmodal(false)
+  const handlePressOK = async () => {
+    setLoading(true)
+    const { data } = await axios.post(`${backendURL}/rating`, { id: user?.id, vendor_id: vendor[0], rating, description: text });
+    console.log(data);
+    if (data === 'created') {
+      dispatch(delete_rating(vendor.id));
+      setmodal(false);
       setInfoModal(true);
       setTimeout(() => {
         setInfoModal(false);
       }, 3000);
-
     }
+    setLoading(false)
+  };
 
-  }
   const styles = useStyles();
   const { theme } = useTheme();
+
   return (
-    <><Modal animationType="slide" transparent={true} visible={modal}>
-      <View style={[styles.pop, { top: poph }]}>
+    <Modal animationType="slide" transparent={true} visible={modal}>
+      <Animated.View style={[styles.pop, { transform: [{ translateY }] }]}>
         <View style={styles.notes}>
           <Icon
             onPress={handlepressCancel}
@@ -66,76 +74,75 @@ const Rating_pop = ({ setmodal, vendor, modal, setInfoModal }) => {
             size={40}
             color={theme.colors.dg}
           />
-
         </View>
         <Text style={styles.rate}>Rate your experience with {vendor[1]} </Text>
         <StarRating
-          starSize={50}
+          starSize={40}
           starStyle={{ marginRight: 0 }}
           color='#86D694'
           rating={rating}
           onChange={setRating}
         />
-        <TextInput placeholder='leave note..' onChangeText={setText} multiline={true} style={styles.input} />
-        <Button onPress={handlePressOK} buttonStyle={{ borderRadius: 40, backgroundColor: theme.colors.lgb, width: 120, height: 40 }} title='Send'>
-
-        </Button>
-      </View>
-    </Modal></>
+        <TextInput
+          placeholderTextColor={theme.colors.placeholder}
+          placeholder='Leave a message'
+          onChangeText={setText}
+          multiline={true}
+          style={styles.input}
+          blurOnSubmit={true}  // This will dismiss the keyboard on return
+          onSubmitEditing={Keyboard.dismiss}  // Dismiss the keyboard
+        />
+        <Button
+        loading={loading}
+          onPress={handlePressOK}
+          buttonStyle={{
+            borderRadius: 40,
+            backgroundColor: theme.colors.lgb,
+            width: 120,
+            height: 40,
+          }}
+          title='Send'
+        />
+      </Animated.View>
+    </Modal>
   );
 };
+
 const useStyles = makeStyles((theme) => ({
   rate: {
     fontFamily: FontFamily.sourceSansProSemibold,
     color: theme.colors.dg,
-    marginBottom: 20, fontSize: 20
+    marginBottom: 20,
+    fontSize: 20,
   },
   pop: {
-    width: '95%',
-    backgroundColor: '#fff',
+    width: '100%',
+    backgroundColor: theme.colors.slate,
     alignItems: 'center',
     borderRadius: 20,
     alignSelf: 'center',
     padding: 10,
-    top: 400
+    borderBottomRightRadius:0,
+    borderBottomLeftRadius:0,
+    bottom:0,
+    paddingBottom: 30,
+    position: 'absolute',
   },
-  h1: {
-    fontFamily: FontFamily.sourceSansProSemibold,
-    fontSize: 24,
-    width: '80%',
-    marginVertical: 20
-  },
-  h2: {
-    fontFamily: FontFamily.sourceSansProRegular,
-    fontSize: 14,
-    width: '80%'
-  },
-  h3: {
-    fontFamily: FontFamily.sourceSansProSemibold,
-    fontSize: 14,
-    marginVertical: 20
-
-  },
-  h4: {
-    color: theme.colors.lg
-  },
-  notes:
-  {
+  notes: {
     alignSelf: 'flex-end',
     marginRight: 10,
-
   },
   input: {
     width: '90%',
     height: 100,
+    color: theme.colors.dg,
     borderColor: '#EFEFEF',
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
     paddingTop: 10,
-    marginVertical: 30
-  }
+    marginVertical: 30,
+  },
+}));
 
-}))
 export default Rating_pop;
-

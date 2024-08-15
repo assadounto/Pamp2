@@ -3,22 +3,17 @@ import Svg, { Path } from "react-native-svg"
 const Filter = (props) => (
     <Svg
         xmlns="http://www.w3.org/2000/svg"
-        width={25}
-        height={25}
-        fill="none"
+        width={24}
+        height={24}
+        fill='none'
         {...props}
     >
         <Path
-            stroke="currentColor"
+            stroke={props.color}
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M3 7h3M3 17h6M18 17h3M15 7h6"
-        />
-        <Path
-            stroke="currentColor"
-            strokeWidth={1.5}
-            d="M6 7c0-.932 0-1.398.152-1.765a2 2 0 0 1 1.083-1.083C7.602 4 8.068 4 9 4c.932 0 1.398 0 1.765.152a2 2 0 0 1 1.083 1.083C12 5.602 12 6.068 12 7c0 .932 0 1.398-.152 1.765a2 2 0 0 1-1.083 1.083C10.398 10 9.932 10 9 10c-.932 0-1.398 0-1.765-.152a2 2 0 0 1-1.083-1.083C6 8.398 6 7.932 6 7ZM12 17c0-.932 0-1.398.152-1.765a2 2 0 0 1 1.083-1.083C13.602 14 14.068 14 15 14c.932 0 1.398 0 1.765.152a2 2 0 0 1 1.083 1.083C18 15.602 18 16.068 18 17c0 .932 0 1.398-.152 1.765a2 2 0 0 1-1.083 1.083C16.398 20 15.932 20 15 20c-.932 0-1.398 0-1.765-.152a2 2 0 0 1-1.083-1.083C12 18.398 12 17.932 12 17Z"
+            strokeWidth={2}
+            d="M3 7h7m0 0a3 3 0 0 0 3 3h1a3 3 0 1 0 0-6h-1a3 3 0 0 0-3 3Zm6 10h5M20 7h1M3 17h3m0 0a3 3 0 0 0 3 3h1a3 3 0 1 0 0-6H9a3 3 0 0 0-3 3Z"
         />
     </Svg>
 )

@@ -30,7 +30,7 @@ const Momo = ({ navigation, select }) => {
             <Text style={[paystyle.text, { marginLeft: 10, marginTop: 40 }]}>Mobile Money Phone Number</Text>
             <TextInput onChangeText={(val) => setnum(val)} style={[paystyle.input, { height: 50, width: '90%', alignSelf: 'center', paddingHorizontal: 20, padding: 10 }]} placeholder='02xxxxxxxx' />
             <Button
-                title={'Save'}
+                title={'Continue'}
                 // containerStyle={}
                 buttonStyle={{
                     width: 184,

@@ -2,6 +2,7 @@ import {createSlice, createAsyncThunk, purge} from '@reduxjs/toolkit';
 import {createApi} from '@reduxjs/toolkit/query';
 import axios from 'axios';
 import {backendURL} from '../services/http';
+import theme from './theme';
 
 
 
@@ -19,10 +20,12 @@ const initialState = {
   user: null,
   image1: null,
   location:{},
+  theme: "system",
   recent_vendors:[],
   notification_count:0,
   newnoti: true,
   currentServiceIndex: 0,
+  new: true,
   bottom_nav:true,
   next:'',
   categories:[],
@@ -136,6 +139,9 @@ initialState,
     setNextNav(state, action) {
       state.next = action.payload;
     },
+    setTheme(state, action) {
+      state.theme = {...state,theme:action.payload};
+    },
     addRecent(state, action) {
       state.recent_view= action.payload;
     },
@@ -161,8 +167,11 @@ initialState,
     setuser(state, action) {
       state.user = action.payload;
     },
+    setNew(state, action) {
+      state.new = action.payload;
+    },
     setUser(state, action) {
-      state.userInfo = action.payload;
+      state.userInfo = {...state.userInfo,...action.payload};
     },
     setRecentvendors(state, action) {
       state.recent_vendors.unshift(action.payload)
@@ -174,7 +183,7 @@ initialState,
       state.userInfo = {...state.userInfo,image: action.payload};
     },
     userLogout(state) {
-      return {...initialState,first_time:false,remember: state.remember};
+      return {...initialState,new: false,first_time:false,remember: state.remember};
 
     },
     setPayment(state,action){
@@ -312,6 +321,8 @@ export const {
   loginUser,
   setRemember,
   setNextNav,
-  setFirst
+  setFirst,
+  setNew,
+  setTheme
 } = userSlice.actions;
 export default userSlice.reducer;

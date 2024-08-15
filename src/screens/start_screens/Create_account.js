@@ -18,6 +18,7 @@ import Header from './header';
 import PhoneInput from 'react-native-phone-number-input';
 import { horizontalScale, verticalScale, moderateScale } from '../../Dimensions';
 import { FontFamily } from '../../GlobalStyles';
+import CheckBoxComponent from '../../../components/Checkbox';
 const Register = ({ navigation }) => {
   const { theme } = useTheme();
   const styles = useStyles();
@@ -36,17 +37,17 @@ const Register = ({ navigation }) => {
   const register = async (values) => {
     // console.log(values)
 
-    dispatch(setuser(values.user))
+
     setLoading(true)
     try {
       const { data } = await axios.post(backendURL + '/user/signup', values);
       console.log(data);
-      dispatch(setUser({ ...values.user, id: data.id }))
+      dispatch(setuser({ ...values.user, id: data.id }))
       if (data.message === 'exist') {
         Alert.alert('Error', 'Account already Exist. Please login')
       }
       else if (data?.message === 'created') {
-        dispatch(setUser({ ...values.user, id: data.id }))
+        dispatch(setuser({ ...values.user, id: data.id }))
         navigation.replace('VerifyEmail', { scope: '' });
       }
 
@@ -172,7 +173,7 @@ const Register = ({ navigation }) => {
                   />
                   <PhoneInput
                     placeholderTextColor={theme.colors.placeholder}
-
+                 textInputProps={{placeholderTextColor:theme.colors.placeholder}}
                     textContainerStyle={{ marginHorizontal: 10, backgroundColor: theme.colors.slate, }}
                     //ref={phoneInput}
                     //defaultValue={value}
@@ -180,8 +181,11 @@ const Register = ({ navigation }) => {
                     defaultCode="GH"
                     codeTextStyle={{ color: theme.colors.lg, fontWeight: 'bold', fontFamily: FontFamily.sourceSansProBold }}
                     layout="second"
+                    textInputStyle={{color:theme.colors.dg}}
                     //onChangeText={}
-
+                
+                       // change  background of picker modal
+                      //pickerStyle={{ backgroundColor: theme.colors.background }}
                     onChangeFormattedText={handleChange('phone')}
                     placeholder="Phone Number"
 
@@ -199,20 +203,12 @@ const Register = ({ navigation }) => {
                 </View>
               </View>
               <View style={styles.t6}>
-                <CheckBox
-                containerStyle={{backgroundColor:theme.colors.background}}
-                  uncheckedIcon={<Image
-                    resizeMode='contain'
-                    style={{ width: 22, height: 22 }}
-                    source={require('../../../assets/rectangle1063.png')}
-                  />}
-                  checkedIcon={
-                    <Image
-                      style={{ width: 22, height: 22 }}
-                      resizeMode='contain'
-                      source={require('../../../assets/group2210.png')}
-                    />
-                  }
+                <CheckBoxComponent
+                  width={horizontalScale(22)}
+                  height={verticalScale(22)}
+                  containerWidth={horizontalScale(330)}
+                  card={false}
+                  color='#BBB9BC'
                   title={
                     <Text style={[{color:theme.colors.dg}, styles.terms]}>
                       I agree to the{' '}
@@ -228,33 +224,24 @@ const Register = ({ navigation }) => {
                       </Text>
                     </Text>
                   }
-                  checked={agreedToTerms}
+                  state={agreedToTerms}
                   onPress={() => setAgreedToTerms(!agreedToTerms)}
                 />
 
               </View>
               <View style={styles.t6}>
-                <CheckBox
-                  containerStyle={{ backgroundColor: theme.colors.background }}
-
+                <CheckBoxComponent
+                  card={false}
+                 containerWidth={horizontalScale(330)}
+                  width={horizontalScale(22)}
+                  height={verticalScale(22)}
                   title={
                     <Text style={[{ color: theme.colors.dg }, styles.terms]}>
                       {" I agree to receive marketing notifications with offers and  news"}
                     </Text>
                   }
-                  uncheckedIcon={<Image
-                    resizeMode='contain'
-                    style={{ width: 22, height: 22 }}
-                    source={require('../../../assets/rectangle1063.png')}
-                  />}
-                  checkedIcon={
-                    <Image
-                      style={{ width: 22, height: 22 }}
-                      resizeMode='contain'
-                      source={require('../../../assets/group2210.png')}
-                    />
-                  }
-                  checked={receivePushNotifications}
+                  state={receivePushNotifications}
+                
                   onPress={() =>
                     setReceivePushNotifications(!receivePushNotifications)
                   }
@@ -310,6 +297,7 @@ export const useStyles = makeStyles((theme) => ({
     width: horizontalScale(330),
     height: verticalScale(63),
     margin: 0,
+    
     color: theme.colors.dg,
     alignSelf: 'center',
     backgroundColor: theme.colors.slate,

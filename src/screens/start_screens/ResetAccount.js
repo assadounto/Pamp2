@@ -39,11 +39,10 @@ const ResetAccount = ({ navigation, route }) => {
 
   const [shakeAnimation] = useState(new Animated.Value(0));
 
-  const user = useSelector((state) => state.user.userInfo)
   const [getEmailConfirm, { isSuccess, isLoading, data, isError }] = useGetEmailConfirmMutation()
   const [verify] = useLazyVerifyResetCodeQuery()
   const [VerifyResetCode, { data: infodata, isSuccess: verifySuccess, isError: verifyError }] = useLazyVerifyResetCodeQuery()
-  console.log(user, 'k');
+
   const [value, setValue] = useState('');
   const [wrong, setwrong] = useState('')
   const [error, seterror] = useState(false)
@@ -55,7 +54,7 @@ const ResetAccount = ({ navigation, route }) => {
   const [modalVisible, setModal] = useState(false);
   const [timerCount, setTimerCount] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
-  console.log(user)
+
 
 
   const incall = () => {
@@ -213,7 +212,7 @@ const ResetAccount = ({ navigation, route }) => {
         <Header
           main={'Reset your password'}
           sub={`Please enter the 4 digit code sent`}
-          sub2={`to your ${datas.method}`}
+          sub2={`to your ${datas?.method}`}
         />
 
 

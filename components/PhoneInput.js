@@ -66,7 +66,7 @@ const Phone_pop = ({ setcancel, modal, setblur, id, data, login, googledata }) =
     <><Modal animationType="slide" transparent={true} visible={modal}>
       <View style={{
         width: '95%',
-        backgroundColor: '#fff',
+        backgroundColor: theme.colors.slate,
         alignItems: 'center',
         borderRadius: 20,
         alignSelf: 'center',

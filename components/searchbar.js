@@ -4,18 +4,21 @@ import { Icon } from '@rneui/base';
 import { FontFamily } from '../GlobalStyles';
 import { useNavigation } from '@react-navigation/native';
 import { makeStyles } from '@rneui/themed';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from '../src/redux/filter';
 import Filter from './icons/Filter';
-const SearchBar = ({ theme }) => {
+const SearchBar = ({ theme ,modal,setmodal}) => {
+    const filter = useSelector(state => state.filter);
     const navigation = useNavigation();
     const styles = useStyles();
-    
+    const dispatch = useDispatch();
+
     return (
         <View style={styles.container}>
             <TouchableOpacity
                 onPress={() => navigation.navigate("Search")}
                 activeOpacity={1}
-                style={styles.touchable}>
-                   
+                style={styles.touchable}>    
                 <Icon
                     style={styles.icon}
                     name='search'
@@ -25,8 +28,9 @@ const SearchBar = ({ theme }) => {
                 />
                 <Text style={styles.text}>Search for a service or vendor</Text>
                  
-               <Filter style={styles.activityIndicator} size={25}
-                    color='#BCC4CC'/>
+                <TouchableOpacity style={styles.activityIndicator} onPress={() =>setmodal(!modal)}>
+                    <Filter size={25} color='#BCC4CC' />
+                </TouchableOpacity>
                  </TouchableOpacity>
         </View>
     );

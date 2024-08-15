@@ -17,7 +17,7 @@ const Pop2 = ({ main, modal }) => {
           autoPlay
           loop={false}
         />
-        <Text style={[ {color: theme.colors.lg,  marginTop: verticalScale(-40) }, styles.fs18, styles.tac]}>{main}</Text>
+        <Text style={[ {color: theme.colors.lg, textAlign:'center', fontSize:18,  marginTop: verticalScale(-40) }, styles.fs18, styles.tac]}>{main}</Text>
       </View>
     </Modal>
   );

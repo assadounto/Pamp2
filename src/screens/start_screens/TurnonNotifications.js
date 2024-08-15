@@ -20,7 +20,7 @@ import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions'
 const Turnon = ({ navigation }) => {
   const dispatch = useDispatch();
   const notification = useSelector(state => state.user.notifications);
-  const user = useSelector((state) => state.user.userInfo)
+  const user = useSelector((state) => state.user.user)
   const [modalVisible, setModal] = useState(false);
   const [loading, setLoading] = useState(false)
   const next = useSelector(state => state.user.next)
@@ -178,7 +178,7 @@ const useStyles = makeStyles((theme) => ({
   c2: {
     width: '90%',
     paddingBottom: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: theme.colors.slate,
     position: 'absolute',
     alignSelf: 'center',
     bottom: verticalScale(148),

@@ -3,7 +3,7 @@ import MyTabBar from '../../../components/Topnav';
 import ChatListScreen from './ChatList';
 import { makeStyles } from '@rneui/themed';
 import { Icon } from '@rneui/base';
-import { View,Text,Pressable } from 'react-native';
+import { View,Text,Pressable, Platform } from 'react-native';
 import Notifications from '../notifications/Notifications';
 import { useTheme } from '@rneui/themed';
 import { moderateScale,horizontalScale } from '../../Dimensions';
@@ -11,12 +11,12 @@ import SafeAreaTop from '../../../components/SafeAreaTop';
 const Tab = createMaterialTopTabNavigator();
 const NotiMessage = ({ navigation,route }) => {
     const {theme}=useTheme()
-    const {newnoti}= route.params?route.params:{}
+    const {new_message}= route.params?route.params:{}
     const styles=useStyles()
 return (
       <>
-      <SafeAreaTop></SafeAreaTop>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+        <View style={{marginTop:Platform.OS=='ios'? 60:20, flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={[styles.notifications, styles.myFavTypo]}>Notifications</Text>
             <Pressable style={styles.x} onPress={() => navigation.goBack()}>
                 <Icon
@@ -31,11 +31,12 @@ return (
             </Pressable>
         </View>
         <Tab.Navigator
+        
             sceneContainerStyle={{ backgroundColor: theme.colors.background }}
-            tabBar={props => <MyTabBar badge={newnoti} width={"90%"}  {...props} />}>
+            tabBar={props => <MyTabBar badge={new_message} width={"90%"}  {...props} />}>
             
             <Tab.Screen name="Updates" component={Notifications} />
-        <Tab.Screen name="Messages">
+            <Tab.Screen name="Messages">
             {(props) => <ChatListScreen {...props}   />}
         </Tab.Screen>
         </Tab.Navigator>

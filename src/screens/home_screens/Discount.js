@@ -19,6 +19,10 @@ import Save from '../../../components/Save';
 import { useFocusEffect } from '@react-navigation/core';
 import Blur from '../start_screens/Blur';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import CouponIcon from '../../../components/icons/Coupon';
+import { verticalScale } from '../../Dimensions';
+import SunIcon from '../../../components/icons/Sun';
+import CouponList from '../../../components/Couponlist';
 const Discount = ({ navigation }) => {
   const user = useSelector((state) => state.user.userInfo);
   const [text, setText] = useState('');
@@ -61,8 +65,11 @@ const Discount = ({ navigation }) => {
   const pop = useStyles();
   return (
     <>
-
+      <View style={{backgroundColor:theme.colors.background}}>
       <BHeader top={Platform.OS === 'ios' ? 60 : 20} color={theme.colors.lg} />
+  
+
+
       <View style={pop.pop}>
         <Text style={pop.rate}>Enter Promo Code</Text>
         <TextInput
@@ -70,41 +77,29 @@ const Discount = ({ navigation }) => {
           placeholder="Promo Code"
           onChangeText={setText}
           style={pop.input}
+          
         />
         <Text style={pop.text2}>The discount will be applied to your next appointment.</Text>
 
 
       </View>
-      <ScrollView contentContainerStyle={{ height: 600 }}>
-        {data &&
-          data.map((coupon) => (
-            <TouchableOpacity onPress={() => navigation.navigate('discountfull', { coupon })} style={pop.coupon} key={coupon.id}>
-              <Text style={pop.head}>{coupon.code}</Text>
-              <Text style={pop.dis}>{coupon.description}</Text>
-              <View style={pop.bar} />
-              <View style={pop.cont2}>
-                <Text style={pop.apply}>Expiry</Text>
-                <Text style={[pop.apply, pop.hour]}>{coupon.expiry}</Text>
-              </View>
-            </TouchableOpacity>
-
-          ))}
-      </ScrollView>
-
-
+      </View>
+      <CouponList data={data} navigation={navigation} />
 
       <Pop2 modal={notify} main="Discount code successfully applied" />
       {notify && <Blur />}
-      <Save name="Apply" handlePress={handlePressOK} />
+      <Save name="Apply" disabled={!text} handlePress={handlePressOK} />
+
     </>
   );
 };
 const useStyles = makeStyles((theme) => ({
   hour: {
-    textAlign: 'right'
+    textAlign: 'right',
+    color: theme.colors.lg,
   },
   apply: {
-    color: '#A8B8A1',
+    color: theme.colors.dg,
     fontFamily: FontFamily.sourceSansProRegular,
     fontSize: 10,
     flex: 1
@@ -115,27 +110,29 @@ const useStyles = makeStyles((theme) => ({
   }
   ,
   bar: {
-    backgroundColor: '#E8F9E0',
+    backgroundColor: theme.colors.tabColor,
     marginVertical: 10,
-    height: 2
+    height:1
   },
   dis: {
     color: theme.colors.dg,
-    fontFamily: FontFamily.sourceSansProSemibold,
-    fontSize: 18
+    fontFamily: FontFamily.sourceSansProBold,
+    fontSize: 18,
+    marginVertical:10
   },
   head: {
-    color: '#A8B8A1',
-    fontFamily: FontFamily.sourceSansProSemibold,
+    color: theme.colors.dg,
+    fontFamily: FontFamily.sourceSansProRegular,
     fontSize: 12, marginBottom: 10
   }
   ,
   coupon: {
     marginTop: 20,
-    backgroundColor: '#DAECD2',
+    backgroundColor: theme.colors.slate,
     borderRadius: 15,
     width: '90%',
-    padding: 15,
+    padding: 20,
+    
     alignSelf: 'center'
   },
   rate: {
@@ -152,6 +149,11 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     padding: 10,
 
+  },
+  icon:{
+    position:'absolute',
+    right:20,
+    top:20
   },
   h1: {
     fontFamily: FontFamily.sourceSansProSemibold,
@@ -182,12 +184,13 @@ const useStyles = makeStyles((theme) => ({
   input: {
     width: '90%',
     height: 46,
-    borderColor: '#EFEFEF',
+    borderColor: theme.colors.tabColor,
     borderWidth: 1,
     borderRadius: 10,
     padding: 13,
     paddingTop: 10,
-    marginVertical: 10
+    marginVertical: 10,
+    color:theme.colors.dg
   },
   text2: {
     color: '#BBB9BC',

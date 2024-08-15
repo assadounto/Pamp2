@@ -1,7 +1,7 @@
 import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/themed';
 import React from 'react';
-import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon, Badge } from '@rneui/base';
 import FastImage from 'react-native-fast-image';
@@ -10,17 +10,24 @@ import { colors } from '../src/Common_styles';
 import { FontFamily } from '../GlobalStyles';
 import { horizontalScale, moderateScale, verticalScale } from '../src/Dimensions';
 import { setNextNav } from '../src/redux/user';
-const UHeader = ({ navigation, newnoti }) => {
+
+import BellIcon from './icons/Bell';
+import SurfIcon from './icons/surf';
+import SurfSmallIcon from './icons/surfsmall';
+import SunIcon from './icons/Sun';
+import SunSmallIcon from './icons/SunSmall';
+const UHeader = ({ navigation, newnoti, new_message }) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user.userInfo);
+  const location = useSelector(state => state.user.location)
   const userimg = useSelector(state => state.user.image1);
-
-
+  //{location.currency||"₵"}
+  console.log(location.flag, 'new')
   const { theme } = useTheme();
   return (
     <View
       style={{
-        backgroundColor: theme.colors.background,
+  
         marginBottom: verticalScale(20),
         marginLeft: horizontalScale(20),
         marginTop: Platform.OS === 'ios' ? verticalScale(45) : 10,
@@ -49,6 +56,23 @@ const UHeader = ({ navigation, newnoti }) => {
               height: 60,
             }}
           />
+          {user?.role == 'influencer' ? <View style={{
+            shadowColor: '#707070',
+            shadowOpacity: 0.2,
+            shadowRadius: 10,
+            elevation: 2,
+            shadowOffset: { width: 5, height: 0 }, alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 50, left: 20, borderRadius: 50, width: 25, height: 25, backgroundColor: theme.colors.ring
+          }}>
+            <SurfSmallIcon />
+          </View> : user?.points > 0 ? <View style={{
+            shadowColor: '#707070',
+            shadowOpacity: 0.2,
+            shadowRadius: 10,
+            elevation: 2,
+            shadowOffset: { width: 5, height: 0 }, alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 50, left: 20, borderRadius: 50, width: 25, height: 25, backgroundColor: theme.colors.ring
+          }}>
+            <SunSmallIcon fill={theme.colors.ring} />
+          </View> : <></>}
         </TouchableOpacity>
 
         {user?.id ? <Text
@@ -60,22 +84,25 @@ const UHeader = ({ navigation, newnoti }) => {
             width: horizontalScale(150)
           }}
         >
-          Hi, {user?.username}
+          Hi, {user?.username}{location && location.flag}
         </Text> : <></>}{
           user?.id ?
-            <TouchableOpacity onPress={() => { navigation.navigate('All_notifications',{newnoti}) }} style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingHorizontal: 30 }}>
+            <TouchableOpacity onPress={() => { navigation.navigate('notifications', { new_message }) }} style={{ flex: 1, alignItems: 'flex-end', justifyContent: 'center', paddingHorizontal: 30 }}>
               {
-                newnoti ?
-                  <View style={{ top: 5 }}>
-                    <Icon onPress={() => { navigation.navigate('All_notifications',{newnoti}) }} name="bell" type="feather" color={colors.lg.color} />
+                newnoti || new_message ?
+                  <Pressable onPress={() => { navigation.navigate('notifications', { new_message }) }} style={{ top: 5 }}>
+
+                    <BellIcon size={30} color={theme.colors.lg} />
+
                     <Badge
                       badgeStyle={{ width: 12, height: 12, borderRadius: 50 }}
                       status="warning"
 
                       containerStyle={{ position: 'relative', top: -28, right: -5 }} />
-                  </View> :
-                  <View style={{}}>
-                    <Icon onPress={() => navigation.navigate('All_notifications')} name="bell" type="feather" color={colors.lg.color} /></View>
+                  </Pressable > :
+                  <Pressable onPress={() => navigation.navigate('notifications')} style={{}}>
+                    <BellIcon size={30} color={theme.colors.lg} />
+                  </Pressable>
               }
             </TouchableOpacity> : <></>}
       </View>

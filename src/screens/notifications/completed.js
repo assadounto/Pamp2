@@ -7,6 +7,7 @@ import chart from '../../../assets/chat.png'
 import { useTheme } from '@rneui/themed';
 import { formatDate } from '../../Functions';
 import SvgUri from 'react-native-svg-uri';
+import Rating from '../../../components/icons/Rating';
 const Completed = ({ data }) => {
   const { theme } = useTheme()
   const [color, usecolor] = React.useState('#F9B015')
@@ -21,7 +22,7 @@ const Completed = ({ data }) => {
           gap: 10
 
         }} >
-        <Image source={chart} style={{ marginTop: 10 }} />
+        <Rating color={theme.colors.lg} style={{ marginTop: 10 }} />
 
         <View>
           <View style={{

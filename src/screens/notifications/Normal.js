@@ -7,6 +7,7 @@ import { FontFamily } from '../../GlobalStyles';
 import mail from '../../../assets/mail.png'
 import { formatDate } from '../../Functions';
 import { useTheme } from '@rneui/themed';
+import MailIcon from '../../../components/icons/Mail';
 import { horizontalScale, moderateScale, verticalScale } from '../../Dimensions';
 const Normal = ({ data }) => {
   const { theme } = useTheme()
@@ -22,7 +23,7 @@ const Normal = ({ data }) => {
           gap: 10
 
         }} >
-        <Image source={mail} style={{ marginTop: 10 }} />
+        <MailIcon color={theme.colors.lg} style={{ marginTop: 10 }} />        
         <View>
           <View style={{
             display: 'flex',

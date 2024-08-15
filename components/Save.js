@@ -33,9 +33,10 @@ const Save = ({ name, handlePress, disabled, loading }) => {
     >
       <View style={styles.safeArea}>
 
-        <View style={[styles.buttonContainer, keyboardVisible && styles2.keyboardVisible]}>
+        <View style={[styles.buttonContainer, keyboardVisible && styles.keyboardVisible]}>
           <Button
             disabled={disabled}
+            disabledStyle={{backgroundColor:theme.colors.btnDisabled}}
             titleStyle={styles.title}
             title={name}
             buttonStyle={styles.button}
@@ -69,7 +70,12 @@ const useStyles = makeStyles((theme) => ({
     paddingVertical: 20,
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: theme.colors.card, // Add a white background
+    backgroundColor:theme.colors.background,
+    shadowColor: theme.colors.white,
+    shadowOpacity: 0,
+    shadowRadius: 5,
+    shadowOffset: { width: 5, height: 0 },
+     // Add a white background
   },
 
   keyboardVisible: {

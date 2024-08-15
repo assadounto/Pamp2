@@ -6,6 +6,7 @@ import { FontFamily } from '../../GlobalStyles';
 import gift from '../../../assets/gift.png'
 import { formatDate } from '../../Functions';
 import { useTheme } from '@rneui/themed';
+import GiftIcon from '../../../components/icons/gift';
 const Discount = ({ data }) => {
   const { theme } = useTheme()
   const [color, usecolor] = React.useState('#F9B015')
@@ -20,7 +21,7 @@ const Discount = ({ data }) => {
           gap: 10
 
         }} >
-        <Image source={gift} style={{ marginTop: 10 }} />
+        <GiftIcon style={{ marginTop: 10 }} />
         <View>
           <View style={{
             display: 'flex',

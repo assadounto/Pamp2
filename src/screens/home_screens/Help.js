@@ -8,10 +8,12 @@ import { ListItem, Icon } from "@rneui/base";
 import { FontFamily } from "../../GlobalStyles";
 import { colors } from "../../Common_styles";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MailIcon from '../../../components/icons/Mail';
+import HelpIcon from '../../../components/icons/Helpcenter';
 
 const Help = () => {
   const { theme } = useTheme();
-  const styles=useStyles()
+  const styles = useStyles()
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background, }} >
 
@@ -28,16 +30,28 @@ const Help = () => {
           },
         ]}>
         <ListItem
+          containerStyle={[{ borderRadius: 15,marginBottom:15, backgroundColor: theme.colors.slate }]}
+          onPress={() => {
+            console.log('Sending email...');
+            Linking.openURL('https://www.trypamp.com/help-center');
+          }}>
+          <HelpIcon color={theme.colors.lg} />
+          <ListItem.Content>
+            <ListItem.Title style={[styles.title]}>Help Center </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron style={{ color: theme.colors.dg }} size={25} />
+        </ListItem>
+        <ListItem
           containerStyle={[{ borderRadius: 15, backgroundColor: theme.colors.slate }]}
           onPress={() => {
             console.log('Sending email...');
             Linking.openURL('mailto:support@trypamp.com');
           }}>
-          <Icon name="mail-outline" type="ionicon" color={colors.lg.color} />
+          <MailIcon color={theme.colors.lg} />
           <ListItem.Content>
             <ListItem.Title style={[styles.title]}>Send us a message </ListItem.Title>
           </ListItem.Content>
-          <ListItem.Chevron style={{color:theme.colors.dg}} size={25} />
+          <ListItem.Chevron style={{ color: theme.colors.dg }} size={25} />
         </ListItem>
       </View>
     </SafeAreaView>

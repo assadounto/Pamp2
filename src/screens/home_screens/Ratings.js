@@ -12,7 +12,7 @@ const Ratings = ({ route }) => {
     const { theme } = useTheme();
     return (
         <SafeAreaView>
-            <BHeader title="Rating and reviews" color={'#86D694'} />
+            <BHeader title="Rating and reviews" color={theme.colors.dg} />
             <ReviewCont data={data} />
         </SafeAreaView>
 

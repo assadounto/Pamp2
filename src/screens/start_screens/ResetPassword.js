@@ -13,7 +13,7 @@ import { useLazyForgotAccountQuery } from '../../redux/authapi';
 import { FontFamily } from '../../GlobalStyles';
 const ResetPassword = ({ route, navigation }) => {
   const [forgotAccount, { data, isError }] = useLazyForgotAccountQuery()
-  const { info } = route.params
+  const { info } = route ?route.params:{}
 
   const [email, setEmail] = useState(false)
   const [phone, setPhone] = useState(false)
@@ -78,19 +78,19 @@ const ResetPassword = ({ route, navigation }) => {
           <ListItem.Content>
             <ListItem.Title style={colors.dg2}>Email a confirmation code to
             </ListItem.Title>
-            <ListItem.Title style={colors.dg2}>{info.email}</ListItem.Title>
+            <ListItem.Title style={colors.dg2}>{info?.email}</ListItem.Title>
           </ListItem.Content>
         </ListItem>
-        {info.phone &&
+        {info?.phone &&
           <ListItem
             containerStyle={[styles.cont, styles.none]}
           >
 
-            <CheckBoxComponent card={false} containerWidth={50} onPress={handlePhoneCheckboxChange} state={phone} />
+            <CheckBoxComponent  card={false} containerWidth={50} onPress={handlePhoneCheckboxChange} state={phone} />
             <ListItem.Content>
               <ListItem.Title style={colors.dg2}>Text a confirmation code to
               </ListItem.Title>
-              <ListItem.Title style={colors.dg2}>phone number ending with {info.phone.slice(-3)}</ListItem.Title>
+              <ListItem.Title style={colors.dg2}>phone number ending with {info?.phone.slice(-3)}</ListItem.Title>
             </ListItem.Content>
           </ListItem>
         }
@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.colors.background,
     width: '90%',
     alignSelf: 'center',
-    borderColor: theme.colors.linkBorder,
+    borderColor: theme.colors.tabColor,
     borderBottomWidth: 1,
     borderTopWidth: 1
   },

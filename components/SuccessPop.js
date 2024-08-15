@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: "0%",
     left: "0%",
     borderRadius: Border.br_xl,
-    backgroundColor: Color.white,
+    backgroundColor: theme.colors.slate,
     position: "absolute",
   },
   backToHome: {

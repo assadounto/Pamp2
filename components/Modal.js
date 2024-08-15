@@ -5,22 +5,22 @@ import React from 'react';
 import { Text, View, StyleSheet, SafeAreaView, Image, Modal, Pressable, FlatList } from 'react-native';
 import { FontFamily } from '../src/GlobalStyles';
 import { styles, colors } from '../src/Common_styles';
+import { verticalScale,horizontalScale } from '../src/Dimensions';
 
 
-const data = ['MTN', 'VODAFONE', 'AIRTELTIGO']
 
-const Modal_Pop = ({ main, modal, onchange, setOption }) => {
+const Modal_Pop = ({ main,data, modal, onchange, setOption }) => {
     const styles = useStyles();
     const { theme } = useTheme();
     return (
         <><Modal animationType="slide" transparent={true} visible={modal}>
 
-            <View style={[styles.pop2, { padding: 0, height: 200, bottom: 110 }]}>
-                <FlatList style={md_style.momo_cont}
+            <View style={[styles.pop2, {backgroundColor:theme.colors.card, padding: 0, height: 200, bottom: 110 }]}>
+                <FlatList style={styles.momo_cont}
                     data={data}
                     renderItem={({ item }) => (
 
-                        <View style={md_style.info} ><Text onPress={() => { setOption(item); onchange(false) }} style={md_style.text}>{item}</Text></View>
+                        <View style={styles.info} ><Text onPress={() => { setOption(item); onchange(false) }} style={styles.text}>{item}</Text></View>
 
                     )}
                     keyExtractor={item => item}
@@ -36,7 +36,7 @@ const Modal_Pop = ({ main, modal, onchange, setOption }) => {
                 alignItems: 'center', position: 'absolute', bottom: 40,
                 justifyContent: 'center', backgroundColor: theme.colors.card, marginTop: 10, height: 54,
                 borderRadius: 18, width: '95%', alignSelf: 'center'
-            }} onPress={() => onchange(false)}><Text style={md_style.text}>BACK</Text></Pressable>
+            }} onPress={() => onchange(false)}><Text style={styles.text}>BACK</Text></Pressable>
         </Modal>
         </>
     );
@@ -48,8 +48,22 @@ const useStyles = makeStyles((theme) => ({
         width: '90%',
 
     },
+    pop2: {
+        position: 'absolute',
+        bottom: verticalScale(40),
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: horizontalScale(20),
+        alignSelf: 'center',
+        padding: horizontalScale(40),
+        alignContent: 'center',
+
+        width: '95%',
+        height: verticalScale(250),
+    },
     info: {
-        borderBottomColor: '#B0EBBD',
+        borderBottomColor: theme.colors.tabColor,
         borderBottomWidth: 0.5,
         height: 60,
         alignItems: 'center',
@@ -58,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     text: {
         fontFamily: FontFamily.sourceSansProSemibold,
         fontSize: 16,
-        color: "#00463C"
+        color: theme.colors.dg
 
     }
 }))

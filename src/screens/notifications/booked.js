@@ -6,6 +6,9 @@ import { FontFamily } from '../../GlobalStyles';
 import mail from '../../../assets/rebook.png'
 import { formatDate } from '../../Functions';
 import { useTheme } from '@rneui/themed';
+import MailIcon from '../../../components/icons/Mail';
+import Calender from '../../../components/Calender';
+import CalenderIcon from '../../../components/icons/Calender';
 
 const Booked = ({ data }) => {
   const [color, usecolor] = React.useState('#F9B015')
@@ -22,7 +25,7 @@ const Booked = ({ data }) => {
           gap: 10
 
         }} >
-        <Image source={mail} style={{ marginTop: 10 }} />
+        <CalenderIcon color={theme.colors.lg} style={{ marginTop: 10 }} />
         <View>
           <View style={{
             display: 'flex',

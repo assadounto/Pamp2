@@ -13,15 +13,23 @@ import note2 from '../assets/note5.png';
 import cancel1 from '../assets/cancel.png';
 import cancel2 from '../assets/cancel5.png';
 import { useSelector } from 'react-redux';
+import MessageIcon from './icons/Message';
+import MailIcon from './icons/Mail';
+import { useNavigation } from '@react-navigation/core';
+import Calender from './Calender';
+import CalenderIcon from './icons/Calender';
 
 const Booking_action = ({ info, setblur, rebk, data }) => {
+  const navigation= useNavigation()
+  const user = useSelector((state) => state.user.userInfo)
+
   const actionDictionary = {
-    rebook: ['confirmed', "rebook", 'booked', 'completed', 'unconfirmed', 'no show'],
+    rebook: [ 'cancelled',  'declined', 'ongoing', 'no show'],
     notes: ['cancelled', 'completed', 'no show', 'declined'],
     cancel: ['cancelled', 'completed', 'no show', 'ongoing', 'declined'],
   };
 
-  const disabledActions = actionDictionary.rebook.includes(data.status) ? [] : ['rebook'];
+  const disabledActions = actionDictionary.rebook.includes(data.status)
   const isNotesDisabled = actionDictionary.notes.includes(data.status);
   const isCancelDisabled = actionDictionary.cancel.includes(data.status);
 
@@ -34,43 +42,39 @@ const Booking_action = ({ info, setblur, rebk, data }) => {
     <View style={md_style.cont}>
       <View>
         <TouchableOpacity
-          disabled={disabledActions.includes('rebook')}
-          style={[md_style.action, disabledActions.includes('rebook') && md_style.cancel]}
+          disabled={disabledActions}
+          style={[md_style.action, disabledActions && md_style.cancel]}
           onPress={() => rebk()}>
-          <Image source={disabledActions.includes('rebook') ? rebook2 : rebook} style={{ width: 22, height: 22, alignSelf: 'center' }} />
+          <CalenderIcon style={{ width: 22, height: 22, alignSelf: 'center' }} color={disabledActions? theme.colors.disabled : theme.colors.lg} />
+
         </TouchableOpacity>
-        <Text style={md_style.text}>Rebook</Text>
+        <Text style={[md_style.text, disabledActions && { color: theme.colors.disabled }]}>Rebook</Text>
       </View>
 
       <View>
         <TouchableOpacity
-          disabled={isNotesDisabled}
-          style={[md_style.action, isNotesDisabled && md_style.cancel, isCancelDisabled && md_style.cancel]}
-          onPress={() => {
-            setblur(true);
-            setNotes(true);
-          }}>
-          <Image source={isNotesDisabled ? note2 : note} style={{ width: 22, height: 22, alignSelf: 'center' }} />
+         disabled={isNotesDisabled}
+          style={[md_style.action, isNotesDisabled && md_style.cancel]}
+          onPress={() => navigation.navigate('Chat', { vendor: data.vendor, userId:user.id, vendorId: data.vendor.id, userType:'user' })}
+          >
+          <MessageIcon style={{ width: 22, height: 22, alignSelf: 'center' } }color={isNotesDisabled?theme.colors.disabled:theme.colors.lg} />
+        
         </TouchableOpacity>
-        <Text style={md_style.text}>Notes</Text>
+        <Text style={[md_style.text, isNotesDisabled && { color: theme.colors.disabled }]}>Message</Text>
       </View>
 
       <View>
         <TouchableOpacity
           disabled={isCancelDisabled}
-          style={[md_style.action, isCancelDisabled && md_style.cancel_red, isCancelDisabled && md_style.cancel]}
+          style={[md_style.action, isCancelDisabled ? md_style.cancel : md_style.cancel_red]}
           onPress={() => {
             setblur(true);
             setCancel(true);
           }}>
-          <Image
-            source={isCancelDisabled ? cancel2 : cancel1}
-            style={{ width: 22, height: 22, alignSelf: 'center', }}
-          />
+          <CalenderIcon style={{ width: 22, height: 22, alignSelf: 'center' }} color={isCancelDisabled ?theme.colors.disabled:  "#cd3d49"} />
         </TouchableOpacity>
-        <Text style={md_style.text}>Cancel</Text>
+        <Text style={[md_style.text, isCancelDisabled&& {color: theme.colors.disabled}]}>Cancel</Text>
       </View>
-
       <Cancel_pop data={data} setblur={setblur} modal={cancel_modal} cancel={cancel_modal} setcancel={setCancel} />
       <Notes_pop id={data.id} setblur={setblur} modal={notes} setcancel={setNotes} />
     </View>
@@ -89,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   cancel: {
-    borderColor: '#EFEFEF',
+    borderColor: theme.colors.disabled,
   },
   cancel_red: {
     borderColor: '#CD3D49',

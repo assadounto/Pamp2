@@ -6,6 +6,7 @@ import { FontFamily } from '../../GlobalStyles';
 import { useTheme } from '@rneui/themed';
 import mail from '../../../assets/cancel5.png'
 import { formatDate } from '../../Functions';
+import CalenderIcon from '../../../components/icons/Calender';
 const Canceled = ({ data }) => {
   const { theme } = useTheme()
   const [color, usecolor] = React.useState('#F9B015')
@@ -20,7 +21,7 @@ const Canceled = ({ data }) => {
           gap: 10
 
         }} >
-        <Image source={mail} style={{ marginTop: 10 }} />
+        <CalenderIcon color={'#cd3d49'} style={{ marginTop: 10 }} />    
         <View>
           <View style={{
             display: 'flex',

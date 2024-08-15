@@ -16,14 +16,15 @@ import { ScrollView } from "react-native-gesture-handler";
 import LoadingSkeleton from "../components/LoadingSketon";
 const Bookings = ({ navigation }) => {
   const user = useSelector((state) => state.user.userInfo)
+  console.log(user,'booki')
   const isFocused = useIsFocused();
   const [loading, setLoading] = React.useState(false)
   const [bookings, setBookings] = React.useState([])
   React.useEffect(() => {
     if (isFocused) {
-      if (bookings.length === 0) {
+    
         get()
-      }
+      
 
     }
   }, [isFocused])

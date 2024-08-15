@@ -20,7 +20,7 @@ const EmptyAppoiment = ({ showBtn, sub = "You don't have upcoming schedules.", c
       <Image
         style={styles.component44Child}
         resizeMode="contain"
-        source={require("../assets/group-2142.png")}
+        source={require("../assets/empty_mess.png")}
       />
       <Text style={[styles.noAppointments, styles.youDontHaveTypo]}>
         No appointments
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 
   },
   component44Child: {
-    height: verticalScale(200),
+    height: verticalScale(150),
     width: "60.83%",
 
     alignSelf: 'center',
@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
   component44: {
 
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(50),
     width: '80%',
     alignSelf: 'center',
     height: verticalScale(296),

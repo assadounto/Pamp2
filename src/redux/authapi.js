@@ -64,12 +64,10 @@ export const authApi = createApi({
       }),
     }),
     getnotifications: builder.query({
-      query: id => ({
+      query: data => ({
         url: `/user/notifications`,
         method: 'GET',
-        params:{
-          id: id
-        }
+        params:data
       }),
     }),
     logout: builder.mutation({

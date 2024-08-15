@@ -5,18 +5,19 @@ class WebSocketService {
     constructor() {
         this.socketRef = null;
         this.room = null;
+        this.user_id = null;
     }
 
-    connect(room,user_id) {
+    connect(room, user_id) {
         this.room = room;
-        this.user_id=user_id
+        this.user_id = user_id;
         this.socketRef = new WebSocket(cableURL);
 
         this.socketRef.onopen = () => {
             console.log('WebSocket connected');
             this.socketRef.send(JSON.stringify({
                 command: 'subscribe',
-                identifier: JSON.stringify({ channel: 'ChatChannel', room,user_id })
+                identifier: JSON.stringify({ channel: 'ChatChannel', room: this.room, user_id: this.user_id })
             }));
         };
 
@@ -31,6 +32,10 @@ class WebSocketService {
         this.socketRef.onerror = (e) => {
             console.log('WebSocket error', e.message);
         };
+
+        this.socketRef.onmessage = (e) => {
+            this.handleMessage(e);
+        };
     }
 
     disconnect() {
@@ -42,18 +47,23 @@ class WebSocketService {
     send(data) {
         this.socketRef.send(JSON.stringify({
             command: 'message',
-            identifier: JSON.stringify({ channel: 'ChatChannel', room: data.room }),
+            identifier: JSON.stringify({ channel: 'ChatChannel', room: this.room, user_id: this.user_id }),
             data: JSON.stringify(data)
         }));
     }
 
+    handleMessage(event) {
+        const message = JSON.parse(event.data);
+
+        if (message.type === 'ping') return;
+        if (message.message) {
+            console.log('Received message:', message.message);
+            this.onMessageCallback(message.message);
+        }
+    }
+
     onMessage(callback) {
-        this.socketRef.onmessage = (e) => {
-            const message = JSON.parse(e.data);
-           
-            if (message.type === 'ping') return;
-            if (message.message) callback(message.message);
-        };
+        this.onMessageCallback = callback;
     }
 }
 

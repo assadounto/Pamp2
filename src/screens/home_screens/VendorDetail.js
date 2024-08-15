@@ -33,6 +33,9 @@ import { setVPM } from '../../redux/user'
 import VerifiedIcon from '../../../components/icons/Verified';
 import { useFocusEffect } from '@react-navigation/native';
 import SendIcon from '../../../components/icons/Send';
+import Save from '../../../components/Save';
+import Home2Icon from '../../../components/icons/Home2';
+import ExclamationIcon from '../../../components/icons/Exclamation';
 
 const getFormattedPrice = (price) => `$${price.toFixed(2)}`;
 const windowHeight = Dimensions.get('window').height;
@@ -42,12 +45,11 @@ const VendorDetail = ({ navigation, route }) => {
   const user = useSelector((state) => state.user.userInfo)
   const location = useSelector((state) => state.user.location)
   const [fav, setFav] = useState(false)
-  const { id, datas } = route ? route.params : {}
+  const { id, dist } = route ? route.params : {}
   const [data1, setdata] = useState()
   const [modal, setModal] = useState(false)
-  const [checkedState, setCheckedState] = useState(
-
-  );
+  const [checkedState, setCheckedState] = useState();
+  const loc = useSelector(state => state.user.location)
 
   //data &&setCheckedState(data)
   function generateRatingsSummary(ratings) {
@@ -80,8 +82,6 @@ const VendorDetail = ({ navigation, route }) => {
         (totalScore / ratings.length).toFixed(2)
       );
     }
-
-    console.log(location);
 
     // Return the summary
     return summary;
@@ -119,7 +119,7 @@ const VendorDetail = ({ navigation, route }) => {
     const currentMinute = currentDate.getMinutes();
 
     const vendor = openingHours.find((item) => item.day === currentDay.split(',')[0]);
-    console.log(vendor, currentDay)
+
     if (!vendor || !vendor.opening_time || !vendor.closing_time || !vendor.opened) {
       return 'Closed';
     }
@@ -175,7 +175,7 @@ const VendorDetail = ({ navigation, route }) => {
   const [parentState, setparentState] = useState(
 
   );
-  console.log()
+
 
   const { theme } = useTheme();
   const styles = useStyles();
@@ -186,7 +186,7 @@ const VendorDetail = ({ navigation, route }) => {
       const { data } = await axios.get(`${backendURL}/details?id=${id}${user?.id ? '&user_id=' + user?.id : ''}&lat=${location.lat}&lon=${location.lon}`)
 
 
-      data && console.log(data.distance, 'klllll')
+      data && console.log(data, 'klllll')
       setFav(data.favorited)
       dispatch(setVPM(data.payment_method))
       dispatch(setvendorname(data.username))
@@ -205,6 +205,7 @@ const VendorDetail = ({ navigation, route }) => {
           lon: data.lon,
           lat: data.lat,
           location: data.name,
+          home: data.home,
           dist: data.distance,
           badge: data.badge,
           items: data.top_services.split(",").map((item) => {
@@ -232,6 +233,7 @@ const VendorDetail = ({ navigation, route }) => {
                 return {
                   id: service.id,
                   name2: service.name,
+                  info:service.info,
                   time: service.time,
                   appointment_color: service.appointment_color,
                   price: service.price,
@@ -258,6 +260,7 @@ const VendorDetail = ({ navigation, route }) => {
         rating: '',
         location: data.name,
         dist: data.distance,
+        home: data.home,
         items: data.top_services.split(",").map((item) => {
           return {
             value: item
@@ -286,6 +289,7 @@ const VendorDetail = ({ navigation, route }) => {
                 id: service.id,
                 name2: service.name,
                 time: service.time,
+                info: service.info,
                 appointment_color: service.appointment_color,
                 price: service.price,
               }
@@ -308,13 +312,13 @@ const VendorDetail = ({ navigation, route }) => {
 
   const dispatch = useDispatch()
   const [staff, setStaff] = useState('');
+  const isAnyServiceSelected = checkedState?.topping2?.some(category =>
+    category.items.some(item => item.check)
+  );
 
 
   const handleBookingSubmit = () => {
     // Check if any service is selected
-    const isAnyServiceSelected = checkedState.topping2.some(category =>
-      category.items.some(item => item.check)
-    );
 
     if (!isAnyServiceSelected) {
       // If no service is selected, show an alert or handle it in a way that suits your UI
@@ -415,7 +419,7 @@ const VendorDetail = ({ navigation, route }) => {
         style={{
           padding: 5,
           borderRadius: 50,
-          backgroundColor: 'white',
+          backgroundColor: theme.colors.card,
           width: 80,
           height: 79,
           position: 'relative',
@@ -461,14 +465,15 @@ const VendorDetail = ({ navigation, route }) => {
         shadowOpacity: 0.30,
         shadowRadius: 3.84,
         elevation: 8,
+        gap: 5,
         justifyContent: 'center'
       }}>
         <Icon
-
+          size={18}
           name='star'
           type='ionicons'
           color={theme.colors.lg} />
-        <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: theme.colors.dg }}>
+        <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, color: theme.colors.dg }}>
           {data1.sum_rating?.average_rating == 0 ? '0.0' : data1.sum_rating.average_rating}
         </Text>
       </Pressable>
@@ -478,9 +483,9 @@ const VendorDetail = ({ navigation, route }) => {
           <Text style={{ marginBottom: 15, fontFamily: FontFamily.sourceSansProBold, fontSize: 24, fontWeight: 'bold', color: theme.colors.dg, maxWidth: 200 }}>{data1.name}</Text>
           {
             data1.badge && <View style={{ marginTop: 5, marginLeft: 5 }}>
-              
-                 <VerifiedIcon color={theme.colors.lg} />
-         
+
+              <VerifiedIcon color={theme.colors.lg} />
+
             </View>
           }
           <TouchableOpacity onPress={() => setModal(true)} style={{ paddingHorizontal: 5, marginLeft: 5, marginTop: 7, height: 20, backgroundColor: checkVendorStatus(data1.hours) == 'Open' ? '#86D694' : '#CD3D49', borderRadius: 20 }}>{checkVendorStatus(data1.hours) === 'Open' ? (
@@ -493,7 +498,7 @@ const VendorDetail = ({ navigation, route }) => {
               color={theme.colors.dg}
               onPress={handleShare}
             />
-           
+
           </View>
         </View>
 
@@ -504,7 +509,7 @@ const VendorDetail = ({ navigation, route }) => {
               <Pressable
                 key={item.id}
                 style={{
-                  backgroundColor: theme.colors.card,                  borderRadius: 20,
+                  backgroundColor: theme.colors.card, borderRadius: 20,
                   height: 30,
                   padding: 5,
                   paddingHorizontal: 17,
@@ -519,11 +524,14 @@ const VendorDetail = ({ navigation, route }) => {
 
             )
           })}
+          {data1?.home && <Pressable onPress={() => Alert.alert(`Home Service`,"The home icon indicates that this vendor provides exclusive home services.")} style={{ alignSelf: 'center', marginTop: -20 }}>
+            <Home2Icon />
+          </Pressable>}
         </ScrollView>
         <Text style={{ left: 20, fontFamily: FontFamily.sourceSansProRegular, fontSize: 18, color: theme.colors.dg, marginBottom: 15, marginRight: 20 }}> {data1.location}</Text>
-        <View style={{ left: 20, display: 'flex', flexDirection: 'row' }}>
-          <Icon name='map-pin' type='feather' color={colors.lg.color} />
-          <Text style={{ color: theme.colors.lg, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {parseInt(data1.dist / 1000)}km - <Text onPress={() => navigation.navigate('Mapview', {
+        <View style={{ left: 20, display: 'flex',alignItems:'center', flexDirection: 'row' }}>
+          <Icon size={15} name='map-pin' type='feather' color={theme.colors.lg} />
+          <Text style={{ color: theme.colors.dg, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 16 }}> {parseInt(dist ? dist / 1000 : data1.dist / 1000)}km - <Text onPress={() => navigation.navigate('Mapview', {
             data: data1
           })} style={{ color: theme.colors.lg }}>Show on map</Text></Text>
         </View>
@@ -536,7 +544,7 @@ const VendorDetail = ({ navigation, route }) => {
                 <CheckBox
                   containerStyle={{ backgroundColor: theme.colors.background }}
                   title={<>
-                    <View><Text style={[ { color:theme.colors.dg, marginTop: 0, fontFamily: FontFamily.sourceSansProBold, fontSize: 18, width: 200, marginLeft: 10 }]}>
+                    <View><Text style={[{ color: theme.colors.dg, marginTop: 0, fontFamily: FontFamily.sourceSansProBold, fontSize: 18, width: 200, marginLeft: 10 }]}>
                       {name}
                     </Text>
                       {time != 0 &&
@@ -545,15 +553,13 @@ const VendorDetail = ({ navigation, route }) => {
                         </Text>}
                     </View>
                     {total > 0 &&
-                      <Text style={[ { color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, fontSize: 19, top: -9, marginLeft: 'auto', right: 20 }]}>
-                        {'\u20B5'} {total}
+                      <Text style={[{ color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, fontSize: 19, top: -9, marginLeft: 'auto', right: 20 }]}>
+                        {loc.currency || "₵"} {total}
                       </Text>}
                   </>}
-                  uncheckedIcon={<Image
-                    resizeMode='contain'
-                    style={{ width: 30, height: 30 }}
-                    source={require('../../../assets/rectangle1063.png')}
-                  />}
+                  uncheckedIcon={<View style={[{ backgroundColor: theme.colors.background, borderColor: theme.colors.lg, borderWidth: 1, width: 30, height: 30, borderRadius: 10 }]}>
+
+                  </View>}
                   checkedIcon={
                     <Image
                       style={{ width: 30, height: 30 }}
@@ -564,16 +570,16 @@ const VendorDetail = ({ navigation, route }) => {
                   checked={parentState[index]}
                   onPress={() => handleOnChange2(index)} />
               </View>
-              {parentState[index] === true && items.map(({ name2, time, id, price, check }, _index2) => {
+              {parentState[index] === true && items.map(({ name2, time, id, price, check, info }, _index2) => {
 
 
                 return (
                   <View key={id} style={{ marginLeft: 30 }}>
                     <CheckBox
                       key={id}
-                      containerStyle={{backgroundColor:theme.colors.background}}
-                      title={<>
-                        <Text numberOfLines={2} ellipsizeMode="tail" style={[ { color:theme.colors.dg, maxWidth: 200, marginLeft: 10 }]}>
+                      containerStyle={{ backgroundColor: theme.colors.background }}
+                      title={<View style={{ alignItems: 'center', flexDirection: 'row', gap: 5, display: 'flex' }}>
+                        <Text numberOfLines={2} ellipsizeMode="tail" style={[{ color: theme.colors.dg, maxWidth: 120, marginLeft: 10 }]}>
                           {name2}
                         </Text>
 
@@ -582,9 +588,8 @@ const VendorDetail = ({ navigation, route }) => {
                         <Text style={[{ fontSize: 10, color: '#BBB9BC', }]}>
                           {' '}{convertMinutesToHoursAndMinutes(time)}
                         </Text>
-                        <Text style={[ { color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, right: 40, marginLeft: 'auto' }]}>
-                          {'\u20B5'} {price}
-                        </Text></>}
+                        {info &&<ExclamationIcon onPress={()=>Alert.alert('Service Information',info)} />}
+                      </View>}
                       checkedIcon={<View style={[{ backgroundColor: theme.colors.lgb, width: 15, height: 15, borderRadius: 5 }]}>
 
                       </View>}
@@ -593,6 +598,9 @@ const VendorDetail = ({ navigation, route }) => {
                       </View>}
                       checked={check}
                       onPress={() => handleOnChange(id, name)} />
+                    <Text style={[{ color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold, right: 40, top: 15, position: 'absolute', }]}>
+                      {loc.currency || "₵"} {price}
+                    </Text>
                   </View>
                 )
               })}
@@ -607,24 +615,8 @@ const VendorDetail = ({ navigation, route }) => {
 
     </ScrollView>
       <Opening key={data1.id} data={data1.hours} modal={modal} setModal={setModal} />
-      <View style={{ position: 'absolute', top: '90%', alignSelf: 'center', backgroundColor: theme.colors.background, height: 200, width: '100%', marginBottom: 0 }}>
-        <Button
-          titleStyle={{ fontFamily: FontFamily.sourceSansProBold }}
-          title={'Book'}
-          // containerStyle={}
-          buttonStyle={{
-            width: 184,
-            height: 54,
-            //margin: 'auto',
-            marginBottom: 20,
-            marginTop: 10,
-            alignSelf: 'center',
-            borderRadius: 25,
-            backgroundColor: theme.colors.lgb,
-            shadowColor: theme.colors.lgb, shadowOpacity: 0., shadowRadius: 5, shadowOffset: { width: 5, height: 0 }
-          }}
-          onPress={handleBookingSubmit} />
-      </View>
+
+      <Save disabled={!isAnyServiceSelected} handlePress={handleBookingSubmit} name={'Book'} />
       {modal && <Blur />}
     </> : <Loading />}</>
 

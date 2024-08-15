@@ -107,13 +107,13 @@ const Change_pass = ({ navigation }) => {
             placeholderTextColor={theme.colors.placeholder}
             placeholder="Current Password"
             style={[styles.textInput]}
-            secureTextEntry={!showPassword}
+           // secureTextEntry={!showPassword}
             rightIcon={
               <Icon
                 name={showPassword ? 'eye' : 'eye-off'}
                 type="ionicon"
                 onPress={() => setShowPassword(!showPassword)}
-                color="#BBB9BC"
+                color={theme.colors.dg}
               />
             }
             onChangeText={(value) => handleChange('current_password', value)}
@@ -123,7 +123,7 @@ const Change_pass = ({ navigation }) => {
             placeholderTextColor={theme.colors.placeholder}
             placeholder="New Password"
             style={[styles.textInput]}
-            secureTextEntry={!showPassword}
+           // secureTextEntry={!showPassword}
             rightIcon={
               <Icon
                 name={showPassword ? 'eye' : 'eye-off'}
@@ -139,7 +139,7 @@ const Change_pass = ({ navigation }) => {
             placeholderTextColor={theme.colors.placeholder}
             placeholder="Confirm Password"
             style={[styles.textInput]}
-            secureTextEntry={!showPassword}
+            //secureTextEntry={!showPassword}
             rightIcon={
               <Icon
                 name={showPassword ? 'eye' : 'eye-off'}

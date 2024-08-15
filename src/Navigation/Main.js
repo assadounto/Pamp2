@@ -22,6 +22,9 @@ import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar";
 import { colors } from '../Common_styles';
 import HomeIcon from '../../components/icons/Home';
 import CalenderIcon from '../../components/icons/Calender';
+import Test from '../../mytest';
+import HeartIcon from '../../components/icons/heart';
+import SliderIcon from '../../components/icons/slider';
 
 const Tab = AnimatedTabBarNavigator();
 
@@ -84,7 +87,6 @@ function MyTabBar({ state, descriptors, navigation }) {
                 return { name: 'hearto', type: 'antdesign' };
               case 3:
                 return { name: 'sound-mix', type: 'entypo' };
-
               default:
                 return { name: 'home', type: 'feather' };
             }
@@ -159,7 +161,6 @@ const MainNavigator = () => {
   const [infoModal, setInfoModal] = useState(false)
   const checkAnyRating = () => {
     const ratings = userstate.rating
-    console.log(ratings, 'llllllllll')
     if (ratings.length !== 0) {
       setVendor(ratings[0])
       setmodal(true)
@@ -194,7 +195,8 @@ const MainNavigator = () => {
 
           />
         )
-      }} name="Home" component={Home} />
+      }} name="Home" component={Home
+      } />
       {/* Bookings */}
       <Tab.Screen name="Bookings" options={{
         tabBarIcon: ({ focused, color, size }) => (
@@ -208,27 +210,19 @@ const MainNavigator = () => {
       }} component={Bookings} />
       <Tab.Screen name="Favorites" options={{
         tabBarIcon: ({ focused, color, size }) => (
-          <Icon
-            name="hearto"
-
-            type='antdesign'
+         <HeartIcon
+            focused={focused}
             size={size ? size : 24}
             color={focused ? color : theme.colors.tabColor}
-            focused={focused}
-
-          />
+         />
         )
       }} component={Favourites} />
       <Tab.Screen options={{
         tabBarIcon: ({ focused, color, size }) => (
-          <Icon
-            name="sound-mix"
-
-            type='entypo'
+          <SliderIcon
+            focused={focused}
             size={size ? size : 24}
             color={focused ? color : theme.colors.tabColor}
-            focused={focused}
-
           />
         )
       }} name="Settings"

@@ -17,7 +17,7 @@ bodonBd: "BodonBd",
 bondonBoldItalic:"BodoniFLF-BoldItalic",
 bondonItalic:"BodoniFLF-Italic" 
 };
-/* font sizes */
+import { ThemeContext } from "../src/ThemeContext";
 export const FontSize = {
   size_6xs: 10,
   size_5xs: 11,

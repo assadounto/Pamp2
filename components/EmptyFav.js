@@ -20,7 +20,7 @@ const Emptyfav = ({ title, body, top = verticalScale(80), showBtn, col, mt }) =>
       <Image
         style={styles.component45Child}
         resizeMode="contain"
-        source={require("../assets/group-2143.png")}
+        source={require("../assets/empty_mess.png")}
       />
       <Text style={[styles.noFavourites, styles.youDontHaveTypo]}>
         {title}

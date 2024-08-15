@@ -84,7 +84,7 @@ const VerifyNumber = ({ navigation }) => {
   const [shakeAnimation] = useState(new Animated.Value(0));
   const [visible, setVisible] = useState(false)
 
-  const user = useSelector((state) => state.user.userInfo)
+  const user = useSelector((state) => state.user.user)
   console.log(user, 'ddd')
   const [timerCount, setTimerCount] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
@@ -236,7 +236,7 @@ const VerifyNumber = ({ navigation }) => {
         />
         <Text
           disabled={timerActive}
-          style={[colors.dg, styles.mt100, styles.tc]}
+          style={[colors.dg, styles.mt100, styles.tc,{color:theme.colors.dg}]}
           onPress={startTimer}>
           {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}
         </Text>

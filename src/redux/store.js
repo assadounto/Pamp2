@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import userReducer from './user';
 import bookingReducer from './booking'
 import themeReducer  from './theme'
+import filterReducer from './filter'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { authApi } from './authapi';
 import {
@@ -25,15 +26,15 @@ const persistConfig = {
 };
 
 const theme = persistReducer(persistConfig, themeReducer);
-
+const filter=persistReducer(persistConfig,filterReducer)
 const user = persistReducer(persistConfig, userReducer);
 const booking = bookingReducer
 export const store = configureStore({
   reducer: {
     user,
     booking,
-    theme,
-    
+    theme, 
+    filter,
     [authApi.reducerPath]: authApi.reducer
   },
   middleware: getDefaultMiddleware =>

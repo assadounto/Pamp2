@@ -40,7 +40,7 @@ const Opening = ({ data, modal, setModal }) => {
               style={md_style.momo_cont}
               data={sortOpeningHours(data)}
               renderItem={({ item }) => (
-                <ListItem style={{ borderBottomColor: '#B0EBBD', borderBottomWidth: 1 }}>
+                <ListItem containerStyle={{ backgroundColor: theme.colors.card }} style={{ backgroundColor: theme.colors.card, borderBottomColor: theme.colors.tabColor, borderBottomWidth: 1 }}>
                   <Text style={md_style.text2}>{item.day}</Text>
                   <ListItem.Content>
 

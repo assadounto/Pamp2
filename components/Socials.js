@@ -4,6 +4,7 @@ import React from "react";
 import { View, Text, Image, Pressable, Linking, Platform } from "react-native";
 import { FontFamily } from "../GlobalStyles";
 import SvgUri from "react-native-svg-uri";
+import TwitterIcon from './twitter';
 const Socials = () => {
   const handleSocialPress = (url) => {
     // Use Linking to open the URL in the browser or app
@@ -39,7 +40,7 @@ const Socials = () => {
 
             </Pressable>
             <Pressable onPress={() => handleSocialPress("https://twitter.com/trypamp")}>
-              <Image source={require('../assets/twitter.png')} />
+              <TwitterIcon color={theme.colors.lg} />
             </Pressable>
             <Pressable onPress={() => handleSocialPress("https://www.tiktok.com/@trypampgh")}>
               <Image source={require('../assets/tiktok.png')} />
@@ -56,7 +57,7 @@ const Socials = () => {
 
             </Pressable>
             <Pressable onPress={() => handleSocialPress("https://twitter.com/trypamp")}>
-              <SvgUri source={require('../assets/svgs/twitter.svg')} />
+              <TwitterIcon color={theme.colors.lg}/>
             </Pressable>
             <Pressable onPress={() => handleSocialPress("https://www.tiktok.com/@trypampgh")}>
               <SvgUri source={require('../assets/svgs/tiktok.svg')} />

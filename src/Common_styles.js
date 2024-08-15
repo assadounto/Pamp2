@@ -286,7 +286,7 @@ export const styles = StyleSheet.create({
 
 export const colors = StyleSheet.create({
   lg: {
-    color: '#B0EBBD',
+    color: '#86D694',
   },
   dg: {
     color: '#00463C',

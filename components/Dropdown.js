@@ -8,7 +8,7 @@ import Modal_Pop from './Modal';
 import { Border } from '../GlobalStyles';
 
 
-const Dropdown = ({ label, onselect, setOption }) => {
+const Dropdown = ({ label, onselect,data, setOption }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleDropdown = () => {
@@ -19,7 +19,7 @@ const Dropdown = ({ label, onselect, setOption }) => {
   const renderDropdown = () => {
     if (visible) {
       return (
-        <Modal_Pop setOption={setOption} onchange={(val) => { setVisible(val); onselect(val) }} />
+        <Modal_Pop data={data} setOption={setOption} onchange={(val) => { setVisible(val); onselect(val) }} />
       );
     }
   };
@@ -33,7 +33,7 @@ const Dropdown = ({ label, onselect, setOption }) => {
     >
       {renderDropdown()}
       <Text style={styles.buttonText}>{label}</Text>
-      <Icon type='font-awesome' name='chevron-down' color={'#B0EBBD'} size={15} />
+      <Icon type='font-awesome' name='chevron-down' color={theme.colors.tabColor} size={15} />
     </TouchableOpacity>
   );
 }
@@ -43,11 +43,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    height: 50,
+    height: 60,
     width: '90%',
     paddingHorizontal: 20,
     zIndex: 1,
-    borderColor: '#B0EBBD',
+    borderColor: theme.colors.tabColor,
     borderWidth: 1,
     borderRadius: 20
 

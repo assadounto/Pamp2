@@ -1,5 +1,5 @@
 import { makeStyles } from '@rneui/themed';
-import { useTheme } from '@rneui/themed';
+import { useTheme, ListItem } from '@rneui/themed';
 import React, { useState, useEffect } from 'react';
 import { backendURL } from '../../services/http';
 import { verticalScale, horizontalScale, moderateScale } from '../../Dimensions';
@@ -32,13 +32,20 @@ import Blur from '../start_screens/Blur';
 import axios from 'axios';
 import EditIcon from '../../../components/icons/Edit';
 import Bin from '../../../components/icons/Bin';
+import ListNav from '../../../components/ListNav';
+import RatingStar from '../../../components/RatingStar';
+import RedeemModal from '../../../components/RedeemPoints';
+import Delete_modal from '../../../components/Delete_modal';
 const Profile = ({ navigation }) => {
   const dispatch = useDispatch();
+  const location = useSelector(state => state.user.location);
   const user = useSelector(state => state.user.userInfo);
+
   const userimg = useSelector(state => state.user.image1); const [modal, setModal] = useState(false);
   const [reason1, setReason1] = useState(false);
   const [reason2, setReason2] = useState(false);
   const [reason3, setReason3] = useState('');
+  const [redeemModal, setRedeemModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [toph, setpop] = useState(40)
   const handledelete = async () => {
@@ -120,7 +127,13 @@ const Profile = ({ navigation }) => {
 
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        <View style={{ alignSelf: 'center', marginTop: 20 }}>
+
+
+        <ListItem
+          containerStyle={[{ width: '90%', alignSelf: 'center', height: 110, borderRadius: 21, backgroundColor: theme.colors.slate }]}
+          onPress={() => {
+
+          }}>
           <TouchableOpacity
             onPress={() => {
               onPickImage();
@@ -129,7 +142,7 @@ const Profile = ({ navigation }) => {
 
               source={selectedImage || user?.image ? { uri: user?.image, headers: { Authorization: 'someAuthToken' } } : require('../../../assets/place.png')}
 
-              style={{ borderRadius: 50, width: 80, height: 80 }
+              style={{ borderRadius: 50, width: 69, height: 69 }
 
               }
 
@@ -138,6 +151,7 @@ const Profile = ({ navigation }) => {
             <View
               style={[
                 {
+
                   backgroundColor: theme.colors.lgb,
                   position: 'absolute',
                   bottom: 0,
@@ -150,14 +164,24 @@ const Profile = ({ navigation }) => {
                 name="camera"
                 color={colors.w.color}
                 type="feather"
-                size={14} />
+                size={10} />
             </View>
           </TouchableOpacity>
+          <ListItem.Content>
+            <ListItem.Title style={[colors.dgb, { color: theme.colors.dg, fontFamily: FontFamily.sourceSansProBold }]}>{user?.username} </ListItem.Title>
+          </ListItem.Content>
+          <RatingStar rating={user?.rating} />
+        </ListItem>
+        <View style={[styles.flex, styles.links]}>
+          {user?.role == 'influencer' && <ListNav value={`${location.currency || "₵"}${(user?.balance || 0).toFixed(2)}`} link={'activity'} />}
+          <ListNav onPress={() => setRedeemModal(!redeemModal)} value={user?.points || "Points"} link={'points'} />
         </View>
+
+
         <View style={[styles.Pcont]}>
           <View style={[styles.Pmain]}>
             <Pressable onPress={() => navigation.replace('edit_profile')}>
-             <EditIcon
+              <EditIcon
                 size={18}
                 style={{
                   alignSelf: 'flex-end',
@@ -168,16 +192,16 @@ const Profile = ({ navigation }) => {
                   padding: 5,
                   color: theme.colors.lg,
                 }}
-             />
-             
+              />
+
             </Pressable>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>First name</Text>
-              <Text style={[styles.P2, colors.dg2]}>{user.username}</Text>
+              <Text style={[styles.P2, colors.dg2]}>{user?.username}</Text>
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Last name</Text>
-              {user?.name ? <Text style={[styles.P2, colors.dg2]}>{user.name}</Text> : <Text
+              {user?.name ? <Text style={[styles.P2, colors.dg2]}>{user?.name}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
@@ -194,160 +218,61 @@ const Profile = ({ navigation }) => {
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Email address</Text>
-              <Text style={[styles.P2, colors.dg2]}>{user.email}</Text>
+              <Text style={[styles.P2, colors.dg2]}>{user?.email}</Text>
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Date of birth </Text>
-              {user?.date_of_birth ? <Text style={[styles.P2, colors.dg2]}>{user.date_of_birth}</Text> : <Text
+              {user.date_of_birth==null ? 
+              <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
-              </Text>}
+              </Text>
+             
+              :
+                <Text style={[styles.P2, colors.dg2]}>{user?.date_of_birth}</Text> 
+              }
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Gender </Text>
-              {user?.gender ? <Text style={[styles.P2, colors.dg2]}>{user.gender}</Text> : <Text
+              {user?.gender==null ? <Text
                 style={[styles.P2, colors.dg2]}
-                onPress={() => navigation.navigate('edit_profile')}>
-                +Add
-              </Text>}
+              onPress={() => navigation.navigate('edit_profile')}>
+              +Add
+              </Text> : <Text style={[styles.P2, colors.dg2]}>{user?.gender}</Text>}
             </View>
-            <View style={[styles.Pmargin]}>
+            <View style={[styles.Pmargin, { borderBottomWidth: 0 }]}>
               <Text style={styles.P1}>Address </Text>
-              {user?.address ? <Text style={[styles.P2, colors.dg2]}>{user.address}</Text> : <Text
+              {user?.address ==null ?  <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
-              </Text>}
+              </Text>: <Text style={[styles.P2, colors.dg2]}>{user?.address}</Text> }
             </View>
           </View>
         </View>
         <Pressable onPress={() => setModal(true)}>
-          <View style={[styles.Pmain, styles.flex, styles.Da, {alignItems:'center', marginBottom: 150 }]}>
+          <View style={[styles.Pmain, styles.flex, styles.Da, { alignItems: 'center', marginBottom: 150 }]}>
             <Bin
-              style={{ width: 30, height: 25,}}
+              style={{ width: 30, height: 25, }}
               color={'#CD3D49'}
             />
-           
+
             <Text
               style={[
-                { color: '#CD3D49', textAlignVertical: 'center', marginTop: 5, marginLeft: 18 },
-                
+                { color: '#CD3D49', fontFamily: FontFamily.sourceSansProBold, textAlignVertical: 'center', marginLeft: 18 },
+
               ]}>
               Delete account
-              
+
             </Text>
           </View>
         </Pressable>
       </ScrollView>
 
     </SafeAreaView>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modal}
-        onRequestClose={() => {
-          setModal(!modal);
-        }}>
-        <View style={[styles.pop, { position: 'absolute', alignItems: 'center', alignSelf: 'center', borderRadius: 20, width: '90%', bottom: toph, backgroundColor: '#ffff' }]}>
-          <Pressable
-            onPress={() => setModal(!modal)}
-            style={{ alignSelf: 'flex-end', marginRight: 20, marginTop: 20 }}>
-            <Icon
-              name="x"
-              type="feather"
-              size={30}
-              onPress={() => setModal(!modal)} />
-          </Pressable>
-          <View>
-            <Text
-              style={[
-                colors.dgb,
-                styles.fs18,
-                styles.tac,
-                styles.mb20,
-                styles.bold,
-              ]}>
-              Are you sure you want to leave Pamp?
-            </Text>
-            <Text
-              style={[
-                colors.lg,
-                styles.fs18,
-                styles.tac,
-                ,
-
-                styles.mb20,
-                styles.bold,
-              ]}>
-              Tell us why
-            </Text>
-          </View>
-          <View style={{ width: 260 }}>
-            <CheckBox
-              style={{ borderColor: 'red', borderWidth: 1 }}
-              title={<Text
-                style={[
-                  colors.dg,
-                  {
-                    marginLeft: 8,
-                    fontFamily: FontFamily.sourceSansProSemibold,
-                  },
-                  styles.bold,
-                ]}>
-                I don't like the app
-              </Text>}
-              checkedIcon={<View style={styles.checkc}>
-                <Image
-                  source={require('../../../assets/check3.png')}
-                  style={styles.check} />
-              </View>}
-              checked={reason1}
-              onPress={() => {
-                setReason1(!reason1);
-              }} />
-            <CheckBox
-              title={<Text style={[colors.dg, { marginLeft: 8 }, styles.bold]}>
-                Couldn't find vendors near me
-              </Text>}
-              checkedIcon={<View style={styles.checkc}>
-                <Image
-                  source={require('../../../assets/check3.png')}
-                  style={styles.check} />
-              </View>}
-              checked={reason2}
-              onPress={() => {
-                setReason2(!reason2);
-              }} />
-          </View>
-
-          <TextInput
-            style={{
-              borderWidth: 1,
-              width: '80%',
-              borderRadius: 10,
-              borderColor: '#BBB9BC',
-              padding: 10,
-              marginTop: 30,
-              marginBottom: 40,
-            }}
-            placeholder={'other reason'}
-            onChangeText={text => {
-              console.log(reason3);
-              setReason3(text);
-            }} />
-          <Button
-            onPress={handledelete}
-            title="Confirm"
-            buttonStyle={{
-              backgroundColor: '#CD3D49',
-              width: 200,
-              borderRadius: 40,
-              height: 60,
-              marginBottom: 20,
-            }} />
-        </View>
-      </Modal>
+     <Delete_modal setModal={setModal} modal={modal}/>
+      <RedeemModal disabled={user?.points < 1000 || !user?.points} modal={redeemModal} setModal={setRedeemModal} />
       {modal && <Blur />}
     </>
 
@@ -359,6 +284,13 @@ const Profile = ({ navigation }) => {
 const useStyles = makeStyles((theme) => ({
   container: {
     alignItems: 'center',
+  },
+  links: {
+    width: '90%',
+    gap: 10,
+    alignSelf: 'center',
+    marginVertical: 20,
+
   },
   flex: {
     display: 'flex',
@@ -568,7 +500,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Pcont: {
     backgroundColor: theme.colors.background,
-    marginTop: verticalScale(30),
+
   },
 
   P1: {
@@ -581,6 +513,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: moderateScale(15),
   },
   Pmargin: {
+    borderBottomColor: theme.colors.tabColor,
+    borderBottomWidth: 0.3,
+    paddingBottom: 10,
+    paddingHorizontal: 10,
     marginBottom: horizontalScale(20),
   },
   Da: {

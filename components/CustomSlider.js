@@ -4,8 +4,6 @@ import React from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import Swiper from 'react-native-swiper';
 import FastImage from 'react-native-fast-image';
-import { colors } from '../src/Common_styles';
-import { Cursor } from 'react-native-confirmation-code-field';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -14,6 +12,7 @@ const CustomImageSlider = ({ images, border }) => {
 
   const styles = useStyles();
   const { theme } = useTheme();
+
   return (
     <Swiper
       loadMinimalLoader
@@ -22,6 +21,7 @@ const CustomImageSlider = ({ images, border }) => {
       activeDotStyle={styles.activeDot}
       activeDotColor={'white'}
       dotColor={'#707070'}
+      paginationStyle={styles.pagination}
       dotStyle={styles.dot}
     >
       {images.map((image, index) => (
@@ -43,20 +43,36 @@ const CustomImageSlider = ({ images, border }) => {
 const useStyles = makeStyles((theme) => ({
   swiperContainer: {
     borderBottomLeftRadius: 20,
+    overflow: 'hidden', // Ensure that content within the swiper does not overflow
+  },
+  pagination: {
+    position: 'absolute',
+    overflow:'scroll',
+    bottom: 10, // Adjust this value to position dots vertically
+    left: '50%', // Center the pagination horizontally
+    transform: [{ translateX: -50 }], // Adjust for the fixed width
+    width: 100, // Fixed width for pagination container
+    alignItems: 'center', // Center dots horizontally
+    flexDirection: 'row', // Ensure dots are in a row
+    justifyContent: 'center', // Center dots within the fixed width
   },
   dot: {
-    width: 12,
-    borderRadius: 50,
-    height: 12,
+    width: 8, // Adjust dot size
+    height: 8, // Adjust dot size
+    borderRadius: 4, // Ensure dots are circular
+    backgroundColor: '#707070', // Default dot color
+    marginHorizontal: 4, // Add spacing between dots
   },
   activeDot: {
-    width: 12,
-    borderRadius: 50,
-    height: 12,
+    width: 12, // Adjust size of the active dot
+    height: 12, // Adjust size of the active dot
+    borderRadius: 6, // Ensure active dot is circular
+    backgroundColor: 'white', // Active dot color
   },
   imageContainer: {
     width: '100%',
     height: '100%',
+    overflow: 'hidden', // Ensure image does not overflow
   },
   image: {
     flex: 1,
@@ -68,4 +84,5 @@ const useStyles = makeStyles((theme) => ({
     borderBottomRightRadius: 25,
   },
 }));
-export default CustomImageSlider
+
+export default CustomImageSlider;

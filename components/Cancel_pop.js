@@ -14,6 +14,7 @@ import Pop2 from '../src/screens/start_screens/pop2';
 const Cancel_pop = ({ cancel, setcancel, modal, setblur, data }) => {
     const dispatch = useDispatch()
     console.log(data.id)
+    const location = useSelector(state => state.user.location)
 
     const [notify_cancel, set_notify] = useState(false)
     const handlepressCancel = () => {
@@ -39,9 +40,9 @@ const Cancel_pop = ({ cancel, setcancel, modal, setblur, data }) => {
         <><Modal animationType="slide" transparent={true} visible={modal}>
             <View style={[pop.pop]}>
 
-                <Text style={[colors.dgb, pop.h1, styles.tac]}>Are you sure you want to cancel booking?</Text>
+                <Text style={[{ color: theme.colors.dg }, pop.h1, styles.tac]}>Are you sure you want to cancel booking?</Text>
                 {
-                    !data.cancelable && <><Text style={[colors.dgb, pop.h2, styles.tac]}>{`Due to late cancellation, you'll lose your deposit of 20% from the services value`} <Text style={{ fontFamily: FontFamily.sourceSansProSemibold }}>(¢{parseInt(data.total)})</Text></Text><Text style={[colors.dgb, pop.h3, styles.tac]}>See the <Text onPress={() => Linking.openURL('https://www.trypamp.com/terms-of-use')} style={pop.h4}> Cancellation policy</Text></Text></>
+                    !data.cancelable && <><Text style={[{ color: theme.colors.dg }, pop.h2, styles.tac]}>{`Due to late cancellation, you'll lose your deposit of 20% from the services value`} <Text style={{ fontFamily: FontFamily.sourceSansProSemibold }}>({location.currency || "₵"}{parseInt(data.total)})</Text></Text><Text style={[{ color: theme.colors.dg }, pop.h3, styles.tac]}>See the <Text onPress={() => Linking.openURL('https://www.trypamp.com/terms-of-use')} style={pop.h4}> Cancellation policy</Text></Text></>
                 }
                 <View style={{ display: 'flex', flexDirection: 'row', gap: 10, marginVertical: 20 }}>
 
@@ -60,7 +61,7 @@ const Cancel_pop = ({ cancel, setcancel, modal, setblur, data }) => {
 const useStyles = makeStyles((theme) => ({
     pop: {
         position: 'absolute',
-        backgroundColor: '#fff',
+        backgroundColor: theme.colors.card,
         alignItems: 'center',
         borderRadius: 20,
         alignSelf: 'center',

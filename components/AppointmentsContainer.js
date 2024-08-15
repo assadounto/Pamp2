@@ -3,13 +3,17 @@ import { makeStyles } from '@rneui/themed';
 import { nanoid } from "@reduxjs/toolkit";
 import { da } from "date-fns/locale";
 import * as React from "react";
+import { useDispatch, useSelector } from 'react-redux';
+
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { FontFamily, Color, FontSize, Border } from '../src/GlobalStyles'
 import FastImage from "react-native-fast-image";
 import AppJob from "./AppJob";
 import { colors } from "../src/Common_styles";
 import ImageCont from "./Image";
+import VerifiedIcon from './icons/Verified';
 const AppointmentsContainer = ({ navigation, data }) => {
+  const location = useSelector(state => state.user.location)
 
   const [info, setInfo] = React.useState()
   function formatServiceNames(services) {
@@ -62,19 +66,19 @@ const AppointmentsContainer = ({ navigation, data }) => {
 
   const { theme } = useTheme();
 
-  const statuses = ['declined', "rebook", "completed", "cancelled", "confirmed", "no show", "booked", "unconfirmed", "pending"]
+  const statuses = ['declined', "rebooked", "completed", "cancelled", "confirmed", "no show", "booked", "unconfirmed", "pending"]
 
 
 
   const bgc = {
     cancelled: '#CD3D49',
     completed: theme.colors.lgb,
-    confirmed: theme.colors.lgb,
-    booked: theme.colors.dgb,
-    rebook: theme.colors.dg,
+    confirmed: "#03989E",
+    booked: '#00463C',
+    rebooked: "#00463C",
     declined: '#CD3D49',
     "no show": '#CD3D49',
-    unconfirmed: theme.colors.dg,
+    unconfirmed: "#00463C",
     pending: data?.services[0] ? data?.services[0].color : 'red'
   }
 
@@ -87,7 +91,7 @@ const AppointmentsContainer = ({ navigation, data }) => {
     "no show": 'white',
     pending: 'white',
     unconfirmed: 'white',
-    rebook: 'white',
+    rebooked: 'white',
   }
 
 
@@ -122,32 +126,37 @@ const AppointmentsContainer = ({ navigation, data }) => {
     return formattedDate;
   }
   const styles = useStyles();
-
+console.log(data.vendor)
   return (
     <Pressable onPress={() => navigation.navigate('Booking_detail', {
       id: data.id
     })} style={[styles.path636Parent]}>
       <AppJob setInfo={setInfo} vendor={data.vendor} services={data.services} time={data.time} />
-      <ImageCont styles={[styles.groupChild, styles.groupChildPosition]} uri={data.vendor.cover} />
-
-
+      <ImageCont booking styles={[styles.groupChild, styles.groupChildPosition]} uri={data.vendor.cover} />
       <FastImage
         style={[styles.groupItem, styles.groupItemPosition]}
 
         source={{
           uri: data.vendor.logo,
           headers: { Authorization: 'someAuthToken' },
-          priority: FastImage.priority.high,
+          priority: FastImage.priority.normal,
         }}
-        resizeMode={FastImage.resizeMode.cover}
+        resizeMode={FastImage.resizeMode.contain}
       />
-      <Text style={[styles.likkleSalon, styles.totalFlexBox]}>
-        {data.vendor.username}
-      </Text>
+      <View style={[styles.totalFlexBox,]}>
+        <View style={[styles.likkleSalon,{gap:5,display:'flex',alignItems:'center', flexDirection:'row'}]}>
+          <Text  style={styles.likkleSalonText}>{data.vendor.username}</Text> 
+          {data.vendor.verified && <View>
+            <VerifiedIcon color={theme.colors.lg} />
+          </View>}
+        </View>
+        
+      </View>
+
       <Text style={[styles.sewIn, styles.sewInTypo]}>{formatServiceNames(data.items)}</Text>
       <Text style={[styles.total, styles.sewInPosition]}>Total</Text>
-      <Text style={[styles.am10am, styles.sewInPosition1]}>{formatTime(data.time)}</Text>
-      <Text style={[styles.text, styles.textTypo]}>¢{data.total}</Text>
+      <Text style={[styles.am10am, styles.sewInPosition1]}>{(formatTime(data.time)).toLocaleLowerCase()}</Text>
+      <Text style={[styles.text, styles.textTypo]}>{location.currency || "₵"}{parseFloat(data.total).toFixed(2)}</Text>
       <Text style={[styles.july2022, styles.textTypo]}>{formatDate(data.date)}</Text>
       <View style={[styles.groupInner, styles.lineViewBorder]} />
       <View style={[styles.lineView, styles.lineViewBorder]} />
@@ -174,6 +183,16 @@ const useStyles = makeStyles((theme) => ({
   totalFlexBox: {
     textAlign: "left",
     position: "absolute",
+    left: 60,
+    top: "50%",
+    display:'flex',
+   
+  },
+  verify: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center'
   },
   sewInTypo: {
     fontFamily: FontFamily.sourceSansProSemibold,
@@ -186,7 +205,7 @@ const useStyles = makeStyles((theme) => ({
   sewInPosition1: {
     marginTop: 90.99,
     textAlign: "left",
-    fontSize: FontSize.size_mid,
+    fontSize: 18,
     top: "50%",
     position: "absolute",
   },
@@ -198,7 +217,7 @@ const useStyles = makeStyles((theme) => ({
   lineViewBorder: {
     height: 2,
     borderTopWidth: 1,
-    borderColor: "#b0ebbd",
+    borderColor: theme.colors.tabColor,
     borderStyle: "solid",
     position: "absolute",
   },
@@ -220,18 +239,23 @@ const useStyles = makeStyles((theme) => ({
     width: 34,
     height: 34,
     borderRadius: 50,
+    borderWidth: 3,
+    borderColor: theme.colors.ring,
     top: "50%",
-
   },
   likkleSalon: {
-    marginTop: 38.99,
-    width: 200,
+    marginTop: 35.99,
+   
+   
+
+  },
+  likkleSalonText:{
     color: theme.colors.dg,
     textAlign: "left",
-    fontFamily: FontFamily.sourceSansProRegular,
-    fontSize: FontSize.size_mid,
-    left: 60,
-    top: "50%",
+    fontFamily: FontFamily.sourceSansProSemibold,
+    fontSize: 17,
+    maxWidth:150
+    
   },
   sewIn: {
     left: 25,
@@ -239,7 +263,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.dg,
     marginTop: 90.99,
     textAlign: "left",
-    fontSize: FontSize.size_mid,
+    fontSize: 18,
     top: "50%",
     position: "absolute",
   },
@@ -248,12 +272,12 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     position: "absolute",
     fontFamily: FontFamily.sourceSansProRegular,
-    fontSize: FontSize.size_mid,
+    fontSize: 18,
     left: 25,
   },
   am10am: {
     right: 28,
-    color: theme.colors.lg,
+    color: theme.colors.othergreen,
     fontFamily: FontFamily.sourceSansProRegular,
   },
   text: {

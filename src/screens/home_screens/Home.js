@@ -12,7 +12,7 @@ import RadioButton from '../../../components/RadioButton';
 import Geolocation from 'react-native-geolocation-service';
 import { useSelector, useDispatch } from 'react-redux';
 import { backendURL } from '../../services/http';
-import { setExistingRating, setImage, showBottom } from '../../redux/user';
+import { setExistingRating, setImage, setUser, showBottom } from '../../redux/user';
 import { request, check, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import { FontFamily } from '../../GlobalStyles';
 import img from '../../../assets/s.png'
@@ -36,7 +36,7 @@ import Rating_pop from '../../../components/Rating_pop';
 import Blur from '../start_screens/Blur';
 import { da } from 'date-fns/locale';
 import { Linking } from 'react-native';
-import notifee from '@notifee/react-native';
+import notifee , { EventType } from '@notifee/react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ImageCont from '../../../components/Image';
@@ -49,21 +49,45 @@ import Location_pop from '../../../components/Location_pop';
 import NoInternetComponent from '../../../components/NoInternet';
 import HideOnScroll from '../../../components/HideOnScroll';
 import SearchBar from '../../../components/searchbar';
+import { useScrollY } from '../../../components/useScrollY';
+import SearchFilter from '../../../components/SearchFilter';
+
+
 const Tab = createMaterialTopTabNavigator();
 
 const Home = ({ navigation }) => {
-  const isInternetConnected = useInternet();
 
+  
+
+
+
+  const isInternetConnected = useInternet();
   const user = useSelector((state) => state.user.userInfo)
   const userstate = useSelector((state) => state.user)
   const [unread, setunread] = useState(false)
+  const [new_message, setnewmessage] = useState(false)
   const [showInfoModal, setShowInfoModal] = useState(false);
 
+  const { scrollY, isHeaderVisible } = useScrollY();
   const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [option, setOption] = React.useState('Popular');
   const [modal, setmodal] = React.useState(false)
   const [vendor, setVendor] = React.useState({})
+
+
+  const countryToCurrency = {
+    'United States': '₵',
+    'Canada': '₵',
+    'United Kingdom': '₵',
+    'Ghana': '₵',
+    'Nigeria': '₵',
+    'India': '₵',
+    // Add more mappings as needed
+  };
+
+
+
   const reverseGeocode = async (lat, lng) => {
     const apiKey = 'AIzaSyBC14OiKIMS0t6EHuCMi7NGpm8Hn8I6QE0'; // Replace with your actual Google API key
 
@@ -72,8 +96,14 @@ const Home = ({ navigation }) => {
       const data = await response.json();
 
       if (data.status === 'OK' && data.results.length > 0) {
+        const countryComponent = data.results[0].address_components.find(component =>
+          component.types.includes('country')
+        );
+        const country=countryComponent?.long_name
+        const country_code = countryComponent?.short_name
+        console.log(countryComponent,'country')
         const address = data.results[0].formatted_address;
-        return address
+        return { address, country, currency: countryToCurrency[country],country_code}
 
       } else {
         throw new Error('Unable to retrieve address');
@@ -87,6 +117,12 @@ const Home = ({ navigation }) => {
     notifee.setBadgeCount(0).then(() => console.log('Badge count removed!'));
     handleDeepLink(event.url);
   });
+
+
+
+
+
+
 
   const handleDeepLink = (url) => {
     const route = url.replace(/.*?:\/\//g, '');
@@ -120,16 +156,19 @@ const Home = ({ navigation }) => {
   function getUserLocation() {
     Geolocation.getCurrentPosition(
       async (position) => {
-        const get = await reverseGeocode(position.coords.latitude, position.coords.longitude)
+        const {country,currency,address,country_code,flag} = await reverseGeocode(position.coords.latitude, position.coords.longitude)
         if (user?.id) {
-          const { data } = await axios.post(backendURL + '/user/location', { lat: position.coords.latitude, lon: position.coords.longitude, id: user?.id })
-
+          const { data } = await axios.post(backendURL + '/user/location', { lat: position.coords.latitude, lon: position.coords.longitude, id: user?.id,country,currency,country_code })
         }
+        console.log(country,currency)
         dispatch(setLocation(
           {
-            name: get || '',
+            name: address || '',
             lat: position.coords.latitude,
-            lon: position.coords.longitude
+            lon: position.coords.longitude,
+            currency: currency || "₵",
+            country,
+            country_code
           }))
       },
       (error) => {
@@ -163,12 +202,16 @@ const Home = ({ navigation }) => {
   }
 
   const getUpdates = async () => {
-    if (user?.id) {
+   
+    if (user && user?.id) {
       try {
         const { data } = await axios.get(`${backendURL}/has_unread?id=${user?.id}&scope=user`);
         setunread(data.has_unread);
+        dispatch(setUser(data.user))
+        setnewmessage(data.has_unread_messages)
+        console.log(data.unrated,'hg')
         dispatch(setExistingRating(data.unrated));
-        dispatch(setImage(data.image));
+     
       } catch (error) {
         if (error.response && error.response.status === 404) {
           // Navigate to the login page
@@ -231,21 +274,31 @@ const Home = ({ navigation }) => {
 
 
 
-  console.log(userstate.location)
+  
   useFocusEffect(
 
     React.useCallback(() => {
-
-
-      user?.id && getUpdates()
-      getUserLocation();
-      checkAndShowInfoModal();
-    }, []) // Include user.id in the dependency array
+     getUserLocation();
+      console.log(user)
+     user!=null && getUpdates()
+     
+      !userstate.new && checkAndShowInfoModal();
+    }, [user?.id]) // Include user.id in the dependency array
   );
 
-  React.useEffect(() => {
 
+  // useFocusEffect(
+
+
+  //  // Include user.id in the dependency array
+  // );
+
+
+
+  React.useEffect(() => {
+   userstate.new && navigation.navigate('whatsnew')
     dispatch(showBottom(true))
+    
     user?.id && fetchData()
 
 
@@ -254,7 +307,8 @@ const Home = ({ navigation }) => {
 
   const checkAndShowInfoModal = async () => {
     try {
-      const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+
+      const result = Platform.OS === 'android' ? await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION) : await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
 
       if (result === RESULTS.DENIED) {
         // Permission hasn't been granted yet, show info modal
@@ -275,14 +329,14 @@ const Home = ({ navigation }) => {
 
   }
   const [showTouchable, setShowTouchable] = useState(true);
-  const scrollY = useRef(new Animated.Value(0)).current;
+
   
   const { theme } = useTheme();
   return (
     <Fragment >
-      <UHeader newnoti={unread} navigation={navigation} />
-      <HideOnScroll scrollY={scrollY}>      
-         <SearchBar theme={theme}/>
+      { <UHeader newnoti={unread} new_message={new_message} navigation={navigation} />}
+      <HideOnScroll scrollY={scrollY}>
+        <SearchBar modal={modal} setmodal={setmodal} theme={theme} />
       </HideOnScroll>
       <Tab.Navigator
         sceneContainerStyle={{ backgroundColor: theme.colors.background}}
@@ -291,10 +345,11 @@ const Home = ({ navigation }) => {
           {(props) => <Popular {...props} scrollY={scrollY}/>}
         </Tab.Screen>
         <Tab.Screen name="Recently viewed" component={Recent} />
-        <Tab.Screen name="Top Rated" component={Top} />
+        <Tab.Screen name="Top Rated Vendors" component={Top} />
         {user?.role == 'admin' ? <Tab.Screen name="Extra Vendors" component={Others} /> : <></>}
       </Tab.Navigator>
       <Location_pop setmodal={setShowInfoModal} modal={showInfoModal} getUserLocation={getUserLocation} />
+      <SearchFilter modal={modal} setModal={setmodal}/>
     </Fragment>
   );
 };
@@ -305,7 +360,8 @@ const Popular = ({ navigation, scrollY  }) => {
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState()
   const userstate = useSelector((state) => state.user)
-  console.log(userstate.userInfo)
+  const filter = useSelector(state => state.filter);
+
   const { data, isLoading, refetch, isError } = useGetcategoriesQuery('Popular')
   useFocusEffect(
 
@@ -314,10 +370,8 @@ const Popular = ({ navigation, scrollY  }) => {
         refetch()
 
       }
-
     }, []) // Include user.id in the dependency array
   );
-  console.log(isLoading)
   const a = async () => {
     setLoading(true)
     try {
@@ -334,25 +388,17 @@ const Popular = ({ navigation, scrollY  }) => {
     }
 
   }
-  const handleSearch = async (id, title) => {
-    setImageLoading(true)
-    try {
-      const { data } = await axios.get(`${backendURL}/search?category=${title}&lat=${userstate.location.lat}&lon=${userstate.location.lon}`);
+  const handleSearch =  (id, title) => {
+   
+  
+      navigation.navigate('Searches1', { category: title, lat: userstate.location.lat, locationName: userstate.location.name, lon: userstate.location.lon, sort: filter.sort, price: filter.price, type: filter.type, distance: filter.distance });
+     
 
-      if (data) {
-        setImageLoading(false)
-        navigation.navigate('Searches1', { location: userstate.location, category: title, data });
-      }
-    } catch (error) {
-      setImageLoading(false)
-      // Handle network errors
-      Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
-    }
   };
   const [imageLoading, setImageLoading] = useState(false);
   const location = useSelector(state => state.user)
   const item = ({ item }) => (
-    <Pressable key={item.id} onPress={() => handleSearch(item.id, item.name)} style={{ paddingTop: 13, paddingHorizontal: 6, borderRadius: 20, marginTop: verticalScale(20), backgroundColor: theme.colors.card, width: '90%', alignSelf: 'center', shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4 }} >
+    <Pressable key={item.id} onPress={() => handleSearch(item.id, item.name)} style={{ paddingTop: 13, paddingHorizontal: 6, borderRadius: 20, marginTop: verticalScale(20), backgroundColor: theme.colors.slate, width: '90%', alignSelf: 'center', shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4 }} >
 
       <ImageCont uri={item.photo_url} styles={{ width: '95%', alignSelf: 'center', height: verticalScale(300), borderRadius: 20 }} />
 
@@ -369,19 +415,18 @@ const Popular = ({ navigation, scrollY  }) => {
     <>
 
       {
-        isLoading ? <LoadingSkeleton />
-          :
-          <Animated.FlatList contentContainerStyle={{ paddingBottom: 30 }}
+        isLoading? <ActivityIndicator style={{alignSelf:'center',marginTop:'50%'}} size={'large'}/>:
+        
+          <><Animated.FlatList contentContainerStyle={{ paddingBottom: 30 }}
             showsVerticalScrollIndicator={false}
             data={data}
             renderItem={item}
-           
             refreshing={false}
             keyExtractor={item => item.id}
             ListEmptyComponent={<NoInternetComponent retry={() => refetch()} />}
-            onRefresh={refetch}
-          />
-
+            onRefresh={refetch} />
+            
+            </>
 
       }
 
@@ -408,6 +453,7 @@ const Recent = ({ scope }) => {
           name: vendor.username,
           ratings: vendor.ratings,
           badge: vendor.badge,
+          home:vendor.home,
           location: vendor.name,
           dist: vendor.distance,
           items: vendor.top_services.split(",").map((item) => {
@@ -459,13 +505,15 @@ const Top = ({ scope }) => {
   const user = useSelector((state) => state.user)
   const navigation = useNavigation()
   const [loading, setLoading] = React.useState(false)
+  const filter = useSelector(state => state.filter);
 
   const [datas, setData] = useState([])
   const get = async () => {
 
     try {
       setLoading(true)
-      const { data } = await axios.get(`${backendURL}/categories?scope=top&lat=${user.location.lat}&lon=${user.location.lon}&vendor_ids=[1,8]`)
+
+      const { data } = await axios.get(`${backendURL}/categories?scope=top&lat=${user.location.lat}&lon=${user.location.lon}&distance=${filter.distance}`)
       const vendors = data.map((vendor) => {
         return {
           id: vendor.id,
@@ -474,6 +522,7 @@ const Top = ({ scope }) => {
           name: vendor.username,
           ratings: vendor.ratings,
           badge: vendor.badge,
+          home: vendor.home,
           location: vendor.name,
           dist: vendor.distance,
           items: vendor.top_services.split(",").map((item) => {
@@ -499,10 +548,10 @@ const Top = ({ scope }) => {
   useFocusEffect(
 
     React.useCallback(() => {
-      if (datas.length === 0) {
+    
         get()
-      }
-    }, [datas]) // Include user.id in the dependency array
+      
+    }, []) // Include user.id in the dependency array
   );
 
 
@@ -532,6 +581,7 @@ const Others = ({ scope }) => {
     try {
       setLoading(true)
       const { data } = await axios.get(`${backendURL}/categories?scope=extra&lat=${user.location.lat}&lon=${user.location.lon}`)
+    
       const vendors = data.map((vendor) => {
         return {
           id: vendor.id,
@@ -540,6 +590,7 @@ const Others = ({ scope }) => {
           name: vendor.username,
           ratings: vendor.ratings,
           badge: vendor.badge,
+          home: vendor.home,
           location: vendor.name,
           dist: vendor.distance,
           items: vendor.top_services.split(",").map((item) => {
@@ -568,7 +619,7 @@ const Others = ({ scope }) => {
       if (datas.length === 0) {
         get()
       }
-    }, [datas]) // Include user.id in the dependency array
+    }, []) // Include user.id in the dependency array
   );
 
 

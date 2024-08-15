@@ -1,195 +1,132 @@
 import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/themed';
 import * as React from "react";
+import { FontFamily } from '../GlobalStyles';
 import Filter from '../components/icons/Filter';
-import { StyleSheet, View, Text, ActivityIndicator, Pressable, Image, TextInput, SafeAreaView, Modal, TouchableOpacity, Alert } from "react-native";
-import { Styles } from "react-native-google-places-autocomplete";
+import { StyleSheet, View, Text, ActivityIndicator, Pressable, Image, TextInput, SafeAreaView, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useGetcategoriesQuery, useLazyGetcategoriesQuery } from "../src/redux/authapi";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import { useGetcategoriesQuery } from "../src/redux/authapi";
 import Categories from "../components/Categories";
 import { addRecent } from "../src/redux/user";
-navigator.geolocation = require('react-native-geolocation-service');
-import {
-  Margin,
-  Border,
-  FontSize,
-  Color,
-  FontFamily,
-  Padding,
-} from "../GlobalStyles";
+import SearchFilter from '../components/SearchFilter';
+import { setFilter } from '../src/redux/filter';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from "@rneui/base";
-import { colors, styles } from "../src/Common_styles";
 import GooglePlacesSearchModal from "../components/Gsearch";
 import Gsearch from "../components/Gsearch";
-import axios from "axios";
 import { backendURL } from "../src/services/http";
-import { da } from "date-fns/locale";
-import Bottom from "../components/bottomsheet";
 import SafeAreaTop from '../components/SafeAreaTop';
-
 
 const initData = [
   { value: 'All categories' },
-
 ];
 
-
-const Search2 = () => {
-  const dispatch = useDispatch()
-  const [loc, setLoc] = React.useState()
+const Search2 = ({ route }) => {
+  const { open = false } = route.params ? route.params : {}
+  const filter = useSelector(state => state.filter);
+  const [show, setShow] = React.useState(false);
+  const dispatch = useDispatch();
+  const [showfilter, setShowfilter] = React.useState(false);
+  const [loc, setLoc] = React.useState();
   const inputRef = React.useRef(null);
-  const userstate = useSelector((state) => state.user)
-  const { data } = useGetcategoriesQuery('Popular')
-  const navigation = useNavigation()
+  const userstate = useSelector((state) => state.user);
+  const { data } = useGetcategoriesQuery('Popular');
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [option, setoption] = React.useState('')
-
-  const [location, setLocation] = React.useState({
-    name: 'amasaman'
-  });
+  const [option, setoption] = React.useState('');
+  const [location, setLocation] = React.useState({ name: 'amasaman' });
 
   const setNewLocation = (lat, lon, name) => {
-    setLoc({
-      lat,
-      lon,
-      name
-    })
-  }
-
-
-
-  const [query, setQuery] = React.useState('');
-  const handleSearch = async () => {
-
-    setImageLoading(true)
-    try {
-      const { data } = await axios.get(`${backendURL}/search?query=${query}&lat=${loc.lat}&lon=${loc.lon}`)
-      //setData(data)
-      dispatch(addRecent({ cat: 'query', search: query }))
-      setImageLoading(false)
-      data && navigation.navigate('Searches1', { location: loc, category: query, data });
-    } catch {
-      Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
-      setImageLoading(false)
-    }
-
-
+    setLoc({ lat, lon, name });
   };
-  const handleContainerPress = () => {
-    inputRef.current.focus();
+console.log(filter,'s')
+  const [query, setQuery] = React.useState('');
+  const handleSave=()=>{
+    if (query){
+      handleSearch()
+    } 
+  }
+  const handleSearch = () => {
+    navigation.navigate('Searches1', { query, locationName: loc.name, lat: loc.lat, lon: loc.lon, sort: filter.sort, price: filter.price, type: filter.type, distance: filter.distance });
   };
 
   const data1 = data && initData.concat(data.map((cat) => {
-    return {
-      value: cat.name
-    }
-  })
-  )
+    return { value: cat.name };
+  }));
 
-  const searchRecent = async () => {
+  const searchRecent = () => {
     if (userstate.recent_view.cat == 'cat') {
-      setImageLoading(true)
-      try {
-        const { data } = await axios.get(`${backendURL}/search?category=${userstate.recent_view.search}&lat=${loc.lat}&lon=${loc.lon}`)
-        navigation.navigate('Searches1', { location: loc, category: userstate.recent_view.search, data });
-        setImageLoading(false)
-      }
-      catch (e) {
-        setImageLoading(false)
-        Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
-
-      }
-
+      navigation.navigate('Searches1', { locationName: loc.name, category: userstate.recent_view.search, lat: loc.lat, lon: loc.lon, sort: filter.sort, price: filter.price, type: filter.type, distance: filter.distance });
     } else {
       setQuery(userstate.recent_view.search);
-      handleSearch()
+      handleSearch();
     }
-  }
-  const [imageLoading, setImageLoading] = React.useState(false);
-  const s_style = useStyles()
+  };
+
+
+  const s_style = useStyles();
   const { theme } = useTheme();
+
   return (
-    <SafeAreaTop>
-
-   
-      <TouchableOpacity
-        onPress={handleContainerPress}
-        activeOpacity={1} // To prevent highlighting when pressed
-        style={[s_style.text_input]}>
-
-        <Icon
-          style={s_style.icon}
-          name='search'
-          type="feather"
-          size={25}
-          color='#BCC4CC'
-        />
-
-        <TextInput
-          ref={inputRef}
-          style={{ flex: 1 ,color:theme.colors.dg}}
-
-          autoFocus={true}
-          placeholder='Search for a service or venue'
-          onChangeText={setQuery}
-          placeholderTextColor={theme.colors.placeholder}
-          keyboardType="web-search"
-          onSubmitEditing={handleSearch}
-        />
-        <Filter style={s_style.activityIndicator} size={25}
-          color='#BCC4CC' />
-
-      </TouchableOpacity>
-      <Gsearch handleS={handleSearch} setLoc={setNewLocation} />
-      {/* <View style={{ flex: 1 }}>
-      <GooglePlacesSearchModal setLocation={setLocation} location={location} setVisible={setModalVisible} visible={modalVisible}/>
-    </View> */}
-
-      <Categories data={data1} onSelect={async (val) => {
-        setoption(val);
-        dispatch(addRecent({ cat: 'cat', search: val }))
-        try {
-          const { data } = await axios.get(`${backendURL}/search?category=${val}&lat=${loc.lat}&lon=${loc.lon}`)
-          navigation.navigate('Searches1', { location: loc, category: val, data });
-        }
-        catch {
-          Alert.alert('Error', 'Network error. Please check your internet connection and try again.');
-
-        }
-
-      }} />
-      {userstate.recent_view.search &&
-        <View style={{ marginHorizontal: 30, marginVertical: 120 }}>
-          <Text style={s_style.recent_view}>Recent Searches</Text>
-          <View style={{
-            display: 'flex',
-            flexDirection: 'row'
-          }}>
-            <TouchableOpacity onPress={searchRecent} style={s_style.recent_cont}>
-              <Image source={require('../assets/search1.png')} />
-            </TouchableOpacity>
-            <View style={s_style.text_cont}>
-              <Text style={{color:theme.colors.dg, fontFamily: FontFamily.sourceSansProRegular, fontSize: 17 }}>{userstate.recent_view.search}</Text>
+    <>
+      <SafeAreaTop>
+        <TouchableOpacity activeOpacity={1} style={[s_style.text_input]}>
+          <Icon style={s_style.icon} name='search' type="feather" size={25} color='#BCC4CC' />
+          <TextInput
+            ref={inputRef}
+            onFocus={() => setShow(false)}
+            style={{ flex: 1, color: theme.colors.dg }}
+            autoFocus={true}
+            placeholder='Search for a service or venue'
+            onChangeText={setQuery}
+            placeholderTextColor={theme.colors.placeholder}
+            keyboardType="web-search"
+            onSubmitEditing={handleSearch}
+          />
+          <TouchableOpacity style={s_style.activityIndicator} onPress={() => setModalVisible(!modalVisible)}>
+             <Filter size={25} color='#BCC4CC' />
+          </TouchableOpacity>
+        </TouchableOpacity>
+        <Gsearch handleS={handleSearch} show={show} setShow={setShow} setLoc={setNewLocation} />
+        {!show && (
+          <Categories
+            data={data1}
+            onSelect={(val) => {
+              setoption(val);
+              dispatch(addRecent({ cat: 'cat', search: val }));
+              navigation.navigate('Searches1', { category: val, lat: loc.lat,locationName:loc.name, lon: loc.lon, sort: filter.sort, price: filter.price, type: filter.type, distance: filter.distance });
+            }}
+          />
+        )}
+        {userstate.recent_view.search && !show && (
+          <View style={{ marginHorizontal: 30, marginVertical: 120 }}>
+            <Text style={s_style.recent_view}>Recent Searches</Text>
+            <View style={{ display: 'flex', flexDirection: 'row' }}>
+              <TouchableOpacity onPress={searchRecent} style={s_style.recent_cont}>
+                <Image source={require('../assets/search1.png')} />
+              </TouchableOpacity>
+              <View style={s_style.text_cont}>
+                <Text style={{ color: theme.colors.dg, fontFamily: FontFamily.sourceSansProRegular, fontSize: 17 }}>
+                  {userstate.recent_view.search}
+                </Text>
+              </View>
             </View>
           </View>
+        )}
+      </SafeAreaTop>
+      <SearchFilter modal={modalVisible}  setModal={setModalVisible} search={handleSave} />
+    </>
+  );
+};
 
-        </View>
-      }
-
-    </SafeAreaTop>
-  )
-}
-export default Search2;
+export default Search2
 
 
 const useStyles = makeStyles((theme) => ({
-  activityIndicator:{
+  activityIndicator: {
     position: "absolute", right: 20,
-    alignSelf:'center',
-   
+    alignSelf: 'center',
+
   },
   text_cont: {
     justifyContent: 'center',

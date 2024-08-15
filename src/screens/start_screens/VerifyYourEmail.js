@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import Header from './header';
-import { styles as styles2, colors } from '../../Common_styles';
+import { styles as styles2, colors, styles } from '../../Common_styles';
 import { Button } from '@rneui/base';
 import Pop2 from './pop2';
 import Blur from './Blur';
@@ -35,7 +35,7 @@ const VerifyEmail = ({ navigation, route }) => {
   const { scope } = route.params ? route.params : {}
   const [shakeAnimation] = useState(new Animated.Value(0));
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.userInfo)
+  const user = useSelector((state) => state.user.user)
   const [getEmailConfirm, { isSuccess, isLoading, data, isError }] = useGetEmailConfirmMutation()
   const [resendEmail, { isSuccess: email_success }] = useResendEmailMutation()
   const [getPhoneConfirm] = useGetPhoneConfirmMutation()
@@ -193,7 +193,7 @@ const VerifyEmail = ({ navigation, route }) => {
 
         <Text
           disabled={timerActive}
-          style={[colors.dg, styles2.mt100, styles2.tc, { fontFamily: FontFamily.sourceSansProSemibold }]}
+          style={[styles2.mt100, styles2.tc, { fontFamily: FontFamily.sourceSansProSemibold,color:theme.colors.dg }]}
           onPress={startTimer}
         >
           {timerActive ? `Resend Code (${timerCount}s)` : 'Resend Code'}

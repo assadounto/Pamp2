@@ -6,6 +6,7 @@ import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import FastImage from "react-native-fast-image";
 import SvgUri from 'react-native-svg-uri';
 import { colors } from "../src/Common_styles";
+import VerifiedIcon from './icons/Verified';
 const VendorMapPin = ({ data }) => {
   const styles = useStyles();
   const { theme } = useTheme();
@@ -24,10 +25,8 @@ const VendorMapPin = ({ data }) => {
       <Text style={[styles.likkleSalon, styles.likkleSalonPosition]}>
         {data.name.length > 16 ? `${data.name.substring(0, 14)}...` : data.name} {'  '}{
           data.badge ?
-            <View style={{ marginLeft: 5 }}>
-              <SvgUri
-
-                source={require('../assets/svgs/verified.svg')} />
+            <View style={{ marginLeft: 5}}>
+              <VerifiedIcon color={theme.colors.lg}/>
             </View> : <></>
         }
       </Text>
@@ -81,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: "0%",
     left: "0%",
     borderRadius: Border.br_xl,
-    backgroundColor: Color.white,
+    backgroundColor: theme.colors.card,
 
     position: "absolute",
   },
@@ -104,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
     top: "40.04%",
     textAlign: "left",
     width: 180,
-    color: Color.darkslategray_300,
+    color: theme.colors.dg,
     left: "44.03%",
     position: "absolute",
   },
@@ -147,6 +146,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     width: '80%',
     height: 135,
+   
     position: "absolute",
   },
 }));

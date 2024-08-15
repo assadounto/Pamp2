@@ -87,6 +87,7 @@ const Change_email = ({ navigation }) => {
           placeholderTextColor={theme.colors.placeholder}
           placeholder="New Email Address"
           style={[styles.textInput]}
+          
           onChangeText={(value) => handleChange('new_email', value)}
           value={formData.new_email}
         />
@@ -128,6 +129,7 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: verticalScale(20),
     paddingHorizontal: horizontalScale(20),
     fontSize: moderateScale(14),
+    color:theme.colors.dg,
     width: horizontalScale(330),
     height: verticalScale(63),
     margin: 0,

@@ -12,20 +12,7 @@ const NotificationReviewCard = ({ item }) => {
   const { theme } = useTheme();
   return (
     <View style={styles.ellipseParent}>
-      <View style={{ position: 'absolute', right: 10, transform: [{ scaleX: -1 }] }}>
-        <AirbnbRating
-          size={20}
-
-          isDisabled
-          type="custom"
-          selectedColor="#86D694"
-          unSelectedColor="white"
-          ratingColor="#86D694"
-          showRating={false}
-          defaultRating={item.rating}
-          direction="reverse"
-        />
-      </View>
+      
       <Image
         style={styles.frameChild}
         resizeMode="cover"
@@ -46,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
     left: 53,
     flexWrap: 'wrap',
-    width: 300,
+    width: 250,
 
 
   },
@@ -56,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
     left: -3,
     width: 48,
     height: 48,
+    marginTop:20,
+    marginLeft:15,
     position: "absolute",
   },
   jessi: {
@@ -78,13 +67,18 @@ const useStyles = makeStyles((theme) => ({
 
     fontSize: 15,
     letterSpacing: 0.8,
-    color: Color.gray_200,
+    color: theme.colors.dg,
   },
   ellipseParent: {
     flex: 1,
     width: '85%',
+  
+    borderColor:theme.colors.tabColor,
+    borderTopWidth: 0.5,
+    borderBottomWidth:0.5,
     alignSelf: "center",
-    marginTop: 20,
+    marginTop: 30,
+    padding:20
   },
 }));
 

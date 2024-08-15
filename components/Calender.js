@@ -317,7 +317,7 @@ export default function Calender({ onSelect, navigation, rebooked, rebook, vendo
         disabled={item.ispast}
         style={
           item.ispast ? [styles.unselected, {
-            borderColor: '#F0F0F0',
+            borderColor: theme.colors.disabled,
 
             width: desiredWidth, height: 55, borderRadius: 15
           }] :
@@ -337,6 +337,11 @@ export default function Calender({ onSelect, navigation, rebooked, rebook, vendo
         <Text
           style={[
             styles.option,
+            item.ispast ? {
+              color: theme.colors.disabled,
+
+
+            } :
             item.aday == userOption.aday ? colors.w : theme.mode == 'dark' ? colors.w:colors.dg,
           ]}>
 
@@ -345,6 +350,11 @@ export default function Calender({ onSelect, navigation, rebooked, rebook, vendo
         <Text
           style={[
             styles.option,
+            item.ispast ?  {
+              color: theme.colors.disabled,
+
+             
+            } :
             item.aday == userOption.aday ? colors.w : theme.mode == 'dark' ? colors.w : colors.dg,
           ]}>
           {' '}

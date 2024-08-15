@@ -40,19 +40,10 @@ console.log(chatPartners)
                 paddingRight: 40,
                 backgroundColor: theme.colors.slate,
                 width: '90%',
-           
+                marginBottom:10,
                 alignSelf: 'center',
             }]}
         >
-            <Text style={{ position: 'absolute', top: 10,right:20, fontFamily: FontFamily.sourceSansProBold, color: theme.colors.dg, fontSize: 10 }}>{item.first_unread_message ? formatToTime(item?.first_unread_message?.created_at) : formatToTime(item?.last_message?.created_at)}</Text>
-           { 
-                item.unread_count === 0 ? <View style={{ position: 'absolute', bottom: 14, right: 20, }}>
-                    {item.last_message.read_at ? <DoubleTick color={theme.colors.dg} /> : <SingleTick color={theme.colors.dg} />}
-                </View> :
-           
-           <View style={{ position: 'absolute', bottom: 14, right: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.lgb, width: 18, height: 18, borderRadius: 50 }}>
-                <Text style={{ fontFamily: FontFamily.sourceSansProRegular, color: theme.colors.dg, fontSize: 10 }}>{item.unread_count}</Text>
-            </View> }
             <FastImage
                 style={{ borderRadius: 50, width: 50, height: 50 }}
                 source={item.vendor.image ? { uri: item.vendor.image} : require('../../../assets/userimg.png')}
@@ -69,6 +60,20 @@ console.log(chatPartners)
 
                
             </View>
+
+            <Text style={{ position: 'absolute', top: 10, right: 20, fontFamily: FontFamily.sourceSansProBold, color: theme.colors.dg, fontSize: 10 }}>{item.first_unread_message ? formatToTime(item?.first_unread_message?.created_at) : formatToTime(item?.last_message?.created_at)}</Text>
+            {
+                item.unread_count === 0 ?
+
+                    (item.sent_by == 'vendor' ? <View style={{ position: 'absolute', bottom: 14, right: 20, }}>
+                        {item.last_message.read_at ? <DoubleTick color={theme.colors.dg} /> : <SingleTick color={theme.colors.dg} />}
+                    </View> : <></>)
+
+                    :
+
+                    <View style={{ position: 'absolute', bottom: 14, right: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: theme.colors.lgb, width: 18, height: 18, borderRadius: 50 }}>
+                        <Text style={{ fontFamily: FontFamily.sourceSansProRegular, color: theme.colors.dg, fontSize: 10 }}>{item.unread_count}</Text>
+                    </View>}
         </ListItem>     
     );
 
@@ -78,8 +83,28 @@ console.log(chatPartners)
         
             <FlatList
                 data={chatPartners}
+            
                 keyExtractor={(item) => item.vendor.id.toString()}
                 renderItem={renderItem}
+            ListEmptyComponent={
+                <View style={{justifyContent:'center',paddingTop:40}}>
+
+               
+                    <Image
+                        style={{width:'50%',height:150, alignSelf:'center'}}
+                        resizeMode="contain"
+                        source={require("../../../assets/empty_mess.png")}
+                    />
+                    <Text style={[{
+                        marginTop: 30,
+                        color: theme.colors.dg,
+                        textAlign: 'center',
+                        fontFamily: FontFamily.sourceSansProRegular,
+                        fontSize: 18
+
+                    }]}>{"No messages yet.\nBook vendors to start conversations"}</Text>
+                </View>
+            }
             />
     
     );

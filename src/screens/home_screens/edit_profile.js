@@ -21,9 +21,9 @@ const Edit_profile = ({ navigation }) => {
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
-  const [dateOfBirth, setDateOfBirth] = useState(user.date_of_birth);
-  const [gender, setGender] = useState(user.gender);
-  const [address, setAddress] = useState(user.address);
+  const [dateOfBirth, setDateOfBirth] = useState(user.date_of_birth||'');
+  const [gender, setGender] = useState(user.gender||'');
+  const [address, setAddress] = useState(user.address||'');
   const [isEmailDisabled, setIsEmailDisabled] = useState(true); // Set to true to disable email input initially
   const [modal, setModal] = useState(false)
   const [loading, setLoading] = useState(false)

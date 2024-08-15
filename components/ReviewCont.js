@@ -79,7 +79,7 @@ const ReviewCont = ({ data }) => {
       <View style={styles.cont}>
 
         <View style={[styles.border, styles.child1]}>
-          <Text style={[styles.rating]}>{reviewData?.average_rating}</Text>
+          <Text style={[styles.rating]}>{parseFloat(reviewData?.average_rating).toFixed(1)}</Text>
           <AirbnbRating
             size={20}
             isDisabled
@@ -120,7 +120,7 @@ const ReviewCont = ({ data }) => {
           })}
         </View>
       </View>
-      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 24, color: theme.colors.dg, left: 20, marginTop: 30 }}>Reviews</Text>
+      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 24, color: theme.colors.dg, left: 30, marginTop: 30 }}>Reviews</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => <NotificationReviewCard item={item} />}
@@ -128,8 +128,8 @@ const ReviewCont = ({ data }) => {
           <>
             <Image
               style={styles.component44Child}
-              resizeMode="cover"
-              source={require("../assets/group-2142.png")}
+              resizeMode="contain"
+              source={require("../assets/empty_mess.png")}
             />
             <Text style={[styles.noAppointments]}>No reviews yet</Text>
           </>
@@ -197,6 +197,8 @@ const useStyles = makeStyles((theme) => ({
   },
   component44Child: {
     alignSelf: 'center',
-    marginTop: 30
+    marginTop: 30,
+    width:'50%',
+    height:150
   },
 }))

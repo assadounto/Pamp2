@@ -1,6 +1,7 @@
 import { makeStyles } from '@rneui/themed';
 import { useTheme } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
+import LogoIcon from '../../../components/icons/logo';
 import {
   View,
   ScrollView,
@@ -12,6 +13,7 @@ import {
   Linking, ActivityIndicator
 } from 'react-native';
 import { Image } from 'react-native';
+import MailIcon from '../../../components/icons/Mail';
 import SafeAreaTop from '../../../components/SafeAreaTop';
 import { showBottom } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,89 +34,109 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import FastImage from 'react-native-fast-image';
 import { request, check, PERMISSIONS, RESULT, RESULTS } from "react-native-permissions";
 import Demo from '../../../components/Demo';
+import LockIcon from '../../../components/icons/Lock';
+import CardIcon from '../../../components/icons/Card';
+import BellIcon from '../../../components/icons/Bell';
+import SendIcon from '../../../components/icons/Send';
+import FileIcon from '../../../components/icons/File';
+import LogoutIcon from '../../../components/icons/Logout';
+import SurfIcon from '../../../components/icons/surf';
+import Appearance from '../../../components/Appearance';
+import { tr } from 'date-fns/locale';
+import SparkleIcon from '../../../components/icons/Sparkle';
+import Lock2Icon from '../../../components/icons/lock-2';
+import GiftIcon from '../../../components/icons/gift';
+import { version } from '../../services/http';
 
 
 
-const menuOne = [
-  {
-    title: 'Change Email',
-    icon: 'mail',
-    route: 'change_email',
-  },
-  {
-    title: 'Change Password',
-    icon: 'lock',
-    route: 'change_pass',
-  },
-  {
-    title: 'Payment Methods',
-    icon: 'credit-card',
-    route: 'Select_payment',
-  },
-  {
-    title: 'Discount Code',
-    icon: 'gift',
-    route: 'discount',
-  },
-  {
-    title: 'Invite Friends',
-    icon: 'send',
-    route: 'Invite',
-  },
-];
-
-const menuTwo = [
-  {
-    title: 'Push Notifications',
-    icon: 'bell',
-    route: 'ChangePassword',
-  },
-  {
-    title: 'Help & Support',
-    icon: 'headphones',
-    route: 'Help',
-  },
-  {
-    title: 'About Pamp',
-    icon: require('../../../assets/pamp-logo.png'),
-    route: 'https://www.trypamp.com',
-  },
-];
-
-
-const menuThree = [
-  {
-    title: 'Privacy policy',
-    icon: require('../../../assets/Path660.png'),
-    route: 'https://www.trypamp.com/privacy-policy',
-  },
-  {
-    title: 'Terms of Use',
-    icon: require('../../../assets/group-1892.png'),
-    route: 'https://www.trypamp.com/terms-of-use',
-  },
-  {
-    title: 'Terms of Service',
-    icon: require('../../../assets/group-1892.png'),
-    route: 'https://www.trypamp.com/terms-of-service',
-  },
-  {
-    title: 'Help Center',
-    icon: require('../../../assets/group-1892.png'),
-    route: 'https://www.trypamp.com/help-center',
-  },
-];
 const Settings = ({ navigation }) => {
   const { theme } = useTheme();
+
+
+  const menuOne = [
+    {
+      title: 'Change Email',
+      icon: <MailIcon color={theme.colors.lg} />,
+      route: 'change_email',
+    },
+    {
+      title: 'Change Password',
+      icon: <LockIcon color={theme.colors.lg} />,
+      route: 'change_pass',
+    },
+    {
+      title: 'Payment Methods',
+      icon: <CardIcon color={theme.colors.disabled2} />,
+      route: 'Select_payment',
+    },
+    {
+      title: 'Discount Code',
+      icon: <GiftIcon color={theme.colors.lg} />,
+      route: 'discount',
+    },
+    {
+      title: 'Invite Friends',
+      icon: <SendIcon color={theme.colors.lg} />,
+      route: 'Invite',
+    },
+  ];
+
+  const menuTwo = [
+    {
+      title: 'Push Notifications',
+      icon: <BellIcon color={theme.colors.lg} />,
+      route: 'ChangePassword',
+    },
+    {
+      title: 'Help & Support',
+      icon: <Icon name='headphones' type="feather" color={theme.colors.lg} />,
+      route: 'Help',
+    },
+    {
+      title: 'About Pamp',
+      icon: <LogoIcon style={{marginLeft:4,marginHorizontal:4}} color={theme.colors.lg} />,
+      route: 'https://www.trypamp.com',
+    },
+    {
+      title: 'Appearance',
+      icon: <SparkleIcon color={theme.colors.lg} />,
+      route: 'https://www.trypamp.com',
+    },
+  ];
+
+
+  const menuThree = [
+    {
+      title: 'Privacy policy',
+      icon: <Lock2Icon color={theme.colors.lg} />,
+      route: 'https://www.trypamp.com/privacy-policy',
+    },
+    {
+      title: 'Terms of Use',
+      icon: <FileIcon color={theme.colors.lg} />,
+      route: 'https://www.trypamp.com/terms-of-use',
+    },
+    {
+      title: 'Terms of Service',
+      icon: <FileIcon color={theme.colors.lg} />,
+      route: 'https://www.trypamp.com/terms-of-service',
+    },
+
+  ];
+
+
+
   const styles2 = useStyles();
   const [log, setLog] = useState(false)
   const user = useSelector(state => state.user.userInfo)
+  const [appearModal, setAppearModal] = useState(false)
 
   const [isEnabled, setIsEnabled] = useState(true);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const dispatch = useDispatch();
 
-
+  const disabled = user?.influencer_requested
   const requestNotificationPermission = async () => {
     const result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
     return result;
@@ -177,9 +199,9 @@ const Settings = ({ navigation }) => {
   const [modal, setmodal] = useState(false)
   return (
 
-<SafeAreaTop >
+    <SafeAreaTop >
 
-      <Text style={[styles.St1, Platform.OS === 'android' ? { marginVertical: 0, } : { marginTop: 20 }]}>Settings</Text>
+      <Text style={[styles.St1, { color: theme.colors.othergreen }, Platform.OS === 'android' ? { marginVertical: 0, } : { marginTop: 20 }]}>Settings</Text>
 
       <ScrollView
 
@@ -203,6 +225,7 @@ const Settings = ({ navigation }) => {
             ]}>
             <ListItem
               containerStyle={[{ borderRadius: 15, backgroundColor: theme.colors.slate }]}
+
               onPress={() => {
                 navigation.navigate('Profile');
               }}>
@@ -215,14 +238,30 @@ const Settings = ({ navigation }) => {
                 }
                 style={{
                   borderRadius: 50,
-                  width: 25,
-                  height: 25,
+                  width: 35,
+                  height: 35,
                 }}
               />
               <ListItem.Content>
+
                 <ListItem.Title style={[colors.dgb, styles2.title]}>Profile </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron color={theme.colors.dg} size={25} />
+            </ListItem>
+            <ListItem
+
+              disabled={disabled}
+              containerStyle={[{ borderRadius: 15, backgroundColor: theme.colors.slate }]}
+              onPress={() => {
+                user.role=='influencer'? navigation.navigate('activity'):
+                navigation.navigate('joinInfluencer');
+              }}>
+
+              <SurfIcon color={disabled ? theme.colors.disabled2 : theme.colors.lg} />
+              <ListItem.Content>
+                <ListItem.Title style={[{ color: disabled ? theme.colors.disabled2 : theme.colors.dg },{fontFamily:FontFamily.sourceSansProSemibold}]}>Pamp Influencer Program</ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron color={disabled ? theme.colors.disabled2 : theme.colors.dg} size={25} />
             </ListItem>
           </View> : <></>
 
@@ -244,6 +283,7 @@ const Settings = ({ navigation }) => {
               return (
                 <ListItem
                   key={index}
+                  disabled={item.title === 'Payment Methods'}
                   containerStyle={[{ backgroundColor: theme.colors.slate }]}
                   onPress={() => {
 
@@ -251,17 +291,13 @@ const Settings = ({ navigation }) => {
 
 
                   }}>
-                  <Icon
-                    name={item.icon}
-                    size={18}
-                    type="feather"
-                    color={colors.lg.color} />
+                  {item.icon}
                   <ListItem.Content>
-                    <ListItem.Title style={[colors.dgb, styles2.title]}>
+                    <ListItem.Title style={[colors.dgb, { fontFamily: FontFamily.sourceSansProSemibold, color: item.title === 'Payment Methods' ? theme.colors.disabled2 : theme.colors.dg }]}>
                       {item.title}{' '}
                     </ListItem.Title>
                   </ListItem.Content>
-                  <ListItem.Chevron color={theme.colors.dg} size={25} />
+                  <ListItem.Chevron color={item.title === 'Payment Methods' ? theme.colors.disabled2 : theme.colors.dg} size={25} />
                 </ListItem>
               );
             })}
@@ -287,23 +323,22 @@ const Settings = ({ navigation }) => {
               shouldRenderToggle && (
                 <ListItem
                   key={index}
+                  disabled={item.title === 'Payment Methods'}
                   containerStyle={[{ backgroundColor: theme.colors.slate }]}
                   onPress={() => {
-                    item.icon === 'bell'
+                    item.title === 'Push Notifications'
                       ? toggleSwitch()
                       : item.title === 'About Pamp'
                         ? Linking.openURL(item.route)
-                        : navigation.navigate(item.route);
+                        : item.title === 'Appearance' ?
+                          setAppearModal(true)
+                          : navigation.navigate(item.route);
                   }}>
-                  {item.title !== 'About Pamp' ? (
-                    <Icon name={item.icon} size={18} type="feather" color={colors.lg.color} />
-                  ) : (
-                    <Image style={{ marginLeft: 4 }} source={item.icon} />
-                  )}
+                  {item.icon}
                   <ListItem.Content>
                     <ListItem.Title style={[colors.dgb, styles2.title]}>{item.title} </ListItem.Title>
                   </ListItem.Content>
-                  {item.icon === 'bell' ? (
+                  {item.title === 'Push Notifications' ? (
                     <Pressable>
                       <SwitchToggle
                         switchOn={isEnabled}
@@ -316,8 +351,8 @@ const Settings = ({ navigation }) => {
                             // If notifications are enabled, toggle the switch
                           }
                         }}
-                        circleColorOff={colors.w.color}
-                        backgroundColorOn={colors.lg.color}
+                        circleColorOff={theme.colors.background}
+                        backgroundColorOn={theme.colors.background}
                         backgroundColorOff="#fff"
                         containerStyle={{
                           width: 55,
@@ -367,9 +402,8 @@ const Settings = ({ navigation }) => {
                 onPress={() => {
                   Linking.openURL(item.route)
                 }}>
-                <Image
-                  source={item.icon}
-                />
+                {item.icon}
+
                 <ListItem.Content>
                   <ListItem.Title style={[colors.dgb, styles2.title]}>
                     {item.title}{' '}
@@ -394,25 +428,34 @@ const Settings = ({ navigation }) => {
             containerStyle={[
               {
                 borderRadius: 15,
-
+                paddingHorizontal: 25,
                 borderRadius: 15,
                 backgroundColor: theme.colors.slate,
               },
             ]}
             onPress={handleSignOut}>
-            <Icon name="log-out" type="feather" color={'#CD3D49'} />
+            <LogoutIcon color={'#CD3D49'} />
             <ListItem.Content>
-              <ListItem.Title style={[{ fontFamily: FontFamily.sourceSansProSemibold,color:theme.colors.dg }]}>Logout </ListItem.Title>
+              <ListItem.Title style={[{ fontFamily: FontFamily.sourceSansProSemibold, color: theme.colors.dg }]}>Logout </ListItem.Title>
             </ListItem.Content>
             <ListItem.Chevron color={theme.colors.dg} size={25} />
           </ListItem>
         </View>}
         <View style={{ marginBottom: 100 }}>
           <Socials />
-          <Demo />
+          <Text style={{
+            color: "#707070",
+            fontFamily: FontFamily.sourceSansProRegular,
+            fontSize: 15,
+            textAlign: "center",
+            marginBottom: 30,
+          }}>
+            version {version}
+          </Text>
         </View>
 
       </ScrollView>
+      <Appearance setModal={setAppearModal} modal={appearModal} />
       <Discount_pop setmodal={setmodal} modal={modal} />
       {modal && <Blur />}
 
@@ -421,6 +464,7 @@ const Settings = ({ navigation }) => {
 
   );
 };
+
 
 export default Settings;
 

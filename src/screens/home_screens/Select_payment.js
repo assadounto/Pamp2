@@ -20,6 +20,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setPayment } from "../../redux/user";
 import { setDefault } from "../../redux/user";
 import Loading from "../../../components/loading";
+import Money2Icon from '../../../components/Money2';
+import CardIcon from '../../../components/icons/Card';
 const Select_payment = ({ navigation, route }) => {
   const { data } = route.params ? route.params : {}
   const booking = useSelector((state) => state.booking)
@@ -55,9 +57,9 @@ const Select_payment = ({ navigation, route }) => {
   }
   const payment_method =
   {
-    'Pay with cash': '',
-    'Pay with momo': 'smartphone',
-    'Pay with card': 'credit-card',
+    'Pay with cash': <Money2Icon/>,
+    'Pay with momo': <Icon name='smartphone' color={colors.dg2.color} type="feather" />,
+    'Pay with card': <CardIcon color={theme.colors.lg}/>,
   }
 
 
@@ -98,13 +100,9 @@ const Select_payment = ({ navigation, route }) => {
       {
         default_methods.map((pay, index) => <View style={{ marginHorizontal: 30, }}>
           <ListItem
-            containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 30, borderBottomColor: theme.colors.tabColor, borderBottomWidth: 1, borderTopColor: colors.lg.color, borderTopWidth: 0 }]}
+            containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 30, borderBottomColor: theme.colors.tabColor, borderBottomWidth: 1, borderTopColor: theme.colors.lg, borderTopWidth: 0 }]}
           >
-            {payment_method[pay.name] == '' ?
-              <Image
-                source={source}
-                style={{ width: 40, height: 30, borderRadius: 5, resizeMode: 'contain' }} /> :
-              <Icon style={{ marginLeft: 5 }} name={payment_method[pay.name]} color={theme.colors.lg} type="feather" />}
+            {payment_method[pay.name]}
 
 
             <ListItem.Content>
@@ -122,44 +120,40 @@ const Select_payment = ({ navigation, route }) => {
   return (
 
     <><BHeader top={Platform.OS === 'ios' ? 60 : 20} title={'Payment methods'} color={theme.colors.lg} />
-    <ScrollView
+      <ScrollView
         style={{ backgroundColor: theme.colors.background, }}
         contentContainerStyle={{ backgroundColor: theme.colors.background, marginTop: Platform.OS === 'ios' ? 40 : 0 }}
-    >
-      {
-        convertToPaymentArray(data).map((pay, index) => <View style={{ marginHorizontal: 30, }}>
+      >
+        {
+          convertToPaymentArray(data).map((pay, index) => <View style={{ marginHorizontal: 30, }}>
+            <ListItem
+              style={{ backgroundColor: theme.colors.background, }}
+              containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 30, borderBottomColor: index == payment_methods.length - 1 ? theme.colors.tabColor : null, borderBottomWidth: index == payment_methods.length - 1 ? 1 : null, borderTopColor: theme.colors.tabColor, borderTopWidth: 1 }]}
+              onPress={() => {
+                dispatch(setDefault(pay));
+                navigation.goBack();
+              }}>
+              {payment_method[pay.name]}
+
+
+              <ListItem.Content>
+                <ListItem.Title style={{ color: theme.colors.dg }}>
+                  {pay.name && pay.name}
+                </ListItem.Title>
+              </ListItem.Content>
+              {isdefault(pay.name) ? <Image resizeMode="contain" style={{ width: 29, height: 29, }} source={checker} /> : <ListItem.Chevron color={theme.colors.dg} size={30} />}
+            </ListItem>
+
+          </View>
+          )}
+        {/* <View style={{marginHorizontal:30}}>
           <ListItem
-            style={{ backgroundColor: theme.colors.background, }}
-            containerStyle={[{ backgroundColor: theme.colors.background, paddingVertical: 30, borderBottomColor: index == payment_methods.length - 1 ? theme.colors.tabColor : null, borderBottomWidth: index == payment_methods.length - 1 ? 1 : null, borderTopColor: theme.colors.tabColor, borderTopWidth: 1 }]}
-            onPress={() => {
-              dispatch(setDefault(pay));
-              navigation.goBack();
-            }}>
-            {payment_method[pay.name] == '' ?
-              <Image
-                source={source}
-                style={{ width: 40, height: 30, borderRadius: 5, resizeMode: 'contain' }} /> :
-              <Icon style={{ marginLeft: 5 }} name={payment_method[pay.name]} color={theme.colors.lg} type="feather" />}
-
-
-            <ListItem.Content>
-              <ListItem.Title style={{color:theme.colors.dg}}>
-                {pay.name && pay.name}
-              </ListItem.Title>
-            </ListItem.Content>
-            {isdefault(pay.name) ? <Image resizeMode="contain" style={{ width: 29, height: 29, }} source={checker} /> : <ListItem.Chevron color={theme.colors.dg} size={30} />}
-          </ListItem>
-
-        </View>
-        )}
-      {/* <View style={{marginHorizontal:30}}>
-          <ListItem
-    containerStyle={[{paddingVertical:30,borderTopColor:colors.lg.color,borderTopWidth:1}]}
+    containerStyle={[{paddingVertical:30,borderTopColor:theme.colors.lg,borderTopWidth:1}]}
     onPress={() => {
       navigation.navigate('Add_payment');
     
     }}>
-      <View style={{borderColor:colors.lg.color, padding: 5, borderRadius:7, borderWidth:1}}>
+      <View style={{borderColor:theme.colors.lg, padding: 5, borderRadius:7, borderWidth:1}}>
       <Image
 source={add}
 style={{width:20,height:20}}
@@ -175,7 +169,7 @@ style={{width:20,height:20}}
   </ListItem>
 
       </View> */}
-    </ScrollView></>
+      </ScrollView></>
 
   )
 }

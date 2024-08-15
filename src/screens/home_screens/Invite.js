@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
   c1: { width: '100%', height: '100%' },
   c2: {
     width: '80%',
-
+padding:20,
     backgroundColor: theme.colors.card,
     position: 'absolute',
     alignSelf: 'center',
@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: '#D0D8C3',
     padding: 10,
-    fontSize: 20,
+    fontSize: 15,
     marginBottom: 5
 
   },
@@ -193,7 +193,7 @@ const useStyles = makeStyles((theme) => ({
     top: 60,
     height: 32,
     borderRadius: 23,
-    backgroundColor: 'white'
+    backgroundColor: theme.colors.background
   },
   italic: {
     textAlign: 'center',

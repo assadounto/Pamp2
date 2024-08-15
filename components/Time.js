@@ -98,7 +98,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
       >
 
         <ListItem style={{
-          borderBottomColor: isLastItem ? 'transparent' : colors.lg.color,
+          borderBottomColor: isLastItem ? 'transparent' : theme.colors.lg,
           borderBottomWidth: isLastItem ? 0 : 1
         }}>
           <Text
@@ -162,7 +162,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
 
     // Calculate the starting time (2 hours ahead of the current time)
     let startTime = new Date(currentTime);
-    startTime.setHours(currentHour + 2, Math.ceil(currentMinute / intervalMinutes) * intervalMinutes, 0);
+    startTime.setHours(currentHour +2 , Math.ceil(currentMinute / intervalMinutes) * intervalMinutes, 0);
 
     // Create a closing time object
     const closingTimeObj = new Date();
@@ -216,14 +216,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
 
   // Example usage:
 
-
-
-
-
-
-
   const vendor = openingHours.find((item) => item.day === getLongDayName(userOption.day));
-
   const openingTime = vendor ? vendor.opening_time : null;
   const closingTime = vendor ? vendor.closing_time : null;
   const timeSlots = openingTime && closingTime ? isDateToday(userOption.date) ? generateTimeSlots(openingTime, closingTime) : generateTimeSlots2(openingTime, closingTime) : [];
@@ -240,7 +233,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
           <Text style={{ marginVertical: 20, fontFamily: FontFamily.sourceSansProBold, fontSize: 20, color: theme.colors.dg, marginLeft: 30 }}>Time</Text>
 
           {timeSlots.length == 0 ?
-            <Emptyfav top={30} title={"The vendor is currently unavailable for bookings at this time of day. Please consider booking for tomorrow or another available day."} />
+            <Emptyfav top={30} body={"Vendor is currently unavailable for bookings at this time of day. Please book for tomorrow or another available day."} />
             : <View style={{
               marginBottom: 300,
               marginVertical: 15,
@@ -259,7 +252,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
               {timeSlots.map((item, index) => (
                 <Pressable
                   key={item}
-                  style={{borderRadius:20, backgroundColor: theme.colors.card, }}
+                  style={{ borderRadius: 20, backgroundColor: theme.colors.card, }}
                   onPress={() => {
 
                     dispatch(set_time(item));
@@ -267,7 +260,7 @@ const Time = ({ navigation, userOption, rebooked, rebook }) => {
                     rebooked ? rebook(item) : user && user?.id ? navigation.navigate('Confirm') : navigation.replace('login',)
                   }}
                 >
-                  <ListItem containerStyle={{ borderRadius: 20, backgroundColor: theme.colors.card }} style={{ borderBottomColor: index === timeSlots.length - 1 ? 'transparent' : theme.colors.linkBorder, borderBottomWidth: index === timeSlots.length - 1 ? 0 : 1 }}>
+                  <ListItem containerStyle={{ borderRadius: 20, backgroundColor: theme.colors.card }} style={{ borderBottomColor: index === timeSlots.length - 1 ? 'transparent' : theme.colors.tabColor, borderBottomWidth: index === timeSlots.length - 1 ? 0 : 1 }}>
                     <Text
                       style={{
                         marginVertical: 10,

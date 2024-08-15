@@ -30,7 +30,7 @@ export default function Staff({ data, onSelect }) {
 
           <View style={{ display: 'flex', flexDirection: 'column', marginRight: 20 }}>
             <Pressable
-              style={item.name === userOption ? { borderWidth: 5, borderRadius: 50, borderColor: theme.colors.lgb, marginBottom: 10 } : { borderWidth: 5, borderColor: '#ffffff', borderRadius: 50, marginBottom: 10 }}
+              style={item.name === userOption ? { borderWidth: 5, borderRadius: 50, borderColor: theme.colors.lgb, marginBottom: 10 } : { borderWidth: 5, borderColor: theme.colors.card, borderRadius: 50, marginBottom: 10 }}
               onPress={() => selectHandler(item.name)}>
               <FastImage
                 source={{

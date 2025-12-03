@@ -57,8 +57,8 @@ const Bank = ({ setOption, setName, settype, setNumber, setOther, option, setcod
 
     const fetchBankDetails = async (num) => {
         setBankName('')
-        const url = `https://api.paystack.co/bank/resolve?account_number=${num}&bank_code=${bank_code}`;
-        const secretKey = 'sk_live_5477923d0cb43f62e0c5d88d1bc73ea765e995e5'; // Replace with your Paystack secret key
+         const url = `https://api.paystack.co/bank/resolve?account_number=${num}&bank_code=${bank_code}`;
+        const secretKey = ENV['PAYSTACK_KEY']; // Replace with your Paystack secret key
 
         try {
             const response = await axios.get(url, {

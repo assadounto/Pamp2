@@ -26,7 +26,7 @@ const Bank = ({ setOption, setName, settype, setNumber, setOther, option, setcod
 
     async function getBankData() {
         const url = 'https://api.paystack.co/bank?country=ghana';
-        const secretKey = 'pk_live_cac01fe0c36e8e38e53f9dcae4a3a405fed0e7d1'; // Replace with your Paystack secret key
+        const secretKey = ''; // Replace with your Paystack secret key
 
         try {
             const response = await axios.get(url, {

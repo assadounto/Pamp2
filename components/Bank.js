@@ -11,7 +11,7 @@ import axios from "axios";
 import { useTheme } from '@rneui/themed';
 import theme from "../src/redux/theme";
 
-const secretKey = 'pk_live_cac01fe0c36e8e38e53f9dcae4a3a405fed0e7d1'; // Replace with your Paystack secret key
+
 
 const Bank = ({ setOption, setName, settype, setNumber, setOther, option, setcode, select }) => {
     const dispatch = useDispatch()

@@ -21,6 +21,7 @@ declare module '@rneui/themed' {
         disabled2: string,
         btnDisabled: string,
         disabled4:string,
-        ring:string
+        ring:string;
+        slider:string;
     }
 }

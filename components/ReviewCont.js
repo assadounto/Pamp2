@@ -120,10 +120,11 @@ const ReviewCont = ({ data }) => {
           })}
         </View>
       </View>
-      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 24, color: theme.colors.dg, left: 30, marginTop: 30 }}>Reviews</Text>
+      <Text style={{ fontFamily: FontFamily.sourceSansProSemibold, fontSize: 24, color: theme.colors.dg, left: 30, marginVertical: 30 }}>Reviews</Text>
       <FlatList
         data={data}
-        renderItem={({ item }) => <NotificationReviewCard item={item} />}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        renderItem={({ item,index }) => <NotificationReviewCard index={index} item={item} />}
         ListEmptyComponent={
           <>
             <Image

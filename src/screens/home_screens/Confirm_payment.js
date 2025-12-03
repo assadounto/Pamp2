@@ -442,7 +442,7 @@ const Confirm_payment = ({ navigation, route }) => {
           coupon_info && coupon_info.coupon_type=='influencer'&&    <ListItem
           containerStyle={[{marginTop:20,  height: 88, marginBottom: 150, alignSelf: 'center', gap: 10, paddingVertical: 20, shadowColor: '#707070', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 5, height: 0 }, elevation: 4, backgroundColor: theme.colors.card, borderRadius: 20, width: '90%', borderRadius: 20 }]}
          >
-          <Text style={{ marginTop: 10, color: theme.colors.dg, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, marginHorizontal: 20 }}>Booking influenced by<Text style={{color:theme.colors.lg}}>{coupon_info?.other}</Text></Text>
+          <Text style={{ marginTop: 10, color: theme.colors.dg, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 18, marginHorizontal: 20 }}>Booking influenced by <Text style={{color:theme.colors.lg}}>{' '}{coupon_info?.other}</Text></Text>
           <ListItem.Content>
             <ListItem.Title style={{ marginLeft: -15, fontFamily: FontFamily.sourceSansProSemibold, fontSize: 20, color: colors.dg.color }}>
             </ListItem.Title>

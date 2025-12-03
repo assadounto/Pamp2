@@ -22,7 +22,8 @@ const theme = createTheme({
         disabled2: '#BBB9BC',
         disabled4: '#BBB9BC',
         btnDisabled:'#F9F9F9',
-        ring: "white"
+        ring: "white",
+        slider: '#F7F7F7'
     },
     darkColors: {
         lg: '#86D694',
@@ -31,7 +32,7 @@ const theme = createTheme({
         disabled4:"#3E3E40",
         disabled: '#3E3E40',
         othergreen: 'white',
-        backgroundSec: '#00000',
+        backgroundSec: '#000',
         card: '#1C1C1E',
         lgb: '#86D694',
         white: '#ffff',
@@ -42,6 +43,7 @@ const theme = createTheme({
         tabColor: '#3E3E40',
         placeholder: '#3E3E40',
         linkBorder: 'white',
+        slider: '#3E3E40',
         caution: '#3E3E40',
         bottomBorder: '#EFEFEF',
         btnDisabled: '#707070',

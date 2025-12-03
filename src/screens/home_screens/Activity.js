@@ -74,7 +74,7 @@ const Activity = ({ navigation }) => {
        Alert.alert('Code Copied','Code successfully copied to clipboard')
     }
     return (
-        <><SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.backgroundSec }}>
+        <><SafeAreaView style={{ backgroundColor: theme.mode === 'light' ? "#F7F7F9" : "#000" }}>
             <BHeader top={Platform.OS === 'ios' ? 0 : 20} title={'Your Activity'} />
             <ScrollView>
                 <View style={styles.textcont}>

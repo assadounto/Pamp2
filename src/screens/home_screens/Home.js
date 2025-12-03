@@ -57,10 +57,6 @@ const Tab = createMaterialTopTabNavigator();
 
 const Home = ({ navigation }) => {
 
-  
-
-
-
   const isInternetConnected = useInternet();
   const user = useSelector((state) => state.user.userInfo)
   const userstate = useSelector((state) => state.user)
@@ -114,13 +110,19 @@ const Home = ({ navigation }) => {
     }
   }
   Linking.addEventListener('url', (event) => {
-    notifee.setBadgeCount(0).then(() => console.log('Badge count removed!'));
     handleDeepLink(event.url);
   });
 
 
 
-
+  const resetBadgeCount = async () => {
+    try {
+      await notifee.setBadgeCount(0);
+      console.log('Badge count reset to 0');
+    } catch (error) {
+      console.error('Error resetting badge count:', error);
+    }
+  };
 
 
 
@@ -279,7 +281,7 @@ const Home = ({ navigation }) => {
 
     React.useCallback(() => {
      getUserLocation();
-      console.log(user)
+   
      user!=null && getUpdates()
      
       !userstate.new && checkAndShowInfoModal();
@@ -296,14 +298,24 @@ const Home = ({ navigation }) => {
 
 
   React.useEffect(() => {
-   userstate.new && navigation.navigate('whatsnew')
-    dispatch(showBottom(true))
-    
-    user?.id && fetchData()
+    const initialize = async () => {
+      if (userstate.new) {
+        navigation.navigate('whatsnew');
+      }
 
+      dispatch(showBottom(true));
 
+      // Await the badge count reset
+      await resetBadgeCount();
 
-  }, [])
+      if (user?.id) {
+        fetchData();
+      }
+    };
+
+    initialize(); // Call the async function inside useEffect
+  }, []);
+
 
   const checkAndShowInfoModal = async () => {
     try {

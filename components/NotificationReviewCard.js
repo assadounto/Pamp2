@@ -7,11 +7,11 @@ import { AirbnbRating } from "react-native-ratings";
 import { colors } from "../src/Common_styles";
 import { horizontalScale } from "../src/Dimensions";
 
-const NotificationReviewCard = ({ item }) => {
+const NotificationReviewCard = ({ item ,index}) => {
   const styles = useStyles();
   const { theme } = useTheme();
   return (
-    <View style={styles.ellipseParent}>
+    <View style={[styles.ellipseParent, { borderTopWidth: index===0? 0.5:0,  }]}>
       
       <Image
         style={styles.frameChild}
@@ -74,10 +74,10 @@ const useStyles = makeStyles((theme) => ({
     width: '85%',
   
     borderColor:theme.colors.tabColor,
-    borderTopWidth: 0.5,
+   
     borderBottomWidth:0.5,
     alignSelf: "center",
-    marginTop: 30,
+
     padding:20
   },
 }));

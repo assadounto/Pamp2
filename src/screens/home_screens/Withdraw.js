@@ -67,8 +67,8 @@ const Withdraw = ({ navigation, route }) => {
         const { data } = await axios.post(backendURL + `/user/withdraw/${user.id}`, { amount })
         if (data === 'created') {
             setLoading(false)
-            navigation.navigate('Success', { tit: `You have successfully requested ${location.currency || "₵"}${amount} to your account.` })
-        }
+            Alert.alert('Request sent', 'Your request is being processed')
+    }
 
         else {
             setLoading(false)

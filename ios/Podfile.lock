@@ -448,13 +448,13 @@ PODS:
     - glog
   - react-native-geolocation-service (5.3.1):
     - React
-  - react-native-google-maps (1.17.3):
+  - react-native-google-maps (1.15.3):
     - Google-Maps-iOS-Utils (= 4.2.2)
     - GoogleMaps (= 7.4.0)
     - React-Core
   - react-native-image-picker (5.7.0):
     - React-Core
-  - react-native-maps (1.17.3):
+  - react-native-maps (1.15.3):
     - React-Core
   - react-native-netinfo (11.3.2):
     - React-Core
@@ -593,20 +593,8 @@ PODS:
     - React-Core
   - RNPermissions (3.10.1):
     - React-Core
-  - RNReanimated (3.15.0):
-    - RCT-Folly (= 2021.07.22.00)
+  - RNReanimated (1.13.4):
     - React-Core
-    - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.15.0)
-    - RNReanimated/worklets (= 3.15.0)
-  - RNReanimated/reanimated (3.15.0):
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
-    - ReactCommon/turbomodule/core
-  - RNReanimated/worklets (3.15.0):
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
-    - ReactCommon/turbomodule/core
   - RNScreens (3.34.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -901,9 +889,9 @@ SPEC CHECKSUMS:
   React-jsinspector: d5ce2ef3eb8fd30c28389d0bc577918c70821bd6
   React-logger: 9332c3e7b4ef007a0211c0a9868253aac3e1da82
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
-  react-native-google-maps: 4fcc7464c6e1337af1463af6813466a1f6ebee8a
+  react-native-google-maps: 3d70502cc3742591af66be5ab258b260b6087487
   react-native-image-picker: 3269f75c251cdcd61ab51b911dd30d6fff8c6169
-  react-native-maps: 5d563f21238f8e8fea24ae6ff2772bfde17f6f34
+  react-native-maps: 75681193c8beca45e117bbddd7a10d9625348921
   react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
   react-native-pager-view: fa80cf288e138b547e37877ee318c53411560f1a
   react-native-paystack-webview: db1cbcc4aee27f1d6a05f90f8569a54508e6b19b
@@ -934,7 +922,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNPermissions: cafff824a8a6bff8d70d7fb10c3a78005dc68a70
-  RNReanimated: 23c5e3940d5f4e6206480bcea18139d976324b00
+  RNReanimated: c1b56d030d1616239861534d9adb531f8cffab68
   RNScreens: 80369e822c4f123c3f076c9ea4141991c17770f9
   RNSound: 6c156f925295bdc83e8e422e7d8b38d33bc71852
   RNSVG: af3907ac5d4fa26a862b75a16d8f15bc74f2ceda

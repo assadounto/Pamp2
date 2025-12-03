@@ -125,7 +125,6 @@ const ApplicationNavigator = () => {
             <Stack.Screen options={{ cardStyleInterpolator: forFade2 }} name="main2" component={MainNavigator} />
           </>
         }
-
         <Stack.Screen options={{ cardStyleInterpolator: forFade2 }} name="main" component={MainNavigator} />
         <Stack.Screen name="Profile"  component={Profile} />
         <Stack.Screen name="edit_profile" component={Edit_profile} />

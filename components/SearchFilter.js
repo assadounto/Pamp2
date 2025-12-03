@@ -70,7 +70,7 @@ const SearchFilter = ({search,modal,setModal,setPage}) => {
                     step={1}
                     orientation="horizontal"
                     minimumTrackTintColor={theme.colors.lg}
-                    maximumTrackTintColor={theme.colors.slate}
+                        maximumTrackTintColor={theme.mode === 'light' ? '#F7F7F7' : '#3E3E40'}
                     trackStyle={{ backgroundColor: 'red', borderRadius: 20 }}
                     thumbStyle={{ width: 20, height: 20, backgroundColor: theme.colors.lg }}
                 />
@@ -86,8 +86,8 @@ const SearchFilter = ({search,modal,setModal,setPage}) => {
                     step={1}
                     orientation="horizontal"
                     minimumTrackTintColor={theme.colors.lg}
-                    maximumTrackTintColor={theme.colors.slate}
-                    trackStyle={{ backgroundColor: 'red', borderRadius: 20 }}
+                        maximumTrackTintColor={theme.mode === 'light' ? '#F7F7F7' :'#3E3E40'}
+                    trackStyle={{ borderRadius: 20 }}
                     thumbStyle={{ width: 20, height: 20, backgroundColor: theme.colors.lg }}
                 />
                 <Selector label={'Service type'} name={filter.type} setItem={(type) => dispatch(setFilter({ type }))} items={['All', 'Salon', 'Home']} />

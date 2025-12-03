@@ -84,6 +84,8 @@ function App() {
 
     init();
   }, [])
+  const colorScheme = useColorScheme();
+  theme.mode = colorScheme || 'light'; // Set the theme mode
 
 
   return (

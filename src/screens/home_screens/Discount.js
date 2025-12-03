@@ -45,6 +45,7 @@ const Discount = ({ navigation }) => {
 
       if (data.message === 'ok') {
         setNotify(true);
+       
         setTimeout(() => {
           setNotify(false);
           refetch()
@@ -56,6 +57,7 @@ const Discount = ({ navigation }) => {
       console.error('Error applying discount code:', error);
       Alert.alert("Error", 'An error occurred while applying the discount code.');
     }
+    setText('');
   };
 
 
@@ -73,6 +75,7 @@ const Discount = ({ navigation }) => {
       <View style={pop.pop}>
         <Text style={pop.rate}>Enter Promo Code</Text>
         <TextInput
+        value={text}
           placeholderTextColor={theme.colors.placeholder}
           placeholder="Promo Code"
           onChangeText={setText}

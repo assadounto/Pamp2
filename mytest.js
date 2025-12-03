@@ -28,6 +28,8 @@ function Test() {
         translateX2.value = withSpring(translateX2.value - 50);
     };
 
+    
+
     return (
         <>
             <View style={{ display: 'flex', flexDirection: 'row' }}>

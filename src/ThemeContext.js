@@ -12,9 +12,9 @@ const ThemeProvider = ({ children }) => {
     const [themeMode, setThemeMode] = useState('system');
     const [appState, setAppState] = useState(AppState.currentState);
 
-useEffect(() => {
-     setMode(systemColorScheme)
-    }, [systemColorScheme]);
+// useEffect(() => {
+//      setMode(systemColorScheme)
+//     }, [systemColorScheme]);
 
 
  

@@ -34,8 +34,6 @@ const AuthNavigator = () => {
             backgroundColor: '#fff',
           },
         }}>
-       
-          
           <Stack.Screen  options={{presentation:'modal'}} name="login" component={Login} />
           <Stack.Screen options={{presentation:'modal'}}   name="Register" component={Register} />
           <Stack.Screen options={{presentation:'modal'}}   name="ForgotPassword" component={ForgotPassword} />

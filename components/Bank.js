@@ -58,12 +58,12 @@ const Bank = ({ setOption, setName, settype, setNumber, setOther, option, setcod
     const fetchBankDetails = async (num) => {
         setBankName('')
          const url = `https://api.paystack.co/bank/resolve?account_number=${num}&bank_code=${bank_code}`;
-        const secretKey = ENV['PAYSTACK_KEY']; // Replace with your Paystack secret key
+        const sec = ENV['PAYSTACK_KEY']; // Replace with your Paystack secret key
 
         try {
             const response = await axios.get(url, {
                 headers: {
-                    Authorization: `Bearer ${secretKey}`,
+                    Authorization: `Bearer ${sec}`,
                     'Content-Type': 'application/json',
                 },
             });

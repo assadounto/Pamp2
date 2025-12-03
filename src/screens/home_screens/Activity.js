@@ -76,7 +76,7 @@ const Activity = ({ navigation }) => {
     return (
         <><SafeAreaView style={{ backgroundColor: theme.mode === 'light' ? "#F7F7F9" : "#000" }}>
             <BHeader top={Platform.OS === 'ios' ? 0 : 20} title={'Your Activity'} />
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:100}}>
                 <View style={styles.textcont}>
                     <Text style={[styles.text, { color: theme.colors.dg }]}>Earnings</Text>
                     <Text onPress={copyToClipboard} style={[styles.text, { color: theme.colors.lg }]}>{user.influencer_code}</Text>
@@ -164,6 +164,7 @@ export const useStyles = makeStyles((theme) => ({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '80%',
+   
         alignSelf: 'center'
 
     },

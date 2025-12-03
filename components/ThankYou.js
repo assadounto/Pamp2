@@ -21,10 +21,12 @@ const ThankYou = ({modal,setModal,navigation}) => {
       <View style={styles.pop2}>
 <Image style={styles.img} resizeMode='contain' source={require('../assets/influencers.png')}/>
         <Text style={[{ color: theme.colors.dg, width:'80%', textAlign: 'center', fontSize: 16, }, styles.fs18, styles.tac]}>{'Thank you for your interest in\nbecoming a Pamp influencer. Your submission is now under review.'}</Text>
+        
         <Button
           title="Got it"
          onPress={handleSubmit}
-          buttonStyle={styles.button} />
+          buttonStyle={styles.button}
+           />
 
       </View>
     </Modal>
@@ -35,12 +37,12 @@ const ThankYou = ({modal,setModal,navigation}) => {
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    width: '100%',
+    width: 200,
     height: verticalScale(53),
     backgroundColor: theme.colors.lg, 
     marginBottom: verticalScale(25),
     marginTop:20,
-    alignSelf: 'center',
+   
     borderRadius: 25
   },
   img:{

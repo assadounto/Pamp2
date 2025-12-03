@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { useSelector } from 'react-redux';
 import { TextInput } from 'react-native';
 import axios from 'axios';
@@ -88,6 +88,9 @@ const JoinNow = ({ navigation }) => {
   ];
 
   return (
+    <View style={{flex:1, paddingBottom:Platform.OS==='android' ? 60:0}}>
+
+
     <SafeAreaTop>
       <Text style={styles.text}>Join</Text>
       <ScrollView contentContainerStyle={styles.scroll}>
@@ -135,14 +138,20 @@ const JoinNow = ({ navigation }) => {
           />
         </View>
       </ScrollView>
+      
+      <ThankYou navigation={navigation} setModal={setModal} modal={modal} />
+     <View>
+      
+     </View>
       <ButtonDown
+      
         disabled={!isFormValid()}
         loading={loading}
         handleSubmit={handleSubmit}
         title={'Submit'}
       />
-      <ThankYou navigation={navigation} setModal={setModal} modal={modal} />
     </SafeAreaTop>
+        </View>
   );
 };
 

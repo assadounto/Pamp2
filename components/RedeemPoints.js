@@ -32,7 +32,7 @@ const RedeemModal= ({ modal, disabled, setModal, navigation }) => {
                         color={theme.colors.dg}
                     />
                 </Pressable>
-                <Text style={[{ color: theme.colors.dg, textAlign: 'center', fontSize: 16,  }, styles.fs18, styles.tac]}>{'You can redeem exciting rewards like airtime, modbile data, pampering beauty sessions and more when you reach 1000+ points'}</Text>
+                <Text style={[{ color: theme.colors.dg, textAlign: 'center', fontSize: 16,  }, styles.fs18, styles.tac]}>{'You can redeem exciting rewards like airtime, mobile data, pampering beauty sessions and more when you reach 1000+ points'}</Text>
                 <Button
                 disabled={disabled}
                     title="Redeem Points"

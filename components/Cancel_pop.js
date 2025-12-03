@@ -22,18 +22,21 @@ const Cancel_pop = ({ cancel, setcancel, modal, setblur, data }) => {
         setblur(false);
         setcancel(false)
     }
-
-    const handlePressOK = async () => {
-        const info = await axios.post(`${backendURL}/booking/cancel?id=${data.id}&scope=user`)
-        console.log(info.data)
-        cancel(true)
-        setcancel(false)
+const handlePressOK = async () => {
+    try {
+        const info = await axios.post(`${backendURL}/booking/cancel?id=${data.id}&scope=user`);
+       
+        setcancel(false);
         set_notify(true);
         setTimeout(() => {
             set_notify(false);
             setblur(false);
         }, 3000);
+    } catch (error) {
+        console.error("Error cancelling booking:", error);
     }
+};
+
     const pop = useStyles();
     const { theme } = useTheme();
     return (

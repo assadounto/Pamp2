@@ -209,7 +209,7 @@ const Profile = ({ navigation }) => {
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Phone number</Text>
-              {user?.phone ? <Text style={[styles.P2, colors.dg2]}>{user.phone}</Text> : <Text
+              {user?.phone ? <Text style={[styles.P2, colors.dg2]}>{user?.phone}</Text> : <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>
                 +Add
@@ -222,7 +222,7 @@ const Profile = ({ navigation }) => {
             </View>
             <View style={[styles.Pmargin]}>
               <Text style={styles.P1}>Date of birth </Text>
-              {user.date_of_birth==null ? 
+              {user?.date_of_birth==null ? 
               <Text
                 style={[styles.P2, colors.dg2]}
                 onPress={() => navigation.navigate('edit_profile')}>

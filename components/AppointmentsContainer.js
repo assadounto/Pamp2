@@ -1,6 +1,6 @@
 import { useTheme } from '@rneui/themed';
 import { makeStyles } from '@rneui/themed';
-import { nanoid } from "@reduxjs/toolkit";
+
 import { da } from "date-fns/locale";
 import * as React from "react";
 import { useDispatch, useSelector } from 'react-redux';

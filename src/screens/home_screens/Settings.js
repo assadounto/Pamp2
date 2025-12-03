@@ -46,7 +46,8 @@ import { tr } from 'date-fns/locale';
 import SparkleIcon from '../../../components/icons/Sparkle';
 import Lock2Icon from '../../../components/icons/lock-2';
 import GiftIcon from '../../../components/icons/gift';
-import { version } from '../../services/http';
+import { backendURL, version } from '../../services/http';
+import axios from 'axios';
 
 
 
@@ -130,6 +131,7 @@ const Settings = ({ navigation }) => {
   const styles2 = useStyles();
   const [log, setLog] = useState(false)
   const user = useSelector(state => state.user.userInfo)
+const userToken =useSelector(state=>state.user.userToken)
   const [appearModal, setAppearModal] = useState(false)
 
   const [isEnabled, setIsEnabled] = useState(true);
@@ -177,19 +179,29 @@ const Settings = ({ navigation }) => {
   };
 
   const [prevScrollY, setPrevScrollY] = useState(0);
-
   async function handleSignOut() {
     try {
+      setLog(true); // Show a loading indicator
 
-      setLog(true);
-      setTimeout(() => {
-        setLog(false);
-        dispatch(userLogout());
-        Alert.alert('Success', 'Successfully logged out')
-      }, 1000);
+      // Make an Axios request to the Rails logout endpoint
+      const response = await axios.delete(backendURL + "/user/logout", {
+        headers: {
+          Authorization: `Bearer ${userToken}`, // Add the user's token if needed for authentication
+        },
+      });
+
+      // Check if the logout was successful
+      if (response.status === 200) {
+        setLog(false); // Hide the loading indicator
+        dispatch(userLogout()); // Clear user data from Redux store
+        Alert.alert('Success', 'Successfully logged out');
+      } else {
+        throw new Error('Logout failed. Please try again.');
+      }
     } catch (error) {
+      setLog(false); // Hide the loading indicator
       console.error('Error signing out:', error);
-      // Handle error if needed
+      Alert.alert('Error', 'Failed to log out. Please try again.');
     }
   }
 
@@ -201,7 +213,7 @@ const Settings = ({ navigation }) => {
 
     <SafeAreaTop >
 
-      <Text style={[styles.St1, { color: theme.colors.othergreen }, Platform.OS === 'android' ? { marginVertical: 0, } : { marginTop: 20 }]}>Settings</Text>
+      <Text style={[styles.St1, { color: theme.colors.othergreen }, Platform.OS === 'android' ? {marginTop:15, marginVertical: 0, } : { marginTop: 20 }]}>Settings</Text>
 
       <ScrollView
 
@@ -253,7 +265,7 @@ const Settings = ({ navigation }) => {
               disabled={disabled}
               containerStyle={[{ borderRadius: 15, backgroundColor: theme.colors.slate }]}
               onPress={() => {
-                user.role=='influencer'? navigation.navigate('activity'):
+               user.role=='influencer'? navigation.navigate('activity'):
                 navigation.navigate('joinInfluencer');
               }}>
 

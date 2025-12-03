@@ -68,6 +68,7 @@ const Withdraw = ({ navigation, route }) => {
         if (data === 'created') {
             setLoading(false)
             Alert.alert('Request sent', 'Your request is being processed')
+            navigation?.navigate('activity')
     }
 
         else {

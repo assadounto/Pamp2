@@ -22,9 +22,10 @@ import axios from 'axios';
 import { backendURL } from '../src/services/http';
 import { userLogout } from '../src/redux/user';
 import { verticalScale } from '../src/Dimensions';
+import { useNavigation } from '@react-navigation/core';
 const Delete_modal=({modal,setModal})=>{
   const { theme } = useTheme();
-
+const navigation= useNavigation()
       const[loading,setloading]=useState(false)
       const user= useSelector(state=>state.user.userInfo)
       const [reason1, setReason1] = useState(false);
@@ -45,6 +46,8 @@ const Delete_modal=({modal,setModal})=>{
             setloading(false)
             setTimeout(() => {
               dispatch(userLogout());
+              setModal(false)
+            navigation.navigate('main')
               }, 2000);
            } catch(e){
             setloading(false)
